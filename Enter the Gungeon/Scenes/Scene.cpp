@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "ResourceMgr.h"
-#include "Framework.h"
 
 Scene::Scene(SceneId id) : sceneId(id), window(FRAMEWORK.GetWindow())
 {

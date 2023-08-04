@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "SceneTitle.h"
-#include "Framework/Framework.h"
 #include "SpriteGo.h"
 #include "TextGo.h"
-#include "SoundGo.h"
 
 SceneTitle::SceneTitle() : Scene(SceneId::Title)
 {

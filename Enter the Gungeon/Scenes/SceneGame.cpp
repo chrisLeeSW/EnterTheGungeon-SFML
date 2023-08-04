@@ -3,7 +3,6 @@
 #include "UiButton.h"
 #include "SpriteGo.h"
 #include "TextGo.h"
-#include "SoundGo.h"
 
 SceneGame::SceneGame() : Scene(SceneId::Game)
 {

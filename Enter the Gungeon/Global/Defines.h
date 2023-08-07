@@ -43,4 +43,19 @@ enum class SceneId
 	Count,
 };
 
+enum class MapObjectType
+{
+	None = -1,
+	WallTop,
+	WallCornerRight,  // 필요없음
+	WallCornerLeft, // 필요없음
+	WallRight,
+	WallLeft,
+	WallDown,
+	NormalFloor1,
+	NormalFloor2,
+	NormalFloor3,
+	NormalFloor4,
+};
+
 #include "AnimationClip.h"

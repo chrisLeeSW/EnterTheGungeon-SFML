@@ -183,6 +183,7 @@
     <ClCompile Include="Scenes\SceneTitle.cpp" />
     <ClCompile Include="GameObjects\TextGo.cpp" />
     <ClCompile Include="Framework\UiButton.cpp" />
+    <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="Global\Variables.h" />
     <ClInclude Include="GameObjects\TextGo.h" />
     <ClInclude Include="Framework\UiButton.h" />
+    <ClInclude Include="TileMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

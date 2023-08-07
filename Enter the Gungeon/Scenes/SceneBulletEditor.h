@@ -3,7 +3,8 @@
 class SceneBulletEditor : public Scene
 {
 protected:
-
+	sf::Vector2f direction;
+	std::string str = "";
 public:
 	SceneBulletEditor();
 	virtual ~SceneBulletEditor() override = default;
@@ -14,4 +15,6 @@ public:
 	virtual void Exit() override;
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
+
+	std::string InputString();
 };

@@ -21,13 +21,14 @@ Bullet::~Bullet()
 
 void Bullet::Init()
 {
+	SetOrigin(Origins::MC);
 	
 }
 
 void Bullet::Reset()
 {
-	SetOrigin(Origins::MC);
 	(isBlink) ? animation.Play("Blink") : animation.Play("Idle");
+	SpriteGo::Reset();
 }
 
 void Bullet::Update(float dt)

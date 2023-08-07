@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "SceneBulletEditor.h"
-#include "SpriteGo.h"
+#include "Bullet.h"
 
 SceneBulletEditor::SceneBulletEditor() : Scene(SceneId::BulletEditor)
 {
@@ -11,8 +11,15 @@ void SceneBulletEditor::Init()
 {
 	Release();
 
-	SpriteGo* test = (SpriteGo*)AddGo(new SpriteGo("graphics/enemyBullet.png"));
-	test->SetScale(3.0f, 3.0f);
+	Bullet* test1 = (Bullet*)AddGo(new Bullet(BulletType::EnemyBullet));
+	test1->SetScale(3.0f, 3.0f);
+	test1->Shoot({ 1.0f, 0.0f }, 10.0f);
+	test1->SetBullet(false);
+
+	Bullet* test2 = (Bullet*)AddGo(new Bullet(BulletType::EnemyBullet));
+	test2->SetScale(3.0f, 3.0f);
+	test2->Shoot({ 0.0f, 1.0f }, 10.0f);
+	test2->SetBullet(true);
 
 	for (auto go : gameObjects)
 	{
@@ -41,6 +48,11 @@ void SceneBulletEditor::Exit()
 void SceneBulletEditor::Update(float dt)
 {
 	Scene::Update(dt);
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Escape))
+	{
+		SCENE_MGR.ChangeScene(SceneId::Title);
+	}
 }
 
 void SceneBulletEditor::Draw(sf::RenderWindow& window)

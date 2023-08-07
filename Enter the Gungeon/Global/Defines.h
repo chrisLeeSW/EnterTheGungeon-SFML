@@ -6,7 +6,7 @@ enum class Languages
 {
 	KOR,
 	ENG,
-	JP,
+
 	COUNT,
 };
 
@@ -37,6 +37,9 @@ enum class SceneId
 	None = -1,
 	Title,
 	Game,
+	//MapTool,
+	BulletEditor,
+
 	Count,
 };
 

@@ -153,7 +153,7 @@ std::wstring Utils::ConverToUTF(const std::string& text)
 {
 	std::wstring uiText;
 
-	if (Variables::CurrentLang == Languages::KOR || Variables::CurrentLang == Languages::JP)
+	if (Variables::CurrentLang == Languages::KOR)
 	{
 		std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 		uiText = converter.from_bytes(text);

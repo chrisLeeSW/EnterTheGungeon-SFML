@@ -18,6 +18,7 @@ protected:
 	sf::Vector2f direction;
 	float speed = 0.0f;
 	int damage = 0;
+	float range = 1000.0f;
 	BulletType type;
 
 	bool isBlink = false;
@@ -31,5 +32,7 @@ public:
 	virtual void Update(float dt) override;
 
 	void SetBullet(bool isBlink = false);
-	void Shoot(sf::Vector2f dir, float speed, int damage = 1);
+	void Shoot(sf::Vector2f dir, float speed, float range = 1000.0f, int damage = 1);
+
+	bool IsBlink() const;
 };

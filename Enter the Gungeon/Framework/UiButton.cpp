@@ -24,13 +24,12 @@ void UiButton::Release()
 
 void UiButton::Reset()
 {
-	SpriteGo::Reset();
 	sf::Font* font = RESOURCE_MGR.GetFont(fontId);
 	if (font != nullptr)
 	{
 		text.setFont(*font);
 	}
-	SetOrigin(origin);
+	SpriteGo::Reset();
 	isHover = false;
 }
 

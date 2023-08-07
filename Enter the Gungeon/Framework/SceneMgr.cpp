@@ -4,7 +4,7 @@
 #include "DataTableMgr.h"
 #include "StringTable.h"
 #include "SceneTitle.h"
-//#include "SceneMaptool.h"
+#include "SceneMaptool.h"
 #include "SceneBulletEditor.h"
 void SceneMgr::Init() 
 {
@@ -14,7 +14,7 @@ void SceneMgr::Init()
 	}
 	scenes.push_back(new SceneTitle()); // 브레이크 포인트 걸었을때 383MB먹음
 	scenes.push_back(new SceneGame());
-	//scenes.push_back(new SceneMaptool());
+	scenes.push_back(new SceneMaptool());
 	scenes.push_back(new SceneBulletEditor());
 	for (auto scene : scenes)
 	{

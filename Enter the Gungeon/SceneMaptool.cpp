@@ -11,17 +11,19 @@ void SceneMaptool::Init()
 {
 	Release();
 
-	tileMap = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png","TileMap"));
+	/*tileMap = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png","TileMap"));
 	testPlayerCollied = (SpriteGo*)AddGo(new SpriteGo("graphics/testPlayer.png", "test"));
 	testPlayerCollied->SetOrigin(Origins::MC);
-	testPlayerCollied->SetPosition(0.f,-250.f);
+	testPlayerCollied->SetPosition(0.f,-250.f);*/
+
 	for (auto go : gameObjects)
 	{
 		go->Init();
 	}
 
-	tileMap->Load("MapFile/map1.csv");
-	tileMap->SetOrigin(Origins::BC); // BC로 충돌검사 확인 
+	//tileMap->Load("MapFile/map1.csv");
+	//tileMap->SetOrigin(Origins::BC); // BC로 충돌검사 확인
+	//shape.setSize(sf::Vector2f{ (-(tileMap->vertexArray.getBounds().left) + tileMap->vertexArray.getBounds().width), (-(tileMap->vertexArray.getBounds().top) + tileMap->vertexArray.getBounds().height) });
 }
 
 void SceneMaptool::Release()
@@ -56,6 +58,13 @@ void SceneMaptool::Exit()
 void SceneMaptool::Update(float dt)
 {
 	Scene::Update(dt);
+	/*
+	playerPos = testPlayerCollied->GetPosition();
+	playerDir.x=INPUT_MGR.GetAxisRaw(Axis::Horizontal);
+	playerDir.y = INPUT_MGR.GetAxisRaw(Axis::Vertical);
+	playerPos +=  playerDir * 100.f * dt;
+	testPlayerCollied->SetPosition(playerPos);
+
 	if (INPUT_MGR.GetMouseButton(sf::Mouse::Middle))
 	{
 		sf::Vector2f worldPose = ScreenToWorldPos(INPUT_MGR.GetMousePos());
@@ -77,6 +86,8 @@ void SceneMaptool::Update(float dt)
 		view = 1.0f;
 		tileMap->SetVewScale(view);
 	}
+	////csv 파일로 해서 그리는거 확인 완료 
+	*/
 }
 
 void SceneMaptool::Draw(sf::RenderWindow& window)

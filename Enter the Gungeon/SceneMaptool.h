@@ -17,7 +17,11 @@ protected:
 	float view;
 
 	SpriteGo* testPlayerCollied;
+	sf::Vector2f playerPos;
+	sf::Vector2f playerDir;
+
 	std::vector<sf::RectangleShape> wallColliedShape;
+	sf::RectangleShape shape;
 public:
 	SceneMaptool();
 	virtual ~SceneMaptool() override = default;

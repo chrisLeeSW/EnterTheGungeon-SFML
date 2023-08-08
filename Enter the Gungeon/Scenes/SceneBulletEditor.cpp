@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "SceneBulletEditor.h"
-#include "EnemyBullet.h"
+#include "Muzzle.h"
 #include "UiButton.h"
 
 SceneBulletEditor::SceneBulletEditor() : Scene(SceneId::BulletEditor)
@@ -12,12 +12,6 @@ void SceneBulletEditor::Init()
 {
 	Release();
 
-	EnemyBullet* test1 = (EnemyBullet*)AddGo(new EnemyBullet(BulletType::EnemyBullet));
-	test1->SetScale(3.0f, 3.0f);
-	test1->Init();
-	bulletlist.push_back(test1);
-	curBullet = test1;
-
 	UiButton* blinkbutton = (UiButton*)AddGo(new UiButton("graphics/testbutton.png", "fonts/DIGITALDREAM.ttf", "blinkbutton"));
 	blinkbutton->text.setCharacterSize(20);
 	blinkbutton->text.setString("false");
@@ -27,17 +21,16 @@ void SceneBulletEditor::Init()
 	blinkbutton->sortLayer = 100;
 	blinkbutton->OnClick = [this]()
 	{
-		curBullet->SetBullet(!curBullet->IsBlink());
-		curBullet->Reset();
+		curMuzzle->isBlink = !curMuzzle->isBlink;
 
 		UiButton* blinkbutton = (UiButton*)FindGo("blinkbutton");
-		blinkbutton->text.setString((curBullet->IsBlink()) ? "true" : "false");
+		blinkbutton->text.setString((curMuzzle->isBlink) ? "true" : "false");
 		blinkbutton->Reset();
 	};
 
 	UiButton* directionbutton = (UiButton*)AddGo(new UiButton("graphics/testbutton.png", "fonts/DIGITALDREAM.ttf", "directionbutton"));
 	directionbutton->text.setCharacterSize(10);
-	directionbutton->text.setString("x,y,speed,range");
+	directionbutton->text.setString("direction");
 	directionbutton->text.setFillColor(sf::Color::Black);
 	directionbutton->SetOrigin(Origins::MC);
 	directionbutton->SetPosition(windowSize.x - 150.f, 100.f);
@@ -58,7 +51,24 @@ void SceneBulletEditor::Init()
 		}
 		float x = std::stof(temp);
 
-		curBullet->Shoot({ values[0], values[1] }, values[2], values[3]);
+		curMuzzle->direction = { values[0], values[1] };
+	};
+
+	UiButton* speedbutton = (UiButton*)AddGo(new UiButton("graphics/testbutton.png", "fonts/DIGITALDREAM.ttf", "speedbutton"));
+	speedbutton->text.setCharacterSize(10);
+	speedbutton->text.setString("speed");
+	speedbutton->text.setFillColor(sf::Color::Black);
+	speedbutton->SetOrigin(Origins::MC);
+	speedbutton->SetPosition(windowSize.x - 150.f, 150.f);
+	speedbutton->sortLayer = 100;
+	speedbutton->OnClick = [this]()
+	{
+		str = InputString();
+		UiButton* speedbutton = (UiButton*)FindGo("speedbutton");
+		speedbutton->text.setString(str);
+		speedbutton->Reset();
+
+		curMuzzle->speed = std::stof(str);
 	};
 
 	UiButton* positionbutton = (UiButton*)AddGo(new UiButton("graphics/testbutton.png", "fonts/DIGITALDREAM.ttf", "positionbutton"));
@@ -66,7 +76,7 @@ void SceneBulletEditor::Init()
 	positionbutton->text.setString("position");
 	positionbutton->text.setFillColor(sf::Color::Black);
 	positionbutton->SetOrigin(Origins::MC);
-	positionbutton->SetPosition(windowSize.x - 150.f, 150.f);
+	positionbutton->SetPosition(windowSize.x - 150.f, 200.f);
 	positionbutton->sortLayer = 100;
 	positionbutton->OnClick = [this]()
 	{
@@ -84,25 +94,58 @@ void SceneBulletEditor::Init()
 		}
 		float x = std::stof(temp);
 
-		curBullet->SetPosition({ values[0], values[1] });
+		curMuzzle->SetPosition({ values[0], values[1] });
+	};
+
+	UiButton* quantitybutton = (UiButton*)AddGo(new UiButton("graphics/testbutton.png", "fonts/DIGITALDREAM.ttf", "quantitybutton"));
+	quantitybutton->text.setCharacterSize(10);
+	quantitybutton->text.setString("quantity");
+	quantitybutton->text.setFillColor(sf::Color::Black);
+	quantitybutton->SetOrigin(Origins::MC);
+	quantitybutton->SetPosition(windowSize.x - 150.f, 250.f);
+	quantitybutton->sortLayer = 100;
+	quantitybutton->OnClick = [this]()
+	{
+		str = InputString();
+		UiButton* quantitybutton = (UiButton*)FindGo("quantitybutton");
+		quantitybutton->text.setString(str);
+		quantitybutton->Reset();
+
+		curMuzzle->quantity = std::stoi(str);
+	};
+
+	UiButton* intervalbutton = (UiButton*)AddGo(new UiButton("graphics/testbutton.png", "fonts/DIGITALDREAM.ttf", "intervalbutton"));
+	intervalbutton->text.setCharacterSize(10);
+	intervalbutton->text.setString("interval");
+	intervalbutton->text.setFillColor(sf::Color::Black);
+	intervalbutton->SetOrigin(Origins::MC);
+	intervalbutton->SetPosition(windowSize.x - 150.f, 300.f);
+	intervalbutton->sortLayer = 100;
+	intervalbutton->OnClick = [this]()
+	{
+		str = InputString();
+		UiButton* intervalbutton = (UiButton*)FindGo("intervalbutton");
+		intervalbutton->text.setString(str);
+		intervalbutton->Reset();
+
+		curMuzzle->interval = std::stof(str);
 	};
 
 	UiButton* newbutton = (UiButton*)AddGo(new UiButton("graphics/testbutton.png", "fonts/DIGITALDREAM.ttf", "newbutton"));
 	newbutton->text.setCharacterSize(20);
-	newbutton->text.setString("new bullet");
+	newbutton->text.setString("new muzzle");
 	newbutton->text.setFillColor(sf::Color::Black);
 	newbutton->SetOrigin(Origins::MC);
 	newbutton->SetPosition(150.f, 50.f);
 	newbutton->sortLayer = 100;
 	newbutton->OnClick = [this]()
 	{
-		EnemyBullet* bullet = (EnemyBullet*)AddGo(new EnemyBullet(BulletType::EnemyBullet));
-		bullet->SetScale(3.0f, 3.0f);
-		bullet->SetPosition(0.f, 0.f);
-		bullet->Init();
-		bullet->Reset();
+		Muzzle* muzzle = (Muzzle*)AddGo(new Muzzle());
+		muzzle->Init();
+		muzzle->Reset();
 
-		bulletlist.push_back(bullet);
+		curMuzzle = muzzle;
+		muzzlelist.push_back(muzzle);
 	};
 
 	UiButton* playbutton = (UiButton*)AddGo(new UiButton("graphics/testbutton.png", "fonts/DIGITALDREAM.ttf", "playbutton"));
@@ -114,10 +157,10 @@ void SceneBulletEditor::Init()
 	playbutton->sortLayer = 100;
 	playbutton->OnClick = [this]()
 	{
-		isPlay = !isPlay;
-		UiButton* playbutton = (UiButton*)FindGo("playbutton");
-		(isPlay) ? playbutton->text.setString("PAUSE") : playbutton->text.setString("PLAY");
-		playbutton->Reset();
+		for (auto it : muzzlelist)
+		{
+			it->Play();
+		}
 	};
 
 	for (auto go : gameObjects)
@@ -156,35 +199,39 @@ void SceneBulletEditor::Update(float dt)
 {
 	Scene::Update(dt);
 
-	if (!isPlay)
-	{
-		for (auto it : bulletlist)
-		{
-			it->Update(-dt);
-		}
-	}
-
 	if (INPUT_MGR.GetMouseButtonUp(sf::Mouse::Left))
 	{
-		if (curBullet == nullptr) return;
-
-		for (auto it : bulletlist)
+		for (auto it : muzzlelist)
 		{
-			if (it->sprite.getGlobalBounds().contains(ScreenToWorldPos(INPUT_MGR.GetMousePos())))
+			if (it->circle.getGlobalBounds().contains(ScreenToWorldPos(INPUT_MGR.GetMousePos())))
 			{
-				curBullet = it;
+				if (curMuzzle != nullptr) curMuzzle->circle.setFillColor(sf::Color::White);
+				curMuzzle = it;
+				curMuzzle->circle.setFillColor(sf::Color::Red);
 
 				UiButton* blinkbutton = (UiButton*)FindGo("blinkbutton");
-				blinkbutton->text.setString((curBullet->IsBlink()) ? "true" : "false");
+				blinkbutton->text.setString((curMuzzle->isBlink) ? "true" : "false");
 				blinkbutton->Reset();
 
 				UiButton* directionbutton = (UiButton*)FindGo("directionbutton");
-				directionbutton->text.setString("x,y,speed,range");
+				directionbutton->text.setString(std::to_string(curMuzzle->direction.x) + "/" + std::to_string(curMuzzle->direction.y));
 				directionbutton->Reset();
 
 				UiButton* positionbutton = (UiButton*)FindGo("positionbutton");
-				positionbutton->text.setString(std::to_string(curBullet->GetPosition().x) + '/' + std::to_string(curBullet->GetPosition().y));
+				positionbutton->text.setString(std::to_string(curMuzzle->GetPosition().x) + '/' + std::to_string(curMuzzle->GetPosition().y));
 				positionbutton->Reset();
+
+				UiButton* speedbutton = (UiButton*)FindGo("speedbutton");
+				speedbutton->text.setString(std::to_string(curMuzzle->speed));
+				speedbutton->Reset();
+
+				UiButton* quantitybutton = (UiButton*)FindGo("quantitybutton");
+				quantitybutton->text.setString(std::to_string(curMuzzle->quantity));
+				quantitybutton->Reset();
+
+				UiButton* intervalbutton = (UiButton*)FindGo("intervalbutton");
+				intervalbutton->text.setString(std::to_string(curMuzzle->interval));
+				intervalbutton->Reset();
 			}
 		}
 	}
@@ -192,6 +239,13 @@ void SceneBulletEditor::Update(float dt)
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Escape))
 	{
 		SCENE_MGR.ChangeScene(SceneId::Title);
+	}
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Delete))
+	{
+		muzzlelist.remove(curMuzzle);
+		RemoveGo(curMuzzle);
+		curMuzzle = nullptr;
 	}
 }
 
@@ -229,7 +283,6 @@ std::string SceneBulletEditor::InputString()
                 }
             }
         }
-        window.display();
     }
 	inputString.pop_back();
 

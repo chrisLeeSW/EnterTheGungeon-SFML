@@ -1,20 +1,15 @@
 #pragma once
 #include "Scene.h"
 
-class EnemyBullet;
+class Muzzle;
 
 class SceneBulletEditor : public Scene
 {
 protected:
-	EnemyBullet* curBullet = nullptr;
+	Muzzle* curMuzzle = nullptr;
+	std::list<Muzzle*> muzzlelist;
 
-	sf::Vector2f direction;
 	std::string str = "";
-
-	std::list<EnemyBullet*> bulletlist;
-
-	bool isPlay = false;
-
 public:
 	SceneBulletEditor();
 	virtual ~SceneBulletEditor() override = default;

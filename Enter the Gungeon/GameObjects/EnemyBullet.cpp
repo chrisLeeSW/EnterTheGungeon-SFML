@@ -2,16 +2,12 @@
 #include "EnemyBullet.h"
 #include "SceneMgr.h"
 
-EnemyBullet::EnemyBullet(BulletType type, std::string textureId, std::string name)
-	:SpriteGo(textureId, name), type(type)
+EnemyBullet::EnemyBullet(std::string textureId, std::string name)
+	:SpriteGo(textureId, name)
 {
-	switch (type)
-	{
-	case BulletType::EnemyBullet:
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/EnemyBulletBlink.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/EnemyBulletIdle.csv"));
-		break;
-	}
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/EnemyBulletBlink.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/EnemyBulletIdle.csv"));
+
 	animation.SetTarget(&sprite);
 }
 

@@ -41,5 +41,9 @@ public:
 
 	std::queue<std::string> GetQueue()const;
 	std::string GetCurrentClipId()const;
+
+	int GetCurFrame() { return currentFrame; }
+	int GetTotalFrame() { return totalFrame; }
+
 };
 

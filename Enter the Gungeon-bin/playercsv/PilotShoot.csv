@@ -1,0 +1,8 @@
+ID,FPS,LOOPTYPE,,
+Shoot,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/PilotWeapon.png,62,5,12,10
+graphics/PilotWeapon.png,44,5,12,10
+graphics/PilotWeapon.png,26,5,12,10
+graphics/PilotWeapon.png,8,6,12,10

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "SceneBulletEditor.h"
-#include "Bullet.h"
+#include "EnemyBullet.h"
 #include "UiButton.h"
 
 SceneBulletEditor::SceneBulletEditor() : Scene(SceneId::BulletEditor)
@@ -12,7 +12,7 @@ void SceneBulletEditor::Init()
 {
 	Release();
 
-	Bullet* test1 = (Bullet*)AddGo(new Bullet(BulletType::EnemyBullet));
+	EnemyBullet* test1 = (EnemyBullet*)AddGo(new EnemyBullet(BulletType::EnemyBullet));
 	test1->SetScale(3.0f, 3.0f);
 	test1->Init();
 	bulletlist.push_back(test1);
@@ -96,7 +96,7 @@ void SceneBulletEditor::Init()
 	newbutton->sortLayer = 100;
 	newbutton->OnClick = [this]()
 	{
-		Bullet* bullet = (Bullet*)AddGo(new Bullet(BulletType::EnemyBullet));
+		EnemyBullet* bullet = (EnemyBullet*)AddGo(new EnemyBullet(BulletType::EnemyBullet));
 		bullet->SetScale(3.0f, 3.0f);
 		bullet->SetPosition(0.f, 0.f);
 		bullet->Init();

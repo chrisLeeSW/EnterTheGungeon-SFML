@@ -1,3 +1,17 @@
 "RESOURCE_TYPE(0: 텍스처 , 1: 폰트,2: 사운드 클립 3: 애니메이션 클립, 4:Sprite Font",RESOURCE_PATH
 3,Animations/EnemyBulletBlink.csv
 3,Animations/EnemyBulletIdle.csv
+3,playercsv/PilotIdleDown.csv
+3,playercsv/PilotIdleRight.csv
+3,playercsv/PilotIdleUp.csv
+3,playercsv/PilotIdleUpRight.csv
+3,playercsv/PilotRollDown.csv
+3,playercsv/PilotRollRight.csv
+3,playercsv/PilotRollUpRight.csv
+3,playercsv/PilotRollUp.csv
+3,playercsv/PilotWalkDown.csv
+3,playercsv/PilotWalkRight.csv
+3,playercsv/PilotWalkUp.csv
+3,playercsv/PilotWalkUpRight.csv
+3,playercsv/PilotShoot.csv
+3,bulletcsv/PilotBullet.csv

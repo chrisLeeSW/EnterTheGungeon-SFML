@@ -1,38 +1,51 @@
 #pragma once
 #include "SpriteGo.h"
+#include "ObjectPool.h"
+#include "Weapon.h"
 #include "AnimationController.h"
-
-enum class BulletType
-{
-	None = -1,
-	EnemyBullet,
-
-	Count,
-};
 
 class Bullet : public SpriteGo
 {
+
+
+public:
+
+	enum class Types
+	{
+		PilotBullet,
+		PrisonerBullet,
+	};
+
+
 protected:
+
 	AnimationController animation;
 
 	sf::Vector2f direction;
-	float speed = 0.0f;
-	int damage = 0;
-	float range = 1000.0f;
-	BulletType type;
+	sf::Vector2f position;
 
-	bool isBlink = false;
+	Types bulletType;
+	int speed;
+	int damage;
+	int range;
+	int knockback;
+
+	SpriteGo* bullet;
 
 public:
-	Bullet(BulletType type, std::string textureId = "", std::string name = "");
-	virtual ~Bullet() override;
+
+	ObjectPool<Bullet>* pool;
+	Bullet(const std::string& textureId = "", const std::string& n = "");
+	virtual ~Bullet() override { Release(); }
 
 	virtual void Init() override;
+	virtual void Release() override;
 	virtual void Reset() override;
+
 	virtual void Update(float dt) override;
+	virtual void Draw(sf::RenderWindow& window) override;
 
-	void SetBullet(bool isBlink = false);
-	void Shoot(sf::Vector2f dir, float speed, float range = 1000.0f, int damage = 1);
-
-	bool IsBlink() const;
+	void SetType(int types);
+	void Fire(sf::Vector2f pos, sf::Vector2f dir);
 };
+

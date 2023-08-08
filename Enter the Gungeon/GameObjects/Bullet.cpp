@@ -1,66 +1,62 @@
 #include "stdafx.h"
 #include "Bullet.h"
-#include "SceneMgr.h"
+#include "BulletTable.h"
+#include "DataTableMgr.h"
 
-Bullet::Bullet(BulletType type, std::string textureId, std::string name)
-	:SpriteGo(textureId, name), type(type)
-{
-	switch (type)
-	{
-	case BulletType::EnemyBullet:
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/EnemyBulletBlink.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/EnemyBulletIdle.csv"));
-		break;
-	}
-	animation.SetTarget(&sprite);
-}
 
-Bullet::~Bullet()
+Bullet::Bullet(const std::string& textureId, const std::string& n) : SpriteGo(textureId, n)
 {
-	Release();
 }
 
 void Bullet::Init()
 {
-	SetOrigin(Origins::MC);
-	
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("bulletcsv/PilotBullet.csv"));
+	animation.SetTarget(&sprite);
+}
+
+void Bullet::Release()
+{
+	SpriteGo::Release();
 }
 
 void Bullet::Reset()
 {
-	(isBlink) ? animation.Play("Blink") : animation.Play("Idle");
 	SpriteGo::Reset();
 }
 
 void Bullet::Update(float dt)
 {
-	SpriteGo::Update(dt);
+	SetOrigin(Origins::TR);
 	animation.Update(dt);
 
-	range -= speed * dt;
-	SetPosition(position + direction * speed * dt);
-	
-	if (range <= 0.f)
-	{
-		Scene* scene = SCENE_MGR.GetCurrScene();
-		scene->RemoveGo(this);
-	}
+	position += direction * (float)speed * dt;
+	SetPosition(position);
+
+	animation.Play("Shoot");
 }
 
-void Bullet::SetBullet(bool isBlink)
+void Bullet::Draw(sf::RenderWindow& window)
 {
-	this->isBlink = isBlink;
+	SpriteGo::Draw(window);
 }
 
-void Bullet::Shoot(sf::Vector2f dir, float speed, float range, int damage)
+void Bullet::SetType(int types)
 {
-	this->direction = dir;
-	this->speed = speed;
-	this->range = range;
-	this->damage = damage;
+
+	const BulletInfo* info = DATATABLE_MGR.Get<BulletTable>(DataTable::Ids::Bullet)->Get((Bullet::Types)types);
+
+	bulletType = info->bulletType;
+	speed = info->speed;
+	damage = info->damage;
+	range = info->range;
+	knockback = info->knockback;
+
 }
 
-bool Bullet::IsBlink() const
+void Bullet::Fire(sf::Vector2f pos, sf::Vector2f dir)
 {
-	return isBlink;
+	position = pos;
+	SetPosition(position);
+
+	direction = dir;
 }

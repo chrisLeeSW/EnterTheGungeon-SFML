@@ -155,7 +155,11 @@
   <ItemGroup>
     <ClCompile Include="Animation\AnimationController.cpp" />
     <ClCompile Include="Animation\AnimationClip.cpp" />
+    <ClCompile Include="DataTables\BulletTable.cpp" />
+    <ClCompile Include="DataTables\WeaponTable.cpp" />
+    <ClCompile Include="Framework\WeaponMgr.cpp" />
     <ClCompile Include="GameObjects\Bullet.cpp" />
+    <ClCompile Include="GameObjects\EnemyBullet.cpp" />
     <ClCompile Include="DataTables\DataTable.cpp" />
     <ClCompile Include="DataTables\StringTable.cpp" />
     <ClCompile Include="Framework\DataTableMgr.cpp" />
@@ -165,8 +169,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="GameObjects\Player.cpp" />
     <ClCompile Include="GameObjects\SpriteEffect.cpp" />
     <ClCompile Include="GameObjects\VertexArrayGo.cpp" />
+    <ClCompile Include="GameObjects\Weapon.cpp" />
     <ClCompile Include="Global\Utils.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -187,14 +193,20 @@
     <ClInclude Include="3rd\rapidcsv.h" />
     <ClInclude Include="Animation\AnimationController.h" />
     <ClInclude Include="Animation\AnimationClip.h" />
+    <ClInclude Include="DataTables\BulletTable.h" />
+    <ClInclude Include="DataTables\WeaponTable.h" />
+    <ClInclude Include="Framework\WeaponMgr.h" />
     <ClInclude Include="GameObjects\Bullet.h" />
+    <ClInclude Include="GameObjects\EnemyBullet.h" />
     <ClInclude Include="DataTables\DataTable.h" />
     <ClInclude Include="DataTables\StringTable.h" />
     <ClInclude Include="Framework\DataTableMgr.h" />
     <ClInclude Include="Framework\ObjectPool.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
+    <ClInclude Include="GameObjects\Player.h" />
     <ClInclude Include="GameObjects\SpriteEffect.h" />
     <ClInclude Include="GameObjects\VertexArrayGo.h" />
+    <ClInclude Include="GameObjects\Weapon.h" />
     <ClInclude Include="Global\Defines.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Framework\InputMgr.h" />

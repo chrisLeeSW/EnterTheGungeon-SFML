@@ -1,8 +1,16 @@
 #pragma once
 #include "Scene.h"
+
+class Player;
+class Weapon;
+
+
 class SceneGame : public Scene
 {
 protected:
+
+	Player* player;
+	Weapon* weapon;
 
 public:
 	SceneGame();

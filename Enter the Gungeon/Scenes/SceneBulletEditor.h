@@ -1,17 +1,17 @@
 #pragma once
 #include "Scene.h"
 
-class Bullet;
+class EnemyBullet;
 
 class SceneBulletEditor : public Scene
 {
 protected:
-	Bullet* curBullet = nullptr;
+	EnemyBullet* curBullet = nullptr;
 
 	sf::Vector2f direction;
 	std::string str = "";
 
-	std::list<Bullet*> bulletlist;
+	std::list<EnemyBullet*> bulletlist;
 
 	bool isPlay = false;
 

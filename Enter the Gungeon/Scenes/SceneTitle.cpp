@@ -48,9 +48,16 @@ void SceneTitle::Update(float dt)
 		SCENE_MGR.ChangeScene(SceneId::Game);
 	}
 
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num2))
+	/*if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num2))
 	{
 		SCENE_MGR.ChangeScene(SceneId::BulletEditor);
+	} -> 테스트 코드 진행 으로 주석 처리함
+		
+	*/ 
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num3))
+	{
+		SCENE_MGR.ChangeScene(SceneId::MapTool);
 	}
 }
 

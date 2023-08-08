@@ -75,10 +75,9 @@ void VertexArrayGo::Reset()
 	texture = RESOURCE_MGR.GetTexture(textureId);
 }
 
-void VertexArrayGo::UpdateEvent(float dt)
+void VertexArrayGo::Update(float dt)
 {
 }
-
 void VertexArrayGo::Draw(sf::RenderWindow& window)
 {
 	window.draw(vertexArray, texture);

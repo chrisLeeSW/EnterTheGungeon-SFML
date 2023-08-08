@@ -37,10 +37,23 @@ enum class SceneId
 	None = -1,
 	Title,
 	Game,
-	//MapTool,
+	MapTool,
 	BulletEditor,
 
 	Count,
+};
+
+enum class MapObjectType
+{
+	None = -1,
+	WallTop,
+	WallRight,
+	WallLeft,
+	WallDown,
+	NormalFloor1,
+	NormalFloor2,
+	NormalFloor3,
+	NormalFloor4,
 };
 
 #include "AnimationClip.h"

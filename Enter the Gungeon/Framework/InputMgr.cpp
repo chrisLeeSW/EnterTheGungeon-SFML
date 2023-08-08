@@ -79,7 +79,7 @@ void InputMgr::UpdateEvent(const sf::Event& ev)
 		ingList.remove(code);
 		upList.push_back(code);
 		break;
-	}
+	}// 마우스 휠 업다운 적용 하는거 할 것 
 	}
 
 	mousePos = (sf::Vector2f)sf::Mouse::getPosition(FRAMEWORK.GetWindow());

@@ -1,0 +1,12 @@
+ID,FPS,LOOPTYPE,,
+Blink,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/enemyBullet.png,0,0,12,12
+graphics/enemyBullet.png,12,0,12,12
+graphics/enemyBullet.png,24,0,12,12
+graphics/enemyBullet.png,36,0,12,12
+graphics/enemyBullet.png,48,0,12,12
+graphics/enemyBullet.png,60,0,12,12
+graphics/enemyBullet.png,72,0,12,12
+graphics/enemyBullet.png,84,0,12,12

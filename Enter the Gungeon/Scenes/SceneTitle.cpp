@@ -43,6 +43,11 @@ void SceneTitle::Update(float dt)
 {
 	Scene::Update(dt);
 	
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num2))
+	{
+		SCENE_MGR.ChangeScene(SceneId::BulletEditor);
+	}
 }
 
 void SceneTitle::Draw(sf::RenderWindow& window)

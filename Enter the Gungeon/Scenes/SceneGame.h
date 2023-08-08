@@ -3,7 +3,7 @@
 
 class Player;
 class Weapon;
-
+class SpriteGo;
 
 class SceneGame : public Scene
 {
@@ -11,6 +11,7 @@ protected:
 
 	Player* player;
 	Weapon* weapon;
+	SpriteGo* shadow;
 
 public:
 	SceneGame();

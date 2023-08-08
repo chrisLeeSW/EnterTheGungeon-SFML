@@ -1,0 +1,10 @@
+ID,FPS,LOOPTYPE,,
+WeaponWalkUp,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Pilot.png,154,249,15,21
+graphics/Pilot.png,171,246,16,20
+graphics/Pilot.png,189,247,16,20
+graphics/Pilot.png,207,249,15,21
+graphics/Pilot.png,224,246,15,20
+graphics/Pilot.png,242,247,15,20

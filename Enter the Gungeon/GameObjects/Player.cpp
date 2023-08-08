@@ -4,12 +4,12 @@
 
 Player::Player(const std::string& textureId, const std::string& n) : SpriteGo(textureId, n)
 {
+	
 }
 
 void Player::Init()
 {
 	windowsize = FRAMEWORK.GetWindowSize();
-
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotIdleUp.csv"));
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotIdleDown.csv"));
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotIdleRight.csv"));
@@ -30,20 +30,18 @@ void Player::Init()
 	SetOrigin(Origins::BC);
 
 
-	clipInfos.push_back({ "IdleUpRight", "WalkUpRight","RollUpRight"});
-	clipInfos.push_back({ "IdleUp", "WalkUp","RollUp" });
-	clipInfos.push_back({ "IdleUpRight", "WalkUpRight", "RollUpRight"});
+	clipInfos.push_back({ "IdleUpRight", "WalkUpRight","RollUpRight",true, Utils::Normalize({-1.f, -1.f}) });
+	clipInfos.push_back({ "IdleUp", "WalkUp","RollUp" ,true, {0.f, -1.f} });
+	clipInfos.push_back({ "IdleUpRight", "WalkUpRight", "RollUpRight",false, Utils::Normalize({1.f, -1.f}) });
 
-	clipInfos.push_back({ "IdleRight", "WalkRight","RollRight" });
-	clipInfos.push_back({ "IdleRight", "WalkRight","RollRight"});
+	clipInfos.push_back({ "IdleRight", "WalkRight","RollRight",true, {-1.f, 0.f} });
+	clipInfos.push_back({ "IdleRight", "WalkRight","RollRight",false, {1.f, 0.f} });
 
-	clipInfos.push_back({ "IdleRight", "WalkRight","RollRight" });
-	clipInfos.push_back({ "IdleDown", "WalkDown","RollDown"});
-	clipInfos.push_back({ "IdleRight", "WalkRight","RollRight"});
-
+	clipInfos.push_back({ "IdleRight", "WalkRight","RollRight", true,Utils::Normalize({-1.f, 1.f}) });
+	clipInfos.push_back({ "IdleDown", "WalkDown","RollDown",true,{0.f, 1.f} });
+	clipInfos.push_back({ "IdleRight", "WalkRight","RollRight",false, Utils::Normalize({1.f, 1.f}) });
 
 	//무기매니저만들어서 플레이어 컨테이너에서 생성해서 꺼내서 쓰게
-
 }
 
 void Player::Release()
@@ -70,7 +68,8 @@ void Player::Update(float dt)
 	SetOrigin(Origins::BC);
 	animation.Update(dt);
 
-	if(!isrolling)
+
+	if (!isrolling)
 	{
 		direction.x = INPUT_MGR.GetAxisRaw(Axis::Horizontal);
 		direction.y = INPUT_MGR.GetAxisRaw(Axis::Vertical);
@@ -93,15 +92,27 @@ void Player::Update(float dt)
 
 	if (clipId == currentClipInfo.walk && INPUT_MGR.GetMouseButtonDown(sf::Mouse::Right))
 	{
-		clipId = currentClipInfo.roll;
-		isrolling = true;
+		auto min = std::min_element(clipInfos.begin(), clipInfos.end(),
+			[this](const ClipInfo& lhs, const ClipInfo& rhs) {
+				return Utils::Distance(lhs.point, direction) < Utils::Distance(rhs.point, direction); });
 
+		isrolling = true;
+		currentClipInfo = *min;
+		clipId = currentClipInfo.roll;
+		if (currentClipInfo.flipX)
+		{
+			SetFlipX(true);
+		}
+		else
+		{
+			SetFlipX(false);
+		}
 		if (isrolling && animation.GetCurrentClipId() != clipId)
 		{
-			animation.Play(clipId);
+			animation.Play(currentClipInfo.roll);
 		}
 	}
-	else if(animation.GetCurrentClipId() != clipId)
+	else if (animation.GetCurrentClipId() != clipId)
 	{
 
 		animation.Play(clipId);
@@ -112,7 +123,6 @@ void Player::Update(float dt)
 		if ((animation.GetTotalFrame() - animation.GetCurFrame()) == 1)
 		{
 			isrolling = false;
-			std::cout << "들어옴";
 		}
 	}
 }
@@ -129,9 +139,8 @@ void Player::PlayerRotation()
 	sf::Vector2f playerScreenPos = SCENE_MGR.GetCurrScene()->WorldPosToScreen(position);
 
 	look = Utils::Normalize(mousePos - playerScreenPos);
-	angle = Utils::Angle(look);
+	angle = Utils::Angle2(look);
 
-	std::cout << angle << std::endl;
 
 	if (angle <= 45.f)
 	{

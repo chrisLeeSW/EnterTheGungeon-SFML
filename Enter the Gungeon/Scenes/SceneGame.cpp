@@ -18,7 +18,10 @@ void SceneGame::Init()
 
 	player = (Player*)AddGo(new Player());
 	weapon = (Weapon*)AddGo(new Weapon());
-
+	shadow = (SpriteGo*)AddGo(new SpriteGo("graphics/Shadow.png"));
+	shadow->SetOrigin(Origins::MC);
+	shadow->SetScale(3.5, 3.5);
+	shadow->sortLayer = -1;
 	for (auto go : gameObjects)
 	{
 		go->Init();
@@ -59,9 +62,9 @@ void SceneGame::Exit()
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
-
-	std::cout << "this:" << player->GetPosition().x << "," << player->GetPosition().y << std::endl;
+	shadow->SetPosition(player->GetPosition());
 }
+
 
 void SceneGame::Draw(sf::RenderWindow& window)
 {

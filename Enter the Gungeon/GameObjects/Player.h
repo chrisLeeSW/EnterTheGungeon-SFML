@@ -4,6 +4,8 @@
 #include "ObjectPool.h"
 #include "Weapon.h"
 
+class Scene;
+
 class Player :
 	public SpriteGo
 {
@@ -14,6 +16,8 @@ public:
 		std::string idle;
 		std::string walk;
 		std::string roll;
+		bool flipX = false;
+		sf::Vector2f point;
 	};
 
 	enum class PlayerAct
@@ -25,11 +29,15 @@ public:
 
 protected:
 
+	Weapon* weapon;
+
 	ObjectPool<Weapon> poolWeapons;
 	PlayerAct playeract;
 	std::string clipId;
 
 	AnimationController animation;
+
+
 	//¼±»ý´Ô²¨
 	std::vector<ClipInfo> clipInfos;
 	ClipInfo currentClipInfo;

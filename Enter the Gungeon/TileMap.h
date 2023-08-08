@@ -17,8 +17,6 @@ public:
 	virtual ~TileMap() override;
 
 	bool Load(const std::string& filePath);
-	void SetVewScale(float scale);
-	bool CheckCollied(const sf::Vector2f& position);
 
 	std::vector<Tile> tiles;
 };

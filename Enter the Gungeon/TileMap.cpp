@@ -72,34 +72,4 @@ bool TileMap::Load(const std::string& filePath)
         currPos.y += tileSize.y;
     }
     return true;
-
-}
-
-void TileMap::SetVewScale(float scale)
-{
-    sf::Vector2f texSize = { 50.f, 50.f };
-
-    sf::Vector2f texOffsets[4] =
-    {
-        { 0.f, 0.f },
-        { texSize.x, 0.f },
-        { texSize.x, texSize.y },
-        { 0.f, texSize.y }
-    };
-    for (int i = 0; i < tiles.size(); ++i)
-    {
-        int tileIndex = i;
-        int texIndex = tiles[tileIndex].texIndex;
-        for (int k = 0; k < 4; ++k)
-        {
-            int vertexIndex = tileIndex * 4 + k;
-            vertexArray[vertexIndex].position *= scale;
-            vertexArray[vertexIndex].texCoords.y = texOffsets[k].y * scale + texSize.y * texIndex;
-        }
-    }
-}
-
-bool TileMap::CheckCollied(const sf::Vector2f& position)
-{
-    return false;
 }

@@ -17,22 +17,39 @@ protected:
 	TileMap* tileMap;
 	float view;
 
-	SpriteGo* testPlayerCollied;
-	sf::Vector2f playerPos;
-	sf::Vector2f playerDir;
-
-	std::vector<sf::RectangleShape> wallColliedShape;
-	sf::RectangleShape shape;
-
-	UiButton* makeWallWidth;
-	UiButton* makeWallHeight;
+	UiButton* makeWallWidthSprite;
+	UiButton* makeWallWidthCountIncrease;
+	UiButton* makeWallWidthCountDecrease;
+	TextGo* makerWallWidthCountText;
+	TextGo* makeWallWidthCountIncreaseText;
+	TextGo* makeWallWidthCountDecreaseText;
 	int makeWallWidthCount;
+	int minWallWidthCount;
+
+	UiButton* makeWallHeightSprite;
+	UiButton* makeWallHeightCountIncrease;
+	UiButton* makeWallHeightCountDecrease;
+	TextGo* makerWallHeightCountText;
+	TextGo* makeWallHeightCountIncreaseText;
+	TextGo* makeWallHeightCountDecreaseText;
 	int makeWallHeightCount;
+	int minWallHeightCount;
 
 	UiButton* saveUi;
-	UiButton* loadUi;
 	TextGo* saveUiText;
+
+	UiButton* loadUi;
 	TextGo* loadUiText;
+	
+	UiButton* makeUi;
+	TextGo* makeUiText;
+
+	float doubleBySclaeX;
+	float doubleBySclaeY;
+	
+	bool drawShape = false;
+	std::vector<sf::RectangleShape> shape;
+	std::vector<sf::VertexArray> lines;
 public:
 	SceneMaptool();
 	virtual ~SceneMaptool() override = default;
@@ -48,3 +65,11 @@ public:
 	void SettingUiText();
 };
 
+
+
+/*SpriteGo* testPlayerCollied;
+sf::Vector2f playerPos;
+sf::Vector2f playerDir;
+
+std::vector<sf::RectangleShape> wallColliedShape;
+sf::RectangleShape shape;*/

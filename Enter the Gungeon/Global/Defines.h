@@ -47,8 +47,6 @@ enum class MapObjectType
 {
 	None = -1,
 	WallTop,
-	WallCornerRight,  // 필요없음
-	WallCornerLeft, // 필요없음
 	WallRight,
 	WallLeft,
 	WallDown,

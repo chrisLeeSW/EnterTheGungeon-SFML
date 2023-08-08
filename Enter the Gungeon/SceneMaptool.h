@@ -3,7 +3,8 @@
 
 class SpriteGo;
 class TileMap;
-
+class UiButton;
+class TextGo;
 struct TextureInfo
 {
 	sf::IntRect textureRect;
@@ -22,6 +23,16 @@ protected:
 
 	std::vector<sf::RectangleShape> wallColliedShape;
 	sf::RectangleShape shape;
+
+	UiButton* makeWallWidth;
+	UiButton* makeWallHeight;
+	int makeWallWidthCount;
+	int makeWallHeightCount;
+
+	UiButton* saveUi;
+	UiButton* loadUi;
+	TextGo* saveUiText;
+	TextGo* loadUiText;
 public:
 	SceneMaptool();
 	virtual ~SceneMaptool() override = default;
@@ -33,5 +44,7 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
+	void SettingUiSprite();
+	void SettingUiText();
 };
 

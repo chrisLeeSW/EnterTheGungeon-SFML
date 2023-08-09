@@ -328,7 +328,7 @@ void SceneMaptool::Update(float dt)
 
 	if (drawShape)
 	{
-		shape.clear();
+		/*shape.clear();
 		sf::Vector2f shapeSize = { 50.f,50.f };
 		sf::Vector2f startPos = { 0, 0 };
 		sf::Vector2f currPos = startPos;
@@ -348,37 +348,54 @@ void SceneMaptool::Update(float dt)
 				shape.push_back(roopShape);
 			}
 			currPos.y += shapeSize.y;
+		}*/
+
+		linesMap.clear();
+
+		sf::VertexArray grid(sf::Lines);
+		sf::Vector2f mapTileSize = { 50.f,50.f };
+		sf::Vector2f startPos = { 0.f,0.f };
+
+		for (int i = 0; i < makeWallHeightCount + 1; ++i)
+		{
+			grid.append(sf::Vertex(sf::Vector2f(startPos.x ,startPos.y+(mapTileSize.y * i)), sf::Color::Red));
+			grid.append(sf::Vertex(sf::Vector2f(mapTileSize.x*(makeWallWidthCount), startPos.y + (mapTileSize.y * i)), sf::Color::Red));
+			linesMap.push_back(grid);
+		}
+
+		for (int i = 0; i < makeWallWidthCount + 1 ; ++i)
+		{
+			grid.append(sf::Vertex(sf::Vector2f(startPos.x + (mapTileSize.x * i) , startPos.y), sf::Color::White));
+			grid.append(sf::Vertex(sf::Vector2f(startPos.x + (mapTileSize.x * i), mapTileSize.y *(makeWallHeightCount)), sf::Color::White));
+			linesMap.push_back(grid);
 		}
 	}
 
-	/*playerPos = testPlayerCollied->GetPosition();
-	playerDir.x=INPUT_MGR.GetAxisRaw(Axis::Horizontal);
-	playerDir.y = INPUT_MGR.GetAxisRaw(Axis::Vertical);
-	playerPos +=  playerDir * 100.f * dt;
-	testPlayerCollied->SetPosition(playerPos);
 
-	if (INPUT_MGR.GetMouseButton(sf::Mouse::Middle))
+	if (INPUT_MGR.GetKey(sf::Keyboard::Right))
 	{
-		sf::Vector2f worldPose = ScreenToWorldPos(INPUT_MGR.GetMousePos());
-		float moveSpeed = 0.01f;
-		worldView.move(-worldPose.x * moveSpeed,-worldPose.y * moveSpeed);
+		worldView.move(-0.5f, 0.f);
 	}
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::PageUp))
+	if (INPUT_MGR.GetKey(sf::Keyboard::Left))
 	{
-		view += 0.05f;
-		tileMap->SetVewScale(view);
+		worldView.move(0.5f, 0.f);
 	}
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::PageDown))
+	if (INPUT_MGR.GetKey(sf::Keyboard::Up))
 	{
-		view -= 0.05f;
-		tileMap->SetVewScale(view);
+		worldView.move(0.0f, 0.5f);
 	}
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::End))
+	if (INPUT_MGR.GetKey(sf::Keyboard::Down))
 	{
-		view = 1.0f;
-		tileMap->SetVewScale(view);
+		worldView.move(0.0f, -0.5f);
 	}
-	////csv 파일로 해서 그리는거 확인 완료 */
+
+	//if (INPUT_MGR.GetMouseButton(sf::Mouse::Middle))
+	//{
+	//	sf::Vector2f worldPose = ScreenToWorldPos(INPUT_MGR.GetMousePos());
+	//	float moveSpeed = 0.01f;
+	//	worldView.move(-worldPose.x * moveSpeed,-worldPose.y * moveSpeed);
+	//}
+	
 	
 }
 
@@ -389,9 +406,9 @@ void SceneMaptool::Draw(sf::RenderWindow& window)
 	window.setView(worldView);
 	if (drawShape)
 	{
-		for (auto& grid : shape)
+		for (auto& arry : linesMap)
 		{
-			window.draw(grid);
+			window.draw(arry);
 		}
 	}
 }

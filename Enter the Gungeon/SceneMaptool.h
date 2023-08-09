@@ -49,7 +49,7 @@ protected:
 	
 	bool drawShape = false;
 	std::vector<sf::RectangleShape> shape;
-	std::vector<sf::VertexArray> lines;
+	std::vector<sf::VertexArray> linesMap;
 public:
 	SceneMaptool();
 	virtual ~SceneMaptool() override = default;

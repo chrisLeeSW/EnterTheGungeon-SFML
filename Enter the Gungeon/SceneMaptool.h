@@ -14,7 +14,7 @@ struct TileSpriteInfo
 class SceneMaptool : public Scene
 {
 protected:
-	TileMap* tileMap;
+	TileMap* gridTile =nullptr;
 	float view;
 
 	UiButton* wallWidthSprite;

@@ -5,7 +5,7 @@
 #include "UiButton.h"
 #include "TextGo.h"
 
-SceneMaptool::SceneMaptool() : Scene(SceneId::MapTool), tileMap(nullptr), view(1.0f), wallWidthCount(5), wallHeightCount(3), doubleBySclaeX(2.f), doubleBySclaeY(2.f), minWallWidthCount(5), 
+SceneMaptool::SceneMaptool() : Scene(SceneId::MapTool), view(1.0f), wallWidthCount(5), wallHeightCount(3), doubleBySclaeX(2.f), doubleBySclaeY(2.f), minWallWidthCount(5), 
 	minWallHeightCount(3),setTile(false)
 {
 	resourceListPath = "script/SceneMapToolResourceList.csv";
@@ -20,6 +20,7 @@ void SceneMaptool::Init()
 	SettingUiText();
 	SettingTileSprite("Room/TileSpriteInfo.csv");
 
+	
 
 	for (auto go : gameObjects)
 	{
@@ -107,20 +108,33 @@ void SceneMaptool::Update(float dt)
 		}
 	}
 	
-	if (drawGridAllowed && setTile) 
-	{
-		
-	}
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad0))
+	
+	if (INPUT_MGR.GetMouseButton(sf::Mouse::Left))
 	{
 		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos())/50;
-		std::cout << "X : " << gridIndex.x <<'t';
-		std::cout << "y : " << gridIndex.y << std::endl;
+		int count = 0;
+		for (int i = 0; i < tiles.size(); ++i)
+		{
+			if (currentTileSprite->sprite.getTextureRect() == tiles[i].spr->sprite.getTextureRect())
+			{
+				count = i;
+				break;
+			}
+		}
+		gridTile->ChangeTile(gridIndex.x, gridIndex.y, count, currentTileSprite->sprite.getTextureRect());
 	}
+	
+
+
+
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad7))
 	{
 		drawGridAllowed = false;
 		linesMap.clear();
+		if (gridTile != nullptr)
+		{
+			RemoveGo(gridTile);
+		}
 	} // Ui로 만들예정
 
 
@@ -263,8 +277,6 @@ void SceneMaptool::SettingUiSprite()
 	wallHeightCountIncrease->sortLayer = 100;
 
 
-
-
 	wallWidthCountDecrease = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "WallWidthSizeDecrease"));
 	wallWidthCountDecrease->sprite.setTextureRect({ 10,27,50,20 });
 	wallWidthCountDecrease->SetScale(doubleBySclaeX, doubleBySclaeY);
@@ -287,9 +299,6 @@ void SceneMaptool::SettingUiSprite()
 		if (wallWidthCount < minWallWidthCount)	wallWidthCount = minWallWidthCount;
 	};
 	wallWidthCountDecrease->sortLayer = 100;
-
-
-
 
 	wallHeightCountDecrease = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "WallHeightSizeDecrease"));
 	wallHeightCountDecrease->sprite.setTextureRect({ 10,27,50,20 });
@@ -357,6 +366,8 @@ void SceneMaptool::SettingUiSprite()
 				grid.append(sf::Vertex(sf::Vector2f(startPos.x + (mapTileSize.x * i), mapTileSize.y * (wallHeightCount)), sf::Color::White));
 				linesMap.push_back(grid);
 			}
+			gridTile = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+			gridTile->NoneFileLoad(wallWidthCount, wallHeightCount);
 		}
 
 	};

@@ -5,11 +5,11 @@ class SpriteGo;
 class TileMap;
 class UiButton;
 class TextGo;
-struct TextureInfo
+
+struct TileSpriteInfo
 {
-	sf::IntRect textureRect;
-	int sortLayer;
-	int sortOrder;
+	SpriteGo* spr;
+	MapObjectType type;
 };
 class SceneMaptool : public Scene
 {
@@ -17,22 +17,22 @@ protected:
 	TileMap* tileMap;
 	float view;
 
-	UiButton* makeWallWidthSprite;
-	UiButton* makeWallWidthCountIncrease;
-	UiButton* makeWallWidthCountDecrease;
-	TextGo* makerWallWidthCountText;
-	TextGo* makeWallWidthCountIncreaseText;
-	TextGo* makeWallWidthCountDecreaseText;
-	int makeWallWidthCount;
+	UiButton* wallWidthSprite;
+	UiButton* wallWidthCountIncrease;
+	UiButton* wallWidthCountDecrease;
+	TextGo* wallWidthCountText;
+	TextGo* wallWidthCountIncreaseText;
+	TextGo* wallWidthCountDecreaseText;
+	int wallWidthCount;
 	int minWallWidthCount;
 
-	UiButton* makeWallHeightSprite;
-	UiButton* makeWallHeightCountIncrease;
-	UiButton* makeWallHeightCountDecrease;
-	TextGo* makerWallHeightCountText;
-	TextGo* makeWallHeightCountIncreaseText;
-	TextGo* makeWallHeightCountDecreaseText;
-	int makeWallHeightCount;
+	UiButton* wallHeightSprite;
+	UiButton* wallHeightCountIncrease;
+	UiButton* wallHeightCountDecrease;
+	TextGo* wallHeightCountText;
+	TextGo* wallHeightCountIncreaseText;
+	TextGo* wallHeightCountDecreaseText;
+	int wallHeightCount;
 	int minWallHeightCount;
 
 	UiButton* saveUi;
@@ -47,9 +47,15 @@ protected:
 	float doubleBySclaeX;
 	float doubleBySclaeY;
 	
-	bool drawShape = false;
-	std::vector<sf::RectangleShape> shape;
+	bool drawGridAllowed = false;
 	std::vector<sf::VertexArray> linesMap;
+
+	
+	std::vector<TileSpriteInfo> tiles;
+	SpriteGo* currentTileSprite;
+	SpriteGo* currentTileSpriteBackGround;
+
+	bool setTile;
 public:
 	SceneMaptool();
 	virtual ~SceneMaptool() override = default;
@@ -63,13 +69,6 @@ public:
 
 	void SettingUiSprite();
 	void SettingUiText();
+	void SettingTileSprite(const std::string& path);
+
 };
-
-
-
-/*SpriteGo* testPlayerCollied;
-sf::Vector2f playerPos;
-sf::Vector2f playerDir;
-
-std::vector<sf::RectangleShape> wallColliedShape;
-sf::RectangleShape shape;*/

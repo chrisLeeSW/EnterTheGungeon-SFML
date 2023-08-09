@@ -55,10 +55,10 @@ void Player::Reset()
 {
 	SpriteGo::Reset();
 	animation.Play("IdleUp");
-	SetPosition(windowsize.x * 0.5, windowsize.y * 0.5);
+	//SetPosition(windowsize.x * 0.5, windowsize.y * 0.5);
 	SetFlipX(false);
 
-	sprite.setScale(5, 5);
+	sprite.setScale(1.f,1.f); 
 	speed = 300.f;
 	rollspeed = 600.f;
 	currentClipInfo = clipInfos[6];
@@ -131,7 +131,7 @@ void Player::PlayerRotation()
 	look = Utils::Normalize(mousePos - playerScreenPos);
 	angle = Utils::Angle(look);
 
-	std::cout << angle << std::endl;
+	//std::cout << angle << std::endl;
 
 	if (angle <= 45.f)
 	{

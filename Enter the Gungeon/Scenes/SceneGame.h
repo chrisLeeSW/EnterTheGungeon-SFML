@@ -3,7 +3,7 @@
 
 class Player;
 class Weapon;
-
+class TileMap;
 
 class SceneGame : public Scene
 {
@@ -12,6 +12,7 @@ protected:
 	Player* player;
 	Weapon* weapon;
 
+	TileMap* gameDevMap;
 public:
 	SceneGame();
 	virtual ~SceneGame() override = default;

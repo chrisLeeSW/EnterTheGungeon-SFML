@@ -35,7 +35,7 @@ void Weapon::Release()
 void Weapon::Reset()
 {
 	SpriteGo::Reset();
-	SetScale(3.0, 3.0);
+	SetScale(1.0f, 1.0);
 	SetOrigin(Origins::MR);
 	animation.Play("Shoot");
 }

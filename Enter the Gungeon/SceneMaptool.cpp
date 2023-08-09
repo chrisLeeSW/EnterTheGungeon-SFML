@@ -4,8 +4,9 @@
 #include "TileMap.h"
 #include "UiButton.h"
 #include "TextGo.h"
-SceneMaptool::SceneMaptool() : Scene(SceneId::MapTool), tileMap(nullptr), view(1.0f), makeWallWidthCount(5), makeWallHeightCount(3), doubleBySclaeX(2.f), doubleBySclaeY(2.f), minWallWidthCount(5),
-	minWallHeightCount(3)
+
+SceneMaptool::SceneMaptool() : Scene(SceneId::MapTool), tileMap(nullptr), view(1.0f), wallWidthCount(5), wallHeightCount(3), doubleBySclaeX(2.f), doubleBySclaeY(2.f), minWallWidthCount(5), 
+	minWallHeightCount(3),setTile(false)
 {
 	resourceListPath = "script/SceneMapToolResourceList.csv";
 }
@@ -13,28 +14,18 @@ SceneMaptool::SceneMaptool() : Scene(SceneId::MapTool), tileMap(nullptr), view(1
 void SceneMaptool::Init()
 {
 	Release();
-	
+
+
 	SettingUiSprite();
 	SettingUiText();
+	SettingTileSprite("Room/TileSpriteInfo.csv");
 
 
 	for (auto go : gameObjects)
 	{
 		go->Init();
 	}
-	/*tileMap = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png","TileMap"));
 
-	testPlayerCollied = (SpriteGo*)AddGo(new SpriteGo("graphics/testPlayer.png", "test"));
-	testPlayerCollied->SetOrigin(Origins::MC);
-	testPlayerCollied->SetPosition(0.f,-250.f);
-	for (auto go : gameObjects)
-	{
-		go->Init();
-	
-	//tileMap->Load("MapFile/map1.csv");
-	//tileMap->SetOrigin(Origins::BC); // BC로 충돌검사 확인
-	//shape.setSize(sf::Vector2f{ (-(tileMap->vertexArray.getBounds().left) + tileMap->vertexArray.getBounds().width), (-(tileMap->vertexArray.getBounds().top) + tileMap->vertexArray.getBounds().height) });
-	*/
 
 }
 
@@ -51,8 +42,8 @@ void SceneMaptool::Enter()
 
 	Scene::Enter();
 
-	makeWallWidthCount=5;
-	makeWallHeightCount=3;
+	wallWidthCount=5;
+	wallHeightCount=3;
 
 	worldView.setSize(windowSize);
 	worldView.setCenter({ 0,0 });
@@ -63,6 +54,111 @@ void SceneMaptool::Enter()
 	
 
 	view = 1.0f;
+}
+
+void SceneMaptool::Exit()
+{
+	Release();
+	Scene::Exit();
+}
+
+
+
+void SceneMaptool::Update(float dt)
+{
+	Scene::Update(dt);
+
+	std::stringstream wallWidthSize;
+	wallWidthSize << "Width : " << wallWidthCount;
+	wallWidthCountText->text.setString(wallWidthSize.str());
+	wallWidthCountText->SetOrigin(Origins::BC);
+
+	std::stringstream wallHeightSize;
+	wallHeightSize << "Height : " << wallHeightCount;
+	wallHeightCountText->text.setString(wallHeightSize.str());
+	wallHeightCountText->SetOrigin(Origins::BC);
+
+	
+
+	if (INPUT_MGR.GetKey(sf::Keyboard::Right))
+	{
+		worldView.move(-0.5f, 0.f);
+	}
+	if (INPUT_MGR.GetKey(sf::Keyboard::Left))
+	{
+		worldView.move(0.5f, 0.f);
+	}
+	if (INPUT_MGR.GetKey(sf::Keyboard::Up))
+	{
+		worldView.move(0.0f, 0.5f);
+	}
+	if (INPUT_MGR.GetKey(sf::Keyboard::Down))
+	{
+		worldView.move(0.0f, -0.5f);
+	}
+
+	for (auto& tile : tiles)
+	{
+		if (tile.spr->sprite.getGlobalBounds().contains(INPUT_MGR.GetMousePos()) && INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
+		{
+			currentTileSprite->sprite.setTextureRect(tile.spr->sprite.getTextureRect());
+			if (!setTile) setTile = true;
+			currentTileSprite->SetActive(setTile);
+		}
+	}
+	
+	if (drawGridAllowed && setTile) 
+	{
+		
+	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad0))
+	{
+		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos())/50;
+		std::cout << "X : " << gridIndex.x <<'t';
+		std::cout << "y : " << gridIndex.y << std::endl;
+	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad7))
+	{
+		drawGridAllowed = false;
+		linesMap.clear();
+	} // Ui로 만들예정
+
+
+	//
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad8))
+	{
+		int currentIndex;
+		for (int i = 0;i < tiles.size();++i)
+		{
+			
+			if (currentTileSprite->sprite.getTextureRect() == tiles[i].spr->sprite.getTextureRect())
+			{
+				currentIndex = i;
+				std::cout << currentIndex << std::endl;
+				break;
+			}
+		}
+	}
+	//
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Escape))
+	{
+		SCENE_MGR.ChangeScene(SceneId::Title);
+	}
+}
+
+void SceneMaptool::Draw(sf::RenderWindow& window)
+{
+	Scene::Draw(window);
+
+	window.setView(worldView);
+	if (drawGridAllowed)
+	{
+		for (auto& arry : linesMap)
+		{
+			window.draw(arry);
+		}
+	}
 }
 
 void SceneMaptool::SettingUiSprite()
@@ -110,114 +206,113 @@ void SceneMaptool::SettingUiSprite()
 	loadUi->sortLayer = 100;
 
 
-	makeWallWidthSprite = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "MapXSizeSprite"));
-	makeWallWidthSprite->sprite.setTextureRect({ 12,84,71,30 });
-	makeWallWidthSprite->SetOrigin(Origins::MC);
-	makeWallWidthSprite->SetScale(doubleBySclaeX, doubleBySclaeY);
-	makeWallWidthSprite->SetPosition(windowSize.x * 0.06f, windowSize.y * 0.1f);
-	makeWallWidthSprite->sortLayer = 100;
+	wallWidthSprite = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "MapXSizeSprite"));
+	wallWidthSprite->sprite.setTextureRect({ 12,84,71,30 });
+	wallWidthSprite->SetOrigin(Origins::MC);
+	wallWidthSprite->SetScale(doubleBySclaeX, doubleBySclaeY);
+	wallWidthSprite->SetPosition(windowSize.x * 0.06f, windowSize.y * 0.1f);
+	wallWidthSprite->sortLayer = 100;
 
-	makeWallHeightSprite = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "MapYSizeSprite"));
-	makeWallHeightSprite->sprite.setTextureRect({ 12,84,71,30 });
-	makeWallHeightSprite->SetOrigin(Origins::MC);
-	makeWallHeightSprite->SetScale(doubleBySclaeX, doubleBySclaeY);
-	makeWallHeightSprite->SetPosition(makeWallWidthSprite->GetPosition().x, makeWallWidthSprite->GetPosition().y + makeWallHeightSprite->sprite.getGlobalBounds().height * 1.3f);
-	makeWallHeightSprite->sortLayer = 100;
+	wallHeightSprite = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "MapYSizeSprite"));
+	wallHeightSprite->sprite.setTextureRect({ 12,84,71,30 });
+	wallHeightSprite->SetOrigin(Origins::MC);
+	wallHeightSprite->SetScale(doubleBySclaeX, doubleBySclaeY);
+	wallHeightSprite->SetPosition(wallWidthSprite->GetPosition().x, wallWidthSprite->GetPosition().y + wallHeightSprite->sprite.getGlobalBounds().height * 1.3f);
+	wallHeightSprite->sortLayer = 100;
 
-	makeWallWidthCountIncrease= (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "WallWidthSizeIncrease"));
-	makeWallWidthCountIncrease->sprite.setTextureRect({ 10,27,50,20 });
-	makeWallWidthCountIncrease->SetScale(doubleBySclaeX, doubleBySclaeY);
-	makeWallWidthCountIncrease->SetPosition(windowSize.x * 0.125f, windowSize.y * 0.09f);
-	makeWallWidthCountIncrease->SetOrigin(Origins::MC);
+	wallWidthCountIncrease = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "WallWidthSizeIncrease"));
+	wallWidthCountIncrease->sprite.setTextureRect({ 10,27,50,20 });
+	wallWidthCountIncrease->SetScale(doubleBySclaeX, doubleBySclaeY);
+	wallWidthCountIncrease->SetPosition(windowSize.x * 0.125f, windowSize.y * 0.09f);
+	wallWidthCountIncrease->SetOrigin(Origins::MC);
 
-	makeWallWidthCountIncrease->OnEnter = [this]()
+	wallWidthCountIncrease->OnEnter = [this]()
 	{
-		makeWallWidthCountIncrease->sprite.setTextureRect({ 11,55,50,20 });
+		wallWidthCountIncrease->sprite.setTextureRect({ 11,55,50,20 });
 	};
-	makeWallWidthCountIncrease->OnExit = [this]()
+	wallWidthCountIncrease->OnExit = [this]()
 	{
-		makeWallWidthCountIncrease->sprite.setTextureRect({ 10,27,50,20 });
-		makeWallWidthCountIncrease->SetScale(doubleBySclaeX, doubleBySclaeY);
+		wallWidthCountIncrease->sprite.setTextureRect({ 10,27,50,20 });
+		wallWidthCountIncrease->SetScale(doubleBySclaeX, doubleBySclaeY);
 	};
-	makeWallWidthCountIncrease->OnClick = [this]()
+	wallWidthCountIncrease->OnClick = [this]()
 	{
-		makeWallWidthCount++;
+		wallWidthCount++;
 	};
-	makeWallWidthCountIncrease->sortLayer = 100;
+	wallWidthCountIncrease->sortLayer = 100;
 
 
-	makeWallHeightCountIncrease = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "WallHeightSizeIncrease"));
-	makeWallHeightCountIncrease->sprite.setTextureRect({ 10,27,50,20 });
-	makeWallHeightCountIncrease->SetScale(doubleBySclaeX, doubleBySclaeY);
-	makeWallHeightCountIncrease->SetPosition(windowSize.x * 0.125f, windowSize.y * 0.16f);
-	makeWallHeightCountIncrease->SetOrigin(Origins::MC);
-	makeWallHeightCountIncrease->OnEnter = [this]()
+	wallHeightCountIncrease = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "WallHeightSizeIncrease"));
+	wallHeightCountIncrease->sprite.setTextureRect({ 10,27,50,20 });
+	wallHeightCountIncrease->SetScale(doubleBySclaeX, doubleBySclaeY);
+	wallHeightCountIncrease->SetPosition(windowSize.x * 0.125f, windowSize.y * 0.16f);
+	wallHeightCountIncrease->SetOrigin(Origins::MC);
+	wallHeightCountIncrease->OnEnter = [this]()
 	{
-		makeWallHeightCountIncrease->sprite.setTextureRect({ 11,55,50,20 });
+		wallHeightCountIncrease->sprite.setTextureRect({ 11,55,50,20 });
 	};
-	makeWallHeightCountIncrease->OnExit = [this]()
+	wallHeightCountIncrease->OnExit = [this]()
 	{
-		makeWallHeightCountIncrease->sprite.setTextureRect({ 10,27,50,20 });
-		makeWallHeightCountIncrease->SetScale(doubleBySclaeX, doubleBySclaeY);
+		wallHeightCountIncrease->sprite.setTextureRect({ 10,27,50,20 });
+		wallHeightCountIncrease->SetScale(doubleBySclaeX, doubleBySclaeY);
 	};
-	makeWallHeightCountIncrease->OnClick = [this]()
+	wallHeightCountIncrease->OnClick = [this]()
 	{
-		makeWallHeightCount++;
+		wallHeightCount++;
 	};
-	makeWallHeightCountIncrease->sortLayer = 100;
+	wallHeightCountIncrease->sortLayer = 100;
 
 
 
 
-	makeWallWidthCountDecrease = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "WallWidthSizeDecrease"));
-	makeWallWidthCountDecrease->sprite.setTextureRect({ 10,27,50,20 });
-	makeWallWidthCountDecrease->SetScale(doubleBySclaeX, doubleBySclaeY);
-	makeWallWidthCountDecrease->SetPosition(windowSize.x * 0.125f, windowSize.y * 0.12f);
-	makeWallWidthCountDecrease->SetOrigin(Origins::MC);
+	wallWidthCountDecrease = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "WallWidthSizeDecrease"));
+	wallWidthCountDecrease->sprite.setTextureRect({ 10,27,50,20 });
+	wallWidthCountDecrease->SetScale(doubleBySclaeX, doubleBySclaeY);
+	wallWidthCountDecrease->SetPosition(windowSize.x * 0.125f, windowSize.y * 0.12f);
+	wallWidthCountDecrease->SetOrigin(Origins::MC);
 
-	makeWallWidthCountDecrease->OnEnter = [this]()
+	wallWidthCountDecrease->OnEnter = [this]()
 	{
-		makeWallWidthCountDecrease->sprite.setTextureRect({ 11,55,50,20 });
-		makeWallWidthCountDecrease->SetScale(doubleBySclaeX, doubleBySclaeY);
+		wallWidthCountDecrease->sprite.setTextureRect({ 11,55,50,20 });
+		wallWidthCountDecrease->SetScale(doubleBySclaeX, doubleBySclaeY);
 	};
-	makeWallWidthCountDecrease->OnExit = [this]()
+	wallWidthCountDecrease->OnExit = [this]()
 	{
-		makeWallWidthCountDecrease->sprite.setTextureRect({ 10,27,50,20 });
-		makeWallWidthCountDecrease->SetScale(doubleBySclaeX, doubleBySclaeY);
+		wallWidthCountDecrease->sprite.setTextureRect({ 10,27,50,20 });
+		wallWidthCountDecrease->SetScale(doubleBySclaeX, doubleBySclaeY);
 	};
-	makeWallWidthCountDecrease->OnClick = [this]()
+	wallWidthCountDecrease->OnClick = [this]()
 	{
-		makeWallWidthCount--;
-		if (makeWallWidthCount < minWallWidthCount)	makeWallWidthCount = minWallWidthCount;
+		wallWidthCount--;
+		if (wallWidthCount < minWallWidthCount)	wallWidthCount = minWallWidthCount;
 	};
-	makeWallWidthCountDecrease->sortLayer = 100;
-	
+	wallWidthCountDecrease->sortLayer = 100;
 
 
 
-	makeWallHeightCountDecrease = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "WallHeightSizeDecrease"));
-	makeWallHeightCountDecrease->sprite.setTextureRect({ 10,27,50,20 });
-	makeWallHeightCountDecrease->SetScale(doubleBySclaeX, doubleBySclaeY);
-	makeWallHeightCountDecrease->SetPosition(windowSize.x * 0.125f, windowSize.y * 0.19f);
-	makeWallHeightCountDecrease->SetOrigin(Origins::MC);
 
-	makeWallHeightCountDecrease->OnEnter = [this]()
-	{
-		makeWallHeightCountDecrease->sprite.setTextureRect({ 11,55,50,20 });
-		makeWallHeightCountDecrease->SetScale(doubleBySclaeX, doubleBySclaeY);
-	};
-	makeWallHeightCountDecrease->OnExit = [this]()
-	{
-		makeWallHeightCountDecrease->sprite.setTextureRect({ 10,27,50,20 });
-		makeWallHeightCountDecrease->SetScale(doubleBySclaeX, doubleBySclaeY);
-	};
-	makeWallHeightCountDecrease->OnClick = [this]()
-	{
-		makeWallHeightCount--;
-		if (makeWallHeightCount < minWallHeightCount)	makeWallHeightCount = minWallHeightCount;
-	};
-	makeWallHeightCountDecrease->sortLayer = 100;
+	wallHeightCountDecrease = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "WallHeightSizeDecrease"));
+	wallHeightCountDecrease->sprite.setTextureRect({ 10,27,50,20 });
+	wallHeightCountDecrease->SetScale(doubleBySclaeX, doubleBySclaeY);
+	wallHeightCountDecrease->SetPosition(windowSize.x * 0.125f, windowSize.y * 0.19f);
+	wallHeightCountDecrease->SetOrigin(Origins::MC);
 
+	wallHeightCountDecrease->OnEnter = [this]()
+	{
+		wallHeightCountDecrease->sprite.setTextureRect({ 11,55,50,20 });
+		wallHeightCountDecrease->SetScale(doubleBySclaeX, doubleBySclaeY);
+	};
+	wallHeightCountDecrease->OnExit = [this]()
+	{
+		wallHeightCountDecrease->sprite.setTextureRect({ 10,27,50,20 });
+		wallHeightCountDecrease->SetScale(doubleBySclaeX, doubleBySclaeY);
+	};
+	wallHeightCountDecrease->OnClick = [this]()
+	{
+		wallHeightCount--;
+		if (wallHeightCount < minWallHeightCount)	wallHeightCount = minWallHeightCount;
+	};
+	wallHeightCountDecrease->sortLayer = 100;
 	makeUi = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "MakeUi"));
 	makeUi->sprite.setTextureRect({ 10,27,50,20 });
 	makeUi->SetScale(doubleBySclaeX, doubleBySclaeY);
@@ -236,17 +331,43 @@ void SceneMaptool::SettingUiSprite()
 	makeUi->OnClick = [this]()
 	{
 		std::cout << "Creating and drawing rectangles" << std::endl;
-		if (!drawShape)
+		if (!drawGridAllowed)
 		{
-			drawShape = true;
+			drawGridAllowed = true;
 		}
 		else return;
+		if (drawGridAllowed)
+		{
+			//linesMap.clear();
+
+			sf::VertexArray grid(sf::Lines);
+			sf::Vector2f mapTileSize = { 50.f,50.f };
+			sf::Vector2f startPos = { 0.f,0.f };
+
+			for (int i = 0; i < wallHeightCount + 1; ++i)
+			{
+				grid.append(sf::Vertex(sf::Vector2f(startPos.x, startPos.y + (mapTileSize.y * i)), sf::Color::Red));
+				grid.append(sf::Vertex(sf::Vector2f(mapTileSize.x * (wallWidthCount), startPos.y + (mapTileSize.y * i)), sf::Color::Red));
+				linesMap.push_back(grid);
+			}
+
+			for (int i = 0; i < wallWidthCount + 1; ++i)
+			{
+				grid.append(sf::Vertex(sf::Vector2f(startPos.x + (mapTileSize.x * i), startPos.y), sf::Color::White));
+				grid.append(sf::Vertex(sf::Vector2f(startPos.x + (mapTileSize.x * i), mapTileSize.y * (wallHeightCount)), sf::Color::White));
+				linesMap.push_back(grid);
+			}
+		}
+
 	};
 	makeUi->sortLayer = 100;
-}
-void SceneMaptool::Exit()
-{
-	Scene::Exit();
+
+	currentTileSpriteBackGround=(SpriteGo*)AddGo(new SpriteGo("graphics/MapMakerMenu.png", "CurrentTileBackGround"));
+	currentTileSpriteBackGround->sprite.setTextureRect({ 12,120,100,100 });
+	currentTileSpriteBackGround->SetPosition(windowSize.x * 0.225f, windowSize.y * 0.125f); //0.125 0.19
+	currentTileSpriteBackGround->SetScale(doubleBySclaeX, doubleBySclaeY);
+	currentTileSpriteBackGround->SetOrigin(Origins::MC);
+	currentTileSpriteBackGround->sortLayer = 100;
 }
 
 void SceneMaptool::SettingUiText()
@@ -265,43 +386,43 @@ void SceneMaptool::SettingUiText()
 	loadUiText->sortLayer = 100;
 	loadUiText->SetPosition(loadUi->GetPosition() - sf::Vector2f{ 0.f, saveUiText->text.getCharacterSize() * 0.25f });
 
-	makerWallWidthCountText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "WallWidthSizeText"));
-	makerWallWidthCountText->text.setCharacterSize(20);
-	makerWallWidthCountText->sortLayer = 100;
-	makerWallWidthCountText->SetPosition(makeWallWidthSprite->GetPosition());
+	wallWidthCountText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "WallWidthSizeText"));
+	wallWidthCountText->text.setCharacterSize(20);
+	wallWidthCountText->sortLayer = 100;
+	wallWidthCountText->SetPosition(wallWidthSprite->GetPosition());
 
-	makerWallHeightCountText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "WallWidthSizeText"));
-	makerWallHeightCountText->text.setCharacterSize(20);
-	makerWallHeightCountText->sortLayer = 100;
-	makerWallHeightCountText->SetPosition(makeWallHeightSprite->GetPosition());
+	wallHeightCountText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "WallWidthSizeText"));
+	wallHeightCountText->text.setCharacterSize(20);
+	wallHeightCountText->sortLayer = 100;
+	wallHeightCountText->SetPosition(wallHeightSprite->GetPosition());
 
-	makeWallWidthCountIncreaseText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "WallWidthSizeIncreaseText"));
-	makeWallWidthCountIncreaseText->text.setCharacterSize(20);
-	makeWallWidthCountIncreaseText->SetOrigin(Origins::BC);
-	makeWallWidthCountIncreaseText->text.setString("+");
-	makeWallWidthCountIncreaseText->sortLayer = 100;
-	makeWallWidthCountIncreaseText->SetPosition(makeWallWidthCountIncrease->GetPosition() - sf::Vector2f{ 0.f, makeWallWidthCountIncrease->text.getCharacterSize() * 0.25f });
+	wallWidthCountIncreaseText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "WallWidthSizeIncreaseText"));
+	wallWidthCountIncreaseText->text.setCharacterSize(20);
+	wallWidthCountIncreaseText->SetOrigin(Origins::BC);
+	wallWidthCountIncreaseText->text.setString("+");
+	wallWidthCountIncreaseText->sortLayer = 100;
+	wallWidthCountIncreaseText->SetPosition(wallWidthCountIncrease->GetPosition() - sf::Vector2f{ 0.f, wallWidthCountIncrease->text.getCharacterSize() * 0.25f });
 
-	makeWallWidthCountDecreaseText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "WallWidthSizeDecreaseText"));
-	makeWallWidthCountDecreaseText->text.setCharacterSize(20);
-	makeWallWidthCountDecreaseText->SetOrigin(Origins::BC);
-	makeWallWidthCountDecreaseText->text.setString("-");
-	makeWallWidthCountDecreaseText->sortLayer = 100;
-	makeWallWidthCountDecreaseText->SetPosition(makeWallWidthCountDecrease->GetPosition() - sf::Vector2f{ 0.f, makeWallWidthCountDecrease->text.getCharacterSize() * 0.5f });
+	wallWidthCountDecreaseText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "WallWidthSizeDecreaseText"));
+	wallWidthCountDecreaseText->text.setCharacterSize(20);
+	wallWidthCountDecreaseText->SetOrigin(Origins::BC);
+	wallWidthCountDecreaseText->text.setString("-");
+	wallWidthCountDecreaseText->sortLayer = 100;
+	wallWidthCountDecreaseText->SetPosition(wallWidthCountDecrease->GetPosition() - sf::Vector2f{ 0.f, wallWidthCountDecrease->text.getCharacterSize() * 0.5f });
 
-	makeWallHeightCountIncreaseText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "WallHeightSizeIncreaseText"));
-	makeWallHeightCountIncreaseText->text.setCharacterSize(20);
-	makeWallHeightCountIncreaseText->SetOrigin(Origins::BC);
-	makeWallHeightCountIncreaseText->text.setString("+");
-	makeWallHeightCountIncreaseText->sortLayer = 100;
-	makeWallHeightCountIncreaseText->SetPosition(makeWallHeightCountIncrease->GetPosition() - sf::Vector2f{ 0.f, makeWallHeightCountIncrease->text.getCharacterSize() * 0.25f });
+	wallHeightCountIncreaseText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "WallHeightSizeIncreaseText"));
+	wallHeightCountIncreaseText->text.setCharacterSize(20);
+	wallHeightCountIncreaseText->SetOrigin(Origins::BC);
+	wallHeightCountIncreaseText->text.setString("+");
+	wallHeightCountIncreaseText->sortLayer = 100;
+	wallHeightCountIncreaseText->SetPosition(wallHeightCountIncrease->GetPosition() - sf::Vector2f{ 0.f, wallHeightCountIncrease->text.getCharacterSize() * 0.25f });
 
-	makeWallHeightCountDecreaseText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "WallHeightSizeDEcreaseText"));
-	makeWallHeightCountDecreaseText->text.setCharacterSize(20);
-	makeWallHeightCountDecreaseText->SetOrigin(Origins::BC);
-	makeWallHeightCountDecreaseText->text.setString("-");
-	makeWallHeightCountDecreaseText->sortLayer = 100;
-	makeWallHeightCountDecreaseText->SetPosition(makeWallHeightCountDecrease->GetPosition() - sf::Vector2f{ 0.f, makeWallHeightCountDecrease->text.getCharacterSize() * 0.6f });
+	wallHeightCountDecreaseText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "WallHeightSizeDEcreaseText"));
+	wallHeightCountDecreaseText->text.setCharacterSize(20);
+	wallHeightCountDecreaseText->SetOrigin(Origins::BC);
+	wallHeightCountDecreaseText->text.setString("-");
+	wallHeightCountDecreaseText->sortLayer = 100;
+	wallHeightCountDecreaseText->SetPosition(wallHeightCountDecrease->GetPosition() - sf::Vector2f{ 0.f, wallHeightCountDecrease->text.getCharacterSize() * 0.6f });
 
 	makeUiText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "makeUiText"));
 	makeUiText->text.setCharacterSize(20);
@@ -312,103 +433,36 @@ void SceneMaptool::SettingUiText()
 
 }
 
-void SceneMaptool::Update(float dt)
+void SceneMaptool::SettingTileSprite(const std::string& path)
 {
-	Scene::Update(dt);
+	rapidcsv::Document doc(path, rapidcsv::LabelParams(-1, -1));
 
-	std::stringstream wallWidthSize;
-	wallWidthSize << "Width : " << makeWallWidthCount;
-	makerWallWidthCountText->text.setString(wallWidthSize.str());
-	makerWallWidthCountText->SetOrigin(Origins::BC);
-
-	std::stringstream wallHeightSize;
-	wallHeightSize << "Height : " << makeWallHeightCount;
-	makerWallHeightCountText->text.setString(wallHeightSize.str());
-	makerWallHeightCountText->SetOrigin(Origins::BC);
-
-	if (drawShape)
+	std::string textureId = doc.GetCell<std::string>(1, 0);
+	int count = 0;
+	sf::Vector2i size = { 0,0 };
+	sf::Vector2f curPos = { 60.f,60.f };
+	for (int i = 4;i < doc.GetRowCount();++i)
 	{
-		/*shape.clear();
-		sf::Vector2f shapeSize = { 50.f,50.f };
-		sf::Vector2f startPos = { 0, 0 };
-		sf::Vector2f currPos = startPos;
-
-		for (int i = 0;i < makeWallHeightCount;++i)
+		auto rows = doc.GetRow<int>(i);
+		SpriteGo* spriteTexture = (SpriteGo*)AddGo(new SpriteGo(textureId));
+		spriteTexture->SetOrigin(Origins::MC);
+		spriteTexture->sortLayer = 101;
+		spriteTexture->SetPosition(windowSize.x * 0.025f + (size.x++ * curPos.x), windowSize.y * 0.6f + (size.y * curPos.y));
+		spriteTexture->sprite.setTextureRect({ rows[0],rows[1] ,rows[2] ,rows[3] });
+		if (size.x == 5)
 		{
-			for (int k = 0;k < makeWallWidthCount;++k)
-			{
-				sf::RectangleShape roopShape;
-				roopShape.setSize(shapeSize);
-				Utils::SetOrigin(roopShape, Origins::MC);
-				float x = shapeSize.x;
-				roopShape.setPosition(currPos.x + (x * k), currPos.y);
-				roopShape.setOutlineColor(sf::Color::Red);
-				roopShape.setOutlineThickness(1.0f);
-				roopShape.setFillColor(sf::Color(0, 0, 0, 0));
-				shape.push_back(roopShape);
-			}
-			currPos.y += shapeSize.y;
-		}*/
-
-		linesMap.clear();
-
-		sf::VertexArray grid(sf::Lines);
-		sf::Vector2f mapTileSize = { 50.f,50.f };
-		sf::Vector2f startPos = { 0.f,0.f };
-
-		for (int i = 0; i < makeWallHeightCount + 1; ++i)
-		{
-			grid.append(sf::Vertex(sf::Vector2f(startPos.x ,startPos.y+(mapTileSize.y * i)), sf::Color::Red));
-			grid.append(sf::Vertex(sf::Vector2f(mapTileSize.x*(makeWallWidthCount), startPos.y + (mapTileSize.y * i)), sf::Color::Red));
-			linesMap.push_back(grid);
+			size.x = 0;
+			size.y++;
 		}
+		tiles.push_back({ spriteTexture,static_cast<MapObjectType>(count++) });
+	}
+	currentTileSprite = (SpriteGo*)AddGo(new SpriteGo(textureId));
+	currentTileSprite->sprite.setTextureRect({ 0,0,50,50 });
+	currentTileSprite->SetActive(setTile);
+	currentTileSprite->SetOrigin(Origins::MC);
+	currentTileSprite->SetPosition(currentTileSpriteBackGround->GetPosition());
+	currentTileSprite->sortLayer = 101;
+	currentTileSprite->SetScale(doubleBySclaeX, doubleBySclaeY);
 
-		for (int i = 0; i < makeWallWidthCount + 1 ; ++i)
-		{
-			grid.append(sf::Vertex(sf::Vector2f(startPos.x + (mapTileSize.x * i) , startPos.y), sf::Color::White));
-			grid.append(sf::Vertex(sf::Vector2f(startPos.x + (mapTileSize.x * i), mapTileSize.y *(makeWallHeightCount)), sf::Color::White));
-			linesMap.push_back(grid);
-		}
-	}
-
-
-	if (INPUT_MGR.GetKey(sf::Keyboard::Right))
-	{
-		worldView.move(-0.5f, 0.f);
-	}
-	if (INPUT_MGR.GetKey(sf::Keyboard::Left))
-	{
-		worldView.move(0.5f, 0.f);
-	}
-	if (INPUT_MGR.GetKey(sf::Keyboard::Up))
-	{
-		worldView.move(0.0f, 0.5f);
-	}
-	if (INPUT_MGR.GetKey(sf::Keyboard::Down))
-	{
-		worldView.move(0.0f, -0.5f);
-	}
-
-	//if (INPUT_MGR.GetMouseButton(sf::Mouse::Middle))
-	//{
-	//	sf::Vector2f worldPose = ScreenToWorldPos(INPUT_MGR.GetMousePos());
-	//	float moveSpeed = 0.01f;
-	//	worldView.move(-worldPose.x * moveSpeed,-worldPose.y * moveSpeed);
-	//}
-	
-	
 }
 
-void SceneMaptool::Draw(sf::RenderWindow& window)
-{
-	Scene::Draw(window);
-
-	window.setView(worldView);
-	if (drawShape)
-	{
-		for (auto& arry : linesMap)
-		{
-			window.draw(arry);
-		}
-	}
-}

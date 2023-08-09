@@ -95,6 +95,38 @@ void SceneBulletEditor::Init()
 		muzzlelist.push_back(muzzle);
 	};
 
+	filepathTB = (TextBox*)AddGo(new TextBox("fonts/AurulentSansMono-Regular.otf", "filepath"));
+	filepathTB->box.setSize({ 200, 50 });
+	filepathTB->text.setCharacterSize(10);
+	filepathTB->SetOrigin(Origins::MC);
+	filepathTB->SetPosition(150.f, 150.f);
+	filepathTB->sortLayer = 100;
+
+	UiButton* savebutton = (UiButton*)AddGo(new UiButton("graphics/testbutton.png", "fonts/AurulentSansMono-Regular.otf", "playbutton"));
+	savebutton->text.setCharacterSize(20);
+	savebutton->text.setString("SAVE");
+	savebutton->text.setFillColor(sf::Color::Black);
+	savebutton->SetOrigin(Origins::MC);
+	savebutton->SetPosition(150.f, 250.f);
+	savebutton->sortLayer = 100;
+	savebutton->OnClick = [this]()
+	{
+		rapidcsv::Document doc(filepathTB->text.getString(), rapidcsv::LabelParams(-1, -1));
+
+	};
+	UiButton* loadbutton = (UiButton*)AddGo(new UiButton("graphics/testbutton.png", "fonts/AurulentSansMono-Regular.otf", "playbutton"));
+	loadbutton->text.setCharacterSize(20);
+	loadbutton->text.setString("LOAD");
+	loadbutton->text.setFillColor(sf::Color::Black);
+	loadbutton->SetOrigin(Origins::MC);
+	loadbutton->SetPosition(150.f, 300.f);
+	loadbutton->sortLayer = 100;
+	loadbutton->OnClick = [this]()
+	{
+		rapidcsv::Document doc(filepathTB->text.getString(), rapidcsv::LabelParams(-1, -1));
+
+	};
+
 	UiButton* playbutton = (UiButton*)AddGo(new UiButton("graphics/testbutton.png", "fonts/AurulentSansMono-Regular.otf", "playbutton"));
 	playbutton->text.setCharacterSize(20);
 	playbutton->text.setString("PLAY");

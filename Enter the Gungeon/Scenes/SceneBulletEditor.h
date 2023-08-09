@@ -16,6 +16,7 @@ protected:
 	TextBox* delayTB;
 	TextBox* quantityTB;
 	TextBox* intervalTB;
+	TextBox* filepathTB;
 
 public:
 	SceneBulletEditor();

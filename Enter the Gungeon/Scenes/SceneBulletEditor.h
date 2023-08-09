@@ -2,6 +2,7 @@
 #include "Scene.h"
 
 class Muzzle;
+class TextBox;
 
 class SceneBulletEditor : public Scene
 {
@@ -9,7 +10,13 @@ protected:
 	Muzzle* curMuzzle = nullptr;
 	std::list<Muzzle*> muzzlelist;
 
-	std::string str = "";
+	TextBox* directionTB;
+	TextBox* speedTB;
+	TextBox* positionTB;
+	TextBox* delayTB;
+	TextBox* quantityTB;
+	TextBox* intervalTB;
+
 public:
 	SceneBulletEditor();
 	virtual ~SceneBulletEditor() override = default;
@@ -21,5 +28,6 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	std::string InputString();
+	void Apply();
+	void SaveCsv(const std::string& path);
 };

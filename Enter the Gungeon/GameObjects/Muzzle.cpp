@@ -51,7 +51,7 @@ void Muzzle::Reset()
 	isPlay = false;
 
 	innerdelay = 0.f;
-	innerinterval = 0.f;
+	innerinterval = interval;
 	innerquantity = 0;
 }
 
@@ -68,7 +68,6 @@ void Muzzle::Update(float dt)
 		if (innerinterval < interval) return;
 
 		EnemyBullet* bullet = new EnemyBullet();
-		bullet->SetScale(3.f, 3.f);
 		bullet->SetBullet(isBlink);
 		bullet->SetPosition(position);
 		bullet->Shoot(direction, speed, range);

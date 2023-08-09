@@ -120,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>./;./3rd;./DataTables;./SFML-2.5.1/include;./Global;./Framework;./Scenes;./GameObjects;./Animation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./3rd;./DataTables;./SFML-2.5.1/include;./Global;./Framework;./Scenes;./GameObjects;./Animation;./UI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -180,6 +180,7 @@
     </ClCompile>
     <ClCompile Include="Framework\ResourceMgr.cpp" />
     <ClCompile Include="GameObjects\Muzzle.cpp" />
+    <ClCompile Include="SceneMaptool.cpp" />
     <ClCompile Include="Scenes\SceneMaptool.cpp" />
     <ClCompile Include="Scenes\SceneBulletEditor.cpp" />
     <ClCompile Include="Scenes\Scene.cpp" />
@@ -190,6 +191,7 @@
     <ClCompile Include="Scenes\SceneTitle.cpp" />
     <ClCompile Include="GameObjects\TextGo.cpp" />
     <ClCompile Include="Framework\UiButton.cpp" />
+    <ClCompile Include="UI\TextBox.cpp" />
     <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -216,6 +218,7 @@
     <ClInclude Include="Framework\ResourceMgr.h" />
     <ClInclude Include="Global\Utils.h" />
     <ClInclude Include="GameObjects\Muzzle.h" />
+    <ClInclude Include="SceneMaptool.h" />
     <ClInclude Include="Scenes\SceneMaptool.h" />
     <ClInclude Include="Scenes\SceneBulletEditor.h" />
     <ClInclude Include="Scenes\Scene.h" />
@@ -228,6 +231,7 @@
     <ClInclude Include="Global\Variables.h" />
     <ClInclude Include="GameObjects\TextGo.h" />
     <ClInclude Include="Framework\UiButton.h" />
+    <ClInclude Include="UI\TextBox.h" />
     <ClInclude Include="TileMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

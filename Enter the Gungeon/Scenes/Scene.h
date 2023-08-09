@@ -22,6 +22,9 @@ protected:
 	sf::Vector2f windowSize;
 
 public:
+
+	//static Player* currentPlayer;
+
 	Scene(SceneId id = SceneId::None);
 	virtual ~Scene();
 

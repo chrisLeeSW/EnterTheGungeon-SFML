@@ -86,7 +86,6 @@ sf::Vector2f Scene::UiPosPosToScreen(sf::Vector2f uiPos)
 }
 void Scene::Enter()
 {
-
 	RESOURCE_MGR.LoadCSVFILE(resourceListPath);
 	for (auto go : gameObjects)
 	{
@@ -102,7 +101,6 @@ void Scene::Exit()
 	}
 	removeGameObjects.clear();
 	RESOURCE_MGR.UnLoadAll();
-	
 }
 
 void Scene::Update(float dt)

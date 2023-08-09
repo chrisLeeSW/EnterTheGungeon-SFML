@@ -12,6 +12,11 @@ void SceneTitle::Init()
 {
 	Release();
 
+	TextGo* sceneName = (TextGo*)AddGo(new TextGo("", "Scene Name"));
+	sceneName->sortLayer = 100;
+	sceneName->text.setCharacterSize(25);
+	sceneName->text.setFillColor(sf::Color::White);
+	sceneName->text.setString(L"æ¿ ≈∏¿Ã∆≤");
 
 	for (auto go : gameObjects)	
 	{
@@ -30,7 +35,6 @@ void SceneTitle::Release()
 
 void SceneTitle::Enter()
 {
-	
 	Scene::Enter();
 }
 
@@ -45,12 +49,15 @@ void SceneTitle::Update(float dt)
 
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num1))
 	{
-		SCENE_MGR.ChangeScene(SceneId::Game);
+		SCENE_MGR.ChangeScene(SceneId::Lobby);
 	}
-
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num2))
 	{
 		SCENE_MGR.ChangeScene(SceneId::BulletEditor);
+	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num3))
+	{
+		SCENE_MGR.ChangeScene(SceneId::Game);
 	}
 }
 

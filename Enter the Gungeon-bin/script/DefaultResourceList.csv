@@ -17,7 +17,7 @@
 3,bulletcsv/PilotBullet.csv
 0,graphics/PilotBullet.png
 0,graphics/Shadow.png
-3,playercsv/PrisonerdleDown.csv
+3,playercsv/PrisonerIdleDown.csv
 3,playercsv/PrisonerIdleRight.csv
 3,playercsv/PrisonerIdleUp.csv
 3,playercsv/PrisonerIdleUpRight.csv
@@ -29,3 +29,9 @@
 3,playercsv/PrisonerWalkRight.csv
 3,playercsv/PrisonerWalkUp.csv
 3,playercsv/PrisonerWalkUpRight.csv
+0,graphics/Pilot.png
+0,graphics/PilotWeapon.png
+0,graphics/Prisoner.png
+0,graphics/PrisonerUI.png
+0,graphics/PilotUI.png
+0,graphics/elevator.png

@@ -6,8 +6,7 @@
 
 class Scene;
 
-class Player :
-	public SpriteGo
+class Player : public SpriteGo
 {
 public:
 
@@ -20,23 +19,19 @@ public:
 		sf::Vector2f point;
 	};
 
-	enum class PlayerAct
+	enum class Types
 	{
-		Idle,
-		Walk,
-		Roll
+		Pilot,
+		Prisoner,
 	};
+
 
 protected:
 
-	Weapon* weapon;
-
 	ObjectPool<Weapon> poolWeapons;
-	PlayerAct playeract;
 	std::string clipId;
 
 	AnimationController animation;
-
 
 	//¼±»ý´Ô²¨
 	std::vector<ClipInfo> clipInfos;
@@ -56,7 +51,12 @@ protected:
 	float magnitude;
 	sf::Vector2f look;
 
+	Types type;
+
+	bool playerchoise = false;
+
 public:
+	Player(Types type, const std::string& textureId = "", const std::string& n = "");
 	Player(const std::string& textureId = "", const std::string& n = "");
 	virtual ~Player() override { Release(); }
 
@@ -70,7 +70,17 @@ public:
 
 	void PlayerRotation();
 	void SetFlipX(bool filp);
+	void PlayerAct(float dt);
 
 	sf::Vector2f GetPlayerPos();
+	void SetPlayerChoise(bool playerchoise);
+
+	void ChoisePlayer(Types type);
+	void ChangePlayer(sf::Vector2f pos,bool choise);
+
+	Types GetType();
+
+	bool GetPlayerchoise();
+
 };
 

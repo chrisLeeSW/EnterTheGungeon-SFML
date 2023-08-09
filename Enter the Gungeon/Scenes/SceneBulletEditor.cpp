@@ -2,6 +2,7 @@
 #include "SceneBulletEditor.h"
 #include "EnemyBullet.h"
 #include "UiButton.h"
+#include "TextGo.h"
 
 SceneBulletEditor::SceneBulletEditor() : Scene(SceneId::BulletEditor)
 {

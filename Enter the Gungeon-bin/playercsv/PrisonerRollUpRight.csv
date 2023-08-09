@@ -1,5 +1,5 @@
 ID,FPS,LOOPTYPE,,
-RollRight,10,1,,
+RollUpRight,10,1,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
 graphics/Prisoner.png,22,371,16,17

@@ -30,5 +30,8 @@ public:
 	virtual void Draw(sf::RenderWindow& window) override;
 
 	void Apply();
-	void SaveCsv(const std::string& path);
+	bool ValidFilePath(const std::string& filepath); //파일 경로 유효성 검사
+	void SaveCSV(const std::string& filepath);
+	void OverwriteCSV(const std::string& filepath);
+	void LoadCSV(const std::string& filepath);
 };

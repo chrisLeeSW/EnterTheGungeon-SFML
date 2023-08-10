@@ -1,5 +1,5 @@
 ID,FPS,LOOPTYPE,,
-MoveDown,20,1,,
+MoveDown,10,1,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
 graphics/BulletKin.png,6,80,12,23

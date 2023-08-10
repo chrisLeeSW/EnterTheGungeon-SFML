@@ -35,3 +35,9 @@
 0,graphics/PrisonerUI.png
 0,graphics/PilotUI.png
 0,graphics/elevator.png
+3,Animations/Enemy/BulletKinIdleLeft.csv
+3,Animations/Enemy/BulletKinIdleDown.csv
+3,Animations/Enemy/BulletKinIdleUp.csv
+3,Animations/Enemy/BulletKinMoveLeft.csv
+3,Animations/Enemy/BulletKinMoveDown.csv
+3,Animations/Enemy/BulletKinMoveUp.csv

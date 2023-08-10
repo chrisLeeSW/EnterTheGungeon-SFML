@@ -92,20 +92,23 @@ void TextBox::Typing()
 
 		return;
 	}
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::BackSpace))
-	{
-		std::string s = text.getString();
-		if (s.empty()) return;
-		s.pop_back();
-		text.setString(s);
-
-		SetOrigin(origin);
-	}
 	else if (!INPUT_MGR.textList.empty())
 	{
-		std::string s = text.getString();
-		text.setString(s + INPUT_MGR.textList.front());
+		if (INPUT_MGR.textList.front() == '\b')
+		{
+			std::string s = text.getString();
+			if (s.empty()) return;
+			s.pop_back();
+			text.setString(s);
 
-		SetOrigin(origin);
+			SetOrigin(origin);
+		}
+		else
+		{
+			std::string s = text.getString();
+			text.setString(s + INPUT_MGR.textList.front());
+
+			SetOrigin(origin);
+		}
 	}
 }

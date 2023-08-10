@@ -157,6 +157,7 @@
     <ClCompile Include="Animation\AnimationClip.cpp" />
     <ClCompile Include="DataTables\BulletTable.cpp" />
     <ClCompile Include="DataTables\WeaponTable.cpp" />
+    <ClCompile Include="GameObjects\Enemy.cpp" />
     <ClCompile Include="Framework\WeaponMgr.cpp" />
     <ClCompile Include="GameObjects\Bullet.cpp" />
     <ClCompile Include="GameObjects\EnemyBullet.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="Animation\AnimationClip.h" />
     <ClInclude Include="DataTables\BulletTable.h" />
     <ClInclude Include="DataTables\WeaponTable.h" />
+    <ClInclude Include="GameObjects\Enemy.h" />
     <ClInclude Include="Framework\WeaponMgr.h" />
     <ClInclude Include="GameObjects\Bullet.h" />
     <ClInclude Include="GameObjects\EnemyBullet.h" />

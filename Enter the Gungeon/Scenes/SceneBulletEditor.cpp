@@ -111,8 +111,14 @@ void SceneBulletEditor::Init()
 	savebutton->sortLayer = 100;
 	savebutton->OnClick = [this]()
 	{
-		rapidcsv::Document doc(filepathTB->text.getString(), rapidcsv::LabelParams(-1, -1));
-
+		if (ValidFilePath(filepathTB->text.getString()))
+		{
+			OverwriteCSV(filepathTB->text.getString());
+		}
+		else
+		{
+			SaveCSV(filepathTB->text.getString());
+		}
 	};
 	UiButton* loadbutton = (UiButton*)AddGo(new UiButton("graphics/testbutton.png", "fonts/AurulentSansMono-Regular.otf", "playbutton"));
 	loadbutton->text.setCharacterSize(20);
@@ -123,8 +129,13 @@ void SceneBulletEditor::Init()
 	loadbutton->sortLayer = 100;
 	loadbutton->OnClick = [this]()
 	{
-		rapidcsv::Document doc(filepathTB->text.getString(), rapidcsv::LabelParams(-1, -1));
-
+		if (!ValidFilePath(filepathTB->text.getString()))
+		{
+			std::cerr << "ERROR: Not Exist File! - SceneBulletEditor LOAD ValidFilePath()" << std::endl;
+			return;
+		}
+		
+		LoadCSV(filepathTB->text.getString());
 	};
 
 	UiButton* playbutton = (UiButton*)AddGo(new UiButton("graphics/testbutton.png", "fonts/AurulentSansMono-Regular.otf", "playbutton"));
@@ -222,6 +233,7 @@ void SceneBulletEditor::Update(float dt)
 
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Enter))
 	{
+		if (curMuzzle == nullptr) return;
 		Apply();
 	}
 }
@@ -289,5 +301,103 @@ void SceneBulletEditor::Apply()
 		std::string str = intervalTB->text.getString();
 
 		curMuzzle->interval = std::stof(str);
+	}
+}
+
+bool SceneBulletEditor::ValidFilePath(const std::string& filepath)
+{
+	std::ifstream fileStream(filepath);
+	return fileStream.is_open();
+}
+
+void SceneBulletEditor::SaveCSV(const std::string& filepath)
+{
+	//if (muzzlelist.empty()) return;
+	std::ofstream outputFile(filepath);
+
+	OverwriteCSV(filepath);
+}
+
+void SceneBulletEditor::OverwriteCSV(const std::string& filepath)
+{
+	rapidcsv::Document doc(filepathTB->text.getString(), rapidcsv::LabelParams(-1, -1));
+	doc.Clear();
+	doc.SetCell<std::string>(0, 0, "TYPE");
+	doc.SetCell<std::string>(1, 0, "BLINK");
+	doc.SetCell<std::string>(2, 0, "DIRECTION");
+	doc.SetCell<std::string>(3, 0, "SPEED");
+	doc.SetCell<std::string>(4, 0, "POSITION");
+	doc.SetCell<std::string>(5, 0, "DELAY");
+	doc.SetCell<std::string>(6, 0, "QUANTITY");
+	doc.SetCell<std::string>(7, 0, "INTERVAL");
+
+	int i = 1;
+	for (auto it : muzzlelist)
+	{
+		doc.SetCell<int>(0, i, 0); // Type ÁöÁ¤
+		doc.SetCell<int>(1, i, (int)it->isBlink);
+		doc.SetCell<std::string>(2, i, std::to_string(it->direction.x) + "/" + std::to_string(it->direction.y));
+		doc.SetCell<float>(3, i, it->speed);
+		doc.SetCell<std::string>(4, i, std::to_string(it->GetPosition().x) + '/' + std::to_string(it->GetPosition().y));
+		doc.SetCell<float>(5, i, it->delay);
+		doc.SetCell<int>(6, i, it->quantity);
+		doc.SetCell<float>(7, i, it->interval);
+
+		i++;
+	}
+
+	doc.Save();
+}
+
+void SceneBulletEditor::LoadCSV(const std::string& filepath)
+{
+	curMuzzle = nullptr;
+	for (auto it : muzzlelist)
+	{
+		RemoveGo(it);
+	}
+	muzzlelist.clear();
+
+	rapidcsv::Document doc(filepathTB->text.getString(), rapidcsv::LabelParams(-1, -1));
+
+	for (int i = 1; i < doc.GetRowCount(); i++)
+	{
+		auto rows = doc.GetRow<std::string>(i);
+		Muzzle* muzzle = (Muzzle*)AddGo(new Muzzle());
+		
+		muzzle->isBlink = (bool)std::stoi(rows[1]);
+		{
+			std::string temp;
+			std::stringstream ss(rows[2]);
+			std::vector<float> values;
+			while (std::getline(ss, temp, '/'))
+			{
+				values.push_back(std::stof(temp));
+			}
+			float x = std::stof(temp);
+
+			muzzle->direction = { values[0], values[1] };
+		}
+		muzzle->speed = std::stof(rows[3]);
+		{
+			std::string temp;
+			std::stringstream ss(rows[4]);
+			std::vector<float> values;
+			while (std::getline(ss, temp, '/'))
+			{
+				values.push_back(std::stof(temp));
+			}
+			float x = std::stof(temp);
+
+			muzzle->SetPosition({ values[0], values[1] });
+		}
+		muzzle->delay = std::stof(rows[5]);
+		muzzle->quantity = std::stoi(rows[6]);
+		muzzle->interval = std::stof(rows[7]);
+
+		muzzle->Init();
+		muzzle->Reset();
+
+		muzzlelist.push_back(muzzle);
 	}
 }

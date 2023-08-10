@@ -6,7 +6,7 @@
 #include "TextGo.h"
 
 SceneMaptool::SceneMaptool() : Scene(SceneId::MapTool), view(1.0f), wallWidthCount(5), wallHeightCount(3), doubleBySclaeX(2.f), doubleBySclaeY(2.f), minWallWidthCount(5), 
-	minWallHeightCount(3),setTile(false)
+	minWallHeightCount(3)
 {
 	resourceListPath = "script/SceneMapToolResourceList.csv";
 }
@@ -103,8 +103,7 @@ void SceneMaptool::Update(float dt)
 		if (tile.spr->sprite.getGlobalBounds().contains(INPUT_MGR.GetMousePos()) && INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
 		{
 			currentTileSprite->sprite.setTextureRect(tile.spr->sprite.getTextureRect());
-			if (!setTile) setTile = true;
-			currentTileSprite->SetActive(setTile);
+			
 		}
 	}
 	
@@ -123,7 +122,11 @@ void SceneMaptool::Update(float dt)
 		}
 		gridTile->ChangeTile(gridIndex.x, gridIndex.y, count, currentTileSprite->sprite.getTextureRect());
 	}
-	
+	if (INPUT_MGR.GetMouseButton(sf::Mouse::Right))
+	{
+		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
+		gridTile->ChangeTile(gridIndex.x, gridIndex.y, -1, sf::IntRect{0,0,0,0});
+	}
 
 
 
@@ -469,7 +472,6 @@ void SceneMaptool::SettingTileSprite(const std::string& path)
 	}
 	currentTileSprite = (SpriteGo*)AddGo(new SpriteGo(textureId));
 	currentTileSprite->sprite.setTextureRect({ 0,0,50,50 });
-	currentTileSprite->SetActive(setTile);
 	currentTileSprite->SetOrigin(Origins::MC);
 	currentTileSprite->SetPosition(currentTileSpriteBackGround->GetPosition());
 	currentTileSprite->sortLayer = 101;

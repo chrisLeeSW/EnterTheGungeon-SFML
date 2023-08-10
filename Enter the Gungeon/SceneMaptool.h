@@ -55,7 +55,6 @@ protected:
 	SpriteGo* currentTileSprite;
 	SpriteGo* currentTileSpriteBackGround;
 
-	bool setTile;
 public:
 	SceneMaptool();
 	virtual ~SceneMaptool() override = default;

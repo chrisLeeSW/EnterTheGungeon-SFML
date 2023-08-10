@@ -88,7 +88,7 @@ void TileMap::NoneFileLoad(int xSize, int ySize)
              Tile tile;
              tile.x = j;
              tile.y = i;
-             tile.texIndex = 0;
+             tile.texIndex = 4;
              tiles.push_back(tile);
          }
      }

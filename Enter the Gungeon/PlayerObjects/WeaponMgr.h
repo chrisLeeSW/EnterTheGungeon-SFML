@@ -6,14 +6,29 @@ class WeaponMgr : public Singleton<WeaponMgr>
 {
 	friend Singleton<WeaponMgr>;
 
+
+public:
+
+
+	//enum class WeaponTypes
+	//{
+
+	//	PilotGun,
+	//	PrisonerGun,
+	//	Ak47,
+	//};
+
 protected:
 
 	WeaponMgr() = default;
 	virtual ~WeaponMgr() override = default;
 
+
+	std::unordered_map<Weapon::Types, Weapon*> findweapon;
+
     std::vector<Weapon*> weapons;
 
-	Weapon::Types currentWeapon = Weapon::Types::Pilot;
+	Weapon::Types currentWeapon;
 
 
 public:
@@ -21,13 +36,11 @@ public:
 	void Init();
 	void Release();
 
-    void AddWeapon(Weapon::Types type);
-
     void SwapWeapon(int swap);
 
-    void ChangeCurrentWeapon(int weaponIndex);
 
 	Weapon::Types GetCurrentWeapon() const;
+	const void AddWeapon(Weapon::Types id);
 };
 
 #define WEAPON_MGR (WeaponMgr::Instance())

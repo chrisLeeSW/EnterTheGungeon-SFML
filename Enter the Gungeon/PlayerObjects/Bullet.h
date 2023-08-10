@@ -12,8 +12,10 @@ public:
 
 	enum class Types
 	{
+		None,
 		PilotBullet,
 		PrisonerBullet,
+		Ak47,
 	};
 
 

@@ -90,7 +90,15 @@ void SceneLobby::Update(float dt)
 
 		Scene* scene = SCENE_MGR.GetGameScene();
 		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
-		sceneGame->SetPlayer(currentplayer);
+		if (playertype == Types::Pilot)
+		{
+			playertype = Types::WeaponPilot;
+		}
+		else if (playertype == Types::Prisoner)
+		{
+			playertype = Types::WeaponPrsioner;
+		}
+		sceneGame->SetPlayer((int)playertype);
 		SCENE_MGR.ChangeScene(SceneId::Game);
 	}
 

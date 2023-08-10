@@ -45,8 +45,6 @@ void SceneGame::Init()
 	{
 		go->Init();
 	}
-	
-
 }
 
 void SceneGame::Release()
@@ -62,12 +60,16 @@ void SceneGame::Release()
 
 void SceneGame::Enter()
 {
+	if (player != nullptr)
+	{
+		delete player;
+	}
+
+	player = (Player*)AddGo(new Player((Player::Types)playertype));
+	player->Init();
 	Scene::Enter();
-	
-	player = (Player*)AddGo(new Player());
 
 	player->SetPosition((gameDevMap->vertexArray.getBounds().left + gameDevMap->vertexArray.getBounds().width)/2, (gameDevMap->vertexArray.getBounds().top + gameDevMap->vertexArray.getBounds().height) / 2);
-	
 }
 
 void SceneGame::Exit()
@@ -102,7 +104,6 @@ void SceneGame::Update(float dt)
 			{
 				//player->SetPosition(player->GetPosition().x, (gameDevMap->vertexArray.getBounds().top + gameDevMap->vertexArray.getBounds().height)-50.f);
 			}
-
 		}
 	}
 
@@ -127,7 +128,6 @@ void SceneGame::Update(float dt)
 
 	worldView.setCenter(player->GetPosition());
 
-	//std::cout << player->GetPlayerchoise() << std::endl;
 }
 
 
@@ -136,11 +136,8 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	Scene::Draw(window);
 }
 
-void SceneGame::SetPlayer(Player*& player)
+void SceneGame::SetPlayer(int a)
 {
-	this->player = player;
-	this->player = (Player*)AddGo(this->player);
-	//this->player->Init();
-	//this->player->SetScemeGamePlayerSet(player->GetType());
+	playertype =  a;
 	std::cout << "플레이어 넘김" << std::endl;
 }

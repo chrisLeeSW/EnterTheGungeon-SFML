@@ -13,6 +13,8 @@ public:
 	{
 		Pilot,
 		Prisoner,
+		WeaponPilot,
+		WeaponPrsioner,
 	};
 
 

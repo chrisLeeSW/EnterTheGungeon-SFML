@@ -24,20 +24,14 @@ void WeaponMgr::Release()
 	}
 	weapons.clear();
 
-	currentWeapon = Weapon::Types::Pilot;
+	currentWeapon = Weapon::Types::None;
 }
-
 
 void WeaponMgr::SwapWeapon(int swap)
 {
-	ChangeCurrentWeapon(swap);
-}
-
-void WeaponMgr::ChangeCurrentWeapon(int weaponIndex)
-{
-	if (weaponIndex >= 0 && weaponIndex < weapons.size())
+	if (swap >= 0 && swap < weapons.size())
 	{
-		currentWeapon = (Weapon::Types)weaponIndex;
+		currentWeapon = (Weapon::Types)swap;
 	}
 	else
 	{
@@ -45,7 +39,19 @@ void WeaponMgr::ChangeCurrentWeapon(int weaponIndex)
 	}
 }
 
+
 Weapon::Types WeaponMgr::GetCurrentWeapon() const
 {
 	return currentWeapon;
+}
+
+const void WeaponMgr::AddWeapon(Weapon::Types id)
+{
+	auto find = findweapon.find(id);
+	if (find == findweapon.end())
+	{
+		std::cout << "ÃÑ ¸øÃ£¾ÒÀ½" << std::endl;
+	}
+
+	weapons.push_back(find->second);
 }

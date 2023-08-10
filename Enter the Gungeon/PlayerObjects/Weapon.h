@@ -13,8 +13,10 @@ public:
 
 	enum class Types
 	{
-		Pilot,
-		Prisoner,
+		None,
+		PilotGun,
+		PrisonerGun,
+		Ak47,
 	};
 
 protected:

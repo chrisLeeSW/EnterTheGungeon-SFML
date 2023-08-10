@@ -16,6 +16,8 @@ protected:
 
 	TileMap* gameDevMap;
 
+	int playertype;
+
 public:
 	SceneGame();
 	virtual ~SceneGame() override = default;
@@ -29,7 +31,7 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	virtual void SetPlayer(Player*& player);
+	virtual void SetPlayer(int a);
 
 };
 

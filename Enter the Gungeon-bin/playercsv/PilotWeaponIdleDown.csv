@@ -1,5 +1,5 @@
 ID,FPS,LOOPTYPE,,
-WeaponIdleDown,10,1,,
+IdleDown,10,1,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
 graphics/Pilot.png,154,39,15,22

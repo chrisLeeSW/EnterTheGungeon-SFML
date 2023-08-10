@@ -19,26 +19,18 @@ public:
 		sf::Vector2f point;
 	};
 
-	//struct WeaponClipInfo
-	//{
-	//	std::string weaponidle;
-	//	std::string weaponwalk;
-	//	std::string weaponroll;
-	//	bool flipX = false;
-	//	sf::Vector2f point;
-	//};
-
 	enum class Types
 	{
-		None,
 		Pilot,
 		Prisoner,
+		WeaponPilot,
+		WeaponPrisoner,
 	};
 
 
 protected:
 
-	ObjectPool<Weapon> poolWeapons;
+	//ObjectPool<Weapon> poolWeapons;
 	std::string clipId;
 
 	AnimationController animation;
@@ -51,6 +43,11 @@ protected:
 	ClipInfo currentClipInfo;
 
 	sf::Vector2f windowsize;
+
+	//플레이어 손
+	SpriteGo* hand;
+	bool handflipX = false;
+
 
 	//플레이어 움직임
 	sf::Vector2f velocity;
@@ -73,6 +70,8 @@ public:
 	Player(const std::string& textureId = "", const std::string& n = "");
 	virtual ~Player() override { Release(); }
 
+	virtual void SetPosition(const sf::Vector2f& p) override;
+	virtual void SetPosition(float x, float y) override;
 
 	virtual void Init() override;
 	virtual void Release() override;
@@ -92,4 +91,5 @@ public:
 	Types GetType();
 
 	void SetSceneGame();
+	void AddWeapon();
 };

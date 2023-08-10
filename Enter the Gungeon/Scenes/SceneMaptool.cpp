@@ -4,7 +4,10 @@
 #include "TileMap.h"
 #include "UiButton.h"
 #include "TextGo.h"
+#include "TextBox.h"
 
+#include <windows.h>
+#include <tchar.h>
 SceneMaptool::SceneMaptool() : Scene(SceneId::MapTool), view(1.0f), wallWidthCount(5), wallHeightCount(3), doubleBySclaeX(2.f), doubleBySclaeY(2.f), minWallWidthCount(5), 
 	minWallHeightCount(3)
 {
@@ -19,8 +22,6 @@ void SceneMaptool::Init()
 	SettingUiSprite();
 	SettingUiText();
 	SettingTileSprite("Room/TileSpriteInfo.csv");
-
-	
 
 	for (auto go : gameObjects)
 	{
@@ -59,7 +60,6 @@ void SceneMaptool::Enter()
 
 void SceneMaptool::Exit()
 {
-	Release();
 	Scene::Exit();
 }
 
@@ -125,38 +125,54 @@ void SceneMaptool::Update(float dt)
 	if (INPUT_MGR.GetMouseButton(sf::Mouse::Right))
 	{
 		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
-		gridTile->ChangeTile(gridIndex.x, gridIndex.y, -1, sf::IntRect{0,0,0,0});
+		gridTile->ChangeTile(gridIndex.x, gridIndex.y, static_cast<int>(MapObjectType::None), sf::IntRect{50,0,50,50});
 	}
-
-
-
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad7))
-	{
-		drawGridAllowed = false;
-		linesMap.clear();
-		if (gridTile != nullptr)
-		{
-			RemoveGo(gridTile);
-		}
-	} // Ui로 만들예정
-
 
 	//
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad8))
 	{
-		int currentIndex;
-		for (int i = 0;i < tiles.size();++i)
+		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
+		int count = 0;
+		for (int i = 0; i < tiles.size(); ++i)
 		{
-			
 			if (currentTileSprite->sprite.getTextureRect() == tiles[i].spr->sprite.getTextureRect())
 			{
-				currentIndex = i;
-				std::cout << currentIndex << std::endl;
+				count = i;
 				break;
 			}
 		}
+			std::cout <<"Left :" << tiles[count].spr->sprite.getTextureRect().left << std::endl;
+			std::cout << "Top:" << tiles[count].spr->sprite.getTextureRect().top << std::endl;
+			std::cout << "Width :" << tiles[count].spr->sprite.getTextureRect().width << std::endl;
+			std::cout << "Height :" << tiles[count].spr->sprite.getTextureRect().height << std::endl;
+	}
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad9))
+	{
+		for (int i = 0; i < gridTile->tiles.size(); ++i)
+		{
+			std::cout<<gridTile->tiles[i].texIndex << std::endl;
+		}
+	}
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Add))
+	{
+		std::string  file = fileNameTexBox->text.getString();
+		
+		/*std::string name = folderPath;
+		std::string name1 = "/TileMap-";
+		name1 = name1 + std::to_string(fileCount);
+		name1 += ".csv";
+		std::string sumName = name + name1;*/
+		SaveRoomSortLayer0(file);
 	}
 	//
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Home))
+	{
+		std::string  folderPath="Room/TileMapFile";
+		ListFilesInDirectory(folderPath);
+	}
 
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Escape))
 	{
@@ -198,6 +214,7 @@ void SceneMaptool::SettingUiSprite()
 	saveUi->OnClick = [this]()
 	{
 		std::cout << "Clock" << std::endl;
+		backGroundSaveAndLoadType->SetActive(true);
 	};
 	saveUi->sortLayer = 100;
 
@@ -219,6 +236,7 @@ void SceneMaptool::SettingUiSprite()
 	loadUi->OnClick = [this]()
 	{
 		std::cout << "Clock" << std::endl;
+		backGroundSaveAndLoadType->SetActive(false);
 	};
 	loadUi->sortLayer = 100;
 
@@ -325,6 +343,7 @@ void SceneMaptool::SettingUiSprite()
 		if (wallHeightCount < minWallHeightCount)	wallHeightCount = minWallHeightCount;
 	};
 	wallHeightCountDecrease->sortLayer = 100;
+
 	makeUi = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "MakeUi"));
 	makeUi->sprite.setTextureRect({ 10,27,50,20 });
 	makeUi->SetScale(doubleBySclaeX, doubleBySclaeY);
@@ -342,7 +361,6 @@ void SceneMaptool::SettingUiSprite()
 	};
 	makeUi->OnClick = [this]()
 	{
-		std::cout << "Creating and drawing rectangles" << std::endl;
 		if (!drawGridAllowed)
 		{
 			drawGridAllowed = true;
@@ -376,12 +394,52 @@ void SceneMaptool::SettingUiSprite()
 	};
 	makeUi->sortLayer = 100;
 
+	restUi = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "RestUi"));
+	restUi->sprite.setTextureRect({ 10,27,50,20 });
+	restUi->SetScale(doubleBySclaeX, doubleBySclaeY);
+	restUi->SetPosition(windowSize.x * 0.1f, windowSize.y * 0.25f);
+	restUi->SetOrigin(Origins::MC);
+	restUi->OnEnter = [this]()
+	{
+		restUi->sprite.setTextureRect({ 11,55,50,20 });
+		restUi->SetScale(doubleBySclaeX, doubleBySclaeY);
+	};
+	restUi->OnExit = [this]()
+	{
+		restUi->sprite.setTextureRect({ 10,27,50,20 });
+		restUi->SetScale(doubleBySclaeX, doubleBySclaeY);
+	};
+	restUi->OnClick = [this]()
+	{
+		if (drawGridAllowed)
+		{
+			drawGridAllowed = false;
+			linesMap.clear();
+			if (gridTile != nullptr)
+			{
+				RemoveGo(gridTile);
+			}
+			backGroundSaveAndLoadType->SetActive(false);
+		}
+	};
+	restUi->sortLayer = 100;
+
+	
+
 	currentTileSpriteBackGround=(SpriteGo*)AddGo(new SpriteGo("graphics/MapMakerMenu.png", "CurrentTileBackGround"));
 	currentTileSpriteBackGround->sprite.setTextureRect({ 12,120,100,100 });
-	currentTileSpriteBackGround->SetPosition(windowSize.x * 0.225f, windowSize.y * 0.125f); //0.125 0.19
+	currentTileSpriteBackGround->SetPosition(windowSize.x * 0.225f, windowSize.y * 0.125f); 
 	currentTileSpriteBackGround->SetScale(doubleBySclaeX, doubleBySclaeY);
 	currentTileSpriteBackGround->SetOrigin(Origins::MC);
 	currentTileSpriteBackGround->sortLayer = 100;
+
+	backGroundSaveAndLoadType = (SpriteGo*)AddGo(new SpriteGo("graphics/MapMakerMenu.png", "BackGroundSaveAndLoadType"));
+	backGroundSaveAndLoadType->sprite.setTextureRect({ 12,120,100,100 });
+	backGroundSaveAndLoadType->SetPosition(windowSize.x * 0.075f, windowSize.y * 0.38f); 
+	backGroundSaveAndLoadType->SetScale(doubleBySclaeX, doubleBySclaeY);
+	backGroundSaveAndLoadType->SetOrigin(Origins::MC);
+	backGroundSaveAndLoadType->sortLayer = 100;
+	backGroundSaveAndLoadType->SetActive(false);
 }
 
 void SceneMaptool::SettingUiText()
@@ -445,6 +503,22 @@ void SceneMaptool::SettingUiText()
 	makeUiText->sortLayer = 100;
 	makeUiText->SetPosition(makeUi->GetPosition() - sf::Vector2f{ 0.f, makeUi->text.getCharacterSize() * 0.125f });
 
+
+	restUiText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "RestUiText"));
+	restUiText->text.setCharacterSize(20);
+	restUiText->SetOrigin(Origins::BC);
+	restUiText->text.setString("rest");
+	restUiText->sortLayer = 100;
+	restUiText->SetPosition(restUi->GetPosition() - sf::Vector2f{ 0.f, restUi->text.getCharacterSize() * 0.125f });
+
+	fileNameTexBox = (TextBox*)AddGo(new TextBox("fonts/OpenSans-Semibold.ttf", "direction"));
+	fileNameTexBox->box.setSize({ 200, 50 });
+	fileNameTexBox->text.setCharacterSize(10);
+	fileNameTexBox->SetOrigin(Origins::MC);
+	fileNameTexBox->SetPosition(windowSize.x*0.08f, windowSize.y*0.3f);
+	fileNameTexBox->sortLayer = 100;
+	//fileNameTexBox->SetActive(false);
+
 }
 
 void SceneMaptool::SettingTileSprite(const std::string& path)
@@ -478,4 +552,100 @@ void SceneMaptool::SettingTileSprite(const std::string& path)
 	currentTileSprite->SetScale(doubleBySclaeX, doubleBySclaeY);
 
 }
+
+void SceneMaptool::SaveRoomSortLayer0(std::string& fileName)
+{
+	std::ofstream ouptFile(fileName);
+
+	rapidcsv::Document doc(fileName, rapidcsv::LabelParams(-1, -1));
+	doc.Clear();
+
+	doc.SetCell<std::string>(0, 0, "WallSizeWidth");
+	doc.SetCell<std::string>(1, 0, "WallSizeHeight");
+	doc.SetCell<std::string>(2, 0, "SortLayer");
+
+	doc.SetCell<int>(0, 1, wallWidthCount);
+	doc.SetCell<int>(1, 1, wallHeightCount);
+	doc.SetCell<int>(2, 1, -1);
+
+	int count = 0;
+	for (int i = 4;i < wallHeightCount + 4;++i)
+	{
+		for (int j = 0;j < wallWidthCount;++j)
+		{
+			doc.SetCell<int>(j, i, gridTile->tiles[count].texIndex);
+			count++;
+		}
+	}
+
+
+	doc.Save();
+}
+
+void SceneMaptool::SaveRoomSortLayer1(std::string& fileName)
+{
+	std::ofstream ouptFile(fileName);
+
+	rapidcsv::Document doc(fileName, rapidcsv::LabelParams(-1, -1));
+	doc.Clear();
+
+	doc.SetCell<std::string>(0, 0, "WallSizeWidth");
+	doc.SetCell<std::string>(1, 0, "WallSizeHeight");
+	doc.SetCell<std::string>(2, 0, "SortLayer");
+
+	doc.SetCell<int>(0, 1, wallWidthCount);
+	doc.SetCell<int>(1, 1, wallHeightCount);
+	doc.SetCell<int>(2, 1, 0);
+
+	int count = 0;
+	for (int i = 4;i < wallHeightCount + 4;++i)
+	{
+		for (int j = 0;j < wallWidthCount;++j)
+		{
+			doc.SetCell<int>(j, i, gridTile->tiles[count].texIndex);
+			count++;
+		}
+	}
+
+
+	doc.Save();
+}
+
+void SceneMaptool::DrawSaveUi()
+{
+	backGroundSaveAndLoadType->SetActive(true);
+}
+
+void SceneMaptool::DrawLoadUi()
+{
+	backGroundSaveAndLoadType->SetActive(true);
+}
+
+void SceneMaptool::ListFilesInDirectory(const std::string & folderPath)
+{
+	WIN32_FIND_DATAA findFileData;
+	HANDLE hFind = FindFirstFileA((folderPath + "\\*").c_str(), &findFileData);
+
+	if (hFind == INVALID_HANDLE_VALUE) {
+		std::cerr << "Error finding files in directory." << std::endl;
+		return;
+	}
+
+	fileCount = 0;
+
+	do {
+		if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+			// 디렉토리 스킵
+		}
+		else {
+			//std::cout << "파일 이름: " << findFileData.cFileName << std::endl;
+			++fileCount;
+		}
+	} while (FindNextFileA(hFind, &findFileData) != 0);
+
+	FindClose(hFind);
+
+	//std::cout << "폴더 안의 파일 개수: " << fileCount << std::endl;
+}
+
 

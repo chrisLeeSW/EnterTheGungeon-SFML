@@ -50,11 +50,27 @@ enum class MapObjectType
 	WallTop,
 	WallRight,
 	WallLeft,
+	WallCornerRight,
+	WallCornerLeft,
 	WallDown,
 	NormalFloor1,
 	NormalFloor2,
 	NormalFloor3,
 	NormalFloor4,
+	LibraryTop,
+	LibraryLeft,
+	LibraryRight,
+	LibraryDown,
+	LibraryCornerLeft,
+	LibraryCornerRight,
+	//아무것도 없는 벽 생각해야함
+	MapObjectCount,
+};
+
+enum class InteractionObjectType
+{
+	None =-1,
+	aa
 };
 
 #include "AnimationClip.h"

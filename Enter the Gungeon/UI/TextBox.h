@@ -6,6 +6,7 @@ class TextBox : public GameObject
 protected:
 	Origins textsort;
 	bool isTyping = false;
+	
 public:
 	sf::RectangleShape box;
 

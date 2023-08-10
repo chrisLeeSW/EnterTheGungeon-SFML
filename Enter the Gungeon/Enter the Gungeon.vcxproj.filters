@@ -102,7 +102,7 @@
     <ClCompile Include="GameObjects\Bullet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TileMap.cpp">
+    <ClCompile Include="Map\TileMap.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Muzzle.cpp">
@@ -123,7 +123,7 @@
     <ClCompile Include="PlayerMgr.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Tile.cpp">
+    <ClCompile Include="Map\Tile.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -227,7 +227,7 @@
     <ClInclude Include="GameObjects\Bullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TileMap.h">
+    <ClInclude Include="Map\TileMap.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Muzzle.h">
@@ -248,10 +248,7 @@
     <ClInclude Include="PlayerMgr.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile.h">
+    <ClInclude Include="Map\Tile.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

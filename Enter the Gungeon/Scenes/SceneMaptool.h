@@ -5,7 +5,7 @@ class SpriteGo;
 class TileMap;
 class UiButton;
 class TextGo;
-
+class TextBox;
 struct TileSpriteInfo
 {
 	SpriteGo* spr;
@@ -44,17 +44,24 @@ protected:
 	UiButton* makeUi;
 	TextGo* makeUiText;
 
+	UiButton* restUi;
+	TextGo* restUiText;
+
 	float doubleBySclaeX;
 	float doubleBySclaeY;
 	
 	bool drawGridAllowed = false;
 	std::vector<sf::VertexArray> linesMap;
 
-	
+	TextBox* fileNameTexBox;
+	std::string fileNameString;
+
 	std::vector<TileSpriteInfo> tiles;
 	SpriteGo* currentTileSprite;
 	SpriteGo* currentTileSpriteBackGround;
 
+	SpriteGo* backGroundSaveAndLoadType;
+	int fileCount;
 public:
 	SceneMaptool();
 	virtual ~SceneMaptool() override = default;
@@ -69,5 +76,14 @@ public:
 	void SettingUiSprite();
 	void SettingUiText();
 	void SettingTileSprite(const std::string& path);
+
+
+	void SaveRoomSortLayer0(std::string& fileName);
+	void SaveRoomSortLayer1(std::string& fileName);
+
+	void DrawSaveUi();
+	void DrawLoadUi();
+
+	void ListFilesInDirectory(const std::string & folderPath);
 
 };

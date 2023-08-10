@@ -120,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>./;./3rd;./DataTables;./SFML-2.5.1/include;./Global;./Framework;./Scenes;./GameObjects;./Animation;./UI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./3rd;./DataTables;./SFML-2.5.1/include;./Global;./Framework;./Scenes;./GameObjects;./Animation;./Map;./UI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -140,7 +140,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>./;./3rd;./DataTables;./SFML-2.5.1/include;./Global;./Framework;./Scenes;./GameObjects;./Animation;./Player;./ShootPattern;./UniqueType;./SpriteFont;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./3rd;./DataTables;./SFML-2.5.1/include;./Global;./Framework;./Scenes;./GameObjects;./Animation;./Map;./Player;./ShootPattern;./UniqueType;./SpriteFont;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -194,8 +194,8 @@
     <ClCompile Include="GameObjects\TextGo.cpp" />
     <ClCompile Include="Framework\UiButton.cpp" />
     <ClCompile Include="UI\TextBox.cpp" />
-    <ClCompile Include="Tile.cpp" />
-    <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="Map\Tile.cpp" />
+    <ClCompile Include="Map\TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
@@ -221,7 +221,6 @@
     <ClInclude Include="Framework\ResourceMgr.h" />
     <ClInclude Include="Global\Utils.h" />
     <ClInclude Include="GameObjects\Muzzle.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Scenes\SceneMaptool.h" />
     <ClInclude Include="DataTables\PlayerTable.h" />
     <ClInclude Include="PlayerMgr.h" />
@@ -238,8 +237,8 @@
     <ClInclude Include="GameObjects\TextGo.h" />
     <ClInclude Include="Framework\UiButton.h" />
     <ClInclude Include="UI\TextBox.h" />
-    <ClInclude Include="Tile.h" />
-    <ClInclude Include="TileMap.h" />
+    <ClInclude Include="Map\Tile.h" />
+    <ClInclude Include="Map\TileMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

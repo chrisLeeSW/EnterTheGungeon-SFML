@@ -2,14 +2,6 @@
 #include "SpriteGo.h"
 #include "AnimationController.h"
 
-enum class BulletType
-{
-	None = -1,
-	EnemyBullet,
-
-	Count,
-};
-
 class EnemyBullet : public SpriteGo
 {
 protected:
@@ -17,14 +9,13 @@ protected:
 
 	sf::Vector2f direction;
 	float speed = 0.0f;
-	int damage = 0;
+	int damage = 1;
 	float range = 1000.0f;
-	BulletType type;
-
+	
 	bool isBlink = false;
 
 public:
-	EnemyBullet(BulletType type, std::string textureId = "", std::string name = "");
+	EnemyBullet(std::string textureId = "", std::string name = "");
 	virtual ~EnemyBullet() override;
 
 	virtual void Init() override;

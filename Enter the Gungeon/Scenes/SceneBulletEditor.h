@@ -1,19 +1,22 @@
 #pragma once
 #include "Scene.h"
 
-class EnemyBullet;
+class Muzzle;
+class TextBox;
 
 class SceneBulletEditor : public Scene
 {
 protected:
-	EnemyBullet* curBullet = nullptr;
+	Muzzle* curMuzzle = nullptr;
+	std::list<Muzzle*> muzzlelist;
 
-	sf::Vector2f direction;
-	std::string str = "";
-
-	std::list<EnemyBullet*> bulletlist;
-
-	bool isPlay = false;
+	TextBox* directionTB;
+	TextBox* speedTB;
+	TextBox* positionTB;
+	TextBox* delayTB;
+	TextBox* quantityTB;
+	TextBox* intervalTB;
+	TextBox* filepathTB;
 
 public:
 	SceneBulletEditor();
@@ -26,5 +29,6 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	std::string InputString();
+	void Apply();
+	void SaveCsv(const std::string& path);
 };

@@ -23,6 +23,8 @@ protected:
 
 	AnimationController animation;
 
+	Ak47 ak47;
+
 	sf::Vector2f direction;
 	sf::Vector2f position;
 
@@ -48,6 +50,29 @@ public:
 	virtual void Draw(sf::RenderWindow& window) override;
 
 	void SetType(int types);
+	void Shoot(Types type);
 	void Fire(sf::Vector2f pos, sf::Vector2f dir);
 };
 
+class PilotGun : public Bullet
+{
+public:
+	PilotGun(Types tpye);
+	void Update(float dt) override;
+
+
+};
+
+class PrisonerGun : public Bullet
+{
+public:
+	PrisonerGun();
+	void Update(float dt) override;
+};
+
+class Ak47 : public Bullet
+{
+public:
+	Ak47();
+	void Update(float dt) override;
+};

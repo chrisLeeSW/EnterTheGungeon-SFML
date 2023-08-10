@@ -5,9 +5,6 @@ class Skill :
 {
 
 
-
-
-
 protected:
     std::unordered_map<std::string, Skill*> skills;
 

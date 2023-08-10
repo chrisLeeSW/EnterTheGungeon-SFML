@@ -7,7 +7,6 @@ void WeaponMgr::Init()
 	{
 		Release();
 	}
-
 }
 
 void WeaponMgr::Release()

@@ -5,34 +5,56 @@ class SpriteGo;
 class TileMap;
 class UiButton;
 class TextGo;
-struct TextureInfo
+
+struct TileSpriteInfo
 {
-	sf::IntRect textureRect;
-	int sortLayer;
-	int sortOrder;
+	SpriteGo* spr;
+	MapObjectType type;
 };
 class SceneMaptool : public Scene
 {
 protected:
-	TileMap* tileMap;
+	TileMap* gridTile =nullptr;
 	float view;
 
-	SpriteGo* testPlayerCollied;
-	sf::Vector2f playerPos;
-	sf::Vector2f playerDir;
+	UiButton* wallWidthSprite;
+	UiButton* wallWidthCountIncrease;
+	UiButton* wallWidthCountDecrease;
+	TextGo* wallWidthCountText;
+	TextGo* wallWidthCountIncreaseText;
+	TextGo* wallWidthCountDecreaseText;
+	int wallWidthCount;
+	int minWallWidthCount;
 
-	std::vector<sf::RectangleShape> wallColliedShape;
-	sf::RectangleShape shape;
-
-	UiButton* makeWallWidth;
-	UiButton* makeWallHeight;
-	int makeWallWidthCount;
-	int makeWallHeightCount;
+	UiButton* wallHeightSprite;
+	UiButton* wallHeightCountIncrease;
+	UiButton* wallHeightCountDecrease;
+	TextGo* wallHeightCountText;
+	TextGo* wallHeightCountIncreaseText;
+	TextGo* wallHeightCountDecreaseText;
+	int wallHeightCount;
+	int minWallHeightCount;
 
 	UiButton* saveUi;
-	UiButton* loadUi;
 	TextGo* saveUiText;
+
+	UiButton* loadUi;
 	TextGo* loadUiText;
+	
+	UiButton* makeUi;
+	TextGo* makeUiText;
+
+	float doubleBySclaeX;
+	float doubleBySclaeY;
+	
+	bool drawGridAllowed = false;
+	std::vector<sf::VertexArray> linesMap;
+
+	
+	std::vector<TileSpriteInfo> tiles;
+	SpriteGo* currentTileSprite;
+	SpriteGo* currentTileSpriteBackGround;
+
 public:
 	SceneMaptool();
 	virtual ~SceneMaptool() override = default;
@@ -46,5 +68,6 @@ public:
 
 	void SettingUiSprite();
 	void SettingUiText();
-};
+	void SettingTileSprite(const std::string& path);
 
+};

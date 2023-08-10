@@ -180,7 +180,6 @@
     </ClCompile>
     <ClCompile Include="Framework\ResourceMgr.cpp" />
     <ClCompile Include="GameObjects\Muzzle.cpp" />
-    <ClCompile Include="SceneMaptool.cpp" />
     <ClCompile Include="Scenes\SceneMaptool.cpp" />
     <ClCompile Include="DataTables\PlayerTable.cpp" />
     <ClCompile Include="PlayerMgr.cpp" />
@@ -223,7 +222,7 @@
     <ClInclude Include="Global\Utils.h" />
     <ClInclude Include="GameObjects\Muzzle.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="SceneMaptool.h" />
+    <ClInclude Include="Scenes\SceneMaptool.h" />
     <ClInclude Include="DataTables\PlayerTable.h" />
     <ClInclude Include="PlayerMgr.h" />
     <ClInclude Include="Scenes\SceneLobby.h" />

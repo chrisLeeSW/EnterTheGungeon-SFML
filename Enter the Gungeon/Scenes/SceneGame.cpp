@@ -19,8 +19,11 @@ void SceneGame::Init()
 	//Scene* scene = SCENE_MGR.GetCurrScene();
 	//setplayer 써서 scene에 있는 player 할당해
 	//SetPlayer(scene->currentPlayer);
-	//player = (Player*)AddGo(new Player(Player::Types::Prisoner));
+	
 	//weapon = (Weapon*)AddGo(new Weapon());
+
+	//player = (Player*)AddGo(new Player());
+
 	shadow = (SpriteGo*)/*scene->*/AddGo(new SpriteGo("graphics/Shadow.png"));
 	shadow->SetOrigin(Origins::MC);
 	shadow->sortLayer = -1;
@@ -31,8 +34,8 @@ void SceneGame::Init()
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
 
-	player = (Player*)AddGo(new Player());
-	weapon = (Weapon*)AddGo(new Weapon());
+	//player = (Player*)AddGo(new Player());
+	//weapon = (Weapon*)AddGo(new Weapon());
 
 	gameDevMap = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
 	gameDevMap->Load("MapFile/map1.csv");
@@ -42,6 +45,8 @@ void SceneGame::Init()
 	{
 		go->Init();
 	}
+	
+
 }
 
 void SceneGame::Release()
@@ -59,6 +64,8 @@ void SceneGame::Enter()
 {
 	Scene::Enter();
 	
+	player = (Player*)AddGo(new Player());
+
 	player->SetPosition((gameDevMap->vertexArray.getBounds().left + gameDevMap->vertexArray.getBounds().width)/2, (gameDevMap->vertexArray.getBounds().top + gameDevMap->vertexArray.getBounds().height) / 2);
 	
 }
@@ -119,6 +126,8 @@ void SceneGame::Update(float dt)
 	}
 
 	worldView.setCenter(player->GetPosition());
+
+	//std::cout << player->GetPlayerchoise() << std::endl;
 }
 
 
@@ -127,10 +136,11 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	Scene::Draw(window);
 }
 
-void SceneGame::SetPlayer(Player* player)
+void SceneGame::SetPlayer(Player*& player)
 {
 	this->player = player;
-	this->player = (Player*)AddGo(new Player(player->GetType()));
-
+	this->player = (Player*)AddGo(this->player);
+	//this->player->Init();
+	//this->player->SetScemeGamePlayerSet(player->GetType());
 	std::cout << "플레이어 넘김" << std::endl;
 }

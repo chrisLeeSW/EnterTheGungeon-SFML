@@ -9,7 +9,6 @@ Player::Player(Types type, const std::string& textureId, const std::string& n) :
 
 Player::Player(const std::string& textureId, const std::string& n) : SpriteGo(textureId, n)
 {
-
 }
 
 void Player::Init()
@@ -21,6 +20,7 @@ void Player::Init()
 	{
 	case Types::Pilot:
 	{
+		//파일럿 기본 애니메이션
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotIdleUp.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotIdleDown.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotIdleRight.csv"));
@@ -35,6 +35,19 @@ void Player::Init()
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotRollDown.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotRollRight.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotRollUpRight.csv"));
+
+		//파일럿 with weapon 애니메이션
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotWeaponIdleUp.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotWeaponIdleDown.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotWeaponIdleRight.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotWeaponIdleUpRight.csv"));
+
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotWeaponWalkUp.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotWeaponWalkUpRight.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotWeaponWalkRight.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotWeaponWalkDown.csv"));
+
+		std::cout << "파일럿 타입" << std::endl;
 		break;
 	}
 	case Types::Prisoner:
@@ -53,13 +66,15 @@ void Player::Init()
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerRollDown.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerRollRight.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerRollUpRight.csv"));
+		std::cout << "죄수 타입" << std::endl;
 		break;
 	}
-}
-	
-
-
-
+	default:
+	{
+		std::cout << "노 타입" << std::endl;
+		break;
+	}
+	}
 
 
 	animation.SetTarget(&sprite);
@@ -77,7 +92,6 @@ void Player::Init()
 	clipInfos.push_back({ "IdleDown", "WalkDown","RollDown",true,{0.f, 1.f} });
 	clipInfos.push_back({ "IdleRight", "WalkRight","RollRight",false, Utils::Normalize({1.f, 1.f}) });
 
-	//무기매니저만들어서 플레이어 컨테이너에서 생성해서 꺼내서 쓰게
 }
 
 void Player::Release()
@@ -93,8 +107,8 @@ void Player::Reset()
 	//SetPosition(windowsize.x * 0.5, windowsize.y * 0.5);
 	SetFlipX(false);
 
-	speed = 300.f;
-	rollspeed = 600.f;
+	speed = 150.f;
+	rollspeed = 250.f;
 	currentClipInfo = clipInfos[6];
 
 }
@@ -104,15 +118,22 @@ void Player::Update(float dt)
 	SetOrigin(Origins::BC);
 	animation.Update(dt);
 
-	if(playerchoise)
+	if (isGame)
 	{
 		PlayerAct(dt);
 	}
-	else
+	else if(isLobby)
 	{
-		if (animation.GetCurrentClipId() != "IdleRight")
+		if (playerchoise)
 		{
-			animation.Play("IdleRight");
+			PlayerAct(dt);
+		}
+		else
+		{
+			if (animation.GetCurrentClipId() != "IdleRight")
+			{
+				animation.Play("IdleRight");
+			}
 		}
 	}
 
@@ -207,9 +228,12 @@ void Player::PlayerAct(float dt)
 		{
 			position += direction * rollspeed * dt;
 			SetPosition(position);
+			if ((animation.GetTotalFrame() - animation.GetCurFrame()) == 1)
+			{
+				isrolling = false;
+			}
 		}
 	
-
 	if (clipId == currentClipInfo.walk && INPUT_MGR.GetMouseButtonDown(sf::Mouse::Right))
 	{
 		auto min = std::min_element(clipInfos.begin(), clipInfos.end(),
@@ -237,29 +261,11 @@ void Player::PlayerAct(float dt)
 
 		animation.Play(clipId);
 	}
-
-	if (isrolling)
-	{
-		if ((animation.GetTotalFrame() - animation.GetCurFrame()) == 1)
-		{
-			isrolling = false;
-		}
-	}
 }
 
 sf::Vector2f Player::GetPlayerPos()
 {
 	return position;
-}
-
-void Player::SetPlayerChoise(bool playerchoise)
-{
-	this->playerchoise = playerchoise;
-}
-
-void Player::ChoisePlayer(Types type)
-{
-	playerchoise = true;
 }
 
 void Player::ChangePlayer(sf::Vector2f pos,bool choise)
@@ -273,7 +279,9 @@ Player::Types Player::GetType()
 	return type;
 }
 
-bool Player::GetPlayerchoise()
+void Player::SetSceneGame()
 {
-	return playerchoise;
+	isGame = true;
+
+
 }

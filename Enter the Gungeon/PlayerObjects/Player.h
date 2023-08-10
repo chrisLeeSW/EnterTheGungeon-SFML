@@ -19,8 +19,18 @@ public:
 		sf::Vector2f point;
 	};
 
+	//struct WeaponClipInfo
+	//{
+	//	std::string weaponidle;
+	//	std::string weaponwalk;
+	//	std::string weaponroll;
+	//	bool flipX = false;
+	//	sf::Vector2f point;
+	//};
+
 	enum class Types
 	{
+		None,
 		Pilot,
 		Prisoner,
 	};
@@ -32,6 +42,9 @@ protected:
 	std::string clipId;
 
 	AnimationController animation;
+
+	bool isGame = false;
+	bool isLobby = true;
 
 	//¼±»ý´Ô²¨
 	std::vector<ClipInfo> clipInfos;
@@ -73,14 +86,10 @@ public:
 	void PlayerAct(float dt);
 
 	sf::Vector2f GetPlayerPos();
-	void SetPlayerChoise(bool playerchoise);
 
-	void ChoisePlayer(Types type);
 	void ChangePlayer(sf::Vector2f pos,bool choise);
 
 	Types GetType();
 
-	bool GetPlayerchoise();
-
+	void SetSceneGame();
 };
-

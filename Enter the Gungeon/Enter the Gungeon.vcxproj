@@ -120,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>./;./3rd;./DataTables;./SFML-2.5.1/include;./Global;./Framework;./Scenes;./GameObjects;./Animation;./UI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./3rd;./DataTables;./SFML-2.5.1/include;./Global;./Framework;./GameObjects;./Animation;./UI;./Scenes;./PlayerObjects;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -157,8 +157,8 @@
     <ClCompile Include="Animation\AnimationClip.cpp" />
     <ClCompile Include="DataTables\BulletTable.cpp" />
     <ClCompile Include="DataTables\WeaponTable.cpp" />
-    <ClCompile Include="Framework\WeaponMgr.cpp" />
-    <ClCompile Include="GameObjects\Bullet.cpp" />
+    <ClCompile Include="PlayerObjects\WeaponMgr.cpp" />
+    <ClCompile Include="PlayerObjects\Bullet.cpp" />
     <ClCompile Include="GameObjects\EnemyBullet.cpp" />
     <ClCompile Include="DataTables\DataTable.cpp" />
     <ClCompile Include="DataTables\StringTable.cpp" />
@@ -169,10 +169,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="GameObjects\Player.cpp" />
+    <ClCompile Include="PlayerObjects\Player.cpp" />
     <ClCompile Include="GameObjects\SpriteEffect.cpp" />
     <ClCompile Include="GameObjects\VertexArrayGo.cpp" />
-    <ClCompile Include="GameObjects\Weapon.cpp" />
+    <ClCompile Include="PlayerObjects\Weapon.cpp" />
     <ClCompile Include="Global\Utils.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -182,7 +182,7 @@
     <ClCompile Include="GameObjects\Muzzle.cpp" />
     <ClCompile Include="Scenes\SceneMaptool.cpp" />
     <ClCompile Include="DataTables\PlayerTable.cpp" />
-    <ClCompile Include="PlayerMgr.cpp" />
+    <ClCompile Include="PlayerObjects\PlayerMgr.cpp" />
     <ClCompile Include="Scenes\SceneLobby.cpp" />
     <ClCompile Include="Scenes\SceneBulletEditor.cpp" />
     <ClCompile Include="Scenes\Scene.cpp" />
@@ -193,6 +193,7 @@
     <ClCompile Include="Scenes\SceneTitle.cpp" />
     <ClCompile Include="GameObjects\TextGo.cpp" />
     <ClCompile Include="Framework\UiButton.cpp" />
+    <ClCompile Include="PlayerObjects\Skill.cpp" />
     <ClCompile Include="UI\TextBox.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileMap.cpp" />
@@ -203,18 +204,18 @@
     <ClInclude Include="Animation\AnimationClip.h" />
     <ClInclude Include="DataTables\BulletTable.h" />
     <ClInclude Include="DataTables\WeaponTable.h" />
-    <ClInclude Include="Framework\WeaponMgr.h" />
-    <ClInclude Include="GameObjects\Bullet.h" />
+    <ClInclude Include="PlayerObjects\WeaponMgr.h" />
+    <ClInclude Include="PlayerObjects\Bullet.h" />
     <ClInclude Include="GameObjects\EnemyBullet.h" />
     <ClInclude Include="DataTables\DataTable.h" />
     <ClInclude Include="DataTables\StringTable.h" />
     <ClInclude Include="Framework\DataTableMgr.h" />
     <ClInclude Include="Framework\ObjectPool.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
-    <ClInclude Include="GameObjects\Player.h" />
+    <ClInclude Include="PlayerObjects\Player.h" />
     <ClInclude Include="GameObjects\SpriteEffect.h" />
     <ClInclude Include="GameObjects\VertexArrayGo.h" />
-    <ClInclude Include="GameObjects\Weapon.h" />
+    <ClInclude Include="PlayerObjects\Weapon.h" />
     <ClInclude Include="Global\Defines.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Framework\InputMgr.h" />
@@ -224,7 +225,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scenes\SceneMaptool.h" />
     <ClInclude Include="DataTables\PlayerTable.h" />
-    <ClInclude Include="PlayerMgr.h" />
+    <ClInclude Include="PlayerObjects\PlayerMgr.h" />
     <ClInclude Include="Scenes\SceneLobby.h" />
     <ClInclude Include="Scenes\SceneBulletEditor.h" />
     <ClInclude Include="Scenes\Scene.h" />
@@ -233,6 +234,7 @@
     <ClInclude Include="Global\Singleton.h" />
     <ClInclude Include="GameObjects\SpriteGo.h" />
     <ClInclude Include="Scenes\SceneTitle.h" />
+    <ClInclude Include="PlayerObjects\Skill.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Global\Variables.h" />
     <ClInclude Include="GameObjects\TextGo.h" />

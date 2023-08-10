@@ -10,11 +10,12 @@ class SceneGame : public Scene
 {
 protected:
 
-	Player* player;
+	Player* player = nullptr;
 	Weapon* weapon;
 	SpriteGo* shadow;
 
 	TileMap* gameDevMap;
+
 public:
 	SceneGame();
 	virtual ~SceneGame() override = default;
@@ -28,7 +29,7 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	virtual void SetPlayer(Player* player);
+	virtual void SetPlayer(Player*& player);
 
 };
 

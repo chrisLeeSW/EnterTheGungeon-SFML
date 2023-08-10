@@ -12,7 +12,7 @@ protected:
 
 	std::string resourceListPath;
 
-	std::list<GameObject*> gameObjects; 
+	std::list<GameObject*> gameObjects;
 	std::list<GameObject*> removeGameObjects;
 
 	sf::View worldView;

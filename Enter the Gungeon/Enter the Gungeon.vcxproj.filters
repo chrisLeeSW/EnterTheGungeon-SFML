@@ -124,6 +124,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PlayerMgr.cpp">
+	 <Filter>소스 파일</Filter>
+	</ClCompile>
+    <ClCompile Include="Tile.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -227,7 +230,6 @@
     <ClInclude Include="GameObjects\Bullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="Scenes\SceneMaptool.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -241,7 +243,8 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="UI\TextBox.h">
-=======
+	 <Filter>소스 파일</Filter>
+	</ClInclude>
     <ClInclude Include="DataTables\PlayerTable.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -249,7 +252,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="PlayerMgr.h">
->>>>>>> feature/Player
+	 <Filter>헤더 파일</Filter>
+	</ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

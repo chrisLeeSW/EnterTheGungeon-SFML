@@ -4,6 +4,7 @@
 class Player;
 class Weapon;
 class SpriteGo;
+class TileMap;
 
 class SceneGame : public Scene
 {
@@ -13,6 +14,7 @@ protected:
 	Weapon* weapon;
 	SpriteGo* shadow;
 
+	TileMap* gameDevMap;
 public:
 	SceneGame();
 	virtual ~SceneGame() override = default;

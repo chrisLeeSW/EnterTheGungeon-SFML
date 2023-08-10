@@ -88,6 +88,7 @@ void Player::Release()
 void Player::Reset()
 {
 	SpriteGo::Reset();
+
 	animation.Play("IdleRight");
 	//SetPosition(windowsize.x * 0.5, windowsize.y * 0.5);
 	SetFlipX(false);
@@ -130,7 +131,6 @@ void Player::PlayerRotation()
 
 	look = Utils::Normalize(mousePos - playerScreenPos);
 	angle = Utils::Angle2(look);
-
 
 	if (angle <= 45.f)
 	{

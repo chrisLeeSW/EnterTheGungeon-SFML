@@ -195,6 +195,7 @@
     <ClCompile Include="GameObjects\TextGo.cpp" />
     <ClCompile Include="Framework\UiButton.cpp" />
     <ClCompile Include="UI\TextBox.cpp" />
+    <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -221,8 +222,8 @@
     <ClInclude Include="Framework\ResourceMgr.h" />
     <ClInclude Include="Global\Utils.h" />
     <ClInclude Include="GameObjects\Muzzle.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SceneMaptool.h" />
-    <ClInclude Include="Scenes\SceneMaptool.h" />
     <ClInclude Include="DataTables\PlayerTable.h" />
     <ClInclude Include="PlayerMgr.h" />
     <ClInclude Include="Scenes\SceneLobby.h" />
@@ -238,6 +239,7 @@
     <ClInclude Include="GameObjects\TextGo.h" />
     <ClInclude Include="Framework\UiButton.h" />
     <ClInclude Include="UI\TextBox.h" />
+    <ClInclude Include="Tile.h" />
     <ClInclude Include="TileMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

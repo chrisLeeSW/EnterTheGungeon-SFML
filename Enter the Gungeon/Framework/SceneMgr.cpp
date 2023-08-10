@@ -6,16 +6,20 @@
 #include "SceneTitle.h"
 #include "SceneMaptool.h"
 #include "SceneBulletEditor.h"
+#include "SceneLobby.h"
+
 void SceneMgr::Init() 
 {
 	if (!scenes.empty())
 	{
 		Release();
 	}
-	scenes.push_back(new SceneTitle()); // 브레이크 포인트 걸었을때 383MB먹음
+	scenes.push_back(new SceneTitle());
+	scenes.push_back(new SceneLobby());
 	scenes.push_back(new SceneGame());
 	scenes.push_back(new SceneMaptool());
 	scenes.push_back(new SceneBulletEditor());
+
 	for (auto scene : scenes)
 	{
 		scene->Init();
@@ -44,6 +48,7 @@ void SceneMgr::Release()
 
 	currentSceneId = SceneId::None;
 	currentScene = nullptr;
+
 }
 
 void SceneMgr::UpdateEvent(float dt)

@@ -35,7 +35,6 @@ void Weapon::Release()
 void Weapon::Reset()
 {
 	SpriteGo::Reset();
-	SetScale(3.0, 3.0);
 	SetOrigin(Origins::MR);
 	animation.Play("Shoot");
 }
@@ -46,7 +45,7 @@ void Weapon::Update(float dt)
 
 	SetPosition(player->GetPlayerPos());
 	SetOrigin(Origins::BL);
-	sf::Vector2f mousePos = INPUT_MGR.GetMousePos();
+	mousePos = INPUT_MGR.GetMousePos();
 	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrScene()->ScreenToWorldPos(mousePos);
 	sf::Vector2f playerScreenPos = SCENE_MGR.GetCurrScene()->WorldPosToScreen(position);
 
@@ -63,7 +62,7 @@ void Weapon::Update(float dt)
 		WEAPON_MGR.ChangeCurrentWeapon((int)Types::Pilot);
 	}
 
-	if(INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
+	if(INPUT_MGR.GetMouseButton(sf::Mouse::Left))
 	{
 		Shoot(WEAPON_MGR.GetCurrentWeapon());
 	}

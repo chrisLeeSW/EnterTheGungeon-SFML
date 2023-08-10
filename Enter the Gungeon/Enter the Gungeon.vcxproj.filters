@@ -115,6 +115,15 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="UI\TextBox.cpp">
+	 <Filter>소스 파일</Filter>
+	</ClCompile>
+    <ClCompile Include="DataTables\PlayerTable.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\SceneLobby.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMgr.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -218,6 +227,7 @@
     <ClInclude Include="GameObjects\Bullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Scenes\SceneMaptool.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -231,6 +241,15 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="UI\TextBox.h">
+=======
+    <ClInclude Include="DataTables\PlayerTable.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\SceneLobby.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMgr.h">
+>>>>>>> feature/Player
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

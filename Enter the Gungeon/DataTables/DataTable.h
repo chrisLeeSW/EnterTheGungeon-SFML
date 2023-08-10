@@ -9,6 +9,7 @@ public:
 		String,
 		Weapon,
 		Bullet,
+		Player,
 	};
 
 	DataTable(const DataTable& other) = delete;

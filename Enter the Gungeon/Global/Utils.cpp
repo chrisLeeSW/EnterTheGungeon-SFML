@@ -133,6 +133,17 @@ float Utils::Angle(const sf::Vector2f& dir)
 	return (float)(atan2(dir.y, dir.x) * (180.f / M_PI)); // radinda 단위를 디그리 단위로 변경
 }
 
+float Utils::Angle2(const sf::Vector2f& dir)
+{
+	float angle = atan2(dir.y, dir.x); // 라디안 단위의 각도 (-π ~ π)
+
+	if (angle < 0)
+	{
+		angle += 2 * M_PI; // 0보다 작으면 2π를 더해줌 (0 ~ 2π)
+	}
+
+	return angle * (180.f / M_PI); // 라디안에서 디그리 단위로 변환하여 반환 (0 ~ 360)
+}
 float Utils::Angle(float a, float b)
 {
 	return atan2(a, b); //radinda 단위

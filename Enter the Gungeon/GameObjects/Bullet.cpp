@@ -2,7 +2,7 @@
 #include "Bullet.h"
 #include "BulletTable.h"
 #include "DataTableMgr.h"
-
+#include "SpriteGo.h"
 
 Bullet::Bullet(const std::string& textureId, const std::string& n) : SpriteGo(textureId, n)
 {
@@ -29,7 +29,7 @@ void Bullet::Update(float dt)
 	SetOrigin(Origins::TR);
 	animation.Update(dt);
 
-	position += direction * (float)speed * dt;
+	position += 0.f * direction * (float)speed * dt;
 	SetPosition(position);
 
 	animation.Play("Shoot");
@@ -56,7 +56,7 @@ void Bullet::SetType(int types)
 void Bullet::Fire(sf::Vector2f pos, sf::Vector2f dir)
 {
 	position = pos;
+	sprite.setRotation(Utils::Angle(dir));
 	SetPosition(position);
-
 	direction = dir;
 }

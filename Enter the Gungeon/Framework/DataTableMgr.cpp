@@ -1,10 +1,17 @@
 #include "stdafx.h"
 #include "DataTableMgr.h"
 #include "StringTable.h"
+#include "BulletTable.h"
+#include "WeaponTable.h"
+#include "PlayerTable.h"
 
 void DataTableMgr::LoadAll()
 {
 	//tables.insert({ DataTable::Ids::String, new StringTable() });
+
+	tables.insert({ DataTable::Ids::Bullet, new BulletTable() });
+	tables.insert({ DataTable::Ids::Weapon, new WeaponTable() });
+	tables.insert({ DataTable::Ids::Player, new PlayerTable() });
 
 	for (auto pair : tables)
 	{

@@ -1,0 +1,8 @@
+ID,FPS,LOOPTYPE,,
+WeaponIdleUpRight,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Pilot.png,154,151,14,19
+graphics/Pilot.png,170,150,14,20
+graphics/Pilot.png,186,150,14,20
+graphics/Pilot.png,202,149,14,21

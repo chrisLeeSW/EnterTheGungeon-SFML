@@ -6,7 +6,7 @@ const WeaponInfo* WeaponTable::Get(Weapon::Types id)
 	auto find = table.find(id);
 	if (find == table.end())
 	{
-		std::cout << "총알 못찾았음" << std::endl;
+		std::cout << "총 못찾았음" << std::endl;
 		return nullptr;
 	}
 

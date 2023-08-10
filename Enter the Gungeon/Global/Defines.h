@@ -36,9 +36,14 @@ enum class SceneId
 {
 	None = -1,
 	Title,
+	Lobby,
 	Game,
+<<<<<<< HEAD
 	MapTool,
+=======
+>>>>>>> feature/Player
 	BulletEditor,
+	//MapTool,
 
 	Count,
 };

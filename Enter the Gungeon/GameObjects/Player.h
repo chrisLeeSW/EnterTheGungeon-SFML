@@ -4,8 +4,9 @@
 #include "ObjectPool.h"
 #include "Weapon.h"
 
-class Player :
-	public SpriteGo
+class Scene;
+
+class Player : public SpriteGo
 {
 public:
 
@@ -14,22 +15,24 @@ public:
 		std::string idle;
 		std::string walk;
 		std::string roll;
+		bool flipX = false;
+		sf::Vector2f point;
 	};
 
-	enum class PlayerAct
+	enum class Types
 	{
-		Idle,
-		Walk,
-		Roll
+		Pilot,
+		Prisoner,
 	};
+
 
 protected:
 
 	ObjectPool<Weapon> poolWeapons;
-	PlayerAct playeract;
 	std::string clipId;
 
 	AnimationController animation;
+
 	//¼±»ý´Ô²¨
 	std::vector<ClipInfo> clipInfos;
 	ClipInfo currentClipInfo;
@@ -48,7 +51,12 @@ protected:
 	float magnitude;
 	sf::Vector2f look;
 
+	Types type;
+
+	bool playerchoise = false;
+
 public:
+	Player(Types type, const std::string& textureId = "", const std::string& n = "");
 	Player(const std::string& textureId = "", const std::string& n = "");
 	virtual ~Player() override { Release(); }
 
@@ -62,7 +70,17 @@ public:
 
 	void PlayerRotation();
 	void SetFlipX(bool filp);
+	void PlayerAct(float dt);
 
 	sf::Vector2f GetPlayerPos();
+	void SetPlayerChoise(bool playerchoise);
+
+	void ChoisePlayer(Types type);
+	void ChangePlayer(sf::Vector2f pos,bool choise);
+
+	Types GetType();
+
+	bool GetPlayerchoise();
+
 };
 

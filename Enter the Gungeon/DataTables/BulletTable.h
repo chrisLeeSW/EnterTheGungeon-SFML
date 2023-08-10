@@ -11,8 +11,7 @@ struct BulletInfo
 	int knockback;
 };
 
-class BulletTable :
-    public DataTable
+class BulletTable : public DataTable
 {
 
 protected:

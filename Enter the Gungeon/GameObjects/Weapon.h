@@ -23,6 +23,7 @@ protected:
 	std::list<Bullet*> bullets;
 	ObjectPool<Bullet> poolBullets;
 
+	sf::Vector2f mousePos;
 	sf::Vector2f look;
 
 	AnimationController animation;

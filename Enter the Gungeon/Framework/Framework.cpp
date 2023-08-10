@@ -40,6 +40,16 @@ void Framework::Run()
     Init(screenWidth, screenHeight, title);
     clock.restart();
 
+    sf::Image cursorImg;
+    cursorImg.loadFromFile("graphics/mouse.png");
+
+    sf::Cursor cursor;
+    if (cursor.loadFromPixels(cursorImg.getPixelsPtr(), cursorImg.getSize(),
+        { cursorImg.getSize().x, cursorImg.getSize().y }))
+    {
+        window.setMouseCursor(cursor);
+    }
+
     while (window.isOpen())
     {
         sf::Time deltaTime = clock.restart();

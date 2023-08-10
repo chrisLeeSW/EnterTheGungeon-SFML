@@ -38,12 +38,8 @@ enum class SceneId
 	Title,
 	Lobby,
 	Game,
-<<<<<<< HEAD
 	MapTool,
-=======
->>>>>>> feature/Player
 	BulletEditor,
-	//MapTool,
 
 	Count,
 };

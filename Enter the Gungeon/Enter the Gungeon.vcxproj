@@ -220,15 +220,12 @@
     <ClInclude Include="Framework\InputMgr.h" />
     <ClInclude Include="Framework\ResourceMgr.h" />
     <ClInclude Include="Global\Utils.h" />
-<<<<<<< HEAD
     <ClInclude Include="GameObjects\Muzzle.h" />
     <ClInclude Include="SceneMaptool.h" />
     <ClInclude Include="Scenes\SceneMaptool.h" />
-=======
     <ClInclude Include="DataTables\PlayerTable.h" />
     <ClInclude Include="PlayerMgr.h" />
     <ClInclude Include="Scenes\SceneLobby.h" />
->>>>>>> feature/Player
     <ClInclude Include="Scenes\SceneBulletEditor.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\SceneGame.h" />

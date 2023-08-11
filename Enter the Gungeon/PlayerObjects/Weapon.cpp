@@ -6,7 +6,7 @@
 #include "Scene.h"
 #include "DataTableMgr.h"
 #include "WeaponTable.h"
-
+#include "GameObject.h"
 
 Weapon::Weapon(const std::string& textureId, const std::string& n) : SpriteGo(textureId, n)
 {
@@ -22,11 +22,11 @@ void Weapon::Init()
 
 
 
-	ObjectPool<Bullet>* ptr = &poolBullets;
-	poolBullets.OnCreate = [ptr](Bullet* bullet) {
-		bullet->pool = ptr;
-	};
-	poolBullets.Init();
+	//ObjectPool<Bullet>* ptr = &poolBullets;
+	//poolBullets.OnCreate = [ptr](Bullet* bullet) {
+	//	bullet->pool = ptr;
+	//};
+	//poolBullets.Init();
 
 
 }
@@ -40,7 +40,6 @@ void Weapon::Reset()
 	SpriteGo::Reset();
 
 	SetOrigin(Origins::MR);
-	animation.Play("Shoot");
 }
 
 void Weapon::Update(float dt)
@@ -56,27 +55,17 @@ void Weapon::Update(float dt)
 	look = Utils::Normalize(mousePos - playerScreenPos);
 	sprite.setRotation(Utils::Angle(look));
 
-
-	//if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num1))
-	//{
-	//	WEAPON_MGR.ChangeCurrentWeapon((int)Types::PilotGun);
-	//}
-	//if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num2))
-	//{
-	//	WEAPON_MGR.ChangeCurrentWeapon((int)Types::PilotGun);
-	//}
-
 	if(INPUT_MGR.GetMouseButton(sf::Mouse::Left))
 	{
 		Shoot(WEAPON_MGR.GetCurrentWeapon());
 	}
-
 }
 
 void Weapon::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
 }
+
 
 void Weapon::SetPlayer(Player* player)
 {
@@ -112,5 +101,5 @@ void Weapon::SetType(Types t)
 	reload = info->reload;
 	santan = info->santan;
 
-
+	//불릿 ID까지 스트링으로 받아와서 애니메이션 animation.Play(" 요기  ") <- 넣어버리기
 }

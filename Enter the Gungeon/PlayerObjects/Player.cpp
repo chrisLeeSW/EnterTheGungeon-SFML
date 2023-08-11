@@ -120,7 +120,6 @@ void Player::Init()
 	{
 		playerchoise = true;
 		SetSceneGame();
-
 	}
 }
 
@@ -138,12 +137,21 @@ void Player::Reset()
 	if (hand != nullptr)
 	{
 		hand->SetOrigin(-sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height * 0.4);
-		std::cout << sprite.getLocalBounds().width << std::endl;
+		//WEAPON_MGR.SetOriginhand->sprite.getOrigin();
+		switch (type)
+		{
+		case Types::WeaponPilot:
+			WEAPON_MGR.Enter(Weapon::Types::PilotWeapon);
+			break;
+		case Types::WeaponPrisoner:
+			WEAPON_MGR.Enter(Weapon::Types::PrisonerWeapon);
+			break;
+		}
 	}
+
 	speed = 150.f;
 	rollspeed = 250.f;
 	currentClipInfo = clipInfos[6];
-
 }
 
 void Player::Update(float dt)
@@ -163,11 +171,14 @@ void Player::Update(float dt)
 			animation.Play("IdleRight");
 		}
 	}
-
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
+	if (type == Types::WeaponPilot || type == Types::WeaponPrisoner)
+	{
+		WEAPON_MGR.Draw(window);
+	}
 	SpriteGo::Draw(window);
 }
 
@@ -230,17 +241,20 @@ void Player::PlayerRotation()
 void Player::SetFlipX(bool filp)
 {
 	flipX = filp;
+
+
 	sf::Vector2f scale1 = sprite.getScale();
 	scale1.x = !flipX ? abs(scale1.x) : -abs(scale1.x);
 	sprite.setScale(scale1);
 	if (hand != nullptr)
 	{
-		handflipX = filp;
-
 		sf::Vector2f scale2 = hand->sprite.getScale();
 		scale2.x = !flipX ? abs(scale2.x) : -abs(scale2.x);
 		hand->sprite.setScale(scale2);
 	}
+
+	if(WEAPON_MGR.GetWithWeapon())
+	WEAPON_MGR.SetWeaPonFlipx(filp);
 }
 
 void Player::PlayerAct(float dt)
@@ -294,7 +308,6 @@ void Player::PlayerAct(float dt)
 	}
 	else if (animation.GetCurrentClipId() != clipId)
 	{
-
 		animation.Play(clipId);
 	}
 }

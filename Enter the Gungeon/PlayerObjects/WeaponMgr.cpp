@@ -10,7 +10,6 @@
 #include "Ak47.h"
 
 
-
 void WeaponMgr::Init()
 {
 	if (!weapons.empty())
@@ -25,13 +24,36 @@ void WeaponMgr::Init()
 	};
 	poolBullets.Init();
 
-	//Scene* scene = SCENE_MGR.GetGameScene();
-	//SceneGame* SG = dynamic_cast<SceneGame*>(scene);
-	//
-	//weapons.push_back(new PilotWeapon());
-	//prisonergun = (Weapon*)SG->AddGo(new Weapon());
-	//ak47 = (Weapon*)SG->AddGo(new Weapon());
 }
+
+
+void WeaponMgr::Enter(Weapon::Types type)
+{
+	switch (type)
+	{
+	case Weapon::Types::PilotWeapon :
+		weapons.push_back(new PilotWeapon());
+		currentWeapon = weapons[0];
+		currentWeapon->Init();
+		std::cout << "웨폰매니저 엔터 : 타입 파일럿 웨폰";
+		break;
+
+	case Weapon::Types::PrisonerWeapon : 
+		weapons.push_back(new PrisonerWeapon());
+		currentWeapon = weapons[0];
+		currentWeapon->Init();
+		std::cout << "웨폰매니저 엔터 : 타입 프리즈너 웨폰";
+		break;
+	}
+
+	withWeapon = true;
+}
+
+스위치(커런트웨폰->무기 타입)
+
+캐이스 1
+슈팅(무기타입);
+
 
 void WeaponMgr::Release()
 {
@@ -47,15 +69,15 @@ void WeaponMgr::Release()
 	}
 	weapons.clear();
 
-	currentWeapon = Weapon::Types::None;
+	currentWeaponType = Weapon::Types::None;
 }
 
 void WeaponMgr::SwapWeapon(int swap)
 {
 	if (swap >= 0 && swap < weapons.size())
 	{
-		currentWeapon = (Weapon::Types)swap;
-		SetType(currentWeapon);
+		swap--;
+		currentWeapon = weapons[swap];
 	}
 	else
 	{
@@ -63,22 +85,54 @@ void WeaponMgr::SwapWeapon(int swap)
 	}
 }
 
-void WeaponMgr::SetType(Weapon::Types t)
+void WeaponMgr::Update(float dt)
 {
-
-	Weapon::Types settype = t;
-	weaponSetType = [this, settype](Weapon* weapon)
-	{
-		weapon->SetType(settype);
-	};
-
+	currentWeapon->Update(dt);
 }
+
+void WeaponMgr::Draw(sf::RenderWindow& window)
+{
+	currentWeapon->Draw(window);
+}
+
+
+void WeaponMgr::SetPlayer(Player* player)
+{
+	this->player = player;
+}
+
+Player* WeaponMgr::GetPlayer()
+{
+	return player;
+}
+
+bool WeaponMgr::GetWithWeapon()
+{
+	return withWeapon;
+}
+
+void WeaponMgr::SetHandOrigin(sf::Vector2f handori)
+{
+	orix = handori.x;
+	oriy = handori.y;
+}
+
+sf::Vector2f WeaponMgr::GetHandOrigin()
+{
+	return sf::Vector2f{ orix,oriy };
+}
+
+void WeaponMgr::SetWeaPonFlipx(bool flip)
+{
+	currentWeapon->SetGunFlipx(flip);
+}
+
 Weapon::Types WeaponMgr::GetCurrentWeapon() const
 {
-	return currentWeapon;
+	return currentWeaponType;
 }
 
-const void WeaponMgr::AddWeapon(Weapon::Types id)
+const void WeaponMgr::GetWeapon(Weapon::Types id)
 {
 	auto find = mapweapons.find(id);
 	if (find == mapweapons.end())
@@ -88,14 +142,9 @@ const void WeaponMgr::AddWeapon(Weapon::Types id)
 
 	switch (id)
 	{
-	case Weapon::Types::PilotWeapon:
-		weapons.push_back(new PilotWeapon());
-		break;
-	case Weapon::Types::PrisonerWeapon:
-		weapons.push_back(new PrisonerWeapon());
-		break;
 	case ::Weapon::Types::Ak47:
 		weapons.push_back(new Ak47());
+		weapons.back()->Init();
 		break;
 	}
 }

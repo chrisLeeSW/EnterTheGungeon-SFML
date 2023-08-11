@@ -91,5 +91,7 @@ public:
 	Types GetType();
 
 	void SetSceneGame();
-	void AddWeapon();
+
+
+
 };

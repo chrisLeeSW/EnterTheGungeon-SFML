@@ -56,5 +56,3 @@ void GameObject::SetOrigin(float x, float y)
 {
 	this->origin = Origins::CUSTOM;
 }
-
-

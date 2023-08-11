@@ -13,7 +13,6 @@
 3,playercsv/PilotWalkRight.csv
 3,playercsv/PilotWalkUp.csv
 3,playercsv/PilotWalkUpRight.csv
-3,playercsv/PilotShoot.csv
 3,playercsv/PilotWeaponIdleDown.csv
 3,playercsv/PilotWeaponIdleRight.csv
 3,playercsv/PilotWeaponIdleUp.csv
@@ -50,3 +49,5 @@
 3,Animations/Enemy/BulletKinMoveDown.csv
 3,Animations/Enemy/BulletKinMoveUp.csv
 0,graphics/Hand.png
+3,weapon/PilotWeaponIdle.csv
+3,weapon/PilotWeaponShoot.csv

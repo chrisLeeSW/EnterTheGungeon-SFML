@@ -6,6 +6,7 @@
 #include "TextGo.h"
 #include "Weapon.h"
 #include "TileMap.h"
+#include "WeaponMgr.h"
 
 SceneGame::SceneGame() : Scene(SceneId::Game)
 {
@@ -15,6 +16,7 @@ SceneGame::SceneGame() : Scene(SceneId::Game)
 void SceneGame::Init()
 {
 	Release();
+
 
 	//Scene* scene = SCENE_MGR.GetCurrScene();
 	//setplayer 써서 scene에 있는 player 할당해
@@ -65,8 +67,10 @@ void SceneGame::Enter()
 		delete player;
 	}
 
+
 	player = (Player*)AddGo(new Player((Player::Types)playertype));
 	player->Init();
+	WEAPON_MGR.SetPlayer(player);
 	Scene::Enter();
 
 	player->SetPosition((gameDevMap->vertexArray.getBounds().left + gameDevMap->vertexArray.getBounds().width)/2, (gameDevMap->vertexArray.getBounds().top + gameDevMap->vertexArray.getBounds().height) / 2);
@@ -81,6 +85,7 @@ void SceneGame::Exit()
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
+	WEAPON_MGR.Update(dt);
 	shadow->SetPosition(player->GetPosition());
 
 	sf::Vector2i playerTile = (sf::Vector2i)(player->GetPosition()/ 50.f);
@@ -139,5 +144,4 @@ void SceneGame::Draw(sf::RenderWindow& window)
 void SceneGame::SetPlayer(int a)
 {
 	playertype =  a;
-	std::cout << "플레이어 넘김" << std::endl;
 }

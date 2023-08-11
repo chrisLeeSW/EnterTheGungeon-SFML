@@ -6,17 +6,23 @@
 #include "AnimationController.h"
 
 class Weapon;
+class Player;
 
 class WeaponMgr : public Singleton<WeaponMgr>
 {
 	friend Singleton<WeaponMgr>;
 
-
+	
 public:
 
 
 
 protected:
+
+	float orix;
+	float oriy;
+
+	Player* player = nullptr;
 
 	Bullet* bullet;
 	std::list<Bullet*> bullets;
@@ -27,6 +33,9 @@ protected:
 	Weapon* prisonergun;
 	Weapon* ak47;
 
+	Weapon* currentWeapon = nullptr;
+
+	bool withWeapon = false;
 
 
 	WeaponMgr() = default;
@@ -36,22 +45,33 @@ protected:
 	std::unordered_map<Weapon::Types, Weapon*> mapweapons;
 
 
-	Weapon::Types currentWeapon;
+	Weapon::Types currentWeaponType;
 
 	std::function<void(Weapon*)> weaponSetType;
 
 public:
 
 	void Init();
+	void Enter(Weapon::Types type);
 	void Release();
 
+
     void SwapWeapon(int swap);
+	void Update(float dt);
+	void Draw(sf::RenderWindow& window);
+	void SetWeaPonFlipx(bool flip);
+	bool GetWithWeapon();
+
+	void SetPlayer(Player* player);
+	Player* GetPlayer();
 
 
-	void SetType(Weapon::Types t);
+	void SetHandOrigin(sf::Vector2f handori);
+	sf::Vector2f GetHandOrigin();
+
 
 	Weapon::Types GetCurrentWeapon() const;
-	const void AddWeapon(Weapon::Types id);
+	const void GetWeapon(Weapon::Types id);
 };
 
 #define WEAPON_MGR (WeaponMgr::Instance())

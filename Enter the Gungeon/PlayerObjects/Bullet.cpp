@@ -42,7 +42,6 @@ void Bullet::Draw(sf::RenderWindow& window)
 
 void Bullet::SetType(int types)
 {
-
 	const BulletInfo* info = DATATABLE_MGR.Get<BulletTable>(DataTable::Ids::Bullet)->Get((Bullet::Types)types);
 
 	bulletType = info->bulletType;
@@ -50,7 +49,6 @@ void Bullet::SetType(int types)
 	damage = info->damage;
 	range = info->range;
 	knockback = info->knockback;
-
 }
 
 void Bullet::Shoot(Types type)

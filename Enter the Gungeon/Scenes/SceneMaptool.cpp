@@ -8,8 +8,8 @@
 
 #include <windows.h>
 #include <tchar.h>
-SceneMaptool::SceneMaptool() : Scene(SceneId::MapTool), view(1.0f), wallWidthCount(5), wallHeightCount(3), doubleBySclaeX(2.f), doubleBySclaeY(2.f), minWallWidthCount(5), 
-	minWallHeightCount(3)
+SceneMaptool::SceneMaptool() : Scene(SceneId::MapTool), view(1.0f), wallWidthCount(5), wallHeightCount(3), doubleBySclaeX(2.f), doubleBySclaeY(2.f), minWallWidthCount(5),
+minWallHeightCount(3)
 {
 	resourceListPath = "script/SceneMapToolResourceList.csv";
 }
@@ -22,6 +22,9 @@ void SceneMaptool::Init()
 	SettingUiSprite();
 	SettingUiText();
 	SettingTileSprite("Room/TileSpriteInfo.csv");
+
+
+
 
 	for (auto go : gameObjects)
 	{
@@ -44,8 +47,8 @@ void SceneMaptool::Enter()
 
 	Scene::Enter();
 
-	wallWidthCount=5;
-	wallHeightCount=3;
+	wallWidthCount = 5;
+	wallHeightCount = 3;
 
 	worldView.setSize(windowSize);
 	worldView.setCenter({ 0,0 });
@@ -53,7 +56,7 @@ void SceneMaptool::Enter()
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
 
-	
+
 
 	view = 1.0f;
 }
@@ -79,7 +82,41 @@ void SceneMaptool::Update(float dt)
 	wallHeightCountText->text.setString(wallHeightSize.str());
 	wallHeightCountText->SetOrigin(Origins::BC);
 
+
+	MakeLine();
+	//MakeGrid();
+	if (IncreaseOrDecrease)
+	{
+
+		TileMap* temp1 = gridTile;
+		TileMap* temp2 = objectSprite;
+
+		gridTile = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+		gridTile->tiles.resize(temp1->tiles.size());
+		for (int i = 0;i < temp1->tiles.size();++i)
+		{
+			gridTile->tiles[i] = temp1->tiles[i];
+		}
+		gridTile->NoneFileLoad(wallWidthCount, wallHeightCount);
+		
 	
+		objectSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+		
+		objectSprite->tiles.resize(temp2->tiles.size());
+		for (int i = 0;i < temp1->tiles.size();++i)
+		{
+			objectSprite->tiles[i] = temp2->tiles[i];
+		}
+		objectSprite->NoneFileLoad(wallWidthCount, wallHeightCount);
+		
+		RemoveGo(temp1);
+		temp1 = nullptr;
+
+		RemoveGo(temp2);
+		temp2 = nullptr;
+		IncreaseOrDecrease = false;
+	}
+
 
 	if (INPUT_MGR.GetKey(sf::Keyboard::Right))
 	{
@@ -103,15 +140,13 @@ void SceneMaptool::Update(float dt)
 		if (tile.spr->sprite.getGlobalBounds().contains(INPUT_MGR.GetMousePos()) && INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
 		{
 			currentTileSprite->sprite.setTextureRect(tile.spr->sprite.getTextureRect());
-			
 		}
 	}
-	
-	
+
 	if (INPUT_MGR.GetMouseButton(sf::Mouse::Left))
 	{
-		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos())/50;
-		int count = 0;
+		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
+		int count = -1;
 		for (int i = 0; i < tiles.size(); ++i)
 		{
 			if (currentTileSprite->sprite.getTextureRect() == tiles[i].spr->sprite.getTextureRect())
@@ -120,63 +155,51 @@ void SceneMaptool::Update(float dt)
 				break;
 			}
 		}
-		gridTile->ChangeTile(gridIndex.x, gridIndex.y, count, currentTileSprite->sprite.getTextureRect());
-	}
-	if (INPUT_MGR.GetMouseButton(sf::Mouse::Right))
-	{
-		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
-		gridTile->ChangeTile(gridIndex.x, gridIndex.y, static_cast<int>(MapObjectType::None), sf::IntRect{50,0,50,50});
+		if (count < 0) return;
+		if (count == (int)MapObjectType::Object1 || count == (int)MapObjectType::WallDown || count == (int)MapObjectType::LibraryDown)
+		{
+			objectSprite->ChangeTile(gridIndex.x, gridIndex.y, count, currentTileSprite->sprite.getTextureRect());
+		}
+		else
+		{
+			gridTile->ChangeTile(gridIndex.x, gridIndex.y, count, currentTileSprite->sprite.getTextureRect());
+		}
 	}
 
-	//
+	if (INPUT_MGR.GetMouseButton(sf::Mouse::Right) && INPUT_MGR.GetKey(sf::Keyboard::LControl))
+	{
+		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
+		gridTile->ChangeTile(gridIndex.x, gridIndex.y, static_cast<int>(MapObjectType::None), sf::IntRect{ 50,0,50,50 });
+	}
+	if (INPUT_MGR.GetMouseButton(sf::Mouse::Right) && INPUT_MGR.GetKey(sf::Keyboard::LShift))
+	{
+		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
+		objectSprite->ChangeTile(gridIndex.x, gridIndex.y, static_cast<int>(MapObjectType::None), sf::IntRect{ 50,0,50,50 });
+	}
+
+
+
+
+	// ?? 왜있는지 기억안남 ;;
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad8))
 	{
 		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
-		int count = 0;
-		for (int i = 0; i < tiles.size(); ++i)
-		{
-			if (currentTileSprite->sprite.getTextureRect() == tiles[i].spr->sprite.getTextureRect())
-			{
-				count = i;
-				break;
-			}
-		}
-			std::cout <<"Left :" << tiles[count].spr->sprite.getTextureRect().left << std::endl;
-			std::cout << "Top:" << tiles[count].spr->sprite.getTextureRect().top << std::endl;
-			std::cout << "Width :" << tiles[count].spr->sprite.getTextureRect().width << std::endl;
-			std::cout << "Height :" << tiles[count].spr->sprite.getTextureRect().height << std::endl;
-	}
+		int count = gridIndex.x * wallWidthCount + gridIndex.y;
 
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad9))
-	{
-		for (int i = 0; i < gridTile->tiles.size(); ++i)
-		{
-			std::cout<<gridTile->tiles[i].texIndex << std::endl;
-		}
-	}
+		if (count > objectSprite->tiles.size()) return;
+		std::cout << tiles[count].spr->sprite.getPosition().x << std::endl;
+		std::cout << tiles[count].spr->sprite.getPosition().y << std::endl;
 
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Add))
-	{
-		std::string  file = fileNameTexBox->text.getString();
-		
-		/*std::string name = folderPath;
-		std::string name1 = "/TileMap-";
-		name1 = name1 + std::to_string(fileCount);
-		name1 += ".csv";
-		std::string sumName = name + name1;*/
-		SaveRoomSortLayer0(file);
-	}
-	//
-
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Home))
-	{
-		std::string  folderPath="Room/TileMapFile";
-		ListFilesInDirectory(folderPath);
+		std::cout << objectSprite->tiles[count].x * 50.f << "            " << objectSprite->tiles[count].y * 50.f;
 	}
 
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Escape))
 	{
 		SCENE_MGR.ChangeScene(SceneId::Title);
+	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F1))
+	{
+		SCENE_MGR.ChangeScene(SceneId::GameMapTestScene);
 	}
 }
 
@@ -213,10 +236,16 @@ void SceneMaptool::SettingUiSprite()
 	};
 	saveUi->OnClick = [this]()
 	{
-		std::cout << "Clock" << std::endl;
-		backGroundSaveAndLoadType->SetActive(true);
+		std::string route = "Room/TileMapFile/";
+		std::string  file = fileNameTexBox->text.getString();
+		std::string csv = ".csv";
+
+		std::string path = route + file + csv;
+		SaveRoom(path, route, file + csv);
 	};
 	saveUi->sortLayer = 100;
+
+
 
 	loadUi = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "LoadUi"));
 	loadUi->sprite.setTextureRect({ 10,27,50,20 });
@@ -235,8 +264,13 @@ void SceneMaptool::SettingUiSprite()
 	};
 	loadUi->OnClick = [this]()
 	{
-		std::cout << "Clock" << std::endl;
-		backGroundSaveAndLoadType->SetActive(false);
+		std::string route = "Room/TileMapFile/";
+		std::string  file = fileNameTexBox->text.getString();
+		std::string csv = ".csv";
+		std::string path = route + file + csv;
+
+		LoadGridAndObjectSpriteFile(path, route, file + csv);
+
 	};
 	loadUi->sortLayer = 100;
 
@@ -273,6 +307,11 @@ void SceneMaptool::SettingUiSprite()
 	wallWidthCountIncrease->OnClick = [this]()
 	{
 		wallWidthCount++;
+		if (makeGridCheck)
+		{
+			IncreaseOrDecrease = true;
+			increaseWidth = true;
+		}
 	};
 	wallWidthCountIncrease->sortLayer = 100;
 
@@ -294,6 +333,12 @@ void SceneMaptool::SettingUiSprite()
 	wallHeightCountIncrease->OnClick = [this]()
 	{
 		wallHeightCount++;
+		if (makeGridCheck) 
+		{ 
+			IncreaseOrDecrease = true; 
+			increaseHeight = true;
+		}
+
 	};
 	wallHeightCountIncrease->sortLayer = 100;
 
@@ -316,6 +361,11 @@ void SceneMaptool::SettingUiSprite()
 	};
 	wallWidthCountDecrease->OnClick = [this]()
 	{
+		if (makeGridCheck)
+		{
+			IncreaseOrDecrease = true;
+			decreaseWidth = true;
+		}
 		wallWidthCount--;
 		if (wallWidthCount < minWallWidthCount)	wallWidthCount = minWallWidthCount;
 	};
@@ -339,6 +389,11 @@ void SceneMaptool::SettingUiSprite()
 	};
 	wallHeightCountDecrease->OnClick = [this]()
 	{
+		if (makeGridCheck)
+		{
+			IncreaseOrDecrease = true;
+			decreaseHeight = true;
+		}
 		wallHeightCount--;
 		if (wallHeightCount < minWallHeightCount)	wallHeightCount = minWallHeightCount;
 	};
@@ -364,33 +419,8 @@ void SceneMaptool::SettingUiSprite()
 		if (!drawGridAllowed)
 		{
 			drawGridAllowed = true;
+			MakeGrid();
 		}
-		else return;
-		if (drawGridAllowed)
-		{
-			//linesMap.clear();
-
-			sf::VertexArray grid(sf::Lines);
-			sf::Vector2f mapTileSize = { 50.f,50.f };
-			sf::Vector2f startPos = { 0.f,0.f };
-
-			for (int i = 0; i < wallHeightCount + 1; ++i)
-			{
-				grid.append(sf::Vertex(sf::Vector2f(startPos.x, startPos.y + (mapTileSize.y * i)), sf::Color::Red));
-				grid.append(sf::Vertex(sf::Vector2f(mapTileSize.x * (wallWidthCount), startPos.y + (mapTileSize.y * i)), sf::Color::Red));
-				linesMap.push_back(grid);
-			}
-
-			for (int i = 0; i < wallWidthCount + 1; ++i)
-			{
-				grid.append(sf::Vertex(sf::Vector2f(startPos.x + (mapTileSize.x * i), startPos.y), sf::Color::White));
-				grid.append(sf::Vertex(sf::Vector2f(startPos.x + (mapTileSize.x * i), mapTileSize.y * (wallHeightCount)), sf::Color::White));
-				linesMap.push_back(grid);
-			}
-			gridTile = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-			gridTile->NoneFileLoad(wallWidthCount, wallHeightCount);
-		}
-
 	};
 	makeUi->sortLayer = 100;
 
@@ -411,35 +441,22 @@ void SceneMaptool::SettingUiSprite()
 	};
 	restUi->OnClick = [this]()
 	{
-		if (drawGridAllowed)
-		{
-			drawGridAllowed = false;
-			linesMap.clear();
-			if (gridTile != nullptr)
-			{
-				RemoveGo(gridTile);
-			}
-			backGroundSaveAndLoadType->SetActive(false);
-		}
+		drawGridAllowed = false;
+		ResetGrid();
+		RestLine();
 	};
 	restUi->sortLayer = 100;
 
-	
 
-	currentTileSpriteBackGround=(SpriteGo*)AddGo(new SpriteGo("graphics/MapMakerMenu.png", "CurrentTileBackGround"));
+
+	currentTileSpriteBackGround = (SpriteGo*)AddGo(new SpriteGo("graphics/MapMakerMenu.png", "CurrentTileBackGround"));
 	currentTileSpriteBackGround->sprite.setTextureRect({ 12,120,100,100 });
-	currentTileSpriteBackGround->SetPosition(windowSize.x * 0.225f, windowSize.y * 0.125f); 
+	currentTileSpriteBackGround->SetPosition(windowSize.x * 0.225f, windowSize.y * 0.125f);
 	currentTileSpriteBackGround->SetScale(doubleBySclaeX, doubleBySclaeY);
 	currentTileSpriteBackGround->SetOrigin(Origins::MC);
 	currentTileSpriteBackGround->sortLayer = 100;
 
-	backGroundSaveAndLoadType = (SpriteGo*)AddGo(new SpriteGo("graphics/MapMakerMenu.png", "BackGroundSaveAndLoadType"));
-	backGroundSaveAndLoadType->sprite.setTextureRect({ 12,120,100,100 });
-	backGroundSaveAndLoadType->SetPosition(windowSize.x * 0.075f, windowSize.y * 0.38f); 
-	backGroundSaveAndLoadType->SetScale(doubleBySclaeX, doubleBySclaeY);
-	backGroundSaveAndLoadType->SetOrigin(Origins::MC);
-	backGroundSaveAndLoadType->sortLayer = 100;
-	backGroundSaveAndLoadType->SetActive(false);
+
 }
 
 void SceneMaptool::SettingUiText()
@@ -515,9 +532,8 @@ void SceneMaptool::SettingUiText()
 	fileNameTexBox->box.setSize({ 200, 50 });
 	fileNameTexBox->text.setCharacterSize(10);
 	fileNameTexBox->SetOrigin(Origins::MC);
-	fileNameTexBox->SetPosition(windowSize.x*0.08f, windowSize.y*0.3f);
+	fileNameTexBox->SetPosition(windowSize.x * 0.08f, windowSize.y * 0.3f);
 	fileNameTexBox->sortLayer = 100;
-	//fileNameTexBox->SetActive(false);
 
 }
 
@@ -553,10 +569,82 @@ void SceneMaptool::SettingTileSprite(const std::string& path)
 
 }
 
-void SceneMaptool::SaveRoomSortLayer0(std::string& fileName)
+void SceneMaptool::MakeLine()
 {
-	std::ofstream ouptFile(fileName);
 
+	if (drawGridAllowed)
+	{
+		linesMap.clear();
+		sf::VertexArray grid(sf::Lines);
+		sf::Vector2f mapTileSize = { 50.f,50.f };
+		sf::Vector2f startPos = { 0.f,0.f };
+
+		for (int i = 0; i < wallHeightCount + 1; ++i)
+		{
+			grid.append(sf::Vertex(sf::Vector2f(startPos.x, startPos.y + (mapTileSize.y * i)), sf::Color::Red));
+			grid.append(sf::Vertex(sf::Vector2f(mapTileSize.x * (wallWidthCount), startPos.y + (mapTileSize.y * i)), sf::Color::Red));
+			linesMap.push_back(grid);
+		}
+
+		for (int i = 0; i < wallWidthCount + 1; ++i)
+		{
+			grid.append(sf::Vertex(sf::Vector2f(startPos.x + (mapTileSize.x * i), startPos.y), sf::Color::White));
+			grid.append(sf::Vertex(sf::Vector2f(startPos.x + (mapTileSize.x * i), mapTileSize.y * (wallHeightCount)), sf::Color::White));
+			linesMap.push_back(grid);
+		}
+	}
+}
+
+void SceneMaptool::RestLine()
+{
+	if (!linesMap.empty())
+		linesMap.clear();
+	else
+		return;
+}
+
+void SceneMaptool::MakeGrid()
+{
+	makeGridCheck = true;
+	gridTile = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+	gridTile->NoneFileLoad(wallWidthCount, wallHeightCount);
+
+	objectSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+	objectSprite->NoneFileLoad(wallWidthCount, wallHeightCount);
+
+}
+
+
+void SceneMaptool::ResetGrid()
+{
+	if (gridTile != nullptr)
+	{
+		RemoveGo(gridTile);
+		delete gridTile;
+		gridTile = nullptr;
+	}
+	if (objectSprite != nullptr)
+	{
+		RemoveGo(objectSprite);
+		delete objectSprite;
+		objectSprite = nullptr;
+	}
+}
+
+void SceneMaptool::SaveRoom(std::string& fileName, std::string route, std::string saveFileNameCsv)
+{
+	ListFilesInDirectory(route);
+	bool makeFile = false;
+
+	for (int i = 0;i < fileList.size();++i)
+	{
+		if (fileList[i] != saveFileNameCsv)
+		{
+			makeFile = true;
+		}
+	}
+	if (makeFile || fileList.size() <= 0) { std::ofstream ouptFile(fileName); }
+	IncreaseOrDecrease = false;
 	rapidcsv::Document doc(fileName, rapidcsv::LabelParams(-1, -1));
 	doc.Clear();
 
@@ -569,59 +657,71 @@ void SceneMaptool::SaveRoomSortLayer0(std::string& fileName)
 	doc.SetCell<int>(2, 1, -1);
 
 	int count = 0;
-	for (int i = 4;i < wallHeightCount + 4;++i)
+	for (int i = 4;i < wallHeightCount+4;++i)
 	{
 		for (int j = 0;j < wallWidthCount;++j)
 		{
-			doc.SetCell<int>(j, i, gridTile->tiles[count].texIndex);
+			std::string tileInfo = std::to_string(gridTile->tiles[count].texIndex);
+			tileInfo += "," + std::to_string(objectSprite->tiles[count].texIndex);
+
+			doc.SetCell<std::string>(j, i, tileInfo);
 			count++;
 		}
 	}
-
-
 	doc.Save();
+	std::cout << "Save File Complete" << std::endl;
+
+	drawGridAllowed = false;
+	ResetGrid();
+	RestLine();
 }
 
-void SceneMaptool::SaveRoomSortLayer1(std::string& fileName)
+void SceneMaptool::LoadGridAndObjectSpriteFile(std::string& fileName, std::string& route, std::string saveFileNameCsv)
 {
-	std::ofstream ouptFile(fileName);
+	ListFilesInDirectory(route);
+	bool makeFile = false;
+
+	for (int i = 0;i < fileList.size();++i)
+	{
+		if (fileList[i] == saveFileNameCsv)
+		{
+			makeFile = true;
+			break;
+		}
+	}
+	if (!makeFile)
+	{
+		std::cout << "Not Find File" << std::endl;
+		return;
+	}
 
 	rapidcsv::Document doc(fileName, rapidcsv::LabelParams(-1, -1));
-	doc.Clear();
+	RestLine();
+	ResetGrid();
 
-	doc.SetCell<std::string>(0, 0, "WallSizeWidth");
-	doc.SetCell<std::string>(1, 0, "WallSizeHeight");
-	doc.SetCell<std::string>(2, 0, "SortLayer");
+	wallWidthCount = doc.GetCell<int>(0, 1);
+	wallHeightCount = doc.GetCell<int>(1, 1);
 
-	doc.SetCell<int>(0, 1, wallWidthCount);
-	doc.SetCell<int>(1, 1, wallHeightCount);
-	doc.SetCell<int>(2, 1, 0);
 
-	int count = 0;
-	for (int i = 4;i < wallHeightCount + 4;++i)
+
+	gridTile = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+	gridTile->Load(fileName, false);
+
+	objectSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+	objectSprite->LoadObject(fileName, false);
+
+	wallWidthCount = gridTile->GetWallSize().x;
+	wallHeightCount = gridTile->GetWallSize().y;
+	if (!drawGridAllowed)
 	{
-		for (int j = 0;j < wallWidthCount;++j)
-		{
-			doc.SetCell<int>(j, i, gridTile->tiles[count].texIndex);
-			count++;
-		}
+		drawGridAllowed = true;
 	}
-
-
-	doc.Save();
+	MakeLine();
+	makeGridCheck = true;
 }
 
-void SceneMaptool::DrawSaveUi()
-{
-	backGroundSaveAndLoadType->SetActive(true);
-}
 
-void SceneMaptool::DrawLoadUi()
-{
-	backGroundSaveAndLoadType->SetActive(true);
-}
-
-void SceneMaptool::ListFilesInDirectory(const std::string & folderPath)
+void SceneMaptool::ListFilesInDirectory(const std::string& folderPath)
 {
 	WIN32_FIND_DATAA findFileData;
 	HANDLE hFind = FindFirstFileA((folderPath + "\\*").c_str(), &findFileData);
@@ -639,6 +739,7 @@ void SceneMaptool::ListFilesInDirectory(const std::string & folderPath)
 		}
 		else {
 			//std::cout << "파일 이름: " << findFileData.cFileName << std::endl;
+			fileList.push_back(findFileData.cFileName);
 			++fileCount;
 		}
 	} while (FindNextFileA(hFind, &findFileData) != 0);

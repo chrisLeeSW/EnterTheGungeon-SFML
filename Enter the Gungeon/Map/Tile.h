@@ -1,6 +1,16 @@
 #pragma once
 #include "SpriteGo.h"
 
+struct TileInfo
+{
+	int x = 0;
+	int y = 0;
+	int texIndex = 0;
+	int objectIndex = 0;
+	float positionX;
+	float positionY;
+};
+
 class Tile : public SpriteGo
 {
 protected:

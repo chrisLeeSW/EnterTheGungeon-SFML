@@ -3,6 +3,7 @@
 
 class Player;
 class SpriteGo;
+class Enemy; //test
 
 class SceneLobby : public Scene
 {
@@ -38,6 +39,7 @@ protected:
 
 	SpriteGo* playerui;
 
+	Enemy* test; //test
 
 public:
 	SceneLobby();

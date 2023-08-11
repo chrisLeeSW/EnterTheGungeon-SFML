@@ -5,6 +5,7 @@
 #include "SpriteGo.h"
 #include "TextGo.h"
 #include "SceneGame.h"
+#include "Enemy.h" //test
 
 SceneLobby::SceneLobby() : Scene(SceneId::Lobby)
 {
@@ -44,6 +45,10 @@ void SceneLobby::Init()
 	elevator->SetScale(0.3f,0.3f);
 
 	currentplayer = pilot;
+
+	test = (Enemy*)AddGo(new Enemy(EnemyTypes::BulletKin)); //test
+	test->SetOrigin(Origins::BC); //test
+	test->SetPlayer(currentplayer); //test
 
 	for (auto go : gameObjects)
 	{

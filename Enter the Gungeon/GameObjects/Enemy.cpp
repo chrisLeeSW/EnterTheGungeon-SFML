@@ -21,13 +21,29 @@ void Enemy::Init()
 
 		break;
 	case EnemyTypes::BulletKin:
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinIdleLeft.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinIdleDown.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinIdleUp.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinIdleLeftUp.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinIdleLeft.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinIdleLeftDown.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinIdleDown.csv"));
 
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinMoveLeft.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinMoveDown.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinMoveUp.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinMoveLeftUp.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinMoveLeft.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinMoveLeftDown.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinMoveDown.csv"));
+
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinHitUp.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinHitLeftUp.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinHitLeft.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinHitLeftDown.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinHitDown.csv"));
+
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinDieUp.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinDieLeftUp.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinDieLeft.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinDieLeftDown.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinDieDown.csv"));
 
 		isHanded = true;
 		break;
@@ -56,34 +72,63 @@ void Enemy::Reset()
 	}
 
 	animation.Play("IdleDown");
+	SetFlipX(false);
 	SetOrigin(origin);
-	hand.setOrigin(sprite.getLocalBounds().width * 0.8, sprite.getLocalBounds().height * 0.3);
+	hand.setOrigin(sprite.getLocalBounds().width * 0.8, sprite.getLocalBounds().height * 0.25);
+
+	hp = maxHp;
+	isAlive = true;
 }
 
 void Enemy::Update(float dt)
 {
 	animation.Update(dt);
 
-	direction = Utils::Normalize(player->GetPosition() - position);
+	if (!isAlive) return;
 
-	if (direction.x != 0 || direction.y != 0)
+	direction = Utils::Normalize(player->GetPosition() - position);
+	SetPosition(position + direction * speed * dt);
+
+	if (player->sprite.getGlobalBounds().intersects(sprite.getGlobalBounds())) // Collider 충돌로 변경 요구
 	{
-		if (animation.GetCurrentClipId() != "MoveLeft" &&
-			INPUT_MGR.GetAxisRaw(Axis::Horizontal) != 0.f)
+		if (IfBump != nullptr)
+		{
+			IfBump();
+		}
+		else
+		{
+			OnBump();
+		}
+	}
+
+	// Animation
+	SetFlipX(direction.x > 0.f);
+	if (direction.x != 0.f || direction.y != 0.f)
+	{
+		if (animation.GetCurrentClipId() != "MoveUp" &&
+			direction.x == 0.f && direction.y < 0.f)
+		{
+			animation.Play("MoveUp");
+		}
+		else if (animation.GetCurrentClipId() != "MoveLeftUp" &&
+			direction.x < 0.f && direction.y < 0.f)
+		{
+			animation.Play("MoveLeftUp");
+		}
+		else if (animation.GetCurrentClipId() != "MoveLeft" &&
+			direction.x < 0.f && direction.y == 0.f)
 		{
 			animation.Play("MoveLeft");
 		}
+		else if (animation.GetCurrentClipId() != "MoveLeftDown" &&
+			direction.x < 0.f && direction.y > 0.f)
+		{
+			animation.Play("MoveLeftDown");
+		}
 		else if (animation.GetCurrentClipId() != "MoveDown" &&
-			INPUT_MGR.GetAxisRaw(Axis::Vertical) > 0.f &&
-			INPUT_MGR.GetAxisRaw(Axis::Horizontal) == 0.f)
+			direction.x == 0.f && direction.y > 0.f)
 		{
 			animation.Play("MoveDown");
-		}
-		else if (animation.GetCurrentClipId() != "MoveUp" &&
-			INPUT_MGR.GetAxisRaw(Axis::Vertical) < 0.f &&
-			INPUT_MGR.GetAxisRaw(Axis::Horizontal) == 0.f)
-		{
-			animation.Play("MoveUp");
 		}
 	}
 	else
@@ -104,9 +149,7 @@ void Enemy::Update(float dt)
 			animation.Play("IdleUp");
 		}
 	}
-	SetFlipX(direction.x > 0);
 
-	SetPosition(position + direction * speed * dt);
 }
 
 void Enemy::Draw(sf::RenderWindow& window)
@@ -146,4 +189,74 @@ void Enemy::SetFlipX(bool flip)
 void Enemy::SetPlayer(Player* player)
 {
 	this->player = player;
+}
+
+void Enemy::SetEnemy(float speed, float maxHp)
+{
+	this->speed = speed;
+	this->maxHp = maxHp;
+}
+
+void Enemy::OnDamage(float damage)
+{
+	if (IfHit != nullptr)
+	{
+		IfHit(damage);
+	}
+	else
+	{
+		hp = std::max(0.f, hp - damage);
+
+		if (hp <= 0.f)
+		{
+			if (IfDie != nullptr)
+			{
+				IfDie();
+			}
+			else
+			{
+				OnDie();
+			}
+		}
+	}
+
+	// Animation
+	if (animation.GetCurrentClipId() == "MoveLeft" ||
+		animation.GetCurrentClipId() == "IdleLeft")
+	{
+		animation.Play("HitLeft");
+	}
+	else if (animation.GetCurrentClipId() == "MoveDown" ||
+		animation.GetCurrentClipId() == "IdleDown")
+	{
+		animation.Play("HitDown");
+	}
+	else if (animation.GetCurrentClipId() != "MoveUp" ||
+		animation.GetCurrentClipId() == "IdleUp")
+	{
+		animation.Play("HitUp");
+	}
+}
+
+void Enemy::OnBump()
+{
+	//player에게 피해를 주는 함수
+}
+
+void Enemy::OnDie()
+{
+	if (animation.GetCurrentClipId() == "HitLeft")
+	{
+		animation.Play("DieLeft");
+	}
+	else if (animation.GetCurrentClipId() == "HitDown")
+	{
+		animation.Play("DieDown");
+	}
+	else if (animation.GetCurrentClipId() != "HitUp")
+	{
+		animation.Play("DieUp");
+	}
+
+	isAlive = false;
 }

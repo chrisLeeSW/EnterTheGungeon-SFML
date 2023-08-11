@@ -51,6 +51,8 @@ void SceneLobby::Init()
 	test = (Enemy*)AddGo(new Enemy(EnemyTypes::BulletKin)); //test
 	test->SetOrigin(Origins::BC); //test
 	test->SetPlayer(currentplayer); //test
+	test->SetEnemy(100.f, 5.f); //test
+	test->SetPosition(-200, -200); //test
 
 	for (auto go : gameObjects)
 	{
@@ -107,6 +109,10 @@ void SceneLobby::Update(float dt)
 		SCENE_MGR.ChangeScene(SceneId::Game);
 	}
 
+	if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left)) //test
+	{
+		test->OnDamage(0.1f);
+	}
 }
 
 

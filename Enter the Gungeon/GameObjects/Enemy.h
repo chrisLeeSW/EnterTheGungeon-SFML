@@ -18,11 +18,12 @@ protected:
 	AnimationController animation;
 
 	sf::Vector2f direction;
-	float speed = 100.f;
+	float speed = 0.f;
 	float maxHp = 0.f;
 	float hp = 0.f;
 	bool isHanded = false;
 	bool flipX = false;
+	bool isAlive = true;
 
 	Player* player;
 	sf::Sprite hand;
@@ -44,4 +45,15 @@ public:
 	void SetFlipX(bool flip);
 
 	void SetPlayer(Player* player);
+	void SetEnemy(float speed = 0.f, float maxHp = 0.f);
+
+	std::function<void(float)> IfHit; // Bullet에게 맞았을 때
+	std::function<void()> IfBump; // Player와 몸이 충돌했을 때
+	std::function<void()> IfDie; // 사망 시
+
+	void OnDamage(float damage);
+	void OnBump();
+	void OnDie();
+
+	// 사격의 경우 함수포인터를 사용하여 Enemy에 있는 여러 사격 함수들 중 하나를 호출하는 방식으로 진행하면 어떨까?
 };

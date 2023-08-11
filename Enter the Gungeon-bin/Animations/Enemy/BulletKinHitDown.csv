@@ -1,0 +1,7 @@
+ID,FPS,LOOPTYPE,,
+HitDown,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/BulletKin.png,42,252,15,23
+graphics/BulletKin.png,42,252,15,23
+graphics/BulletKin.png,42,252,15,23

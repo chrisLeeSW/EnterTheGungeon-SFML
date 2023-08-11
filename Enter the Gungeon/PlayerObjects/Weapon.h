@@ -13,8 +13,10 @@ public:
 
 	enum class Types
 	{
-		Pilot,
-		Prisoner,
+		None,
+		PilotGun,
+		PrisonerGun,
+		Ak47,
 	};
 
 protected:
@@ -27,6 +29,9 @@ protected:
 	sf::Vector2f look;
 
 	AnimationController animation;
+
+	std::vector<AnimationController> shootEffect;
+
 	Player* player;
 
 	Types type;
@@ -34,7 +39,7 @@ protected:
 public:
 
 	Weapon(const std::string& textureId = "", const std::string& n = "");
-	Weapon(Types type);
+	//Weapon(Types type);
 	virtual ~Weapon() override { Release(); }
 
 	virtual void Init() override;

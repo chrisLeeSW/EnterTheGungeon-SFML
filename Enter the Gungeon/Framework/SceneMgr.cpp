@@ -73,3 +73,8 @@ Scene* SceneMgr::GetCurrScene() const
 {
 	return currentScene;
 }
+
+Scene* SceneMgr::GetGameScene() const
+{
+	return scenes[2];
+}

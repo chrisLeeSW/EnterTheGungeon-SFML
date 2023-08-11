@@ -23,21 +23,31 @@ public:
 	{
 		Pilot,
 		Prisoner,
+		WeaponPilot,
+		WeaponPrisoner,
 	};
 
 
 protected:
 
-	ObjectPool<Weapon> poolWeapons;
+	//ObjectPool<Weapon> poolWeapons;
 	std::string clipId;
 
 	AnimationController animation;
+
+	bool isGame = false;
+	bool isLobby = true;
 
 	//선생님꺼
 	std::vector<ClipInfo> clipInfos;
 	ClipInfo currentClipInfo;
 
 	sf::Vector2f windowsize;
+
+	//플레이어 손
+	SpriteGo* hand;
+	bool handflipX = false;
+
 
 	//플레이어 움직임
 	sf::Vector2f velocity;
@@ -60,6 +70,8 @@ public:
 	Player(const std::string& textureId = "", const std::string& n = "");
 	virtual ~Player() override { Release(); }
 
+	virtual void SetPosition(const sf::Vector2f& p) override;
+	virtual void SetPosition(float x, float y) override;
 
 	virtual void Init() override;
 	virtual void Release() override;
@@ -73,14 +85,11 @@ public:
 	void PlayerAct(float dt);
 
 	sf::Vector2f GetPlayerPos();
-	void SetPlayerChoise(bool playerchoise);
 
-	void ChoisePlayer(Types type);
 	void ChangePlayer(sf::Vector2f pos,bool choise);
 
 	Types GetType();
 
-	bool GetPlayerchoise();
-
+	void SetSceneGame();
+	void AddWeapon();
 };
-

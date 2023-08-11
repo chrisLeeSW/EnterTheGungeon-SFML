@@ -28,6 +28,8 @@ void SceneLobby::Init()
 	pilot = (Player*)AddGo(new Player(Player::Types::Pilot));
 	prisoner = (Player*)AddGo(new Player(Player::Types::Prisoner));
 
+
+
 	playerui = (SpriteGo*)AddGo(new SpriteGo("graphics/PilotUI.png", "pilot"));
 	playerui->SetOrigin(Origins::BC);
 	playerui->SetActive(false);
@@ -90,13 +92,19 @@ void SceneLobby::Update(float dt)
 	
 	if(currentplayer->sprite.getGlobalBounds().intersects(elevator->sprite.getGlobalBounds()))
 	{
-		std::cout << "ด๊พา?" << std::endl;
 
-		SCENE_MGR.ChangeScene(SceneId::Game);
-		Scene* scene = SCENE_MGR.GetCurrScene();
-		//scene->currentPlayer = currentplayer;
+		Scene* scene = SCENE_MGR.GetGameScene();
 		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
-		sceneGame->SetPlayer(currentplayer);
+		if (playertype == Types::Pilot)
+		{
+			playertype = Types::WeaponPilot;
+		}
+		else if (playertype == Types::Prisoner)
+		{
+			playertype = Types::WeaponPrsioner;
+		}
+		sceneGame->SetPlayer((int)playertype);
+		SCENE_MGR.ChangeScene(SceneId::Game);
 	}
 
 }

@@ -53,10 +53,50 @@ void Bullet::SetType(int types)
 
 }
 
+void Bullet::Shoot(Types type)
+{
+	switch (type)
+	{
+	case Types::PilotBullet :
+		ak47.Ak47();
+		break;
+	case Types::PrisonerBullet:
+		break;
+	case Types::Ak47:
+		break;
+	}
+}
+
 void Bullet::Fire(sf::Vector2f pos, sf::Vector2f dir)
 {
 	position = pos;
 	sprite.setRotation(Utils::Angle(dir));
 	SetPosition(position);
 	direction = dir;
+}
+
+PilotGun::PilotGun(Types type)
+{
+}
+
+void PilotGun::Update(float dt)
+{
+
+}
+PrisonerGun::PrisonerGun()
+{
+
+}
+
+void PrisonerGun::Update(float dt)
+{
+
+}
+
+Ak47::Ak47()
+{
+}
+
+void Ak47::Update(float dt)
+{
 }

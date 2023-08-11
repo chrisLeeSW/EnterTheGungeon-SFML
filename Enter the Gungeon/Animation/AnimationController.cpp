@@ -91,7 +91,6 @@ void AnimationController::Play(const std::string& clipid, bool clearQueue)
 void AnimationController::PlayQueue(const std::string& clipid)
 {
 	queue.push(clipid);
-
 }
 
 void AnimationController::Stop()

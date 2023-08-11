@@ -54,22 +54,18 @@ void Weapon::Update(float dt)
 	sprite.setRotation(Utils::Angle(look));
 
 
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num1))
-	{
-		WEAPON_MGR.ChangeCurrentWeapon((int)Types::Pilot);
-	}
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num2))
-	{
-		WEAPON_MGR.ChangeCurrentWeapon((int)Types::Pilot);
-	}
+	//if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num1))
+	//{
+	//	WEAPON_MGR.ChangeCurrentWeapon((int)Types::PilotGun);
+	//}
+	//if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num2))
+	//{
+	//	WEAPON_MGR.ChangeCurrentWeapon((int)Types::PilotGun);
+	//}
 
 	if(INPUT_MGR.GetMouseButton(sf::Mouse::Left))
 	{
 		Shoot(WEAPON_MGR.GetCurrentWeapon());
-	}
-
-	if (Types::Pilot == WEAPON_MGR.GetCurrentWeapon())
-	{
 	}
 
 }

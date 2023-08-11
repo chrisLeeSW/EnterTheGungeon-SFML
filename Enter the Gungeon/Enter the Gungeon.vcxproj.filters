@@ -84,13 +84,13 @@
     <ClCompile Include="GameObjects\EnemyBullet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Player.cpp">
+    <ClCompile Include="PlayerObjects\Player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Weapon.cpp">
+    <ClCompile Include="PlayerObjects\Weapon.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\WeaponMgr.cpp">
+    <ClCompile Include="PlayerObjects\WeaponMgr.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="DataTables\BulletTable.cpp">
@@ -99,7 +99,7 @@
     <ClCompile Include="DataTables\WeaponTable.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Bullet.cpp">
+    <ClCompile Include="PlayerObjects\Bullet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Map\TileMap.cpp">
@@ -120,13 +120,16 @@
     <ClCompile Include="Scenes\SceneLobby.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerMgr.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Map\Tile.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Enemy.cpp">
+     <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\PlayerMgr.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Skill.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -212,13 +215,13 @@
     <ClInclude Include="GameObjects\EnemyBullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Player.h">
+    <ClInclude Include="PlayerObjects\Player.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Weapon.h">
+    <ClInclude Include="PlayerObjects\Weapon.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\WeaponMgr.h">
+    <ClInclude Include="PlayerObjects\WeaponMgr.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="DataTables\BulletTable.h">
@@ -227,7 +230,7 @@
     <ClInclude Include="DataTables\WeaponTable.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Bullet.h">
+    <ClInclude Include="PlayerObjects\Bullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Map\TileMap.h">
@@ -248,13 +251,16 @@
     <ClInclude Include="Scenes\SceneLobby.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerMgr.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Map\Tile.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Enemy.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\PlayerMgr.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Skill.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

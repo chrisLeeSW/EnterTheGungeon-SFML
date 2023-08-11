@@ -12,8 +12,7 @@ struct WeaponInfo
 	int santan;
 };
 
-class WeaponTable :
-	public DataTable
+class WeaponTable : public DataTable
 {
 
 protected:

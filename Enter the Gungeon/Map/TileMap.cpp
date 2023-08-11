@@ -88,7 +88,7 @@ void TileMap::NoneFileLoad(int xSize, int ySize)
              Tile tile;
              tile.x = j;
              tile.y = i;
-             tile.texIndex = 4;
+             tile.texIndex = static_cast<int>(MapObjectType::None);
              tiles.push_back(tile);
          }
      }
@@ -115,6 +115,7 @@ void TileMap::NoneFileLoad(int xSize, int ySize)
          { 0.f, tileSize.y }
      };
 
+    
      for (int i = 0; i < size.y; ++i)
      {
          for (int j = 0; j < size.x; ++j)

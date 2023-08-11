@@ -58,7 +58,6 @@ void Bullet::Shoot(Types type)
 	switch (type)
 	{
 	case Types::PilotBullet :
-		ak47.Ak47();
 		break;
 	case Types::PrisonerBullet:
 		break;

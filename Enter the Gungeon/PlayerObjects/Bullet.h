@@ -23,7 +23,6 @@ protected:
 
 	AnimationController animation;
 
-	Ak47 ak47;
 
 	sf::Vector2f direction;
 	sf::Vector2f position;

@@ -322,8 +322,6 @@ void Player::SetSceneGame()
 	SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
 
 	hand = (SpriteGo*)sceneGame->AddGo(new SpriteGo("graphics/Hand.png"));
-	hand->sprite.setScale(5,5);
-	sprite.setScale(5, 5);
 }
 
 //void Player::AddWeapon()

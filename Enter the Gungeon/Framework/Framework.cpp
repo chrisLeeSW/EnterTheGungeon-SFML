@@ -5,6 +5,9 @@
 #include "Scene.h"
 #include "DataTableMgr.h"
 #include "ResourceMgr.h"
+#include "WeaponMgr.h"
+
+
 Framework::Framework(int w, int h, const std::string& t)
     : screenWidth(w), screenHeight(h), title(t)
 {
@@ -17,6 +20,7 @@ void Framework::Init(int width, int height, const std::string& title)
     DATATABLE_MGR.LoadAll();
     RESOURCE_MGR.Init();
     SCENE_MGR.Init();
+    WEAPON_MGR.Init();
 }
 
 void Framework::Release()

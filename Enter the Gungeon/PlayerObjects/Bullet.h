@@ -69,9 +69,9 @@ public:
 	void Update(float dt) override;
 };
 
-class Ak47 : public Bullet
+class Ak47Bullet : public Bullet
 {
 public:
-	Ak47();
+	Ak47Bullet();
 	void Update(float dt) override;
 };

@@ -91,11 +91,3 @@ void PrisonerGun::Update(float dt)
 {
 
 }
-
-Ak47::Ak47()
-{
-}
-
-void Ak47::Update(float dt)
-{
-}

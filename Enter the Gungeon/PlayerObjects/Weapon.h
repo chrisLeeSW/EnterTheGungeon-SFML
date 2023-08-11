@@ -14,8 +14,8 @@ public:
 	enum class Types
 	{
 		None,
-		PilotGun,
-		PrisonerGun,
+		PilotWeapon,
+		PrisonerWeapon,
 		Ak47,
 	};
 
@@ -34,7 +34,12 @@ protected:
 
 	Player* player;
 
-	Types type;
+	Types weaponType;
+	float attackrate;
+	int bulletcount;
+	int bulletmax;
+	float reload;
+	int santan;
 
 public:
 
@@ -51,5 +56,7 @@ public:
 
 	void SetPlayer(Player* player);
 
+
 	void Shoot(Weapon::Types type);
+	void SetType(Types t);
 };

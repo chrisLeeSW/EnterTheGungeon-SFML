@@ -4,6 +4,9 @@
 #include "WeaponMgr.h"
 #include "SceneGame.h"
 #include "Scene.h"
+#include "DataTableMgr.h"
+#include "WeaponTable.h"
+
 
 Weapon::Weapon(const std::string& textureId, const std::string& n) : SpriteGo(textureId, n)
 {
@@ -96,4 +99,18 @@ void Weapon::Shoot(Weapon::Types type)
 		//bullet->SetMonsterList(sceneDev1->GetMonsterList());
 		sceneGame->AddGo(bullet);
 	}
+}
+
+void Weapon::SetType(Types t)
+{
+	const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
+
+	weaponType = (Types)info->weaponType;
+	attackrate = info->attackrate;
+	bulletcount = info->bulletcount;
+	bulletmax = info->bulletmax;
+	reload = info->reload;
+	santan = info->santan;
+
+
 }

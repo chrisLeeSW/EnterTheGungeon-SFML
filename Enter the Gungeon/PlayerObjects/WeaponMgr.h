@@ -1,6 +1,11 @@
 #pragma once
 #include "Weapon.h"
 #include "Singleton.h"
+#include "ObjectPool.h"
+#include "Bullet.h"
+#include "AnimationController.h"
+
+class Weapon;
 
 class WeaponMgr : public Singleton<WeaponMgr>
 {
@@ -10,26 +15,30 @@ class WeaponMgr : public Singleton<WeaponMgr>
 public:
 
 
-	//enum class WeaponTypes
-	//{
-
-	//	PilotGun,
-	//	PrisonerGun,
-	//	Ak47,
-	//};
 
 protected:
+
+	Bullet* bullet;
+	std::list<Bullet*> bullets;
+	ObjectPool<Bullet> poolBullets;
+
+    std::vector<Weapon*> weapons;
+	Weapon* pilotgun;
+	Weapon* prisonergun;
+	Weapon* ak47;
+
+
 
 	WeaponMgr() = default;
 	virtual ~WeaponMgr() override = default;
 
 
-	std::unordered_map<Weapon::Types, Weapon*> findweapon;
+	std::unordered_map<Weapon::Types, Weapon*> mapweapons;
 
-    std::vector<Weapon*> weapons;
 
 	Weapon::Types currentWeapon;
 
+	std::function<void(Weapon*)> weaponSetType;
 
 public:
 
@@ -38,6 +47,8 @@ public:
 
     void SwapWeapon(int swap);
 
+
+	void SetType(Weapon::Types t);
 
 	Weapon::Types GetCurrentWeapon() const;
 	const void AddWeapon(Weapon::Types id);

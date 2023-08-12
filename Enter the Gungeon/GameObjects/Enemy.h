@@ -24,6 +24,7 @@ protected:
 	bool isHanded = false;
 	bool flipX = false;
 	bool isAlive = true;
+	float attackRange = 0.f;
 
 	Player* player;
 	sf::Sprite hand;
@@ -45,13 +46,13 @@ public:
 	void SetFlipX(bool flip);
 
 	void SetPlayer(Player* player);
-	void SetEnemy(float speed = 0.f, float maxHp = 0.f);
+	void SetEnemy(float speed = 0.f, float maxHp = 0.f, float attackRange = 0.f);
 
 	std::function<void(float)> IfHit; // Bullet에게 맞았을 때
 	std::function<void()> IfBump; // Player와 몸이 충돌했을 때
 	std::function<void()> IfDie; // 사망 시
 
-	void OnDamage(float damage);
+	void OnDamage(const float& damage, const sf::Vector2f& dir = {0.f, 0.f}, const float& knockback = 0.f);
 	void OnBump();
 	void OnDie();
 

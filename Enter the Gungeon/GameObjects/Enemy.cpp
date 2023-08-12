@@ -87,6 +87,12 @@ void Enemy::Update(float dt)
 	if (!isAlive) return;
 
 	direction = Utils::Normalize(player->GetPosition() - position);
+	float distance = Utils::Distance(player->GetPosition(), position);
+
+	if (attackRange > distance) //벽을 만났을 때 사격할 수 있게 재설정 필요
+	{
+		direction = { 0.f, 0.f };
+	}
 	SetPosition(position + direction * speed * dt);
 
 	if (player->sprite.getGlobalBounds().intersects(sprite.getGlobalBounds())) // Collider 충돌로 변경 요구
@@ -100,32 +106,32 @@ void Enemy::Update(float dt)
 			OnBump();
 		}
 	}
-
+	
 	// Animation
 	SetFlipX(direction.x > 0.f);
 	if (direction.x != 0.f || direction.y != 0.f)
 	{
-		if (animation.GetCurrentClipId() != "MoveUp" &&
+		if (animation.GetCurrentClipId() == "IdleUp" &&
 			direction.x == 0.f && direction.y < 0.f)
 		{
 			animation.Play("MoveUp");
 		}
-		else if (animation.GetCurrentClipId() != "MoveLeftUp" &&
+		else if (animation.GetCurrentClipId() == "IdleLeftUp" &&
 			direction.x < 0.f && direction.y < 0.f)
 		{
 			animation.Play("MoveLeftUp");
 		}
-		else if (animation.GetCurrentClipId() != "MoveLeft" &&
+		else if (animation.GetCurrentClipId() == "IdleLeft" &&
 			direction.x < 0.f && direction.y == 0.f)
 		{
 			animation.Play("MoveLeft");
 		}
-		else if (animation.GetCurrentClipId() != "MoveLeftDown" &&
+		else if (animation.GetCurrentClipId() == "IdleLeftDown" &&
 			direction.x < 0.f && direction.y > 0.f)
 		{
 			animation.Play("MoveLeftDown");
 		}
-		else if (animation.GetCurrentClipId() != "MoveDown" &&
+		else if (animation.GetCurrentClipId() == "IdleDown" &&
 			direction.x == 0.f && direction.y > 0.f)
 		{
 			animation.Play("MoveDown");
@@ -133,20 +139,25 @@ void Enemy::Update(float dt)
 	}
 	else
 	{
-		if (animation.GetCurrentClipId() == "MoveLeft" &&
-			animation.GetCurrentClipId() != "IdleLeft")
+		if (animation.GetCurrentClipId() == "MoveUp")
+		{
+			animation.Play("IdleUp");
+		}
+		else if (animation.GetCurrentClipId() == "MoveLeftUp")
+		{
+			animation.Play("IdleLeftUp");
+		}
+		else if (animation.GetCurrentClipId() == "MoveLeft")
 		{
 			animation.Play("IdleLeft");
 		}
-		else if (animation.GetCurrentClipId() == "MoveDown" &&
-			animation.GetCurrentClipId() != "IdleDown")
+		else if (animation.GetCurrentClipId() == "MoveLeftDown")
+		{
+			animation.Play("IdleLeftDown");
+		}
+		else if (animation.GetCurrentClipId() == "MoveDown")
 		{
 			animation.Play("IdleDown");
-		}
-		else if (animation.GetCurrentClipId() == "MoveUp" &&
-			animation.GetCurrentClipId() != "IdleUp")
-		{
-			animation.Play("IdleUp");
 		}
 	}
 
@@ -191,14 +202,17 @@ void Enemy::SetPlayer(Player* player)
 	this->player = player;
 }
 
-void Enemy::SetEnemy(float speed, float maxHp)
+void Enemy::SetEnemy(float speed, float maxHp, float attackRange)
 {
 	this->speed = speed;
 	this->maxHp = maxHp;
+	this->attackRange = attackRange;
 }
 
-void Enemy::OnDamage(float damage)
+void Enemy::OnDamage(const float& damage, const sf::Vector2f& dir, const float& knockback)
 {
+	SetPosition(position + dir * knockback);
+
 	if (IfHit != nullptr)
 	{
 		IfHit(damage);
@@ -221,20 +235,36 @@ void Enemy::OnDamage(float damage)
 	}
 
 	// Animation
-	if (animation.GetCurrentClipId() == "MoveLeft" ||
+	// dir에 맞게 재설정 필요 - dir과 8방향의 Distance를 재서 최소값을 기준으로 애니메이션을 재생하는것은 어떨까?
+	if (animation.GetCurrentClipId() == "MoveUp" ||
+		animation.GetCurrentClipId() == "IdleUp")
+	{
+		animation.Play("HitUp");
+		animation.PlayQueue("IdleUp");
+	}
+	else if (animation.GetCurrentClipId() == "MoveLeftUp" ||
+		animation.GetCurrentClipId() == "IdleLeftUp")
+	{
+		animation.Play("HitLeftUp");
+		animation.PlayQueue("IdleLeftUp");
+	}
+	else if (animation.GetCurrentClipId() == "MoveLeft" ||
 		animation.GetCurrentClipId() == "IdleLeft")
 	{
 		animation.Play("HitLeft");
+		animation.PlayQueue("IdleLeft");
+	}
+	else if (animation.GetCurrentClipId() == "MoveLeftDown" ||
+		animation.GetCurrentClipId() == "IdleLeftDown")
+	{
+		animation.Play("HitLeftDown");
+		animation.PlayQueue("IdleLeftDown");
 	}
 	else if (animation.GetCurrentClipId() == "MoveDown" ||
 		animation.GetCurrentClipId() == "IdleDown")
 	{
 		animation.Play("HitDown");
-	}
-	else if (animation.GetCurrentClipId() != "MoveUp" ||
-		animation.GetCurrentClipId() == "IdleUp")
-	{
-		animation.Play("HitUp");
+		animation.PlayQueue("IdleDown");
 	}
 }
 
@@ -245,18 +275,28 @@ void Enemy::OnBump()
 
 void Enemy::OnDie()
 {
-	if (animation.GetCurrentClipId() == "HitLeft")
+	if (animation.GetCurrentClipId() != "HitUp")
+	{
+		animation.Play("DieUp");
+	}
+	else if (animation.GetCurrentClipId() == "HitLeftUp")
+	{
+		animation.Play("DieLeftUp");
+	}
+	else if (animation.GetCurrentClipId() == "HitLeft")
 	{
 		animation.Play("DieLeft");
+	}
+	else if (animation.GetCurrentClipId() == "HitLeftDown")
+	{
+		animation.Play("DieLeftDown");
 	}
 	else if (animation.GetCurrentClipId() == "HitDown")
 	{
 		animation.Play("DieDown");
 	}
-	else if (animation.GetCurrentClipId() != "HitUp")
-	{
-		animation.Play("DieUp");
-	}
 
 	isAlive = false;
+	isHanded = false;
+	hand.setTextureRect({ 0, 0, 0, 0 });
 }

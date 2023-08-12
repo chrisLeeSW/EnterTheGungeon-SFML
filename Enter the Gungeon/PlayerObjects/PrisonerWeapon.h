@@ -3,9 +3,10 @@
 
 class Player;
 
+
+
 class PrisonerWeapon : public Weapon
 {
-
 protected:
 
 	Player* player = nullptr;
@@ -22,6 +23,8 @@ protected:
 	AnimationController gun;
 	AnimationController shootEffect;
 
+	float WeaponXpos = 9.f;
+
 public:
 
 	PrisonerWeapon(const std::string& textureId = "", const std::string& n = "");
@@ -33,11 +36,12 @@ public:
 
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
+
 	virtual void SetGunFlipx(bool flip) override;
 
-	virtual void SetPlayer(Player* player);
+	virtual void SetPlayer();
 	virtual void SetType(Types t);
 
-
+	virtual Types GetWeaponType() override { return weaponType; }
 };
 

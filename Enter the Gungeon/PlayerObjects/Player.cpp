@@ -64,7 +64,7 @@ void Player::Init()
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotRollDown.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotRollRight.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotRollUpRight.csv"));
-
+		//WEAPON_MGR.Enter(Weapon::Types::PilotWeapon);
 		break;
 	}
 	case Types::Prisoner:
@@ -278,7 +278,7 @@ void Player::PlayerAct(float dt)
 		{
 			position += direction * rollspeed * dt;
 			SetPosition(position);
-			if ((animation.GetTotalFrame() - animation.GetCurFrame()) == 1)
+			if ((animation.AnimationEnd()))
 			{
 				isrolling = false;
 			}
@@ -312,10 +312,6 @@ void Player::PlayerAct(float dt)
 	}
 }
 
-sf::Vector2f Player::GetPlayerPos()
-{
-	return position;
-}
 
 void Player::ChangePlayer(sf::Vector2f pos,bool choise)
 {

@@ -7,6 +7,7 @@
 #include "Weapon.h"
 #include "TileMap.h"
 #include "WeaponMgr.h"
+#include "Equipment.h"
 
 SceneGame::SceneGame() : Scene(SceneId::Game)
 {
@@ -17,14 +18,6 @@ void SceneGame::Init()
 {
 	Release();
 
-
-	//Scene* scene = SCENE_MGR.GetCurrScene();
-	//setplayer 써서 scene에 있는 player 할당해
-	//SetPlayer(scene->currentPlayer);
-	
-	//weapon = (Weapon*)AddGo(new Weapon());
-
-	//player = (Player*)AddGo(new Player());
 
 	shadow = (SpriteGo*)/*scene->*/AddGo(new SpriteGo("graphics/Shadow.png"));
 	shadow->SetOrigin(Origins::MC);
@@ -43,6 +36,19 @@ void SceneGame::Init()
 	gameDevMap->Load("MapFile/map1.csv");
 	gameDevMap->sortLayer = -1;
 
+	equipment = (Equipment*)AddGo(new Equipment());
+
+	int a = 1;
+	int* b = &a;
+
+	int** c = &b;
+
+	int*** d = &c;
+
+	std::cout << "인트씨 : " << ***d << std::endl;
+	std::cout << "인트씨 : " << *c << std::endl;
+	std::cout << "인트씨 : " << *b << std::endl;
+	std::cout << "인트씨 : " << d << std::endl;
 	for (auto go : gameObjects)
 	{
 		go->Init();
@@ -111,6 +117,7 @@ void SceneGame::Update(float dt)
 			}
 		}
 	}
+
 
 	// 대각선 충돌이 문제가 있음 테스트 코드로 사용
 	

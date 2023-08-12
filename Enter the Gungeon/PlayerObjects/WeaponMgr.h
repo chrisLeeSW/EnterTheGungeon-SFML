@@ -7,6 +7,8 @@
 
 class Weapon;
 class Player;
+class SceneGame;
+class Scene;
 
 class WeaponMgr : public Singleton<WeaponMgr>
 {
@@ -24,7 +26,7 @@ protected:
 
 	Player* player = nullptr;
 
-	Bullet* bullet;
+	Bullet* bullet = nullptr;
 	std::list<Bullet*> bullets;
 	ObjectPool<Bullet> poolBullets;
 
@@ -37,6 +39,8 @@ protected:
 
 	bool withWeapon = false;
 
+	Scene* scene;
+	SceneGame* sceneGame;
 
 	WeaponMgr() = default;
 	virtual ~WeaponMgr() override = default;
@@ -64,10 +68,8 @@ public:
 
 	void SetPlayer(Player* player);
 	Player* GetPlayer();
-
-
-	void SetHandOrigin(sf::Vector2f handori);
-	sf::Vector2f GetHandOrigin();
+	void TestAddWeapon();
+	void Shoot();
 
 
 	Weapon::Types GetCurrentWeapon() const;

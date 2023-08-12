@@ -28,10 +28,12 @@ protected:
 	sf::Vector2f position;
 
 	Types bulletType;
-	int speed;
-	int damage;
+	float speed;
+	float damage;
 	int range;
 	int knockback;
+
+	std::string anistirng;
 
 	SpriteGo* bullet;
 
@@ -48,30 +50,7 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	void SetType(int types);
+	void SetBullet(int types, sf::Vector2f pos, sf::Vector2f dir);
 	void Shoot(Types type);
 	void Fire(sf::Vector2f pos, sf::Vector2f dir);
-};
-
-class PilotGun : public Bullet
-{
-public:
-	PilotGun(Types tpye);
-	void Update(float dt) override;
-
-
-};
-
-class PrisonerGun : public Bullet
-{
-public:
-	PrisonerGun();
-	void Update(float dt) override;
-};
-
-class Ak47Bullet : public Bullet
-{
-public:
-	Ak47Bullet();
-	void Update(float dt) override;
 };

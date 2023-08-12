@@ -25,6 +25,7 @@ void AnimationController::Update(float dt)
 	
 	if (currentFrame == totalFrame)
 	{
+		isEndAnimation = true;
 		if (!queue.empty())
 		{
 			std::string id=queue.front();
@@ -37,14 +38,13 @@ void AnimationController::Update(float dt)
 			{
 			case AnimationLoopTypes::Single:
 				currentFrame = totalFrame - 1;
+				isPlaying = false;
 				return;
 			case AnimationLoopTypes::Loop:
 				currentFrame = 0;
 				break;
 			}
-
 		}
-
 	}
 	if(currentClip->frames[currentFrame].action != nullptr)
 	{
@@ -77,7 +77,7 @@ void AnimationController::Play(const std::string& clipid, bool clearQueue)
 	}
 
 	isPlaying = true;
-
+	isEndAnimation = false;
 	currentClip = id->second;
 	currentFrame = 0;
 	totalFrame = currentClip->frames.size();

@@ -4,11 +4,12 @@
 #include "Bullet.h"
 #include "AnimationController.h"
 
+#define FLIP_ANGLE_X 180
+
 class Player;
 class Bullet;
 
 class GameObject;
-
 class Weapon : public SpriteGo
 {
 public:
@@ -45,6 +46,23 @@ protected:
 
 	sf::Vector2f handPos;
 
+	int weaponIndex = 0;
+
+	std::unordered_map<sf::Keyboard::Key, int> keyToIndexMap = {
+	{sf::Keyboard::Num1, 1},
+	{sf::Keyboard::Num2, 2},
+	{sf::Keyboard::Num3, 3},
+	{sf::Keyboard::Num4, 4},
+	{sf::Keyboard::Num5, 5},
+	{sf::Keyboard::Num6, 6},
+	{sf::Keyboard::Num7, 7},
+	{sf::Keyboard::Num8, 8},
+	{sf::Keyboard::Num9, 9},
+	};
+
+
+
+
 public:
 
 	Weapon(const std::string& textureId = "", const std::string& n = "");
@@ -62,9 +80,11 @@ public:
 	virtual void Shoot(Weapon::Types type);
 	virtual void SetType(Types t);
 	virtual void SetGunFlipx(bool flip) = 0;
+	virtual Types GetWeaponType() = 0;
 
+	virtual void SwapWeapon();
 
-
+	virtual sf::Vector2f Look();
 	//sf::Vector2f ScreenToWorldPos(sf::Vector2f screenPos);
 	//sf::Vector2f ScreenToUiPos(sf::Vector2f screenPos);
 	//sf::Vector2f WorldPosToScreen(sf::Vector2f worldPos);

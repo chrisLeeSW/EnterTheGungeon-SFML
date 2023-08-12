@@ -5,6 +5,7 @@ class Player;
 class Weapon;
 class SpriteGo;
 class TileMap;
+class Equipment;
 
 class SceneGame : public Scene
 {
@@ -17,6 +18,8 @@ protected:
 	TileMap* gameDevMap;
 
 	int playertype;
+
+	Equipment* equipment;
 
 public:
 	SceneGame();

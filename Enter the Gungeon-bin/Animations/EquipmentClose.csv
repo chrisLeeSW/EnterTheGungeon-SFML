@@ -1,0 +1,8 @@
+ID,FPS,LOOPTYPE,,
+BookClose,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/EquipmentBook.png,1254,74,255,269
+graphics/EquipmentBook.png,893,65,271,270
+graphics/EquipmentBook.png,466,69,309,270
+graphics/EquipmentBook.png,48,65,378,270

@@ -51,3 +51,11 @@
 0,graphics/Hand.png
 3,weapon/PilotWeaponIdle.csv
 3,weapon/PilotWeaponShoot.csv
+3,weapon/PrisonerWeaponIdle.csv
+3,weapon/PrisonerWeaponShoot.csv
+0,graphics/PrisonerWeapon.png
+3,bulletcsv/BasicBullet.csv
+0,graphics/BasicBullet.png
+3,Animations/Equipment.csv
+0,graphics/EquipmentBook.png
+3,Animations/EquipmentClose.csv

@@ -5,13 +5,7 @@
 #include "Player.h"
 #include "WeaponMgr.h"
 
-#define FLIP_ANGLE_X 180
-
 PilotWeapon::PilotWeapon(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
-{
-}
-
-void PilotWeapon::Init()
 {
 	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PilotWeaponIdle.csv"));
 	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PilotWeaponShoot.csv"));
@@ -27,11 +21,10 @@ void PilotWeapon::Init()
 
 	sf::Vector2f GunSize = sf::Vector2f{ sprite.getLocalBounds().width, sprite.getLocalBounds().height };
 	SetOrigin(sprite.getLocalBounds().left, sprite.getLocalBounds().height);
-	//SetOrigin(GunSize.x + player->sprite.getGlobalBounds().left + player->sprite.getGlobalBounds().width, player->sprite.getLocalBounds().height * 0.4);
+}
 
-
-	//SetOrigin(-player->sprite.getLocalBounds().width / 2, player->sprite.getLocalBounds().height * 0.4);
-
+void PilotWeapon::Init()
+{
 	std::cout << sprite.getOrigin().x << std::endl;
 }
 
@@ -42,14 +35,12 @@ void PilotWeapon::Release()
 void PilotWeapon::Reset()
 {
 	SpriteGo::Reset();
-
-	gun.Play("Idle");
-
 	std::cout << "¸®¼Â" << std::endl;
 }
 
 void PilotWeapon::Update(float dt)
 {
+	Weapon::SwapWeapon();
 	
 	gun.Update(dt);
 	SetPosition(player->GetPosition() + sf::Vector2f(WeaponXpos,-7.f));
@@ -62,6 +53,15 @@ void PilotWeapon::Update(float dt)
 	sprite.setRotation(Utils::Angle(look));
 	if (flipX) sprite.setRotation(FLIP_ANGLE_X +  Utils::Angle(look));
 
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F1))
+	{
+		WEAPON_MGR.TestAddWeapon();
+	}
+
+	if (INPUT_MGR.GetMouseButton(sf::Mouse::Left))
+	{
+		WEAPON_MGR.Shoot();
+	}
 }
 
 void PilotWeapon::Draw(sf::RenderWindow& window)
@@ -75,7 +75,6 @@ void PilotWeapon::SetGunFlipx(bool flipX)
 	if (!flipX)
 	{
 		WeaponXpos = abs(WeaponXpos);
-
 	}
 	else
 	{

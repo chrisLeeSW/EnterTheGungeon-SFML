@@ -17,6 +17,33 @@ void WeaponMgr::Init()
 		Release();
 	}
 
+}
+
+
+void WeaponMgr::Enter(Weapon::Types type)
+{
+	if (!weapons.empty())
+	{
+		Release();
+	}
+
+	switch (type)
+	{
+	case Weapon::Types::PilotWeapon :
+		weapons.push_back(new PilotWeapon());
+		currentWeapon = weapons.front();
+		//currentWeapon->Init();
+		std::cout << "웨폰매니저 엔터 : 타입 파일럿 웨폰";
+		break;
+
+	case Weapon::Types::PrisonerWeapon : 
+		weapons.push_back(new PrisonerWeapon());
+		currentWeapon = weapons.front();
+		std::cout << "웨폰매니저 엔터 : 타입 프리즈너 웨폰";
+		break;
+	}
+
+
 
 	ObjectPool<Bullet>* ptr = &poolBullets;
 	poolBullets.OnCreate = [ptr](Bullet* bullet) {
@@ -24,35 +51,13 @@ void WeaponMgr::Init()
 	};
 	poolBullets.Init();
 
-}
-
-
-void WeaponMgr::Enter(Weapon::Types type)
-{
-	switch (type)
-	{
-	case Weapon::Types::PilotWeapon :
-		weapons.push_back(new PilotWeapon());
-		currentWeapon = weapons[0];
-		currentWeapon->Init();
-		std::cout << "웨폰매니저 엔터 : 타입 파일럿 웨폰";
-		break;
-
-	case Weapon::Types::PrisonerWeapon : 
-		weapons.push_back(new PrisonerWeapon());
-		currentWeapon = weapons[0];
-		currentWeapon->Init();
-		std::cout << "웨폰매니저 엔터 : 타입 프리즈너 웨폰";
-		break;
-	}
-
 	withWeapon = true;
+	
+	scene = SCENE_MGR.GetCurrScene();
+	sceneGame = dynamic_cast<SceneGame*>(scene);
+
 }
 
-스위치(커런트웨폰->무기 타입)
-
-캐이스 1
-슈팅(무기타입);
 
 
 void WeaponMgr::Release()
@@ -74,10 +79,11 @@ void WeaponMgr::Release()
 
 void WeaponMgr::SwapWeapon(int swap)
 {
-	if (swap >= 0 && swap < weapons.size())
+	if (swap >= 0 && swap <= weapons.size())
 	{
 		swap--;
 		currentWeapon = weapons[swap];
+		std::cout << "int swap 의 값 : " << swap << std::endl;
 	}
 	else
 	{
@@ -95,7 +101,6 @@ void WeaponMgr::Draw(sf::RenderWindow& window)
 	currentWeapon->Draw(window);
 }
 
-
 void WeaponMgr::SetPlayer(Player* player)
 {
 	this->player = player;
@@ -111,15 +116,11 @@ bool WeaponMgr::GetWithWeapon()
 	return withWeapon;
 }
 
-void WeaponMgr::SetHandOrigin(sf::Vector2f handori)
+void WeaponMgr::Shoot()
 {
-	orix = handori.x;
-	oriy = handori.y;
-}
-
-sf::Vector2f WeaponMgr::GetHandOrigin()
-{
-	return sf::Vector2f{ orix,oriy };
+	bullet = poolBullets.Get();
+	bullet->SetBullet((int)currentWeapon->GetWeaponType(), currentWeapon->GetPosition(), currentWeapon->Look());
+	sceneGame->AddGo(bullet);
 }
 
 void WeaponMgr::SetWeaPonFlipx(bool flip)
@@ -139,12 +140,18 @@ const void WeaponMgr::GetWeapon(Weapon::Types id)
 	{
 		std::cout << "총 못찾았음" << std::endl;
 	}
-
-	switch (id)
+	else
 	{
-	case ::Weapon::Types::Ak47:
-		weapons.push_back(new Ak47());
-		weapons.back()->Init();
-		break;
+		for (const auto& pair : mapweapons)
+		{
+			weapons.push_back(pair.second);
+			break;
+		}
 	}
+}
+
+void WeaponMgr::TestAddWeapon()
+{
+	weapons.push_back(new PrisonerWeapon());
+	std::cout << "테스트 무기 추가" << std::endl;
 }

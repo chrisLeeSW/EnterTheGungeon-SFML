@@ -28,8 +28,6 @@ public:
 	};
 
 
-protected:
-
 	//ObjectPool<Weapon> poolWeapons;
 	std::string clipId;
 
@@ -67,7 +65,6 @@ protected:
 
 public:
 	Player(Types type, const std::string& textureId = "", const std::string& n = "");
-	Player(const std::string& textureId = "", const std::string& n = "");
 	virtual ~Player() override { Release(); }
 
 	virtual void SetPosition(const sf::Vector2f& p) override;
@@ -84,7 +81,6 @@ public:
 	void SetFlipX(bool filp);
 	void PlayerAct(float dt);
 
-	sf::Vector2f GetPlayerPos();
 
 	void ChangePlayer(sf::Vector2f pos,bool choise);
 

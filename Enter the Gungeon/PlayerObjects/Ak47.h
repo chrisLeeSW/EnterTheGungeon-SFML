@@ -21,6 +21,8 @@ protected:
 	AnimationController gun;
 	AnimationController shootEffect;
 
+	float WeaponXpos = 9.f;
+
 public:
 
 	Ak47(const std::string& textureId = "", const std::string& n = "");
@@ -37,5 +39,7 @@ public:
 
 	virtual void SetPlayer();
 	virtual void SetType(Types t);
+
+	virtual Types GetWeaponType() override { return weaponType; }
 };
 

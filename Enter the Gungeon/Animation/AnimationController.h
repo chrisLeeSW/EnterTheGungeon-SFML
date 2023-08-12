@@ -10,6 +10,7 @@ protected:
 	std::queue<std::string> queue;
 	float speed = 1.f; // aniation 동작시킬 속도
 	bool isPlaying = false;
+	bool isEndAnimation = false;
 
 	AnimationClip* currentClip = nullptr;
 	int currentFrame =-1; // 몇번째 clip인지 확인
@@ -44,6 +45,7 @@ public:
 
 	int GetCurFrame() { return currentFrame; }
 	int GetTotalFrame() { return totalFrame; }
-
+	bool AnimationEnd() { return isEndAnimation; }
+	void SetCurrentFarme() { currentFrame = 0; }
 };
 

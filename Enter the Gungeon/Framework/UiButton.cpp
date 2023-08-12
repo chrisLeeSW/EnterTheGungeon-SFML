@@ -2,7 +2,6 @@
 #include "UiButton.h"
 #include "SceneMgr.h"
 
-
 UiButton::UiButton(const std::string& textureId, const std::string& fontId, const std::string& n)
 	:SpriteGo(textureId,n), fontId(fontId)
 {

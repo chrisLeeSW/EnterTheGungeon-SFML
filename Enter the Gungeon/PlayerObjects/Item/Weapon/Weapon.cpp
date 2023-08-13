@@ -10,7 +10,7 @@
 
 
 
-Weapon::Weapon(const std::string& textureId, const std::string& n) : SpriteGo(textureId, n)
+Weapon::Weapon(const std::string& textureId, const std::string& n) : Item(textureId, n)
 {
 }
 

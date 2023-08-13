@@ -1,5 +1,5 @@
 #pragma once
-#include "SpriteGo.h"
+#include "Item.h"
 #include "ObjectPool.h"
 #include "Bullet.h"
 #include "AnimationController.h"
@@ -8,9 +8,10 @@
 
 class Player;
 class Bullet;
-
 class GameObject;
-class Weapon : public SpriteGo
+
+
+class Weapon : public Item
 {
 public:
 

@@ -1,0 +1,46 @@
+#pragma once
+#include"SpriteGo.h"
+
+class Player;
+class Weapon;
+
+class Item : public SpriteGo
+{
+
+public:
+
+    enum class Types
+    {
+        None,
+        Passive,
+        Active,
+        PilotActive,
+        PilotPassvie,
+        PrisonerActive,
+        PrisonerPassive,
+    };
+
+
+protected:
+
+    std::unordered_map<std::string, Item*> items;
+
+    Player* player;
+    Weapon* weapon;
+
+public:
+
+    Types type;
+
+    Item(const std::string& textureId = "", const std::string& n = "");
+    virtual ~Item() override { Release(); }
+
+    virtual void Init() override;
+    virtual void Release() override;
+    virtual void Reset() override;
+
+    virtual void Update(float dt) override;
+    virtual void Draw(sf::RenderWindow& window) override;
+};
+
+

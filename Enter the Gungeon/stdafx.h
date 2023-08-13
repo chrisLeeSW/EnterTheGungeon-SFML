@@ -29,3 +29,4 @@
 #include "ResourceMgr.h"
 #include "rapidcsv.h"
 #include "Utils.h"
+#include "PlayerMgr.h"

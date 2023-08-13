@@ -51,7 +51,6 @@ protected:
 
 	Weapon::Types currentWeaponType;
 
-	std::function<void(Weapon*)> weaponSetType;
 
 public:
 

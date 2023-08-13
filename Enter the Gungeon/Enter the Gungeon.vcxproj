@@ -120,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>./;./3rd;./DataTables;./SFML-2.5.1/include;./Global;./Framework;./GameObjects;./Animation;./UI;./Scenes;./PlayerObjects;./Map;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./3rd;./DataTables;./SFML-2.5.1/include;./Global;./Framework;./GameObjects;./Animation;./UI;./Scenes;./PlayerObjects;./PlayerObjects/Item;./PlayerObjects/Item/Passive;./PlayerObjects/Item/Active;./PlayerObjects/Item/Weapon;./Map;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -153,16 +153,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="PlayerObjects\Item\Active\PilotActive.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Passive\PilotPassive.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Active\Active.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Passive\Passive.cpp" />
+    <ClCompile Include="PlayerObjects\Item\ItemMgr.cpp" />
     <ClCompile Include="PlayerObjects\Equipment.cpp" />
-    <ClCompile Include="PlayerObjects\Ak47.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Weapon\Ak47.cpp" />
     <ClCompile Include="Animation\AnimationController.cpp" />
     <ClCompile Include="Animation\AnimationClip.cpp" />
     <ClCompile Include="DataTables\BulletTable.cpp" />
     <ClCompile Include="DataTables\WeaponTable.cpp" />
     <ClCompile Include="GameObjects\Enemy.cpp" />
-    <ClCompile Include="PlayerObjects\PilotWeapon.cpp" />
-    <ClCompile Include="PlayerObjects\WeaponMgr.cpp" />
-    <ClCompile Include="PlayerObjects\Bullet.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Weapon\PilotWeapon.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Weapon\WeaponMgr.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Weapon\Bullet.cpp" />
     <ClCompile Include="GameObjects\EnemyBullet.cpp" />
     <ClCompile Include="DataTables\DataTable.cpp" />
     <ClCompile Include="DataTables\StringTable.cpp" />
@@ -176,15 +181,17 @@
     <ClCompile Include="PlayerObjects\Player.cpp" />
     <ClCompile Include="GameObjects\SpriteEffect.cpp" />
     <ClCompile Include="GameObjects\VertexArrayGo.cpp" />
-    <ClCompile Include="PlayerObjects\Weapon.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Weapon\Weapon.cpp" />
     <ClCompile Include="Global\Utils.cpp" />
-    <ClCompile Include="PlayerObjects\main.cpp">
+    <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Framework\ResourceMgr.cpp" />
     <ClCompile Include="GameObjects\Muzzle.cpp" />
-    <ClCompile Include="PlayerObjects\PrisonerWeapon.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Weapon\PrisonerWeapon.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Active\PrisonerActive.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Passive\PrisonerPassive.cpp" />
     <ClCompile Include="Scenes\SceneMaptool.cpp" />
     <ClCompile Include="DataTables\PlayerTable.cpp" />
     <ClCompile Include="PlayerObjects\PlayerMgr.cpp" />
@@ -198,23 +205,28 @@
     <ClCompile Include="Scenes\SceneTitle.cpp" />
     <ClCompile Include="GameObjects\TextGo.cpp" />
     <ClCompile Include="Framework\UiButton.cpp" />
-    <ClCompile Include="PlayerObjects\Item.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Item.cpp" />
     <ClCompile Include="UI\TextBox.cpp" />
     <ClCompile Include="Map\Tile.cpp" />
     <ClCompile Include="Map\TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
+    <ClInclude Include="PlayerObjects\Item\Active\PilotActive.h" />
+    <ClInclude Include="PlayerObjects\Item\Passive\PilotPassive.h" />
+    <ClInclude Include="PlayerObjects\Item\Active\Active.h" />
+    <ClInclude Include="PlayerObjects\Item\Passive\Passive.h" />
+    <ClInclude Include="PlayerObjects\Item\ItemMgr.h" />
     <ClInclude Include="PlayerObjects\Equipment.h" />
-    <ClInclude Include="PlayerObjects\Ak47.h" />
+    <ClInclude Include="PlayerObjects\Item\Weapon\Ak47.h" />
     <ClInclude Include="Animation\AnimationController.h" />
     <ClInclude Include="Animation\AnimationClip.h" />
     <ClInclude Include="DataTables\BulletTable.h" />
     <ClInclude Include="DataTables\WeaponTable.h" />
     <ClInclude Include="GameObjects\Enemy.h" />
-    <ClInclude Include="PlayerObjects\PilotWeapon.h" />
-    <ClInclude Include="PlayerObjects\WeaponMgr.h" />
-    <ClInclude Include="PlayerObjects\Bullet.h" />
+    <ClInclude Include="PlayerObjects\Item\Weapon\PilotWeapon.h" />
+    <ClInclude Include="PlayerObjects\Item\Weapon\WeaponMgr.h" />
+    <ClInclude Include="PlayerObjects\Item\Weapon\Bullet.h" />
     <ClInclude Include="GameObjects\EnemyBullet.h" />
     <ClInclude Include="DataTables\DataTable.h" />
     <ClInclude Include="DataTables\StringTable.h" />
@@ -224,14 +236,16 @@
     <ClInclude Include="PlayerObjects\Player.h" />
     <ClInclude Include="GameObjects\SpriteEffect.h" />
     <ClInclude Include="GameObjects\VertexArrayGo.h" />
-    <ClInclude Include="PlayerObjects\Weapon.h" />
+    <ClInclude Include="PlayerObjects\Item\Weapon\Weapon.h" />
     <ClInclude Include="Global\Defines.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Framework\InputMgr.h" />
     <ClInclude Include="Framework\ResourceMgr.h" />
     <ClInclude Include="Global\Utils.h" />
     <ClInclude Include="GameObjects\Muzzle.h" />
-    <ClInclude Include="PlayerObjects\PrisonerWeapon.h" />
+    <ClInclude Include="PlayerObjects\Item\Weapon\PrisonerWeapon.h" />
+    <ClInclude Include="PlayerObjects\Item\Active\PrisonerActive.h" />
+    <ClInclude Include="PlayerObjects\Item\Passive\PrisonerPassive.h" />
     <ClInclude Include="Scenes\SceneMaptool.h" />
     <ClInclude Include="DataTables\PlayerTable.h" />
     <ClInclude Include="PlayerObjects\PlayerMgr.h" />
@@ -243,7 +257,7 @@
     <ClInclude Include="Global\Singleton.h" />
     <ClInclude Include="GameObjects\SpriteGo.h" />
     <ClInclude Include="Scenes\SceneTitle.h" />
-    <ClInclude Include="PlayerObjects\Item.h" />
+    <ClInclude Include="PlayerObjects\Item\Item.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Global\Variables.h" />
     <ClInclude Include="GameObjects\TextGo.h" />

@@ -3,24 +3,13 @@
 #include "SceneGame.h"
 #include "Scene.h"
 #include "WeaponMgr.h"
+#include "ItemMgr.h"
+#include "Item.h"
 
 Player::Player(Types type, const std::string& textureId, const std::string& n) : SpriteGo(textureId, n), type(type)
 {
 }
 
-void Player::SetPosition(const sf::Vector2f& p)
-{
-	SpriteGo::SetPosition(p);
-	if (hand != nullptr)
-	hand->SetPosition(p);
-}
-
-void Player::SetPosition(float x, float y)
-{
-	SpriteGo::SetPosition(x, y);
-	if (hand != nullptr)
-	hand->SetPosition(x, y);
-}
 
 void Player::Init()
 {
@@ -121,6 +110,8 @@ void Player::Init()
 		playerchoise = true;
 		SetSceneGame();
 	}
+
+	PLAYER_MGR.SetPlayer(this);
 }
 
 void Player::Release()
@@ -310,6 +301,11 @@ void Player::PlayerAct(float dt)
 	{
 		animation.Play(clipId);
 	}
+
+	if (INPUT_MGR.GetKey(sf::Keyboard::Num9))
+	{
+		GetItem(Item::Types::PrisonerActive);
+	}
 }
 
 
@@ -317,11 +313,6 @@ void Player::ChangePlayer(sf::Vector2f pos,bool choise)
 {
 	SetPosition(pos);
 	playerchoise = choise;
-}
-
-Player::Types Player::GetType()
-{
-	return type;
 }
 
 void Player::SetSceneGame()
@@ -333,7 +324,38 @@ void Player::SetSceneGame()
 	hand = (SpriteGo*)sceneGame->AddGo(new SpriteGo("graphics/Hand.png"));
 }
 
-//void Player::AddWeapon()
-//{
-//	for(auto it : WEAPON_MGR.)
-//}
+void Player::GetItem(Item::Types type)
+{
+	if (ITEM_MGR.GetItem(type)->second->type == Item::Types::Active)
+	{
+		if(active != nullptr)
+			delete active;
+
+		Item* item = ITEM_MGR.GetItem(type)->second;
+		active = dynamic_cast<Active*>(item);
+	}
+	else
+	{
+		Item* item = ITEM_MGR.GetItem(type)->second;
+		passiveList.push_back(dynamic_cast<Passive*>(item));
+
+		Scene* scene = SCENE_MGR.GetCurrScene();
+		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
+
+		sceneGame->AddGo(passiveList.back());
+	}
+}
+
+void Player::SetPosition(const sf::Vector2f& p)
+{
+	SpriteGo::SetPosition(p);
+	if (hand != nullptr)
+		hand->SetPosition(p);
+}
+
+void Player::SetPosition(float x, float y)
+{
+	SpriteGo::SetPosition(x, y);
+	if (hand != nullptr)
+		hand->SetPosition(x, y);
+}

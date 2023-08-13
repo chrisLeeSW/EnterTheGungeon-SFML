@@ -2,14 +2,23 @@
 #include "Scene.h"
 
 class TileMap;
+class SpriteGo;
+class InteractionObject;
+
+struct RoomObjectsInfo
+{
+	MapObjectType type;
+	InteractionObject* interactionObj;
+};
+
 class GameMapTestScene :public Scene
 {
 protected:
 	TileMap* tileRoom1;
-	TileMap* objectRoom1;
+	std::vector<SpriteGo*> objects;
+	std::vector<RoomObjectsInfo> interaction;
 
-	TileMap* tileRoom2;
-	TileMap* objectRoom2;
+	sf::RectangleShape shape;
 public:
 	GameMapTestScene();
 	virtual ~GameMapTestScene() override = default;

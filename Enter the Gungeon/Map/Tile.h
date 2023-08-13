@@ -1,22 +1,17 @@
 #pragma once
 #include "SpriteGo.h"
 
-struct TileInfo
-{
-	int x = 0;
-	int y = 0;
-	int texIndex = 0;
-	int objectIndex = 0;
-	float positionX;
-	float positionY;
-};
 
-class Tile : public SpriteGo
+class Tile : public SpriteGo 
 {
 protected:
-
+	sf::Vector2i size;
+	sf::Vector2f startPos;
+	std::string fileName;
+	
+	
 public:
-	Tile(const std::string& textureId = "", const std::string& n = "");
+	Tile(const std::string& textureId = "", const std::string& n = "",std::string fileName ="");
 	virtual ~Tile() override;
 
 	virtual void Init() override;
@@ -24,5 +19,8 @@ public:
 	virtual void Reset() override;
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
+
+
+	
 };
 

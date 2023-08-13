@@ -63,15 +63,21 @@ enum class MapObjectType
 	LibraryDown,
 	LibraryCornerLeft,
 	LibraryCornerRight,
-	Object1,
+	Pot,
+	Book1,
 	//아무것도 없는 벽 생각해야함
 	MapObjectCount,
 };
 
-enum class InteractionObjectType
+enum class RoomType
 {
-	None =-1,
-	aa
+	None = -1,
+	NormalStoneRoom,
+	NormalLirbraryRoom,
+	SpawnRoom, 
+	BossRoom, 
+	StoreRoom, 
+
 };
 
 #include "AnimationClip.h"

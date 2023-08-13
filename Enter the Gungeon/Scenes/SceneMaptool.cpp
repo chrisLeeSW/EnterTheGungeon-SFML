@@ -115,6 +115,7 @@ void SceneMaptool::Update(float dt)
 		RemoveGo(temp2);
 		temp2 = nullptr;
 		IncreaseOrDecrease = false;
+		// 후반작업
 	}
 
 
@@ -156,7 +157,7 @@ void SceneMaptool::Update(float dt)
 			}
 		}
 		if (count < 0) return;
-		if (count == (int)MapObjectType::Object1 || count == (int)MapObjectType::WallDown || count == (int)MapObjectType::LibraryDown)
+		if (count == (int)MapObjectType::Pot || count == (int)MapObjectType::WallDown || count == (int)MapObjectType::LibraryDown || count == (int)MapObjectType::Book1)
 		{
 			objectSprite->ChangeTile(gridIndex.x, gridIndex.y, count, currentTileSprite->sprite.getTextureRect());
 		}
@@ -524,7 +525,7 @@ void SceneMaptool::SettingUiText()
 	restUiText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "RestUiText"));
 	restUiText->text.setCharacterSize(20);
 	restUiText->SetOrigin(Origins::BC);
-	restUiText->text.setString("rest");
+	restUiText->text.setString("Reset");
 	restUiText->sortLayer = 100;
 	restUiText->SetPosition(restUi->GetPosition() - sf::Vector2f{ 0.f, restUi->text.getCharacterSize() * 0.125f });
 

@@ -1,0 +1,7 @@
+ID,FPS,LOOPTYPE,,
+Break,5,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/InteractionGameObjects.png,66,70,50,50
+graphics/InteractionGameObjects.png,119,72,50,51
+graphics/InteractionGameObjects.png,175,73,51,51

@@ -1,20 +1,60 @@
 #include "stdafx.h"
 #include "GameMapTestScene.h"
 #include "TileMap.h"
-GameMapTestScene::GameMapTestScene():Scene(SceneId::GameMapTestScene)
+#include "SpriteGo.h"
+#include "AnimationController.h"
+#include "InteractionObject.h"\
+
+GameMapTestScene::GameMapTestScene() :Scene(SceneId::GameMapTestScene)
 {
 	resourceListPath = "script/GameMapTestScene.csv";
 }
 
 void GameMapTestScene::Init()
 {
-
-
-
+	tileRoom1 = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+	sf::Vector2f pos = { -300.f,-300.f }; // 랜덤 설정
+	tileRoom1->SetStartPos(pos);
+	tileRoom1->Load("Room/TileMapFile/Room1.csv", false);
+	for (int i = 0; i < tileRoom1->tiles.size(); ++i)
+	{
+		//	objects
+		switch (static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes))
+		{
+		case MapObjectType::WallDown:
+		{
+		SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
+		spr->sprite.setTextureRect({ 0,250,50,50 });
+		spr->SetPosition(pos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, pos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
+		spr->sortLayer = 2;
+		objects.push_back(spr); // wall클래스 생성
+		}
+		break;
+		case MapObjectType::Pot:
+		{
+			InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes),"graphics/InteractionGameObjects.png"));
+			spr->SetPosition(pos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, pos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
+			spr->sortLayer = 0;
+			interaction.push_back({ static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), spr });
+		}
+		break;
+		case MapObjectType::Book1:
+		{
+			InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
+			spr->SetPosition(pos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, pos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
+			spr->sortLayer = 0;
+			interaction.push_back({ static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), spr });
+		}
+		break;
+		}
+	}
+	shape.setSize({ 5.f,5.f });
+	shape.setPosition(tileRoom1->vertexArray.getBounds().left + tileRoom1->vertexArray.getBounds().width * 0.5f, tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height * 0.5f);
 	for (auto go : gameObjects)
 	{
 		go->Init();
 	}
+
 }
 
 void GameMapTestScene::Release()
@@ -36,25 +76,12 @@ void GameMapTestScene::Enter()
 
 
 
-	tileRoom1 = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-	tileRoom1->SetStartPos(-300.f, -100.f);
-	tileRoom1->Load("Room/TileMapFile/Room1.csv",false);
 
-	objectRoom1 = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-	objectRoom1->SetStartPos(-300.f, -100.f);
-	objectRoom1->LoadObject("Room/TileMapFile/Room1.csv", false);
-
-
-	tileRoom1 = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-	tileRoom1->Load("Room/TileMapFile/Room2.csv", false);
-
-	objectRoom1 = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-	objectRoom1->LoadObject("Room/TileMapFile/Room2.csv", false);
 }
 
 void GameMapTestScene::Exit()
 {
-	
+
 	Scene::Exit();
 }
 
@@ -81,9 +108,39 @@ void GameMapTestScene::Update(float dt)
 	{
 		SCENE_MGR.ChangeScene(SceneId::MapTool);
 	}
+
+	if (INPUT_MGR.GetKey(sf::Keyboard::W))
+	{
+		shape.move(0.f, -2.5f);
+	}
+	if (INPUT_MGR.GetKey(sf::Keyboard::S))
+	{
+		shape.move(0.f, 2.5f);
+	}
+
+	if (INPUT_MGR.GetKey(sf::Keyboard::A))
+	{
+		shape.move(-2.5f, 0.f);
+	}
+	if (INPUT_MGR.GetKey(sf::Keyboard::D))
+	{
+		shape.move(2.5f, 0.f);
+	}
+
+	if (!tileRoom1->vertexArray.getBounds().contains(shape.getPosition()))
+	{
+		std::cout << "???" << std::endl;
+	}
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad0))
+	{
+
+	}
 }
 
 void GameMapTestScene::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
+	window.setView(worldView);
+	window.draw(shape);
 }

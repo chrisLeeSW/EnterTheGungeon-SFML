@@ -6,14 +6,16 @@ struct Tile
 	int x = 0;
 	int y = 0;
 	int texIndex = 0;
+	int objectTypes = 0;
 };
 
 class TileMap : public VertexArrayGo
 {
 protected:
-	sf::Vector2f scaleFactor;
+
 	sf::Vector2i size;
 	sf::Vector2f startPos;
+	sf::Vector2f texSize = { 50.f,50.f };
 public:
 	TileMap(const std::string& textureId = "", const std::string& n = "");
 	virtual ~TileMap() override;
@@ -32,6 +34,7 @@ public:
 	void SetStartPos(float x, float y) 
 	{ this->startPos = {x,y}; }
 	sf::Vector2f GetStartPos() { return startPos; }
+	sf::Vector2f GetTileSize() { return texSize; }
 
 	std::vector<Tile> tiles;
 };

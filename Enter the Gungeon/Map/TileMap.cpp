@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TileMap.h"
 
-TileMap::TileMap(const std::string& textureId, const std::string& n) :VertexArrayGo(textureId, n), scaleFactor({ 0.f,0.f })
+TileMap::TileMap(const std::string& textureId, const std::string& n) :VertexArrayGo(textureId, n)
 {
 	startPos = { 0, 0 };
 }
@@ -29,6 +29,13 @@ bool TileMap::Load(const std::string& filePath, bool textureIdIn)
 			std::string fileInfo = map.GetCell<std::string>(j, i + 4);
 			int texIndex = std::stoi(fileInfo);
 			tile.texIndex = texIndex;
+			size_t commaPos = fileInfo.find(',');
+			if (commaPos != std::string::npos)
+			{
+				std::string numberPart = fileInfo.substr(commaPos + 1);
+				int newTexIndex = std::stoi(numberPart);
+				tile.objectTypes = newTexIndex;
+			}
 			tiles.push_back(tile);
 		}
 	}
@@ -61,8 +68,6 @@ bool TileMap::Load(const std::string& filePath, bool textureIdIn)
 		{ tileSize.x, tileSize.y },
 		{ 0.f, tileSize.y }
 	};
-
-
 
 	for (int i = 0; i < size.y; ++i)
 	{

@@ -15,47 +15,59 @@ Enemy::~Enemy()
 
 void Enemy::Init()
 {
+	std::string name;
 	switch (type)
 	{
-	case EnemyTypes::None:
-
-		break;
 	case EnemyTypes::BulletKin:
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinIdleUp.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinIdleLeftUp.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinIdleLeft.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinIdleLeftDown.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinIdleDown.csv"));
-
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinMoveUp.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinMoveLeftUp.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinMoveLeft.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinMoveLeftDown.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinMoveDown.csv"));
-
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinHitUp.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinHitLeftUp.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinHitLeft.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinHitLeftDown.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinHitDown.csv"));
-
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinDieUp.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinDieLeftUp.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinDieLeft.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinDieLeftDown.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/BulletKinDieDown.csv"));
-
+		name = "BulletKin";
+		isHanded = true;
+		break;
+	case EnemyTypes::KeyBulletKin:
+		name = "KeyBulletKin";
+		break;
+	case EnemyTypes::ShotgunKinRed:
+		name = "ShotgunKinRed";
+		isHanded = true;
+		break;
+	case EnemyTypes::ShotgunKinBlue:
+		name = "ShotgunKinBlue";
 		isHanded = true;
 		break;
 	default:
-
+		std::cerr << "ERROR: Not Exist EnemyTypes (Enemy Init())" << std::endl;
 		break;
 	}
-	animation.SetTarget(&sprite);
-}
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleUp.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleLeftUp.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleLeft.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleLeftDown.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleDown.csv"));
 
-void Enemy::Release()
-{
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "MoveUp.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "MoveLeftUp.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "MoveLeft.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "MoveLeftDown.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "MoveDown.csv"));
+
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "AttackUp.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "AttackLeftUp.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "AttackLeft.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "AttackLeftDown.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "AttackDown.csv"));
+
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "HitUp.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "HitLeftUp.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "HitLeft.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "HitLeftDown.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "HitDown.csv"));
+
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "DieUp.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "DieLeftUp.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "DieLeft.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "DieLeftDown.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "DieDown.csv"));
+
+	animation.SetTarget(&sprite);
 }
 
 void Enemy::Reset()
@@ -202,16 +214,17 @@ void Enemy::SetPlayer(Player* player)
 	this->player = player;
 }
 
-void Enemy::SetEnemy(float speed, float maxHp, float attackRange)
+void Enemy::SetEnemy(float speed, float maxHp, float attackRange, bool superarmor)
 {
 	this->speed = speed;
 	this->maxHp = maxHp;
 	this->attackRange = attackRange;
+	this->superarmor = superarmor;
 }
 
 void Enemy::OnDamage(const float& damage, const sf::Vector2f& dir, const float& knockback)
 {
-	SetPosition(position + dir * knockback);
+	if (!superarmor) SetPosition(position + dir * knockback);
 
 	if (IfHit != nullptr)
 	{

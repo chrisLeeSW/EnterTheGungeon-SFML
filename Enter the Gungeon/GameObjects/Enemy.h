@@ -8,6 +8,9 @@ enum class EnemyTypes
 {
 	None = -1,
 	BulletKin,
+	KeyBulletKin, //Escape함수 구현 필요
+	ShotgunKinRed,
+	ShotgunKinBlue,
 
 	Count,
 };
@@ -25,6 +28,7 @@ protected:
 	bool flipX = false;
 	bool isAlive = true;
 	float attackRange = 0.f;
+	bool superarmor = false;
 
 	Player* player;
 	sf::Sprite hand;
@@ -35,7 +39,6 @@ public:
 	virtual ~Enemy() override;
 
 	virtual void Init() override;
-	virtual void Release() override;
 	virtual void Reset() override;
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
@@ -46,7 +49,7 @@ public:
 	void SetFlipX(bool flip);
 
 	void SetPlayer(Player* player);
-	void SetEnemy(float speed = 0.f, float maxHp = 0.f, float attackRange = 0.f);
+	void SetEnemy(float speed = 0.f, float maxHp = 0.f, float attackRange = 0.f, bool superarmor = false);
 
 	std::function<void(float)> IfHit; // Bullet에게 맞았을 때
 	std::function<void()> IfBump; // Player와 몸이 충돌했을 때

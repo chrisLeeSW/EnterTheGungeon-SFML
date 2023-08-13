@@ -48,11 +48,23 @@ void SceneLobby::Init()
 
 	currentplayer = pilot;
 
-	test = (Enemy*)AddGo(new Enemy(EnemyTypes::BulletKin)); //test
-	test->SetOrigin(Origins::BC); //test
-	test->SetPlayer(currentplayer); //test
-	test->SetEnemy(100.f, 5.f, 100.f); //test
-	test->SetPosition(-200, -200); //test
+	test1 = (Enemy*)AddGo(new Enemy(EnemyTypes::BulletKin)); //test
+	test1->SetOrigin(Origins::BC); //test
+	test1->SetPlayer(currentplayer); //test
+	test1->SetEnemy(100.f, 5.f, 100.f); //test
+	test1->SetPosition(-200, -200); //test
+
+	test2 = (Enemy*)AddGo(new Enemy(EnemyTypes::ShotgunKinRed)); //test
+	test2->SetOrigin(Origins::BC); //test
+	test2->SetPlayer(currentplayer); //test
+	test2->SetEnemy(100.f, 5.f); //test
+	test2->SetPosition(200, 200); //test
+
+	test3 = (Enemy*)AddGo(new Enemy(EnemyTypes::ShotgunKinBlue)); //test
+	test3->SetOrigin(Origins::BC); //test
+	test3->SetPlayer(currentplayer); //test
+	test3->SetEnemy(100.f, 5.f, 100.f); //test
+	test3->SetPosition(400, -200); //test
 
 	for (auto go : gameObjects)
 	{
@@ -111,7 +123,7 @@ void SceneLobby::Update(float dt)
 
 	if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left)) //test
 	{
-		test->OnDamage(1.0f, {1.f, 1.f}, 10.f);
+		test2->OnDamage(1.0f, {1.f, 1.f}, 10.f);
 	}
 }
 

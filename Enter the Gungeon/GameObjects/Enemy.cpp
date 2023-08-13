@@ -5,7 +5,11 @@
 Enemy::Enemy(EnemyTypes type, const std::string& textureId, const std::string& n)
 	:SpriteGo(textureId, n), type(type)
 {
-	
+	way.push_back({0.f, -1.f});
+	way.push_back(Utils::Normalize({1.f, -1.f}));
+	way.push_back({1.f, 0.f});
+	way.push_back(Utils::Normalize({1.f, 1.f}));
+	way.push_back({0.f, 1.f});
 }
 
 Enemy::~Enemy()
@@ -106,6 +110,7 @@ void Enemy::Update(float dt)
 		direction = { 0.f, 0.f };
 	}
 	SetPosition(position + direction * speed * dt);
+	SetFlipX(direction.x > 0.f);
 
 	if (player->sprite.getGlobalBounds().intersects(sprite.getGlobalBounds())) // Collider 충돌로 변경 요구
 	{
@@ -119,32 +124,33 @@ void Enemy::Update(float dt)
 		}
 	}
 	
+	sf::Vector2f min = WhereWay(direction);
+
 	// Animation
-	SetFlipX(direction.x > 0.f);
 	if (direction.x != 0.f || direction.y != 0.f)
 	{
-		if (animation.GetCurrentClipId() == "IdleUp" &&
-			direction.x == 0.f && direction.y < 0.f)
+		if (animation.GetCurrentClipId() != "MoveUp" &&
+			min == way[0])
 		{
 			animation.Play("MoveUp");
 		}
-		else if (animation.GetCurrentClipId() == "IdleLeftUp" &&
-			direction.x < 0.f && direction.y < 0.f)
+		else if (animation.GetCurrentClipId() != "MoveLeftUp" &&
+			min == way[1])
 		{
 			animation.Play("MoveLeftUp");
 		}
-		else if (animation.GetCurrentClipId() == "IdleLeft" &&
-			direction.x < 0.f && direction.y == 0.f)
+		else if (animation.GetCurrentClipId() != "MoveLeft" &&
+			min == way[2])
 		{
 			animation.Play("MoveLeft");
 		}
-		else if (animation.GetCurrentClipId() == "IdleLeftDown" &&
-			direction.x < 0.f && direction.y > 0.f)
+		else if (animation.GetCurrentClipId() != "MoveLeftDown" &&
+			min == way[3])
 		{
 			animation.Play("MoveLeftDown");
 		}
-		else if (animation.GetCurrentClipId() == "IdleDown" &&
-			direction.x == 0.f && direction.y > 0.f)
+		else if (animation.GetCurrentClipId() != "MoveDown" &&
+			min == way[4])
 		{
 			animation.Play("MoveDown");
 		}
@@ -209,6 +215,21 @@ void Enemy::SetFlipX(bool flip)
 	}
 }
 
+sf::Vector2f Enemy::WhereWay(sf::Vector2f dir)
+{
+	sf::Vector2f min;
+	float minf = 1.f;
+	for (auto it : way)
+	{
+		if (float result = Utils::Distance({ abs(dir.x), dir.y }, it) < minf)
+		{
+			minf = result;
+			min = it;
+		}
+	}
+	return min;
+}
+
 void Enemy::SetPlayer(Player* player)
 {
 	this->player = player;
@@ -247,38 +268,34 @@ void Enemy::OnDamage(const float& damage, const sf::Vector2f& dir, const float& 
 		}
 	}
 
+	sf::Vector2f min = WhereWay(dir);
 	// Animation
-	// dir에 맞게 재설정 필요 - dir과 8방향의 Distance를 재서 최소값을 기준으로 애니메이션을 재생하는것은 어떨까?
-	if (animation.GetCurrentClipId() == "MoveUp" ||
-		animation.GetCurrentClipId() == "IdleUp")
+	if (min == way[0])
 	{
 		animation.Play("HitUp");
 		animation.PlayQueue("IdleUp");
 	}
-	else if (animation.GetCurrentClipId() == "MoveLeftUp" ||
-		animation.GetCurrentClipId() == "IdleLeftUp")
+	else if (min == way[1])
 	{
 		animation.Play("HitLeftUp");
 		animation.PlayQueue("IdleLeftUp");
 	}
-	else if (animation.GetCurrentClipId() == "MoveLeft" ||
-		animation.GetCurrentClipId() == "IdleLeft")
+	else if (min == way[2])
 	{
 		animation.Play("HitLeft");
 		animation.PlayQueue("IdleLeft");
 	}
-	else if (animation.GetCurrentClipId() == "MoveLeftDown" ||
-		animation.GetCurrentClipId() == "IdleLeftDown")
+	else if (min == way[3])
 	{
 		animation.Play("HitLeftDown");
 		animation.PlayQueue("IdleLeftDown");
 	}
-	else if (animation.GetCurrentClipId() == "MoveDown" ||
-		animation.GetCurrentClipId() == "IdleDown")
+	else if (min == way[4])
 	{
 		animation.Play("HitDown");
 		animation.PlayQueue("IdleDown");
 	}
+
 }
 
 void Enemy::OnBump()
@@ -290,22 +307,27 @@ void Enemy::OnDie()
 {
 	if (animation.GetCurrentClipId() != "HitUp")
 	{
+		animation.Stop();
 		animation.Play("DieUp");
 	}
 	else if (animation.GetCurrentClipId() == "HitLeftUp")
 	{
+		animation.Stop();
 		animation.Play("DieLeftUp");
 	}
 	else if (animation.GetCurrentClipId() == "HitLeft")
 	{
+		animation.Stop();
 		animation.Play("DieLeft");
 	}
 	else if (animation.GetCurrentClipId() == "HitLeftDown")
 	{
+		animation.Stop();
 		animation.Play("DieLeftDown");
 	}
 	else if (animation.GetCurrentClipId() == "HitDown")
 	{
+		animation.Stop();
 		animation.Play("DieDown");
 	}
 

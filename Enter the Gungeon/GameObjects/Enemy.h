@@ -7,6 +7,7 @@ class Player;
 enum class EnemyTypes
 {
 	None = -1,
+
 	BulletKin,
 	KeyBulletKin, //Escape함수 구현 필요
 	ShotgunKinRed,
@@ -20,6 +21,7 @@ class Enemy : public SpriteGo
 protected:
 	AnimationController animation;
 
+	std::vector<sf::Vector2f> way;
 	sf::Vector2f direction;
 	float speed = 0.f;
 	float maxHp = 0.f;
@@ -47,6 +49,7 @@ public:
 	virtual void SetPosition(float x, float y) override;
 
 	void SetFlipX(bool flip);
+	sf::Vector2f WhereWay(sf::Vector2f dir);
 
 	void SetPlayer(Player* player);
 	void SetEnemy(float speed = 0.f, float maxHp = 0.f, float attackRange = 0.f, bool superarmor = false);

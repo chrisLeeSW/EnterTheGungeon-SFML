@@ -18,9 +18,9 @@ protected:
 
 
 
-
 public:
 
+    bool isUsingActiveSkill = false;
    // Types type = Types::Active;
 
     Active(const std::string& textureId = "", const std::string& n = "");

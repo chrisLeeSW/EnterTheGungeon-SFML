@@ -22,7 +22,6 @@ void Weapon::Init()
 
 	SetOrigin(Origins::BC);
 }
-
 void Weapon::Release()
 {
 }

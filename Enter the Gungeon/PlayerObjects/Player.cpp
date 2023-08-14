@@ -18,6 +18,10 @@ void Player::Init()
 {
 	windowsize = FRAMEWORK.GetWindowSize();
 
+	if (PLAYER_MGR.player != nullptr)
+		PLAYER_MGR.player = nullptr;
+		PLAYER_MGR.SetPlayer(this);
+
 
 	switch (type)
 	{
@@ -107,19 +111,14 @@ void Player::Init()
 	clipInfos.push_back({ "IdleDown", "WalkDown","RollDown",true,{0.f, 1.f} });
 	clipInfos.push_back({ "IdleRight", "WalkRight","RollRight",false, Utils::Normalize({1.f, 1.f}) });
 
-
-	if (type == Types::WeaponPilot || type == Types::WeaponPrisoner)
-	{
-		playerchoise = true;
-		SetSceneGame();
-		PLAYER_MGR.SetPlayer(this);
-		GetItem(Passive::Types::PilotPassive);
-		GetItem(Active::Types::PrisonerActive);
-		GetItem(Weapon::Types::Magnum);
-	}
-
-
-
+		if (type == Types::WeaponPilot || type == Types::WeaponPrisoner)
+		{
+			playerchoise = true;
+			SetSceneGame();
+			GetItem(Passive::Types::PilotPassive);
+			GetItem(Active::Types::PrisonerActive);
+			GetItem(Weapon::Types::Magnum);
+		}
 }
 
 void Player::Release()
@@ -133,23 +132,18 @@ void Player::Reset()
 	//SetPosition(windowsize.x * 0.5, windowsize.y * 0.5);
 	SetFlipX(false);
 
-	if (hand != nullptr)
+	if (type == Types::WeaponPilot || type == Types::WeaponPrisoner)
 	{
 		hand->SetOrigin(-sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height * 0.4);
-		switch (type)
-		{
-		case Types::WeaponPilot:
-			WEAPON_MGR.Enter(Weapon::Types::PilotWeapon);
-			break;
-		case Types::WeaponPrisoner:
-			WEAPON_MGR.Enter(Weapon::Types::PrisonerWeapon);
-			break;
-		}
+		active->Init();
+		passiveList.back()->Init();
 	}
 
 	speed = 150.f;
 	rollspeed = 250.f;
 	currentClipInfo = clipInfos[6];
+
+
 }
 
 void Player::Update(float dt)
@@ -164,6 +158,10 @@ void Player::Update(float dt)
 	{
 		PlayerAct(dt);
 		SwapWeapon();
+		if (INPUT_MGR.GetKeyDown(sf::Keyboard::Space))
+		{
+			active->Update(dt);
+		}
 	}
 	else
 	{
@@ -171,6 +169,11 @@ void Player::Update(float dt)
 		{
 			animation.Play("IdleRight");
 		}
+	}
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Space))
+	{
+		active->isUsingActiveSkill = true;
 	}
 }
 
@@ -345,10 +348,10 @@ void Player::GetItem(Passive::Types type)
 	{
 		it->Init();
 		passiveList.push_back(it);
-
 		Scene* scene = SCENE_MGR.GetCurrScene();
 		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
 		sceneGame->AddGo(passiveList.back());
+
 	}
 	else
 	{
@@ -366,6 +369,10 @@ void Player::GetItem(Active::Types type)
 			active = nullptr; // 이게 맞나?
 
 			active = it;
+			Scene* scene = SCENE_MGR.GetCurrScene();
+			SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
+			sceneGame->AddGo(active);
+			active->Init();
 	}
 	else
 	{
@@ -417,3 +424,4 @@ void Player::SetPosition(float x, float y)
 	if (hand != nullptr)
 		hand->SetPosition(x, y);
 }
+

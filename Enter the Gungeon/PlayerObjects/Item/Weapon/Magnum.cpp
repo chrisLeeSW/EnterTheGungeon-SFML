@@ -44,6 +44,7 @@ void Magnum::Update(float dt)
 {
 	gun.Update(dt);
 	SetPosition(player->GetPosition() + sf::Vector2f(WeaponXpos, -7.f));
+	SetOrigin(sprite.getLocalBounds().left, sprite.getLocalBounds().height);
 	mousePos = INPUT_MGR.GetMousePos();
 	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrScene()->ScreenToWorldPos(mousePos);
 	sf::Vector2f playerScreenPos = SCENE_MGR.GetCurrScene()->WorldPosToScreen(position);

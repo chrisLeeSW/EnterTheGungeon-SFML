@@ -18,13 +18,13 @@ protected:
 	std::vector<SpriteGo> currentchoise;
 	std::vector<Player*> Players;
 
-	Player* player = nullptr;
 
 	AnimationController pilotchoise;
 	AnimationController prisonerchoise;
 
 
 public:
+	Player* player = nullptr;
 
 	void Init();
 	void Release();

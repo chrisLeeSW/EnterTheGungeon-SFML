@@ -91,6 +91,8 @@ protected:
 
 public:
 
+	bool isUsingActiveSkill = false;
+
 	Player(Types type, const std::string& textureId = "", const std::string& n = "");
 	virtual ~Player() override { Release(); }
 
@@ -118,7 +120,6 @@ public:
 	void GetItem(Active::Types type);
 	void GetItem(Weapon::Types type);
 
-	sf::Vector2f GetDir() { return direction, position; }
 	bool GetFilpX() { return flipX; }
 
 };

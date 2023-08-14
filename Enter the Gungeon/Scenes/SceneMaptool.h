@@ -6,6 +6,7 @@ class TileMap;
 class UiButton;
 class TextGo;
 class TextBox;
+class SpriteGo;
 struct TileSpriteInfo
 {
 	SpriteGo* spr;
@@ -15,6 +16,7 @@ class SceneMaptool : public Scene
 {
 protected:
 	TileMap* gridTile =nullptr;
+	TileMap* objectSprite = nullptr;
 	float view;
 
 	UiButton* wallWidthSprite;
@@ -60,8 +62,16 @@ protected:
 	SpriteGo* currentTileSprite;
 	SpriteGo* currentTileSpriteBackGround;
 
-	SpriteGo* backGroundSaveAndLoadType;
+
 	int fileCount;
+	bool IncreaseOrDecrease = false;//
+	bool makeGridCheck = false;
+	std::vector<std::string> fileList;
+
+	bool increaseWidth;
+	bool decreaseWidth;
+	bool increaseHeight;
+	bool decreaseHeight;
 public:
 	SceneMaptool();
 	virtual ~SceneMaptool() override = default;
@@ -77,12 +87,15 @@ public:
 	void SettingUiText();
 	void SettingTileSprite(const std::string& path);
 
+	void MakeLine();
+	void RestLine();
+	void MakeGrid();
+	void ResetGrid();
 
-	void SaveRoomSortLayer0(std::string& fileName);
-	void SaveRoomSortLayer1(std::string& fileName);
 
-	void DrawSaveUi();
-	void DrawLoadUi();
+	void SaveRoom(std::string& fileName, std::string route, std::string saveFileNameCsv);
+	void LoadGridAndObjectSpriteFile(std::string& fileName, std::string& route, std::string saveFileNameCsv);
+
 
 	void ListFilesInDirectory(const std::string & folderPath);
 

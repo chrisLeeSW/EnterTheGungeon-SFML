@@ -1,0 +1,33 @@
+#pragma once
+#include "Scene.h"
+
+class TileMap;
+class SpriteGo;
+class InteractionObject;
+
+struct RoomObjectsInfo
+{
+	MapObjectType type;
+	InteractionObject* interactionObj;
+};
+
+class GameMapTestScene :public Scene
+{
+protected:
+	TileMap* tileRoom1;
+	std::vector<SpriteGo*> objects;
+	std::vector<RoomObjectsInfo> interaction;
+
+	sf::RectangleShape shape;
+public:
+	GameMapTestScene();
+	virtual ~GameMapTestScene() override = default;
+
+	virtual void Init() override;
+	virtual void Release() override;
+	virtual void Enter() override;
+	virtual void Exit() override;
+	virtual void Update(float dt) override;
+	virtual void Draw(sf::RenderWindow& window) override;
+};
+

@@ -1,0 +1,5 @@
+ID,FPS,LOOPTYPE,,
+Idle,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/InteractionGameObjects.png,6,6,50,50

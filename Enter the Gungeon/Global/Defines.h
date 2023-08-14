@@ -40,6 +40,7 @@ enum class SceneId
 	MapTool,
 	BulletEditor,
 
+	GameMapTestScene,
 	Count,
 };
 
@@ -62,14 +63,21 @@ enum class MapObjectType
 	LibraryDown,
 	LibraryCornerLeft,
 	LibraryCornerRight,
+	Pot,
+	Book1,
 	//아무것도 없는 벽 생각해야함
 	MapObjectCount,
 };
 
-enum class InteractionObjectType
+enum class RoomType
 {
-	None =-1,
-	aa
+	None = -1,
+	NormalStoneRoom,
+	NormalLirbraryRoom,
+	SpawnRoom, 
+	BossRoom, 
+	StoreRoom, 
+
 };
 
 #include "AnimationClip.h"

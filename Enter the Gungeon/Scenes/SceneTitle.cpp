@@ -63,6 +63,10 @@ void SceneTitle::Update(float dt)
 	{
 		SCENE_MGR.ChangeScene(SceneId::Game);
 	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num5))
+	{
+		SCENE_MGR.ChangeScene(SceneId::GameMapTestScene);
+	}
 }
 
 void SceneTitle::Draw(sf::RenderWindow& window)

@@ -7,7 +7,7 @@
 #include "SceneMaptool.h"
 #include "SceneBulletEditor.h"
 #include "SceneLobby.h"
-
+#include "GameMapTestScene.h"
 void SceneMgr::Init() 
 {
 	if (!scenes.empty())
@@ -19,6 +19,7 @@ void SceneMgr::Init()
 	scenes.push_back(new SceneGame());
 	scenes.push_back(new SceneMaptool());
 	scenes.push_back(new SceneBulletEditor());
+	scenes.push_back(new GameMapTestScene());
 
 	for (auto scene : scenes)
 	{

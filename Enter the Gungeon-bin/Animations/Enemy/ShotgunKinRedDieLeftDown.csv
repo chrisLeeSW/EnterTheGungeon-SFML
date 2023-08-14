@@ -1,0 +1,8 @@
+ID,FPS,LOOPTYPE,,
+DieLeftDown,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/ShotgunKin.png,5,358,18,24
+graphics/ShotgunKin.png,26,364,21,18
+graphics/ShotgunKin.png,50,366,21,16
+graphics/ShotgunKin.png,74,364,21,18

@@ -1,0 +1,6 @@
+ID,FPS,LOOPTYPE,,
+IdleUp,5,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/ShotgunKin.png,287,16,12,29
+graphics/ShotgunKin.png,302,17,12,28

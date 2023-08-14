@@ -1,0 +1,6 @@
+ID,FPS,LOOPTYPE,,
+AttackLeftUp,5,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/BulletKin.png,6,16,12,23
+graphics/BulletKin.png,21,16,12,23

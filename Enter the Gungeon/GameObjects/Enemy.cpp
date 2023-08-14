@@ -56,6 +56,10 @@ void Enemy::Init()
 	case EnemyTypes::ShotgunKinBlue:
 		name = "ShotgunKinBlue";
 		isHanded = true;
+		IfShoot = [&](sf::Vector2f dir, float speed)
+		{
+			FiveWayShot(dir, speed);
+		};
 		IfDie = [&](sf::Vector2f dir)
 		{
 			SixWayDie(dir, speed, 33); // table »ç¿ë
@@ -423,7 +427,7 @@ void Enemy::FiveWayShot(sf::Vector2f dir, float speed)
 
 void Enemy::SixWayDie(sf::Vector2f dir, float speed, int chance)
 {
-	if (int ran = Utils::RandomRange(1, 100) <= chance)
+	if (int ran = Utils::RandomRange(1, 100) >= chance)
 	{
 		OnDie(dir);
 		return;

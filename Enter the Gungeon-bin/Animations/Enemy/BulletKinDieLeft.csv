@@ -1,0 +1,8 @@
+ID,FPS,LOOPTYPE,,
+DieLeft,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/BulletKin.png,134,291,16,23
+graphics/BulletKin.png,153,294,21,20
+graphics/BulletKin.png,181,300,23,14
+graphics/BulletKin.png,207,302,23,12

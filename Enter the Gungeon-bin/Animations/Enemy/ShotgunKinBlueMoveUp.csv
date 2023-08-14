@@ -1,0 +1,10 @@
+ID,FPS,LOOPTYPE,,
+MoveUp,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/ShotgunKin.png,250,92,12,29
+graphics/ShotgunKin.png,265,93,17,28
+graphics/ShotgunKin.png,285,93,18,28
+graphics/ShotgunKin.png,306,92,12,29
+graphics/ShotgunKin.png,321,91,18,30
+graphics/ShotgunKin.png,342,92,17,29

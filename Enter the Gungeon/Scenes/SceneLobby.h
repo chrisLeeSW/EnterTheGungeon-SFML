@@ -41,7 +41,9 @@ protected:
 
 	SpriteGo* playerui;
 
-	Enemy* test; //test
+	Enemy* test1; //test
+	Enemy* test2; //test
+	Enemy* test3; //test
 
 public:
 	SceneLobby();

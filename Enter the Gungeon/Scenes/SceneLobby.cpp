@@ -104,7 +104,7 @@ void SceneLobby::Update(float dt)
 	Scene::Update(dt);
 	PlayerChoise();
 	
-	if(currentplayer->sprite.getGlobalBounds().intersects(elevator->sprite.getGlobalBounds()))
+	if (currentplayer->sprite.getGlobalBounds().intersects(elevator->sprite.getGlobalBounds()))
 	{
 
 		Scene* scene = SCENE_MGR.GetGameScene();
@@ -123,7 +123,7 @@ void SceneLobby::Update(float dt)
 
 	if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left)) //test
 	{
-		test2->OnDamage(1.0f, {1.f, 1.f}, 10.f);
+		test2->OnDamage(1.0f, {0.f, 1.f}, 10.f);
 	}
 }
 

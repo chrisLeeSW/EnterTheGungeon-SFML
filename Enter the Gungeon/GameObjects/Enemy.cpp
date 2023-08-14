@@ -246,6 +246,8 @@ void Enemy::SetEnemy(float speed, float maxHp, float attackRange, bool superarmo
 void Enemy::OnDamage(const float& damage, const sf::Vector2f& dir, const float& knockback)
 {
 	if (!superarmor) SetPosition(position + dir * knockback);
+	sf::Vector2f min = WhereWay(dir);
+	SetFlipX(dir.x > 0.f);
 
 	if (IfHit != nullptr)
 	{
@@ -263,37 +265,31 @@ void Enemy::OnDamage(const float& damage, const sf::Vector2f& dir, const float& 
 			}
 			else
 			{
-				OnDie();
+				OnDie(min);
 			}
 		}
 	}
 
-	sf::Vector2f min = WhereWay(dir);
 	// Animation
 	if (min == way[0])
 	{
 		animation.Play("HitUp");
-		animation.PlayQueue("IdleUp");
 	}
 	else if (min == way[1])
 	{
 		animation.Play("HitLeftUp");
-		animation.PlayQueue("IdleLeftUp");
 	}
 	else if (min == way[2])
 	{
 		animation.Play("HitLeft");
-		animation.PlayQueue("IdleLeft");
 	}
 	else if (min == way[3])
 	{
 		animation.Play("HitLeftDown");
-		animation.PlayQueue("IdleLeftDown");
 	}
 	else if (min == way[4])
 	{
 		animation.Play("HitDown");
-		animation.PlayQueue("IdleDown");
 	}
 
 }
@@ -303,31 +299,26 @@ void Enemy::OnBump()
 	//player에게 피해를 주는 함수
 }
 
-void Enemy::OnDie()
+void Enemy::OnDie(const sf::Vector2f& dir)
 {
-	if (animation.GetCurrentClipId() != "HitUp")
+	if (dir == way[0])
 	{
-		animation.Stop();
 		animation.Play("DieUp");
 	}
-	else if (animation.GetCurrentClipId() == "HitLeftUp")
+	else if (dir == way[1])
 	{
-		animation.Stop();
 		animation.Play("DieLeftUp");
 	}
-	else if (animation.GetCurrentClipId() == "HitLeft")
+	else if (dir == way[2])
 	{
-		animation.Stop();
 		animation.Play("DieLeft");
 	}
-	else if (animation.GetCurrentClipId() == "HitLeftDown")
+	else if (dir == way[3])
 	{
-		animation.Stop();
 		animation.Play("DieLeftDown");
 	}
-	else if (animation.GetCurrentClipId() == "HitDown")
+	else if (dir == way[4])
 	{
-		animation.Stop();
 		animation.Play("DieDown");
 	}
 

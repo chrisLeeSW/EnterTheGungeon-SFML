@@ -60,7 +60,7 @@ public:
 
 	void OnDamage(const float& damage, const sf::Vector2f& dir = {0.f, 0.f}, const float& knockback = 0.f);
 	void OnBump();
-	void OnDie();
+	void OnDie(const sf::Vector2f& dir);
 
 	// 사격의 경우 함수포인터를 사용하여 Enemy에 있는 여러 사격 함수들 중 하나를 호출하는 방식으로 진행하면 어떨까?
 };

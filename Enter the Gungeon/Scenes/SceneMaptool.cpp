@@ -9,7 +9,7 @@
 #include <windows.h>
 #include <tchar.h>
 SceneMaptool::SceneMaptool() : Scene(SceneId::MapTool), view(1.0f), wallWidthCount(5), wallHeightCount(3), doubleBySclaeX(2.f), doubleBySclaeY(2.f), minWallWidthCount(5),
-minWallHeightCount(3)
+minWallHeightCount(3), currentCplliedShapeType(-1)
 {
 	resourceListPath = "script/SceneMapToolResourceList.csv";
 }
@@ -84,7 +84,6 @@ void SceneMaptool::Update(float dt)
 
 
 	MakeLine();
-	//MakeGrid();
 	if (IncreaseOrDecrease)
 	{
 
@@ -97,7 +96,7 @@ void SceneMaptool::Update(float dt)
 		{
 			gridTile->tiles[i] = temp1->tiles[i];
 		}
-		gridTile->NoneFileLoad(wallWidthCount, wallHeightCount);
+		gridTile->NoneFileLoad(wallWidthCount, wallHeightCount,false);
 		
 	
 		objectSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
@@ -107,7 +106,7 @@ void SceneMaptool::Update(float dt)
 		{
 			objectSprite->tiles[i] = temp2->tiles[i];
 		}
-		objectSprite->NoneFileLoad(wallWidthCount, wallHeightCount);
+		objectSprite->NoneFileLoad(wallWidthCount, wallHeightCount, false);
 		
 		RemoveGo(temp1);
 		temp1 = nullptr;
@@ -121,19 +120,19 @@ void SceneMaptool::Update(float dt)
 
 	if (INPUT_MGR.GetKey(sf::Keyboard::Right))
 	{
-		worldView.move(-0.5f, 0.f);
+		worldView.move(-1.5f, 0.f);
 	}
 	if (INPUT_MGR.GetKey(sf::Keyboard::Left))
 	{
-		worldView.move(0.5f, 0.f);
+		worldView.move(1.5f, 0.f);
 	}
 	if (INPUT_MGR.GetKey(sf::Keyboard::Up))
 	{
-		worldView.move(0.0f, 0.5f);
+		worldView.move(0.0f, 1.5f);
 	}
 	if (INPUT_MGR.GetKey(sf::Keyboard::Down))
 	{
-		worldView.move(0.0f, -0.5f);
+		worldView.move(0.0f, -1.5f);
 	}
 
 	for (auto& tile : tiles)
@@ -146,6 +145,7 @@ void SceneMaptool::Update(float dt)
 
 	if (INPUT_MGR.GetMouseButton(sf::Mouse::Left))
 	{
+		if (!drawGridAllowed) return;
 		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
 		int count = -1;
 		for (int i = 0; i < tiles.size(); ++i)
@@ -170,28 +170,24 @@ void SceneMaptool::Update(float dt)
 	if (INPUT_MGR.GetMouseButton(sf::Mouse::Right) && INPUT_MGR.GetKey(sf::Keyboard::LControl))
 	{
 		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
+		if (gridIndex.x < 0 || gridIndex.y < 0) return;
 		gridTile->ChangeTile(gridIndex.x, gridIndex.y, static_cast<int>(MapObjectType::None), sf::IntRect{ 50,0,50,50 });
 	}
 	if (INPUT_MGR.GetMouseButton(sf::Mouse::Right) && INPUT_MGR.GetKey(sf::Keyboard::LShift))
 	{
 		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
+		if (gridIndex.x < 0 || gridIndex.y < 0) return;
 		objectSprite->ChangeTile(gridIndex.x, gridIndex.y, static_cast<int>(MapObjectType::None), sf::IntRect{ 50,0,50,50 });
 	}
 
+	WallMakeCollied();
+	
 
-
-
-	// ?? 왜있는지 기억안남 ;;
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad8))
+	
+	
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad0))
 	{
-		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
-		int count = gridIndex.x * wallWidthCount + gridIndex.y;
-
-		if (count > objectSprite->tiles.size()) return;
-		std::cout << tiles[count].spr->sprite.getPosition().x << std::endl;
-		std::cout << tiles[count].spr->sprite.getPosition().y << std::endl;
-
-		std::cout << objectSprite->tiles[count].x * 50.f << "            " << objectSprite->tiles[count].y * 50.f;
+		setWall = !setWall;
 	}
 
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Escape))
@@ -215,6 +211,10 @@ void SceneMaptool::Draw(sf::RenderWindow& window)
 		{
 			window.draw(arry);
 		}
+	}
+	for (auto& arry : colliedShape)
+	{
+		window.draw(arry.shape);
 	}
 }
 
@@ -445,6 +445,10 @@ void SceneMaptool::SettingUiSprite()
 		drawGridAllowed = false;
 		ResetGrid();
 		RestLine();
+		WallResetCollied();
+		setWall = false;
+		currentCplliedShapeType = -1;
+		AllWallTyepeTextReset();
 	};
 	restUi->sortLayer = 100;
 
@@ -458,6 +462,97 @@ void SceneMaptool::SettingUiSprite()
 	currentTileSpriteBackGround->sortLayer = 100;
 
 
+	wallButton = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "WallButton"));
+	wallButton->sprite.setTextureRect({ 10,27,50,20 });
+	wallButton->SetScale(doubleBySclaeX, doubleBySclaeY);
+	wallButton->SetPosition(windowSize.x * 0.2f, windowSize.y * 0.25f);
+	wallButton->SetOrigin(Origins::MC);
+	wallButton->OnEnter = [this]()
+	{
+		wallButton->sprite.setTextureRect({ 11,55,50,20 });
+		wallButton->SetScale(doubleBySclaeX, doubleBySclaeY);
+	};
+	wallButton->OnExit = [this]()
+	{
+		wallButton->sprite.setTextureRect({ 10,27,50,20 });
+		wallButton->SetScale(doubleBySclaeX, doubleBySclaeY);
+	};
+	wallButton->OnClick = [this]()
+	{
+		if(!setWall)
+			currentCplliedShapeType = 0;
+		setWall = true;
+	};
+	wallButton->sortLayer = 100;
+
+	wallBlockerButton = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "WallButton"));
+	wallBlockerButton->sprite.setTextureRect({ 10,27,50,20 });
+	wallBlockerButton->SetScale(doubleBySclaeX, doubleBySclaeY);
+	wallBlockerButton->SetPosition(windowSize.x * 0.25f, windowSize.y * 0.25f);
+	wallBlockerButton->SetOrigin(Origins::MC);
+	wallBlockerButton->OnEnter = [this]()
+	{
+		wallBlockerButton->sprite.setTextureRect({ 11,55,50,20 });
+		wallBlockerButton->SetScale(doubleBySclaeX, doubleBySclaeY);
+	};
+	wallBlockerButton->OnExit = [this]()
+	{
+		wallBlockerButton->sprite.setTextureRect({ 10,27,50,20 });
+		wallBlockerButton->SetScale(doubleBySclaeX, doubleBySclaeY);
+	};
+	wallBlockerButton->OnClick = [this]()
+	{
+		if (!setWall)
+			currentCplliedShapeType = 1;
+		setWall = true;
+	};
+	wallBlockerButton->sortLayer = 100;
+
+	fallingZoneButton = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "fallingZoneButton"));
+	fallingZoneButton->sprite.setTextureRect({ 10,27,50,20 });
+	fallingZoneButton->SetScale(doubleBySclaeX, doubleBySclaeY);
+	fallingZoneButton->SetPosition(windowSize.x * 0.2f, windowSize.y * 0.275f);
+	fallingZoneButton->SetOrigin(Origins::MC);
+	fallingZoneButton->OnEnter = [this]()
+	{
+		fallingZoneButton->sprite.setTextureRect({ 11,55,50,20 });
+		fallingZoneButton->SetScale(doubleBySclaeX, doubleBySclaeY);
+	};
+	fallingZoneButton->OnExit = [this]()
+	{
+		fallingZoneButton->sprite.setTextureRect({ 10,27,50,20 });
+		fallingZoneButton->SetScale(doubleBySclaeX, doubleBySclaeY);
+	};
+	fallingZoneButton->OnClick = [this]()
+	{
+		if (!setWall)
+			currentCplliedShapeType = 2;
+		setWall = true;
+	};
+	fallingZoneButton->sortLayer = 100;
+
+	teleportZoneButton = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "teleportZoneButton"));
+	teleportZoneButton->sprite.setTextureRect({ 10,27,50,20 });
+	teleportZoneButton->SetScale(doubleBySclaeX, doubleBySclaeY);
+	teleportZoneButton->SetPosition(windowSize.x * 0.25f, windowSize.y * 0.275f);
+	teleportZoneButton->SetOrigin(Origins::MC);
+	teleportZoneButton->OnEnter = [this]()
+	{
+		teleportZoneButton->sprite.setTextureRect({ 11,55,50,20 });
+		teleportZoneButton->SetScale(doubleBySclaeX, doubleBySclaeY);
+	};
+	teleportZoneButton->OnExit = [this]()
+	{
+		teleportZoneButton->sprite.setTextureRect({ 10,27,50,20 });
+		teleportZoneButton->SetScale(doubleBySclaeX, doubleBySclaeY);
+	};
+	teleportZoneButton->OnClick = [this]()
+	{
+		if (!setWall)
+			currentCplliedShapeType = 3;
+		setWall = true;
+	};
+	teleportZoneButton->sortLayer = 100;
 }
 
 void SceneMaptool::SettingUiText()
@@ -536,6 +631,34 @@ void SceneMaptool::SettingUiText()
 	fileNameTexBox->SetPosition(windowSize.x * 0.08f, windowSize.y * 0.3f);
 	fileNameTexBox->sortLayer = 100;
 
+	wallButtonText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "wallButtonText"));
+	wallButtonText->text.setCharacterSize(20);
+	wallButtonText->SetOrigin(Origins::BC);
+	wallButtonText->text.setString("Wall");
+	wallButtonText->SetPosition(wallButton->GetPosition() - sf::Vector2f{ 0.f, wallButton->text.getCharacterSize() * 0.125f });
+	wallButtonText->sortLayer = 100;
+
+	wallBlockerButtonText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "wallBlockerButtonText"));
+	wallBlockerButtonText->text.setCharacterSize(10);
+	wallBlockerButtonText->SetOrigin(Origins::BC);
+	wallBlockerButtonText->text.setString("WallBlocker");
+	wallBlockerButtonText->SetPosition(wallBlockerButton->GetPosition() - sf::Vector2f{ 0.f, wallBlockerButton->text.getCharacterSize() * 0.125f });
+	wallBlockerButtonText->sortLayer = 100;
+
+	fallingZoneButtonText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "wallBlockerButtonText"));
+	fallingZoneButtonText->text.setCharacterSize(10);
+	fallingZoneButtonText->SetOrigin(Origins::BC);
+	fallingZoneButtonText->text.setString("FalingZone");
+	fallingZoneButtonText->SetPosition(fallingZoneButton->GetPosition() - sf::Vector2f{ 0.f, fallingZoneButton->text.getCharacterSize() * 0.125f });
+	fallingZoneButtonText->sortLayer = 100;
+
+	teleportZoneButtonText = (TextGo*)AddGo(new TextGo("fonts/OpenSans-Semibold.ttf", "teleportZoneButtonText"));
+	teleportZoneButtonText->text.setCharacterSize(10);
+	teleportZoneButtonText->SetOrigin(Origins::BC);
+	teleportZoneButtonText->text.setString("TeleportZone");
+	teleportZoneButtonText->SetPosition(teleportZoneButton->GetPosition() - sf::Vector2f{ 0.f, teleportZoneButton->text.getCharacterSize() * 0.125f });
+	teleportZoneButtonText->sortLayer = 100;
+
 }
 
 void SceneMaptool::SettingTileSprite(const std::string& path)
@@ -608,10 +731,10 @@ void SceneMaptool::MakeGrid()
 {
 	makeGridCheck = true;
 	gridTile = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-	gridTile->NoneFileLoad(wallWidthCount, wallHeightCount);
+	gridTile->NoneFileLoad(wallWidthCount, wallHeightCount, false);
 
 	objectSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-	objectSprite->NoneFileLoad(wallWidthCount, wallHeightCount);
+	objectSprite->NoneFileLoad(wallWidthCount, wallHeightCount, false);
 
 }
 
@@ -630,6 +753,68 @@ void SceneMaptool::ResetGrid()
 		delete objectSprite;
 		objectSprite = nullptr;
 	}
+}
+
+void SceneMaptool::WallMakeCollied()
+{
+	if (setWall && drawGridAllowed)
+	{
+		sf::RectangleShape temp1;
+		temp1.setOutlineThickness(2);
+
+		switch (currentCplliedShapeType)
+		{
+		case 0:
+			wallButtonText->text.setFillColor(sf::Color::Red);
+			temp1.setOutlineColor(sf::Color::Red);
+			break;
+		case 1:
+			wallBlockerButtonText->text.setFillColor(sf::Color::Green);
+			temp1.setOutlineColor(sf::Color::Green);
+			break;
+		case 2:
+			fallingZoneButtonText->text.setFillColor(sf::Color::Yellow);
+			temp1.setOutlineColor(sf::Color::Yellow);
+			break;
+		case 3:
+			teleportZoneButtonText->text.setFillColor(sf::Color::Blue);
+			temp1.setOutlineColor(sf::Color::Blue);
+			break;
+		}
+		sf::Vector2f isNowPos;
+		sf::Vector2f shapeSize;
+		if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Middle))
+		{
+			isPrevPos = ScreenToWorldPos(INPUT_MGR.GetMousePos());
+		}
+		if (INPUT_MGR.GetMouseButtonUp(sf::Mouse::Middle))
+		{
+			std::cout << "Mouse : " << isPrevPos.x << "  /   " << isPrevPos.y << std::endl;
+			isNowPos = ScreenToWorldPos(INPUT_MGR.GetMousePos());
+			shapeSize = isNowPos - isPrevPos;
+
+			temp1.setSize({ shapeSize.x - 2.f, shapeSize.y - 2.f });
+			temp1.setFillColor(sf::Color::Transparent);
+			temp1.setPosition(isPrevPos);
+			colliedShape.push_back({ WallType::Wall,temp1 });
+			setWall = false;
+			AllWallTyepeTextReset();
+		}
+	}
+	
+}
+
+void SceneMaptool::WallResetCollied()
+{
+	colliedShape.clear();
+}
+
+void SceneMaptool::AllWallTyepeTextReset()
+{
+	wallButtonText->text.setFillColor(sf::Color::White);
+	wallBlockerButtonText->text.setFillColor(sf::Color::White);
+	fallingZoneButtonText->text.setFillColor(sf::Color::White);
+	teleportZoneButtonText->text.setFillColor(sf::Color::White);
 }
 
 void SceneMaptool::SaveRoom(std::string& fileName, std::string route, std::string saveFileNameCsv)

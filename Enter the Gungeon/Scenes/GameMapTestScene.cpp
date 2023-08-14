@@ -3,7 +3,7 @@
 #include "TileMap.h"
 #include "SpriteGo.h"
 #include "AnimationController.h"
-#include "InteractionObject.h"\
+#include "InteractionObject.h"
 
 GameMapTestScene::GameMapTestScene() :Scene(SceneId::GameMapTestScene)
 {
@@ -41,15 +41,59 @@ void GameMapTestScene::Init()
 		case MapObjectType::Book1:
 		{
 			InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
-			spr->SetPosition(pos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, pos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
+			spr->SetPosition(pos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x , pos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y );
 			spr->sortLayer = 0;
 			interaction.push_back({ static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), spr });
 		}
 		break;
 		}
 	}
+
+	tileRoom2 = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+	sf::Vector2f pos1 = { pos.x,pos.y + (tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height)*7.f}; // 랜덤 설정
+	tileRoom2->SetStartPos(pos1);
+	tileRoom2->Load("Room/TileMapFile/Room3.csv", false);
+	for (int i = 0; i < tileRoom2->tiles.size(); ++i)
+	{
+		//	objects
+		switch (static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes))
+		{
+		case MapObjectType::WallDown:
+		{
+			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
+			spr->sprite.setTextureRect({ 0,250,50,50 });
+			spr->SetPosition(pos1.x + tileRoom2->tiles[i].x * tileRoom2->GetTileSize().x, pos1.y + tileRoom2->tiles[i].y * tileRoom2->GetTileSize().y);
+			spr->sortLayer = 2;
+			objects.push_back(spr); // wall클래스 생성
+		}
+		break;
+		case MapObjectType::Pot:
+		{
+			InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
+			spr->SetPosition(pos1.x + tileRoom2->tiles[i].x * tileRoom2->GetTileSize().x, pos1.y + tileRoom2->tiles[i].y * tileRoom2->GetTileSize().y);
+			spr->sortLayer = 0;
+			interaction.push_back({ static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes), spr });
+		}
+		break;
+		case MapObjectType::Book1:
+		{
+			InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
+			spr->SetPosition(pos1.x + tileRoom2->tiles[i].x * tileRoom2->GetTileSize().x, pos1.y + tileRoom2->tiles[i].y * tileRoom2->GetTileSize().y);
+			spr->sortLayer = 0;
+			interaction.push_back({ static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes), spr });
+		}
+		break;
+		}
+	}
 	shape.setSize({ 5.f,5.f });
 	shape.setPosition(tileRoom1->vertexArray.getBounds().left + tileRoom1->vertexArray.getBounds().width * 0.5f, tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height * 0.5f);
+
+	// Create a rectangle shape to represent the corridor
+	std::cout << tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height << " " << pos1.y << std::endl;
+	shape2.setSize({ 400.f,pos1.y - (tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height)  });
+	shape2.setPosition({ tileRoom1->vertexArray.getBounds().left + tileRoom1->vertexArray.getBounds().width*0.5f -shape2.getSize().x*0.5f  ,(tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height)});
+	shape2.setFillColor(sf::Color::Red);
+	
 	for (auto go : gameObjects)
 	{
 		go->Init();
@@ -90,19 +134,19 @@ void GameMapTestScene::Update(float dt)
 	Scene::Update(dt);
 	if (INPUT_MGR.GetKey(sf::Keyboard::Right))
 	{
-		worldView.move(-1.f, 0.f);
+		worldView.move(-3.f, 0.f);
 	}
 	if (INPUT_MGR.GetKey(sf::Keyboard::Left))
 	{
-		worldView.move(1.f, 0.f);
+		worldView.move(3.f, 0.f);
 	}
 	if (INPUT_MGR.GetKey(sf::Keyboard::Up))
 	{
-		worldView.move(0.0f, 1.f);
+		worldView.move(0.0f, -3.f);
 	}
 	if (INPUT_MGR.GetKey(sf::Keyboard::Down))
 	{
-		worldView.move(0.0f, -1.f);
+		worldView.move(0.0f, 3.f);
 	}
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F1))
 	{
@@ -142,5 +186,6 @@ void GameMapTestScene::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
 	window.setView(worldView);
+	window.draw(shape2);
 	window.draw(shape);
 }

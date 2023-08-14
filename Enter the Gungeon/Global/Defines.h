@@ -40,7 +40,8 @@ enum class SceneId
 	MapTool,
 	BulletEditor,
 
-	GameMapTestScene,
+	GameMapTestScene, //이승우 테스트용
+	TestRoom,// 이승우 테스트용 
 	Count,
 };
 
@@ -77,6 +78,18 @@ enum class RoomType
 	SpawnRoom, 
 	BossRoom, 
 	StoreRoom, 
+
+
+	RoomTypeCount,
+};
+
+enum class WallType
+{
+	None = -1,
+	Wall,
+	WalloBlocker,
+	FallingZone,
+	TeleportZone,
 
 };
 

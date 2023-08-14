@@ -183,10 +183,10 @@ void TileMap::LoadObject(const std::string& filePath,bool textureIdIn)
 	}
 }
 
-void TileMap::NoneFileLoad(int xSize, int ySize)
+void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI)
 {
 
-	texture = RESOURCE_MGR.GetTexture(textureId);
+	if(!textureIdI) texture = RESOURCE_MGR.GetTexture(textureId);
 
 
 	size = { xSize, ySize };
@@ -271,7 +271,7 @@ void TileMap::ClearTile()
 void TileMap::ChangeTile(int x, int y, int tileIndex, sf::IntRect IntRect)
 {
 	if (x < 0 || y < 0) return;
-	if (x >= size.x || y >= size.y) return;
+	else if (x >= size.x || y >= size.y) return;
 
 	int texIndex = y * size.x + x;
 	tiles[texIndex].texIndex = tileIndex;

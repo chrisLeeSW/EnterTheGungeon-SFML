@@ -1,6 +1,6 @@
 #pragma once
-
 #include "VertexArrayGo.h"
+
 struct Tile
 {
 	int x = 0;
@@ -16,13 +16,14 @@ protected:
 	sf::Vector2i size;
 	sf::Vector2f startPos;
 	sf::Vector2f texSize = { 50.f,50.f };
+
 public:
 	TileMap(const std::string& textureId = "", const std::string& n = "");
 	virtual ~TileMap() override;
 
 	bool Load(const std::string& filePath,bool textureIdIn = true);
 	void LoadObject(const std::string& filePath,bool textureIdIn=true);
-	void NoneFileLoad(int xSize, int ySize);
+	void NoneFileLoad(int xSize, int ySize,bool textureIdI = true);
 	void ClearTile();
 
 	void ChangeTile(int x,int y, int tileIndex, sf::IntRect IntRect);

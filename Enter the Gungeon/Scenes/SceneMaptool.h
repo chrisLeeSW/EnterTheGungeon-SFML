@@ -12,6 +12,11 @@ struct TileSpriteInfo
 	SpriteGo* spr;
 	MapObjectType type;
 };
+struct WallTypeInfo
+{
+	WallType type;
+	sf::RectangleShape  shape;
+};
 class SceneMaptool : public Scene
 {
 protected:
@@ -72,6 +77,25 @@ protected:
 	bool decreaseWidth;
 	bool increaseHeight;
 	bool decreaseHeight;
+
+
+	UiButton* wallButton;
+	TextGo* wallButtonText;
+
+	UiButton* wallBlockerButton;
+	TextGo* wallBlockerButtonText;
+
+	UiButton* fallingZoneButton;
+	TextGo* fallingZoneButtonText;
+
+	UiButton* teleportZoneButton;
+	TextGo* teleportZoneButtonText;
+
+
+	bool setWall;
+	std::vector<WallTypeInfo> colliedShape;
+	sf::Vector2f isPrevPos;
+	int currentCplliedShapeType;
 public:
 	SceneMaptool();
 	virtual ~SceneMaptool() override = default;
@@ -91,7 +115,10 @@ public:
 	void RestLine();
 	void MakeGrid();
 	void ResetGrid();
+	void WallMakeCollied();
+	void WallResetCollied();
 
+	void AllWallTyepeTextReset();
 
 	void SaveRoom(std::string& fileName, std::string route, std::string saveFileNameCsv);
 	void LoadGridAndObjectSpriteFile(std::string& fileName, std::string& route, std::string saveFileNameCsv);

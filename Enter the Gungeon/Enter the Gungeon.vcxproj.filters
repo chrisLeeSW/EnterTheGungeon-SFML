@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\Framework.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -87,10 +84,10 @@
     <ClCompile Include="PlayerObjects\Player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerObjects\Weapon.cpp">
+    <ClCompile Include="PlayerObjects\Item\Weapon\Weapon.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerObjects\WeaponMgr.cpp">
+    <ClCompile Include="PlayerObjects\Item\Weapon\WeaponMgr.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="DataTables\BulletTable.cpp">
@@ -99,7 +96,7 @@
     <ClCompile Include="DataTables\WeaponTable.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerObjects\Bullet.cpp">
+    <ClCompile Include="PlayerObjects\Item\Weapon\Bullet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Map\TileMap.cpp">
@@ -129,7 +126,43 @@
     <ClCompile Include="PlayerObjects\PlayerMgr.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerObjects\Skill.cpp">
+    <ClCompile Include="PlayerObjects\Item\Item.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Weapon\Ak47.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Weapon\PilotWeapon.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Weapon\PrisonerWeapon.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Equipment.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\ItemMgr.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Passive\Passive.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Active\Active.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Active\PilotActive.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Active\PrisonerActive.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Passive\PrisonerPassive.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Passive\PilotPassive.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\GameMapTestScene.cpp">
@@ -224,10 +257,10 @@
     <ClInclude Include="PlayerObjects\Player.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerObjects\Weapon.h">
+    <ClInclude Include="PlayerObjects\Item\Weapon\Weapon.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerObjects\WeaponMgr.h">
+    <ClInclude Include="PlayerObjects\Item\Weapon\WeaponMgr.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="DataTables\BulletTable.h">
@@ -236,7 +269,7 @@
     <ClInclude Include="DataTables\WeaponTable.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerObjects\Bullet.h">
+    <ClInclude Include="PlayerObjects\Item\Weapon\Bullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Map\TileMap.h">
@@ -266,7 +299,40 @@
     <ClInclude Include="PlayerObjects\PlayerMgr.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerObjects\Skill.h">
+    <ClInclude Include="PlayerObjects\Item\Item.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Weapon\Ak47.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Weapon\PilotWeapon.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Weapon\PrisonerWeapon.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Equipment.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\ItemMgr.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Passive\Passive.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Active\Active.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Active\PilotActive.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Active\PrisonerActive.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Passive\PrisonerPassive.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Passive\PilotPassive.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Scenes\GameMapTestScene.h">

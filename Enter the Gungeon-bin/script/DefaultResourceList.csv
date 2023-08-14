@@ -13,7 +13,6 @@
 3,playercsv/PilotWalkRight.csv
 3,playercsv/PilotWalkUp.csv
 3,playercsv/PilotWalkUpRight.csv
-3,playercsv/PilotShoot.csv
 3,playercsv/PilotWeaponIdleDown.csv
 3,playercsv/PilotWeaponIdleRight.csv
 3,playercsv/PilotWeaponIdleUp.csv
@@ -123,3 +122,13 @@
 3,Animations/Enemy/ShotgunKinBlueDieLeft.csv
 3,Animations/Enemy/ShotgunKinBlueDieLeftDown.csv
 3,Animations/Enemy/ShotgunKinBlueDieDown.csv
+3,weapon/PilotWeaponIdle.csv
+3,weapon/PilotWeaponShoot.csv
+3,weapon/PrisonerWeaponIdle.csv
+3,weapon/PrisonerWeaponShoot.csv
+0,graphics/PrisonerWeapon.png
+3,bulletcsv/BasicBullet.csv
+0,graphics/BasicBullet.png
+3,Animations/Equipment.csv
+0,graphics/EquipmentBook.png
+3,Animations/EquipmentClose.csv

@@ -3,7 +3,11 @@
 #include "AnimationController.h"
 #include "ObjectPool.h"
 #include "Weapon.h"
+#include "Passive.h"
+#include "Active.h"
 
+
+class Item;
 class Scene;
 
 class Player : public SpriteGo
@@ -27,10 +31,6 @@ public:
 		WeaponPrisoner,
 	};
 
-
-protected:
-
-	//ObjectPool<Weapon> poolWeapons;
 	std::string clipId;
 
 	AnimationController animation;
@@ -47,6 +47,10 @@ protected:
 	//플레이어 손
 	SpriteGo* hand;
 	bool handflipX = false;
+
+	//보유중인 아이템
+	std::vector<Passive*> passiveList;
+	Active* active = nullptr;
 
 
 	//플레이어 움직임
@@ -66,8 +70,8 @@ protected:
 	bool playerchoise = false;
 
 public:
+
 	Player(Types type, const std::string& textureId = "", const std::string& n = "");
-	Player(const std::string& textureId = "", const std::string& n = "");
 	virtual ~Player() override { Release(); }
 
 	virtual void SetPosition(const sf::Vector2f& p) override;
@@ -84,12 +88,13 @@ public:
 	void SetFlipX(bool filp);
 	void PlayerAct(float dt);
 
-	sf::Vector2f GetPlayerPos();
 
 	void ChangePlayer(sf::Vector2f pos,bool choise);
 
-	Types GetType();
-
 	void SetSceneGame();
-	void AddWeapon();
+
+	void GetItem(Item::Types type);
+
+	sf::Vector2f GetDir() { return direction,position; }
+
 };

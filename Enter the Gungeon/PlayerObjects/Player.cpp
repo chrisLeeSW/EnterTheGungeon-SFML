@@ -3,24 +3,13 @@
 #include "SceneGame.h"
 #include "Scene.h"
 #include "WeaponMgr.h"
+#include "ItemMgr.h"
+#include "Item.h"
 
 Player::Player(Types type, const std::string& textureId, const std::string& n) : SpriteGo(textureId, n), type(type)
 {
 }
 
-void Player::SetPosition(const sf::Vector2f& p)
-{
-	SpriteGo::SetPosition(p);
-	if (hand != nullptr)
-	hand->SetPosition(p);
-}
-
-void Player::SetPosition(float x, float y)
-{
-	SpriteGo::SetPosition(x, y);
-	if (hand != nullptr)
-	hand->SetPosition(x, y);
-}
 
 void Player::Init()
 {
@@ -64,7 +53,7 @@ void Player::Init()
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotRollDown.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotRollRight.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PilotRollUpRight.csv"));
-
+		//WEAPON_MGR.Enter(Weapon::Types::PilotWeapon);
 		break;
 	}
 	case Types::Prisoner:
@@ -120,8 +109,9 @@ void Player::Init()
 	{
 		playerchoise = true;
 		SetSceneGame();
-
 	}
+
+	PLAYER_MGR.SetPlayer(this);
 }
 
 void Player::Release()
@@ -138,12 +128,21 @@ void Player::Reset()
 	if (hand != nullptr)
 	{
 		hand->SetOrigin(-sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height * 0.4);
-		std::cout << sprite.getLocalBounds().width << std::endl;
+		//WEAPON_MGR.SetOriginhand->sprite.getOrigin();
+		switch (type)
+		{
+		case Types::WeaponPilot:
+			WEAPON_MGR.Enter(Weapon::Types::PilotWeapon);
+			break;
+		case Types::WeaponPrisoner:
+			WEAPON_MGR.Enter(Weapon::Types::PrisonerWeapon);
+			break;
+		}
 	}
+
 	speed = 150.f;
 	rollspeed = 250.f;
 	currentClipInfo = clipInfos[6];
-
 }
 
 void Player::Update(float dt)
@@ -163,11 +162,14 @@ void Player::Update(float dt)
 			animation.Play("IdleRight");
 		}
 	}
-
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
+	if (type == Types::WeaponPilot || type == Types::WeaponPrisoner)
+	{
+		WEAPON_MGR.Draw(window);
+	}
 	SpriteGo::Draw(window);
 }
 
@@ -230,17 +232,20 @@ void Player::PlayerRotation()
 void Player::SetFlipX(bool filp)
 {
 	flipX = filp;
+
+
 	sf::Vector2f scale1 = sprite.getScale();
 	scale1.x = !flipX ? abs(scale1.x) : -abs(scale1.x);
 	sprite.setScale(scale1);
 	if (hand != nullptr)
 	{
-		handflipX = filp;
-
 		sf::Vector2f scale2 = hand->sprite.getScale();
 		scale2.x = !flipX ? abs(scale2.x) : -abs(scale2.x);
 		hand->sprite.setScale(scale2);
 	}
+
+	if(WEAPON_MGR.GetWithWeapon())
+	WEAPON_MGR.SetWeaPonFlipx(filp);
 }
 
 void Player::PlayerAct(float dt)
@@ -264,7 +269,7 @@ void Player::PlayerAct(float dt)
 		{
 			position += direction * rollspeed * dt;
 			SetPosition(position);
-			if ((animation.GetTotalFrame() - animation.GetCurFrame()) == 1)
+			if ((animation.AnimationEnd()))
 			{
 				isrolling = false;
 			}
@@ -294,25 +299,20 @@ void Player::PlayerAct(float dt)
 	}
 	else if (animation.GetCurrentClipId() != clipId)
 	{
-
 		animation.Play(clipId);
+	}
+
+	if (INPUT_MGR.GetKey(sf::Keyboard::Num9))
+	{
+		GetItem(Item::Types::PrisonerActive);
 	}
 }
 
-sf::Vector2f Player::GetPlayerPos()
-{
-	return position;
-}
 
 void Player::ChangePlayer(sf::Vector2f pos,bool choise)
 {
 	SetPosition(pos);
 	playerchoise = choise;
-}
-
-Player::Types Player::GetType()
-{
-	return type;
 }
 
 void Player::SetSceneGame()
@@ -322,11 +322,40 @@ void Player::SetSceneGame()
 	SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
 
 	hand = (SpriteGo*)sceneGame->AddGo(new SpriteGo("graphics/Hand.png"));
-	hand->sprite.setScale(5,5);
-	sprite.setScale(5, 5);
 }
 
-//void Player::AddWeapon()
-//{
-//	for(auto it : WEAPON_MGR.)
-//}
+void Player::GetItem(Item::Types type)
+{
+	if (ITEM_MGR.GetItem(type)->second->type == Item::Types::Active)
+	{
+		if(active != nullptr)
+			delete active;
+
+		Item* item = ITEM_MGR.GetItem(type)->second;
+		active = dynamic_cast<Active*>(item);
+	}
+	else
+	{
+		Item* item = ITEM_MGR.GetItem(type)->second;
+		passiveList.push_back(dynamic_cast<Passive*>(item));
+
+		Scene* scene = SCENE_MGR.GetCurrScene();
+		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
+
+		sceneGame->AddGo(passiveList.back());
+	}
+}
+
+void Player::SetPosition(const sf::Vector2f& p)
+{
+	SpriteGo::SetPosition(p);
+	if (hand != nullptr)
+		hand->SetPosition(p);
+}
+
+void Player::SetPosition(float x, float y)
+{
+	SpriteGo::SetPosition(x, y);
+	if (hand != nullptr)
+		hand->SetPosition(x, y);
+}

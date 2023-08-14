@@ -6,7 +6,7 @@ struct BulletInfo
 {
 	Bullet::Types bulletType;
 	int speed;
-	int damage;
+	float damage;
 	int range;
 	int knockback;
 };

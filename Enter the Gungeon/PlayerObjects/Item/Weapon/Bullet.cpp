@@ -11,7 +11,10 @@ Bullet::Bullet(const std::string& textureId, const std::string& n) : SpriteGo(te
 void Bullet::Init()
 {
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("bulletcsv/PilotBullet.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("bulletcsv/BasicBullet.csv"));
+
 	animation.SetTarget(&sprite);
+
 }
 
 void Bullet::Release()
@@ -26,13 +29,13 @@ void Bullet::Reset()
 
 void Bullet::Update(float dt)
 {
-	SetOrigin(Origins::TR);
+	SetOrigin(Origins::MC);
 	animation.Update(dt);
 
-	position += 0.f * direction * (float)speed * dt;
+	position += direction * speed * dt;
 	SetPosition(position);
 
-	animation.Play("Shoot");
+	animation.Play(anistirng);
 }
 
 void Bullet::Draw(sf::RenderWindow& window)
@@ -40,9 +43,8 @@ void Bullet::Draw(sf::RenderWindow& window)
 	SpriteGo::Draw(window);
 }
 
-void Bullet::SetType(int types)
+void Bullet::SetBullet(int types, sf::Vector2f pos, sf::Vector2f dir)
 {
-
 	const BulletInfo* info = DATATABLE_MGR.Get<BulletTable>(DataTable::Ids::Bullet)->Get((Bullet::Types)types);
 
 	bulletType = info->bulletType;
@@ -51,6 +53,12 @@ void Bullet::SetType(int types)
 	range = info->range;
 	knockback = info->knockback;
 
+	position = pos;
+	sprite.setRotation(90 + Utils::Angle(dir));
+	SetPosition(position);
+	direction = dir;
+
+	anistirng = std::to_string(types);
 }
 
 void Bullet::Shoot(Types type)
@@ -72,30 +80,4 @@ void Bullet::Fire(sf::Vector2f pos, sf::Vector2f dir)
 	sprite.setRotation(Utils::Angle(dir));
 	SetPosition(position);
 	direction = dir;
-}
-
-PilotGun::PilotGun(Types type)
-{
-}
-
-void PilotGun::Update(float dt)
-{
-
-}
-PrisonerGun::PrisonerGun()
-{
-
-}
-
-void PrisonerGun::Update(float dt)
-{
-
-}
-
-Ak47::Ak47()
-{
-}
-
-void Ak47::Update(float dt)
-{
 }

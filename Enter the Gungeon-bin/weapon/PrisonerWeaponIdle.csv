@@ -1,5 +1,5 @@
 ID,FPS,LOOPTYPE,,
-1,10,1,,
+Idle,10,1,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
-graphics/PilotBullet.png,0,0,7,17
+graphics/PrisonerWeapon.png,2,4,13,10

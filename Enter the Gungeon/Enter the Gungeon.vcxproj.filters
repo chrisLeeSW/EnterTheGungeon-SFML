@@ -135,7 +135,7 @@
     <ClCompile Include="Scenes\GameMapTestScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="InteractionObject.cpp">
+    <ClCompile Include="Map\InteractionObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -272,7 +272,7 @@
     <ClInclude Include="Scenes\GameMapTestScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="InteractionObject.h">
+    <ClInclude Include="Map\InteractionObject.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

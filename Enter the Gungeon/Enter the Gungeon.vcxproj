@@ -157,7 +157,7 @@
     <ClCompile Include="Animation\AnimationClip.cpp" />
     <ClCompile Include="DataTables\BulletTable.cpp" />
     <ClCompile Include="DataTables\WeaponTable.cpp" />
-    <ClCompile Include="InteractionObject.cpp" />
+    <ClCompile Include="Map\InteractionObject.cpp" />
     <ClCompile Include="Scenes\GameMapTestScene.cpp" />
     <ClCompile Include="GameObjects\Enemy.cpp" />
     <ClCompile Include="PlayerObjects\WeaponMgr.cpp" />
@@ -207,7 +207,7 @@
     <ClInclude Include="Animation\AnimationClip.h" />
     <ClInclude Include="DataTables\BulletTable.h" />
     <ClInclude Include="DataTables\WeaponTable.h" />
-    <ClInclude Include="InteractionObject.h" />
+    <ClInclude Include="Map\InteractionObject.h" />
     <ClInclude Include="Scenes\GameMapTestScene.h" />
     <ClInclude Include="GameObjects\Enemy.h" />
     <ClInclude Include="PlayerObjects\WeaponMgr.h" />

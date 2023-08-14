@@ -2,3 +2,4 @@ type,speed,damage,range,knockback
 1,22.f,5.f,13,6
 2,23.f,6.f,18,10
 3,23.f,5.5f,999,9
+4,23.f,13,60,30

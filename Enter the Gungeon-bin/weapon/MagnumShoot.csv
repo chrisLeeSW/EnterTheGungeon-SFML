@@ -1,0 +1,12 @@
+ID,FPS,LOOPTYPE,,
+Shoot,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Magnum.png,27,30,48,39
+graphics/Magnum.png,123,30,45,39
+graphics/Magnum.png,219,27,42,42
+graphics/Magnum.png,315,30,48,39
+graphics/Magnum.png,411,21,48,51
+graphics/Magnum.png,507,12,48,57
+graphics/Magnum.png,603,30,51,39
+graphics/Magnum.png,27,126,51,39

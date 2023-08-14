@@ -106,16 +106,18 @@ void SceneLobby::Update(float dt)
 	
 	if (currentplayer->sprite.getGlobalBounds().intersects(elevator->sprite.getGlobalBounds()))
 	{
-
+		//여기 스위치로
 		Scene* scene = SCENE_MGR.GetGameScene();
 		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
-		if (playertype == Types::Pilot)
+
+		switch (playertype)
 		{
+		case Types::Pilot:
 			playertype = Types::WeaponPilot;
-		}
-		else if (playertype == Types::Prisoner)
-		{
+			break;
+		case Types::Prisoner :
 			playertype = Types::WeaponPrsioner;
+			break;
 		}
 		sceneGame->SetPlayer((int)playertype);
 		SCENE_MGR.ChangeScene(SceneId::Game);

@@ -5,6 +5,15 @@
 class Passive : public Item
 {
 
+public:
+
+    enum class Types
+    {
+        PilotPassive,
+        PrisonerPassive,
+    };
+
+
 protected:
 
 
@@ -12,7 +21,7 @@ protected:
 
 public:
 
-    Types type = Types::Passive;
+   //Types type = Types::Passive;
 
     Passive(const std::string& textureId = "", const std::string& n = "");
     virtual ~Passive() override { Release(); }

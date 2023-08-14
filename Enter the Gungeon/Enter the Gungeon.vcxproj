@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="PlayerObjects\Item\Weapon\Magnum.cpp" />
     <ClCompile Include="PlayerObjects\Item\Active\PilotActive.cpp" />
     <ClCompile Include="PlayerObjects\Item\Passive\PilotPassive.cpp" />
     <ClCompile Include="PlayerObjects\Item\Active\Active.cpp" />
@@ -214,6 +215,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
+    <ClInclude Include="PlayerObjects\Item\Weapon\Magnum.h" />
     <ClInclude Include="PlayerObjects\Item\Active\PilotActive.h" />
     <ClInclude Include="PlayerObjects\Item\Passive\PilotPassive.h" />
     <ClInclude Include="PlayerObjects\Item\Active\Active.h" />

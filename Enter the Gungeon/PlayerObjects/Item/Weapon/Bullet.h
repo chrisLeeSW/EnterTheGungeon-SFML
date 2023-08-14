@@ -16,6 +16,7 @@ public:
 		PilotBullet,
 		PrisonerBullet,
 		Ak47,
+		Magnum,
 	};
 
 

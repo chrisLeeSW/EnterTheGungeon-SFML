@@ -132,3 +132,6 @@
 3,Animations/Equipment.csv
 0,graphics/EquipmentBook.png
 3,Animations/EquipmentClose.csv
+3,weapon/MagnumIdle.csv
+3,weapon/MagnumShoot.csv
+0,graphics/Magnum.png

@@ -38,17 +38,7 @@ void SceneGame::Init()
 
 	equipment = (Equipment*)AddGo(new Equipment());
 
-	int a = 1;
-	int* b = &a;
 
-	int** c = &b;
-
-	int*** d = &c;
-
-	std::cout << "ÀÎÆ®¾¾ : " << ***d << std::endl;
-	std::cout << "ÀÎÆ®¾¾ : " << *c << std::endl;
-	std::cout << "ÀÎÆ®¾¾ : " << *b << std::endl;
-	std::cout << "ÀÎÆ®¾¾ : " << d << std::endl;
 	for (auto go : gameObjects)
 	{
 		go->Init();
@@ -76,7 +66,7 @@ void SceneGame::Enter()
 
 	player = (Player*)AddGo(new Player((Player::Types)playertype));
 	player->Init();
-	WEAPON_MGR.SetPlayer(player);
+	//WEAPON_MGR.SetPlayer(player);
 	Scene::Enter();
 
 	player->SetPosition((gameDevMap->vertexArray.getBounds().left + gameDevMap->vertexArray.getBounds().width)/2, (gameDevMap->vertexArray.getBounds().top + gameDevMap->vertexArray.getBounds().height) / 2);
@@ -91,7 +81,7 @@ void SceneGame::Exit()
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
-	WEAPON_MGR.Update(dt);
+	//WEAPON_MGR.Update(dt);
 	shadow->SetPosition(player->GetPosition());
 
 	sf::Vector2i playerTile = (sf::Vector2i)(player->GetPosition()/ 50.f);

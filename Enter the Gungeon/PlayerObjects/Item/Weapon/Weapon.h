@@ -21,6 +21,7 @@ public:
 		PilotWeapon,
 		PrisonerWeapon,
 		Ak47,
+		Magnum,
 	};
 
 protected:

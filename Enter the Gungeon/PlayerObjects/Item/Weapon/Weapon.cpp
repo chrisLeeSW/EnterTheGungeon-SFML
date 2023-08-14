@@ -47,10 +47,6 @@ void Weapon::Update(float dt)
 	look = Utils::Normalize(mousePos - playerScreenPos);
 	sprite.setRotation(Utils::Angle(look));
 
-	if(INPUT_MGR.GetMouseButton(sf::Mouse::Left))
-	{
-		Shoot(WEAPON_MGR.GetCurrentWeapon());
-	}
 }
 
 void Weapon::Draw(sf::RenderWindow& window)

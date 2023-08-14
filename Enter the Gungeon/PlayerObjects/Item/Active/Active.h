@@ -1,15 +1,27 @@
 #pragma once
 #include "Item.h"
+
 class Active : public Item
 {
+
+public:
+
+    enum class Types
+    {
+        PilotActive,
+        PrisonerActive,
+    };
+
+
 
 protected:
 
 
 
+
 public:
 
-    Types type = Types::Active;
+   // Types type = Types::Active;
 
     Active(const std::string& textureId = "", const std::string& n = "");
     virtual ~Active() override { Release(); }

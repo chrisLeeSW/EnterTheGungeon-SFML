@@ -12,6 +12,7 @@ class Scene;
 
 class Player : public SpriteGo
 {
+
 public:
 
 	struct ClipInfo
@@ -31,6 +32,8 @@ public:
 		WeaponPrisoner,
 	};
 
+protected:
+
 	std::string clipId;
 
 	AnimationController animation;
@@ -48,10 +51,10 @@ public:
 	SpriteGo* hand;
 	bool handflipX = false;
 
-	//보유중인 아이템
+	//아이템
 	std::vector<Passive*> passiveList;
+	std::vector<Weapon*> weaponList;
 	Active* active = nullptr;
-
 
 	//플레이어 움직임
 	sf::Vector2f velocity;
@@ -68,6 +71,23 @@ public:
 	Types type;
 
 	bool playerchoise = false;
+
+	std::unordered_map<sf::Keyboard::Key, int> keyToIndexMap = {
+	{sf::Keyboard::Num1, 1},
+	{sf::Keyboard::Num2, 2},
+	{sf::Keyboard::Num3, 3},
+	{sf::Keyboard::Num4, 4},
+	{sf::Keyboard::Num5, 5},
+	{sf::Keyboard::Num6, 6},
+	{sf::Keyboard::Num7, 7},
+	{sf::Keyboard::Num8, 8},
+	{sf::Keyboard::Num9, 9},
+	};
+
+
+	int currentIndex = 0;
+
+
 
 public:
 
@@ -89,12 +109,16 @@ public:
 	void PlayerAct(float dt);
 
 
-	void ChangePlayer(sf::Vector2f pos,bool choise);
+	void ChangePlayer(sf::Vector2f pos, bool choise);
 
 	void SetSceneGame();
 
-	void GetItem(Item::Types type);
+	void SwapWeapon();
+	void GetItem(Passive::Types type);
+	void GetItem(Active::Types type);
+	void GetItem(Weapon::Types type);
 
-	sf::Vector2f GetDir() { return direction,position; }
+	sf::Vector2f GetDir() { return direction, position; }
+	bool GetFilpX() { return flipX; }
 
 };

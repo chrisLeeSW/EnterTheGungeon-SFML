@@ -4,8 +4,9 @@
 
 class Player;
 
-class PilotWeapon : public Weapon
+class Magnum : public Weapon
 {
+
 protected:
 
 	Player* player = nullptr;
@@ -26,8 +27,8 @@ protected:
 
 public:
 
-	PilotWeapon(const std::string& textureId = "", const std::string& n = "");
-	virtual ~PilotWeapon() override { Release(); }
+	Magnum(const std::string& textureId = "", const std::string& n = "");
+	virtual ~Magnum() override { Release(); }
 
 	virtual void Init() override;
 	virtual void Release() override;
@@ -38,10 +39,8 @@ public:
 
 	virtual void SetGunFlipx(bool flipX) override;
 
-	virtual void SetType(Types t);
 	virtual Types GetWeaponType() override { return weaponType; }
 
 	void Shoot();
-
 };
 

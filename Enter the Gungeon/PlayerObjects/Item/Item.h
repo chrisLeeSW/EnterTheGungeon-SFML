@@ -14,10 +14,7 @@ public:
         None,
         Passive,
         Active,
-        PilotActive,
-        PilotPassvie,
-        PrisonerActive,
-        PrisonerPassive,
+        Weapon,
     };
 
 

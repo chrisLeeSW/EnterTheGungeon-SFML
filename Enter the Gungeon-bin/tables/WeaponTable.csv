@@ -2,3 +2,4 @@ type,attackRate,bulletCount,bulletMax,reload,santan
 1,0.25f,8,9999,1.2f,10
 2,0.15f,5,9999,0.9f,10
 3,0.11f,30,500,0.6f,4
+4,0.15f,6,140,1.f,7

@@ -5,6 +5,9 @@
 #include "WeaponMgr.h"
 #include "ItemMgr.h"
 #include "Item.h"
+#include "Passive.h"
+#include "Active.h"
+
 
 Player::Player(Types type, const std::string& textureId, const std::string& n) : SpriteGo(textureId, n), type(type)
 {
@@ -109,9 +112,14 @@ void Player::Init()
 	{
 		playerchoise = true;
 		SetSceneGame();
+		PLAYER_MGR.SetPlayer(this);
+		GetItem(Passive::Types::PilotPassive);
+		GetItem(Active::Types::PrisonerActive);
+		GetItem(Weapon::Types::Magnum);
 	}
 
-	PLAYER_MGR.SetPlayer(this);
+
+
 }
 
 void Player::Release()
@@ -128,7 +136,6 @@ void Player::Reset()
 	if (hand != nullptr)
 	{
 		hand->SetOrigin(-sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height * 0.4);
-		//WEAPON_MGR.SetOriginhand->sprite.getOrigin();
 		switch (type)
 		{
 		case Types::WeaponPilot:
@@ -150,10 +157,13 @@ void Player::Update(float dt)
 	SetOrigin(Origins::BC);
 	animation.Update(dt);
 
+	if(!weaponList.empty())
+	weaponList[currentIndex]->Update(dt);
 
 	if (playerchoise)
 	{
 		PlayerAct(dt);
+		SwapWeapon();
 	}
 	else
 	{
@@ -166,10 +176,10 @@ void Player::Update(float dt)
 
 void Player::Draw(sf::RenderWindow& window)
 {
-	if (type == Types::WeaponPilot || type == Types::WeaponPrisoner)
-	{
-		WEAPON_MGR.Draw(window);
-	}
+
+	if (!weaponList.empty())
+	weaponList[currentIndex]->Draw(window);
+
 	SpriteGo::Draw(window);
 }
 
@@ -227,6 +237,7 @@ void Player::PlayerRotation()
 	{
 		SetFlipX(false);
 	}
+
 }
 
 void Player::SetFlipX(bool filp)
@@ -244,8 +255,8 @@ void Player::SetFlipX(bool filp)
 		hand->sprite.setScale(scale2);
 	}
 
-	if(WEAPON_MGR.GetWithWeapon())
-	WEAPON_MGR.SetWeaPonFlipx(filp);
+	//if(WEAPON_MGR.GetWithWeapon())
+	//WEAPON_MGR.SetWeaPonFlipx(filp);
 }
 
 void Player::PlayerAct(float dt)
@@ -304,7 +315,9 @@ void Player::PlayerAct(float dt)
 
 	if (INPUT_MGR.GetKey(sf::Keyboard::Num9))
 	{
-		GetItem(Item::Types::PrisonerActive);
+		GetItem(Passive::Types::PilotPassive);
+		GetItem(Active::Types::PrisonerActive);
+		GetItem(Weapon::Types::PilotWeapon);
 	}
 }
 
@@ -324,27 +337,72 @@ void Player::SetSceneGame()
 	hand = (SpriteGo*)sceneGame->AddGo(new SpriteGo("graphics/Hand.png"));
 }
 
-void Player::GetItem(Item::Types type)
+void Player::GetItem(Passive::Types type)
 {
-	if (ITEM_MGR.GetItem(type)->second->type == Item::Types::Active)
-	{
-		if(active != nullptr)
-			delete active;
+	auto it = ITEM_MGR.GetItem(type);
 
-		Item* item = ITEM_MGR.GetItem(type)->second;
-		active = dynamic_cast<Active*>(item);
-	}
-	else
+	if (it != nullptr)
 	{
-		Item* item = ITEM_MGR.GetItem(type)->second;
-		passiveList.push_back(dynamic_cast<Passive*>(item));
+		it->Init();
+		passiveList.push_back(it);
 
 		Scene* scene = SCENE_MGR.GetCurrScene();
 		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
-
 		sceneGame->AddGo(passiveList.back());
 	}
+	else
+	{
+		std::cout << "Not Exist Passive Item" << std::endl;
+	}
 }
+
+void Player::GetItem(Active::Types type)
+{
+	auto it = ITEM_MGR.GetItem(type);
+
+	if (it != nullptr)
+	{
+		if (active != nullptr)
+			active = nullptr; // 이게 맞나?
+
+			active = it;
+	}
+	else
+	{
+		std::cout << "Not Exist Active Item" << std::endl;
+	}
+}
+
+void Player::GetItem(Weapon::Types type)
+{
+	auto it = ITEM_MGR.GetItem(type);
+	if (it!=nullptr)
+	{
+		it->Init();
+		weaponList.push_back(it);
+	}
+	else
+	{
+		std::cerr << "Not Exist Weapon Item" << std::endl;
+	}
+}
+
+void Player::SwapWeapon()
+{
+	for (const auto& pair : keyToIndexMap)
+	{
+		if (INPUT_MGR.GetKeyDown(pair.first))
+		{
+			if(pair.second <= weaponList.size())
+			{
+				int temp = pair.second;
+				--temp;
+				currentIndex = temp;
+			}
+		}
+	}
+}
+
 
 void Player::SetPosition(const sf::Vector2f& p)
 {

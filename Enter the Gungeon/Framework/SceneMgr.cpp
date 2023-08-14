@@ -8,6 +8,7 @@
 #include "SceneBulletEditor.h"
 #include "SceneLobby.h"
 #include "GameMapTestScene.h"
+
 void SceneMgr::Init() 
 {
 	if (!scenes.empty())

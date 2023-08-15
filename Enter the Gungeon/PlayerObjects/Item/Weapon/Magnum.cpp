@@ -9,20 +9,27 @@
 
 Magnum::Magnum(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
 {
+	SetType(Types::Magnum);
+
+
 	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/MagnumIdle.csv"));
 	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/MagnumShoot.csv"));
 
 	gun.SetTarget(&sprite);
 
-	SetType(Types::Magnum);
 	SpriteGo::Reset();
 
 	gun.Play("Idle");
 
-	sf::Vector2f GunSize = sf::Vector2f{ sprite.getLocalBounds().width, sprite.getLocalBounds().height };
 	SetOrigin(sprite.getLocalBounds().left, sprite.getLocalBounds().height);
 
-	SetScale(0.5f,0.5f);
+	//SetScale(0.5f,0.5f);
+
+	gunend.setFillColor(sf::Color::Transparent);
+	gunend.setOutlineColor(sf::Color::Red);
+	gunend.setOutlineThickness(2.f);
+	gunend.setSize(sf::Vector2f{ 5,5 });
+
 }
 
 void Magnum::Init()
@@ -42,55 +49,62 @@ void Magnum::Reset()
 
 void Magnum::Update(float dt)
 {
-	gun.Update(dt);
-	SetPosition(player->GetPosition() + sf::Vector2f(WeaponXpos, -7.f));
-	SetOrigin(sprite.getLocalBounds().left, sprite.getLocalBounds().height);
-	mousePos = INPUT_MGR.GetMousePos();
-	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrScene()->ScreenToWorldPos(mousePos);
-	sf::Vector2f playerScreenPos = SCENE_MGR.GetCurrScene()->WorldPosToScreen(position);
+	Weapon::Update(dt);
 
-	look = Utils::Normalize(mousePos - playerScreenPos);
-	sprite.setRotation(Utils::Angle(look));
-	if (flipX) sprite.setRotation(FLIP_ANGLE_X + Utils::Angle(look));
-
-	SetGunFlipx(player->GetFilpX());
-
-
-	if (INPUT_MGR.GetMouseButton(sf::Mouse::Left))
+	if(!player->isRolling())//주현씨는 이거 뻄
 	{
-		gun.Play("Shoot");
-		Shoot();
+		gun.Update(dt);
+		SetPosition(player->PlayerHandPos());
+
+		//주현씨는 몬스터 손 이거 근데 포지션 손 포지션을 플레이어 포지션으로하고 오리진으로 하면 
+		//총도 포지션을 손으로 잡고 손 오리진 맞춘 것 처럼 위치를 만들어야 되는데
+		//오리진을 BL로 안하면 총이 Rotation할때 회전의 중점이 총 손잡이가 아니라서 이상하게 됨 주현씨 혹시 다른 방법이 있을까요?
+
+
+		SetOrigin(Origins::BL);
+
+		sprite.setRotation(Utils::Angle(look)); //이거 마우스인데 플레이어랑 몬스터 포지션 뺀걸 노멀라이ㅡㅈ해서 넣어야될듯
+		if (flipX) sprite.setRotation(FLIP_ANGLE_X + Utils::Angle(look)); //자살하고싶다
+
+		SetGunFlipx(player->GetFilpX());
+
+
+		gunend.setPosition(gunPoint);
+		gunPoint = position + look * sprite.getLocalBounds().width; //총구 포지션을 아직 못잡음
+
+		if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
+		{
+			gun.Play("Shoot");
+			WEAPON_MGR.Shoot(bulletType, gunPoint, look);
+		}
 	}
 }
 
 void Magnum::Draw(sf::RenderWindow& window)
 {
+	if(!player->isRolling()) //주현씨는 이것도 뺌
 	SpriteGo::Draw(window);
+	window.draw(gunend);
 }
 
 void Magnum::SetGunFlipx(bool flipX)
 {
-	if (!flipX)
-	{
-		WeaponXpos = abs(WeaponXpos);
-	}
-	else
-	{
-		WeaponXpos = -abs(WeaponXpos);
-	}
-
 	sf::Vector2f scale = sprite.getScale();
 	this->flipX = flipX;
 	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
 	sprite.setScale(scale);
+
 }
 
-void Magnum::Shoot()
+void Magnum::SetType(Weapon::Types t)
 {
-	bullet = poolBullets.Get();
-	bullet->SetBullet((int)Bullet::Types::PilotBullet, GetPosition(), Look());
+	const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
 
-	Scene* scene = SCENE_MGR.GetCurrScene();
-	SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
-	sceneGame->AddGo(bullet);
+	weaponType = (Types)info->weaponType;
+	bulletType = (Bullet::Types)info->bulletType;
+	attackrate = info->attackrate;
+	bulletcount = info->bulletcount;
+	bulletmax = info->bulletmax;
+	reload = info->reload;
+	santan = info->santan;
 }

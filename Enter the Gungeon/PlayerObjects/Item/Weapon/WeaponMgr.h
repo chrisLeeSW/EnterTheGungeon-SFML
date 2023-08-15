@@ -67,8 +67,7 @@ public:
 
 	void SetPlayer(Player* player);
 	Player* GetPlayer();
-	void TestAddWeapon();
-	void Shoot();
+	void Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir);
 
 
 	Weapon::Types GetCurrentWeapon() const;

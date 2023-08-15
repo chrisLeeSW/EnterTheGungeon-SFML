@@ -137,3 +137,7 @@
 0,graphics/Magnum.png
 0,graphics/PrisonerBottle.png
 3,weapon/PrisonerBottle.csv
+3,weapon/PrisonerBottleBreak.csv
+0,graphics/PrisonerFire.png
+0,graphics/walkEffect.png
+3,playercsv/WalkEffect.csv

@@ -1,0 +1,18 @@
+ID,FPS,LOOPTYPE,,
+Break,4,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/PrisonerFire.png,17,15,32,35
+graphics/PrisonerFire.png,72,17,42,33
+graphics/PrisonerFire.png,136,10,45,46
+graphics/PrisonerFire.png,185,2,108,108
+graphics/PrisonerFire.png,185,2,108,108
+graphics/PrisonerFire.png,321,7,120,120
+graphics/PrisonerFire.png,6,103,120,120
+graphics/PrisonerFire.png,141,121,120,120
+graphics/PrisonerFire.png,6,254,120,120
+graphics/PrisonerFire.png,150,263,120,120
+graphics/PrisonerFire.png,6,402,120,120
+graphics/PrisonerFire.png,150,402,120,120
+graphics/PrisonerFire.png,6,548,120,120
+graphics/PrisonerFire.png,150,548,120,120

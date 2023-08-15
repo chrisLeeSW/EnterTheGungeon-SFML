@@ -13,7 +13,6 @@ Player::Player(Types type, const std::string& textureId, const std::string& n) :
 {
 }
 
-
 void Player::Init()
 {
 	windowsize = FRAMEWORK.GetWindowSize();
@@ -95,7 +94,10 @@ void Player::Init()
 	}
 	}
 
+	actEffect.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/WalkEffect.csv"));
 
+	actEffect.SetTarget(&walk);
+	walk.setScale(0.5,0.5);
 	animation.SetTarget(&sprite);
 	SetOrigin(Origins::BC);
 
@@ -116,7 +118,7 @@ void Player::Init()
 			playerchoise = true;
 			SetSceneGame();
 			GetItem(Passive::Types::PilotPassive);
-			GetItem(Active::Types::PrisonerActive);
+			GetItem(Active::Types::BulletTime);
 			GetItem(Weapon::Types::Magnum);
 		}
 }
@@ -128,13 +130,12 @@ void Player::Release()
 void Player::Reset()
 {
 	SpriteGo::Reset();
+
 	animation.Play("IdleRight");
-	//SetPosition(windowsize.x * 0.5, windowsize.y * 0.5);
 	SetFlipX(false);
 
 	if (type == Types::WeaponPilot || type == Types::WeaponPrisoner)
 	{
-		hand->SetOrigin(-sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height * 0.4);
 		active->Init();
 		passiveList.back()->Init();
 	}
@@ -143,13 +144,30 @@ void Player::Reset()
 	rollspeed = 250.f;
 	currentClipInfo = clipInfos[6];
 
-
 }
 
 void Player::Update(float dt)
 {
 	SetOrigin(Origins::BC);
 	animation.Update(dt);
+	actEffect.Update(dt);
+
+	effect -= dt;
+
+	if (iswalk)
+	{
+		if (iswalk && effect <= 0)
+		{
+			walk.setScale(0.5,0.5);
+			actEffect.Play("walkEffect");
+			walk.setPosition(GetPosition());
+			effect = 0.6f;
+		}
+	}
+	else if(!iswalk && actEffect.AnimationEnd())
+	{
+		walk.setScale(0, 0);
+	}
 
 	if(!weaponList.empty())
 	weaponList[currentIndex]->Update(dt);
@@ -175,6 +193,12 @@ void Player::Update(float dt)
 	{
 		active->isUsingActiveSkill = true;
 	}
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F1))
+	{
+		GetItem(Weapon::Types::PilotWeapon);
+	}
+
 }
 
 void Player::Draw(sf::RenderWindow& window)
@@ -182,7 +206,7 @@ void Player::Draw(sf::RenderWindow& window)
 
 	if (!weaponList.empty())
 	weaponList[currentIndex]->Draw(window);
-
+	window.draw(walk);
 	SpriteGo::Draw(window);
 }
 
@@ -253,9 +277,8 @@ void Player::SetFlipX(bool filp)
 	sprite.setScale(scale1);
 	if (hand != nullptr)
 	{
-		sf::Vector2f scale2 = hand->sprite.getScale();
-		scale2.x = !flipX ? abs(scale2.x) : -abs(scale2.x);
-		hand->sprite.setScale(scale2);
+		playerhand = handPos;
+		playerhand.x = !flipX ? abs(handPos.x) : -abs(handPos.x);
 	}
 
 	//if(WEAPON_MGR.GetWithWeapon())
@@ -283,6 +306,10 @@ void Player::PlayerAct(float dt)
 		{
 			position += direction * rollspeed * dt;
 			SetPosition(position);
+
+			if (hand != nullptr)
+				hand->SetActive(false);
+
 			if ((animation.AnimationEnd()))
 			{
 				isrolling = false;
@@ -315,6 +342,12 @@ void Player::PlayerAct(float dt)
 	{
 		animation.Play(clipId);
 	}
+	if (clipId == currentClipInfo.walk)
+	{
+		iswalk = true;
+	}
+	else
+		iswalk = false;
 
 	if (INPUT_MGR.GetKey(sf::Keyboard::Num9))
 	{
@@ -338,6 +371,7 @@ void Player::SetSceneGame()
 	SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
 
 	hand = (SpriteGo*)sceneGame->AddGo(new SpriteGo("graphics/Hand.png"));
+	hand->SetOrigin(Origins::MC);
 }
 
 void Player::GetItem(Passive::Types type)
@@ -415,13 +449,20 @@ void Player::SetPosition(const sf::Vector2f& p)
 {
 	SpriteGo::SetPosition(p);
 	if (hand != nullptr)
-		hand->SetPosition(p);
+	{
+		hand->SetPosition(GetPosition() + playerhand);
+		hand->SetOrigin(Origins::MC);
+	}
 }
 
 void Player::SetPosition(float x, float y)
 {
 	SpriteGo::SetPosition(x, y);
 	if (hand != nullptr)
-		hand->SetPosition(x, y);
+	{
+
+		hand->SetPosition(GetPosition() + playerhand);
+		hand->SetOrigin(Origins::MC);
+	}
 }
 

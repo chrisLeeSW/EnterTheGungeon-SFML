@@ -10,6 +10,9 @@
 #include "PilotWeapon.h"
 #include "PrisonerWeapon.h"
 #include "Magnum.h"
+#include "WeaponMgr.h"
+#include "aBulletTime.h"
+#include "ShotGun.h"
 
 void ItemMgr::Init()
 {
@@ -20,15 +23,23 @@ void ItemMgr::Init()
 	PilotWeapon* pilotWeapon = new PilotWeapon();
 	PrisonerWeapon* prisonerWeapon = new PrisonerWeapon();
 	Magnum* magnum = new Magnum();
+	aBulletTime* abulletTime = new aBulletTime();
+	ShotGun* shotgun = new ShotGun();
+
 
 	mapWeapon.insert({ Weapon::Types::Magnum,magnum });
 	mapWeapon.insert({ Weapon::Types::PilotWeapon,pilotWeapon });
 	mapWeapon.insert({ Weapon::Types::PrisonerWeapon,prisonerWeapon });
+	mapWeapon.insert({ Weapon::Types::ShotGun, shotgun });
+
 	mapPassive.insert({ Passive::Types::PilotPassive,pilotPassive });
 	mapPassive.insert({ Passive::Types::PrisonerPassive,prisonerPassive });
+
 	mapActive.insert({ Active::Types::PilotActive,pilotActive });
 	mapActive.insert({ Active::Types::PrisonerActive,prisonerActive });
+	mapActive.insert({ Active::Types::BulletTime, abulletTime });
 
+	WEAPON_MGR.Init();
 }
 
 
@@ -48,4 +59,19 @@ Weapon* ItemMgr::GetItem(Weapon::Types id)
 {
 	auto find = mapWeapon.find(id);
 	return find->second;
+}
+
+float ItemMgr::BulletTime()
+{
+	return bulletTime;
+}
+
+void ItemMgr::BulletTimeOn(bool bullettime)
+{
+	isbulletTime = bullettime;
+}
+
+bool ItemMgr::GetBulletTime()
+{
+	return isbulletTime;
 }

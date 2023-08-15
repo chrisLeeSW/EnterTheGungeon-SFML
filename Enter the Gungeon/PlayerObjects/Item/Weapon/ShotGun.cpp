@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "PilotWeapon.h"
+#include "ShotGun.h"
 #include "DataTableMgr.h"
 #include "WeaponTable.h"
 #include "Player.h"
@@ -7,48 +7,47 @@
 #include "Scene.h"
 #include "SceneGame.h"
 
-
-PilotWeapon::PilotWeapon(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
+ShotGun::ShotGun(const std::string& textureId, const std::string& n) : Weapon(textureId,n)
 {
-	SetType(Types::PilotWeapon);
+	//SetType(Types::ShotGun);
 
-	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PilotWeaponIdle.csv"));
-	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PilotWeaponShoot.csv"));
 
-	gun.SetTarget(&sprite);
+	//gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/ShotGunIdle.csv"));
+	//gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/ShotGunShoot.csv"));
 
-	SetType(Types::PilotWeapon);
+	//gun.SetTarget(&sprite);
 
-	SpriteGo::Reset();
+	//SpriteGo::Reset();
 
-	gun.Play("Idle");
+	//gun.Play("Idle");
 
-	gunend.setFillColor(sf::Color::Transparent);
-	gunend.setOutlineColor(sf::Color::Red);
-	gunend.setOutlineThickness(2.f);
-	gunend.setSize(sf::Vector2f{ 5,5 });
+	//SetOrigin(sprite.getLocalBounds().left, sprite.getLocalBounds().height);
 
+
+	//gunend.setFillColor(sf::Color::Transparent);
+	//gunend.setOutlineColor(sf::Color::Red);
+	//gunend.setOutlineThickness(2.f);
+	//gunend.setSize(sf::Vector2f{ 5,5 });
 }
 
-void PilotWeapon::Init()
-{
-	player = PLAYER_MGR.GetPlayer();
-	std::cout << sprite.getOrigin().x << std::endl;
-}
-
-void PilotWeapon::Release()
-{
-}
-
-void PilotWeapon::Reset()
+void ShotGun::Init()
 {
 	player = PLAYER_MGR.GetPlayer();
-
 }
 
-void PilotWeapon::Update(float dt)
+void ShotGun::Release()
+{
+}
+
+void ShotGun::Reset()
+{
+	player = PLAYER_MGR.GetPlayer();
+}
+
+void ShotGun::Update(float dt)
 {
 	Weapon::Update(dt);
+
 	if (!player->isRolling())
 	{
 		gun.Update(dt);
@@ -69,30 +68,27 @@ void PilotWeapon::Update(float dt)
 			gun.Play("Shoot");
 			WEAPON_MGR.Shoot(bulletType, gunPoint, look);
 		}
-
 	}
 }
 
-void PilotWeapon::Draw(sf::RenderWindow& window)
+void ShotGun::Draw(sf::RenderWindow& window)
 {
 	if (!player->isRolling())
 		SpriteGo::Draw(window);
-		window.draw(gunend);
+	window.draw(gunend);
 }
 
-void PilotWeapon::SetGunFlipx(bool flipX)
+void ShotGun::SetGunFlipx(bool flipX)
 {
-
 	sf::Vector2f scale = sprite.getScale();
 	this->flipX = flipX;
 	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
 	sprite.setScale(scale);
-
 }
 
-
-void PilotWeapon::SetType(Types t)
+void ShotGun::SetType(Types t)
 {
+
 	const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
 
 	weaponType = (Types)info->weaponType;
@@ -102,4 +98,5 @@ void PilotWeapon::SetType(Types t)
 	bulletmax = info->bulletmax;
 	reload = info->reload;
 	santan = info->santan;
+	
 }

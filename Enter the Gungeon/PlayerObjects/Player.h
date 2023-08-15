@@ -37,6 +37,8 @@ protected:
 	std::string clipId;
 
 	AnimationController animation;
+	AnimationController actEffect;
+
 
 	bool isGame = false;
 	bool isLobby = true;
@@ -66,6 +68,8 @@ protected:
 	bool isrolling = false;
 	float angle;
 	float magnitude;
+	float effect = 0.f;
+	bool iswalk = false;
 	sf::Vector2f look;
 
 	Types type;
@@ -88,9 +92,13 @@ protected:
 	int currentIndex = 0;
 
 
+	sf::Vector2f handPos{ 7.f,-6.f };
 
 public:
 
+	sf::Sprite walk;
+	
+	sf::Vector2f playerhand;
 	bool isUsingActiveSkill = false;
 
 	Player(Types type, const std::string& textureId = "", const std::string& n = "");
@@ -121,5 +129,8 @@ public:
 	void GetItem(Weapon::Types type);
 
 	bool GetFilpX() { return flipX; }
+	bool isRolling() { return isrolling; }
 
+
+	sf::Vector2f PlayerHandPos() { return hand->GetPosition(); }
 };

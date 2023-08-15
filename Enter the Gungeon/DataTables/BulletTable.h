@@ -5,6 +5,7 @@
 struct BulletInfo
 {
 	Bullet::Types bulletType;
+	std::string bulletid;
 	int speed;
 	float damage;
 	int range;

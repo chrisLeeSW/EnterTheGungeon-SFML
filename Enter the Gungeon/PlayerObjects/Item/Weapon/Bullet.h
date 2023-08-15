@@ -29,12 +29,13 @@ protected:
 	sf::Vector2f position;
 
 	Types bulletType;
+	std::string bulletid;
 	float speed;
 	float damage;
 	int range;
 	int knockback;
 
-	std::string anistirng;
+	std::string anistring;
 
 	SpriteGo* bullet;
 
@@ -51,7 +52,7 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	void SetBullet(int types, sf::Vector2f pos, sf::Vector2f dir);
+	void SetBullet(Types types, sf::Vector2f pos, sf::Vector2f dir);
 	void Shoot(Types type);
 	void Fire(sf::Vector2f pos, sf::Vector2f dir);
 };

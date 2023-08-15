@@ -3,9 +3,7 @@
 #include "AnimationController.h"
 #include "Bullet.h"
 
-class Player;
-
-class Magnum : public Weapon
+class ShotGun : public Weapon
 {
 
 protected:
@@ -31,8 +29,8 @@ protected:
 
 public:
 
-	Magnum(const std::string& textureId = "", const std::string& n = "");
-	virtual ~Magnum() override { Release(); }
+	ShotGun(const std::string& textureId = "", const std::string& n = "");
+	virtual ~ShotGun() override { Release(); }
 
 	virtual void Init() override;
 	virtual void Release() override;
@@ -47,4 +45,6 @@ public:
 	virtual void SetType(Types type) override;
 	virtual Bullet::Types GetBulletType() override { return bulletType; }
 };
+
+
 

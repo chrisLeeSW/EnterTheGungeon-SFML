@@ -78,7 +78,10 @@ void Framework::Run()
 
         if (window.isOpen())
         {
-            UpdateEvent(dt);
+            if (!ITEM_MGR.GetBulletTime())
+                UpdateEvent(dt);
+            else
+                UpdateEvent(dt * ITEM_MGR.BulletTime());
 
             window.clear();
             Draw();

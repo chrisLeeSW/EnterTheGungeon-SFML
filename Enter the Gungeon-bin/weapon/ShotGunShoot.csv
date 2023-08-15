@@ -1,0 +1,12 @@
+ID,FPS,LOOPTYPE,,
+Shoot,5,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Shotgun.png,9,16,23,7
+graphics/Shotgun.png,48,16,22,7
+graphics/Shotgun.png,165,43,23,6
+graphics/Shotgun.png,126,16,22,7
+graphics/Shotgun.png,87,16,22,7
+graphics/Shotgun.png,205,41,21,9
+graphics/Shotgun.png,127,41,21,9
+graphics/Shotgun.png,203,17,24,5

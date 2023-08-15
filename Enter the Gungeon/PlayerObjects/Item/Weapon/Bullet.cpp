@@ -14,7 +14,7 @@ void Bullet::Init()
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("bulletcsv/BasicBullet.csv"));
 
 	animation.SetTarget(&sprite);
-
+	sortLayer = -1;
 }
 
 void Bullet::Release()
@@ -35,7 +35,7 @@ void Bullet::Update(float dt)
 	position += direction * speed * dt;
 	SetPosition(position);
 
-	animation.Play(anistirng);
+	animation.Play(bulletid);
 }
 
 void Bullet::Draw(sf::RenderWindow& window)
@@ -43,11 +43,12 @@ void Bullet::Draw(sf::RenderWindow& window)
 	SpriteGo::Draw(window);
 }
 
-void Bullet::SetBullet(int types, sf::Vector2f pos, sf::Vector2f dir)
+void Bullet::SetBullet(Types types, sf::Vector2f pos, sf::Vector2f dir)
 {
-	const BulletInfo* info = DATATABLE_MGR.Get<BulletTable>(DataTable::Ids::Bullet)->Get((Bullet::Types)types);
+	const BulletInfo* info = DATATABLE_MGR.Get<BulletTable>(DataTable::Ids::Bullet)->Get(types);
 
 	bulletType = info->bulletType;
+	bulletid = info->bulletid;
 	speed = info->speed;
 	damage = info->damage;
 	range = info->range;
@@ -58,7 +59,6 @@ void Bullet::SetBullet(int types, sf::Vector2f pos, sf::Vector2f dir)
 	SetPosition(position);
 	direction = dir;
 
-	anistirng = std::to_string(types);
 }
 
 void Bullet::Shoot(Types type)

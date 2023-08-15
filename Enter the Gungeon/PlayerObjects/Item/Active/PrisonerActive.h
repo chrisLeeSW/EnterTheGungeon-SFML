@@ -18,6 +18,7 @@ protected:
     float tick = 0.3;
     float speed = 100.f;
     bool isone = true;
+    float breaktime = 2.0f;
     int angle45;
     float charge;
 public:

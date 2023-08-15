@@ -10,6 +10,7 @@ public:
     {
         PilotActive,
         PrisonerActive,
+        BulletTime,
     };
 
 

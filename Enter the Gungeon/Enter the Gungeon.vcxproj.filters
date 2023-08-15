@@ -171,6 +171,15 @@
     <ClCompile Include="Map\InteractionObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Weapon\Magnum.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Active\aBulletTime.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Weapon\ShotGun.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -339,6 +348,15 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Map\InteractionObject.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Weapon\Magnum.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Active\aBulletTime.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Weapon\ShotGun.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

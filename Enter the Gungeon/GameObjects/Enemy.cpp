@@ -137,6 +137,7 @@ void Enemy::Update(float dt)
 	float distance = Utils::Distance(player->GetPosition(), position);
 	sf::Vector2f min = WhereWay(direction);
 
+	SetFlipX(direction.x > 0.f);
 	if (attackRange > distance)
 	{
 		direction = { 0.f, 0.f };
@@ -173,11 +174,6 @@ void Enemy::Update(float dt)
 			}
 		}
 	}
-	else
-	{
-		SetPosition(position + direction * speed * dt);
-	}
-	SetFlipX(direction.x > 0.f);
 
 	if (player->sprite.getGlobalBounds().intersects(sprite.getGlobalBounds())) // Collider 충돌로 변경 요구
 	{
@@ -195,31 +191,33 @@ void Enemy::Update(float dt)
 	// Animation
 	if (direction.x != 0.f || direction.y != 0.f)
 	{
-		if (animation.GetCurrentClipId() != "MoveUp" &&
+		if (animation.GetCurrentClipId() != "MoveUp" && animation.AnimationEnd() &&
 			min == way[0])
 		{
 			animation.Play("MoveUp");
 		}
-		else if (animation.GetCurrentClipId() != "MoveLeftUp" &&
+		else if (animation.GetCurrentClipId() != "MoveLeftUp" && animation.AnimationEnd() &&
 			min == way[1])
 		{
 			animation.Play("MoveLeftUp");
 		}
-		else if (animation.GetCurrentClipId() != "MoveLeft" &&
+		else if (animation.GetCurrentClipId() != "MoveLeft" && animation.AnimationEnd() &&
 			min == way[2])
 		{
 			animation.Play("MoveLeft");
 		}
-		else if (animation.GetCurrentClipId() != "MoveLeftDown" &&
+		else if (animation.GetCurrentClipId() != "MoveLeftDown" && animation.AnimationEnd() &&
 			min == way[3])
 		{
 			animation.Play("MoveLeftDown");
 		}
-		else if (animation.GetCurrentClipId() != "MoveDown" &&
+		else if (animation.GetCurrentClipId() != "MoveDown" && animation.AnimationEnd() &&
 			min == way[4])
 		{
 			animation.Play("MoveDown");
 		}
+		SetPosition(position + direction * speed * dt); // 피격 시 안움직이는 기능 구현 필요
+
 	}
 	else
 	{
@@ -421,7 +419,6 @@ void Enemy::FiveWayShot(sf::Vector2f dir, float speed)
 			dir.x * sin(-0.5f + 0.25f * i) + dir.y * cos(-0.5f + 0.25f * i)
 		};
 		OneShot(ang, speed);
-		std::cout << ang.x << " / " << ang.y << std::endl;
 	}
 }
 

@@ -4,14 +4,20 @@
 
 class Player;
 
-enum class EnemyTypes
+enum class EnemyName
 {
 	None = -1,
 
+	// Normal Enemy
 	BulletKin,
 	KeyBulletKin,
 	ShotgunKinRed,
 	ShotgunKinBlue,
+
+	// Unique Enemy
+
+	// Boss
+	GatlingGull,
 
 	Count,
 };
@@ -37,10 +43,10 @@ protected:
 
 	Player* player;
 	sf::Sprite hand;
-	EnemyTypes type;
+	EnemyName type;
 
 public:
-	Enemy(EnemyTypes type, const std::string& textureId="", const std::string& n="");
+	Enemy(EnemyName type, const std::string& textureId="", const std::string& n="");
 	virtual ~Enemy() override;
 
 	virtual void Init() override;
@@ -57,9 +63,13 @@ public:
 	void SetPlayer(Player* player);
 	void SetEnemy(float speed = 0.f, float maxHp = 0.f, float attackRange = 0.f, float attackInterval = 0.f, bool superarmor = false);
 
-	std::function<void(float)> IfHit; // Bullet에게 맞았을 때
-	std::function<void()> IfBump; // Player와 몸이 충돌했을 때
-	std::function<void(sf::Vector2f dir)> IfDie; // 사망 시
+	// Bullet에게 맞았을 때
+	std::function<void(float)> IfHit;
+	// Player와 몸이 충돌했을 때
+	std::function<void()> IfBump;
+	// 사망 시
+	std::function<void(sf::Vector2f dir)> IfDie;
+	// 사격 시
 	std::function<void(sf::Vector2f dir, float speed)> IfShoot;
 
 	void OnDamage(const float& damage, sf::Vector2f dir = {0.f, 0.f}, const float& knockback = 0.f);

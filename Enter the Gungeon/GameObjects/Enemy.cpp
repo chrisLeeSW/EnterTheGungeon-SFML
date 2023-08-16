@@ -6,7 +6,7 @@
 
 #include "SceneLobby.h" //test
 
-Enemy::Enemy(EnemyTypes type, const std::string& textureId, const std::string& n)
+Enemy::Enemy(EnemyName type, const std::string& textureId, const std::string& n)
 	:SpriteGo(textureId, n), type(type)
 {
 	way.push_back({ 0.f, -1.f }); // Up
@@ -18,7 +18,7 @@ Enemy::Enemy(EnemyTypes type, const std::string& textureId, const std::string& n
 
 Enemy::~Enemy()
 {
-
+	Release();
 }
 
 void Enemy::Init()
@@ -26,48 +26,48 @@ void Enemy::Init()
 	std::string name;
 	switch (type)
 	{
-	case EnemyTypes::BulletKin:
-		name = "BulletKin";
+	case EnemyName::BulletKin:
+		name = "BulletKin/BulletKin";
 		isHanded = true;
-		IfShoot = [&](sf::Vector2f dir, float speed)
+		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
 			OneShot(dir, speed);
 		};
 		maxHp = 15.f; // table 사용
 		break;
-	case EnemyTypes::KeyBulletKin:
-		name = "KeyBulletKin";
+	case EnemyName::KeyBulletKin:
+		name = "KeyBulletKin/KeyBulletKin";
 		// Runaway 함수
 		maxHp = 15.f;
 		break;
-	case EnemyTypes::ShotgunKinRed:
-		name = "ShotgunKinRed";
+	case EnemyName::ShotgunKinRed:
+		name = "ShotgunKinRed/ShotgunKinRed";
 		isHanded = true;
-		IfShoot = [&](sf::Vector2f dir, float speed)
+		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
 			FiveWayShot(dir, speed);
 		};
-		IfDie = [&](sf::Vector2f dir)
+		IfDie = [this](sf::Vector2f dir)
 		{
 			SixWayDie(dir, speed, 20); // table 사용
 		};
 		maxHp = 30.f; // table 사용
 		break;
-	case EnemyTypes::ShotgunKinBlue:
-		name = "ShotgunKinBlue";
+	case EnemyName::ShotgunKinBlue:
+		name = "ShotgunKinBlue/ShotgunKinBlue";
 		isHanded = true;
-		IfShoot = [&](sf::Vector2f dir, float speed)
+		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
 			FiveWayShot(dir, speed);
 		};
-		IfDie = [&](sf::Vector2f dir)
+		IfDie = [this](sf::Vector2f dir)
 		{
 			SixWayDie(dir, speed, 33); // table 사용
 		};
 		maxHp = 40.f; // table 사용
 		break;
 	default:
-		std::cerr << "ERROR: Not Exist EnemyTypes (Enemy Init())" << std::endl;
+		std::cerr << "ERROR: Not Exist EnemyName (Enemy Init())" << std::endl;
 		break;
 	}
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleUp.csv"));
@@ -133,11 +133,11 @@ void Enemy::Update(float dt)
 	if (!isAlive || player == nullptr) return;
 
 	direction = Utils::Normalize(player->GetPosition() - position);
+	SetFlipX(direction.x > 0.f);
 	if (direction != sf::Vector2f{ 0.f, 0.f }) prevDir = direction;
 	float distance = Utils::Distance(player->GetPosition(), position);
 	sf::Vector2f min = WhereWay(direction);
 
-	SetFlipX(direction.x > 0.f);
 	if (attackRange > distance)
 	{
 		direction = { 0.f, 0.f };
@@ -152,25 +152,30 @@ void Enemy::Update(float dt)
 			}
 
 			// Animation
-			if (min == way[0])
+			if (min == way[0] && animation.GetCurrentClipId() != "AttackUp")
 			{
 				animation.Play("AttackUp");
+				animation.PlayQueue("IdleUp");
 			}
-			else if (min == way[1])
+			else if (min == way[1] && animation.GetCurrentClipId() != "AttackLeftUp")
 			{
 				animation.Play("AttackLeftUp");
+				animation.PlayQueue("IdleLeftUp");
 			}
-			else if (min == way[2])
+			else if (min == way[2] && animation.GetCurrentClipId() != "AttackLeft")
 			{
 				animation.Play("AttackLeft");
+				animation.PlayQueue("IdleLeft");
 			}
-			else if (min == way[3])
+			else if (min == way[3] && animation.GetCurrentClipId() != "AttackLeftDown")
 			{
 				animation.Play("AttackLeftDown");
+				animation.PlayQueue("IdleLeftDown");
 			}
-			else if (min == way[4])
+			else if (min == way[4] && animation.GetCurrentClipId() != "AttackDown")
 			{
 				animation.Play("AttackDown");
+				animation.PlayQueue("IdleDown");
 			}
 		}
 	}
@@ -331,6 +336,7 @@ void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockba
 			else
 			{
 				OnDie(dir);
+				return;
 			}
 		}
 	}
@@ -412,12 +418,7 @@ void Enemy::FiveWayShot(sf::Vector2f dir, float speed)
 {
 	for (int i = 0; i < 5; i++)
 	{
-		//dir = Utils::Normalize(player->GetPosition() - position);
-		sf::Vector2f ang =
-		{
-			dir.x * cos(-0.5f + 0.25f * i) - dir.y * sin(-0.5f + 0.25f * i),
-			dir.x * sin(-0.5f + 0.25f * i) + dir.y * cos(-0.5f + 0.25f * i)
-		};
+		sf::Vector2f ang = Utils::RotateVector(dir, -30.f + 15.f * i);
 		OneShot(ang, speed);
 	}
 }

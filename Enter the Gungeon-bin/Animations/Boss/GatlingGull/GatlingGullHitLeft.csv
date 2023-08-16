@@ -1,0 +1,5 @@
+ID,FPS,LOOPTYPE,,
+HitLeft,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/GatlingGull.png,200,828,76,50

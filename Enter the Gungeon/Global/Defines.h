@@ -2,9 +2,6 @@
 
 #define _USE_MATH_DEFINES
 
-const int MIN_WIDTH_SIZE = 50;
-const int MIN_HEIGHT_SIZE = 50;
-
 enum class Languages
 {
 	KOR,

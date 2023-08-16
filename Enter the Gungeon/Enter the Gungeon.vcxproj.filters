@@ -180,8 +180,8 @@
     <ClCompile Include="PlayerObjects\Item\Weapon\ShotGun.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Map\Room.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Room.cpp">
+	 <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Boss.cpp">
       <Filter>소스 파일</Filter>
@@ -356,7 +356,7 @@
     <ClInclude Include="Scenes\TestRom.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Map\Room.h">
+    <ClInclude Include="Room.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Boss.h">

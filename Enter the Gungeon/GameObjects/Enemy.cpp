@@ -6,7 +6,7 @@
 
 #include "SceneLobby.h" //test
 
-Enemy::Enemy(EnemyTypes type, const std::string& textureId, const std::string& n)
+Enemy::Enemy(EnemyName type, const std::string& textureId, const std::string& n)
 	:SpriteGo(textureId, n), type(type)
 {
 	way.push_back({ 0.f, -1.f }); // Up
@@ -26,7 +26,7 @@ void Enemy::Init()
 	std::string name;
 	switch (type)
 	{
-	case EnemyTypes::BulletKin:
+	case EnemyName::BulletKin:
 		name = "BulletKin/BulletKin";
 		isHanded = true;
 		IfShoot = [this](sf::Vector2f dir, float speed)
@@ -35,12 +35,12 @@ void Enemy::Init()
 		};
 		maxHp = 15.f; // table 사용
 		break;
-	case EnemyTypes::KeyBulletKin:
+	case EnemyName::KeyBulletKin:
 		name = "KeyBulletKin/KeyBulletKin";
 		// Runaway 함수
 		maxHp = 15.f;
 		break;
-	case EnemyTypes::ShotgunKinRed:
+	case EnemyName::ShotgunKinRed:
 		name = "ShotgunKinRed/ShotgunKinRed";
 		isHanded = true;
 		IfShoot = [this](sf::Vector2f dir, float speed)
@@ -53,7 +53,7 @@ void Enemy::Init()
 		};
 		maxHp = 30.f; // table 사용
 		break;
-	case EnemyTypes::ShotgunKinBlue:
+	case EnemyName::ShotgunKinBlue:
 		name = "ShotgunKinBlue/ShotgunKinBlue";
 		isHanded = true;
 		IfShoot = [this](sf::Vector2f dir, float speed)
@@ -67,7 +67,7 @@ void Enemy::Init()
 		maxHp = 40.f; // table 사용
 		break;
 	default:
-		std::cerr << "ERROR: Not Exist EnemyTypes (Enemy Init())" << std::endl;
+		std::cerr << "ERROR: Not Exist EnemyName (Enemy Init())" << std::endl;
 		break;
 	}
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleUp.csv"));
@@ -152,25 +152,30 @@ void Enemy::Update(float dt)
 			}
 
 			// Animation
-			if (min == way[0])
+			if (min == way[0] && animation.GetCurrentClipId() != "AttackUp")
 			{
 				animation.Play("AttackUp");
+				animation.PlayQueue("IdleUp");
 			}
-			else if (min == way[1])
+			else if (min == way[1] && animation.GetCurrentClipId() != "AttackLeftUp")
 			{
 				animation.Play("AttackLeftUp");
+				animation.PlayQueue("IdleLeftUp");
 			}
-			else if (min == way[2])
+			else if (min == way[2] && animation.GetCurrentClipId() != "AttackLeft")
 			{
 				animation.Play("AttackLeft");
+				animation.PlayQueue("IdleLeft");
 			}
-			else if (min == way[3])
+			else if (min == way[3] && animation.GetCurrentClipId() != "AttackLeftDown")
 			{
 				animation.Play("AttackLeftDown");
+				animation.PlayQueue("IdleLeftDown");
 			}
-			else if (min == way[4])
+			else if (min == way[4] && animation.GetCurrentClipId() != "AttackDown")
 			{
 				animation.Play("AttackDown");
+				animation.PlayQueue("IdleDown");
 			}
 		}
 	}
@@ -413,12 +418,7 @@ void Enemy::FiveWayShot(sf::Vector2f dir, float speed)
 {
 	for (int i = 0; i < 5; i++)
 	{
-		//dir = Utils::Normalize(player->GetPosition() - position);
-		sf::Vector2f ang =
-		{
-			dir.x * cos(-0.5f + 0.25f * i) - dir.y * sin(-0.5f + 0.25f * i),
-			dir.x * sin(-0.5f + 0.25f * i) + dir.y * cos(-0.5f + 0.25f * i)
-		};
+		sf::Vector2f ang = Utils::RotateVector(dir, -30.f + 15.f * i);
 		OneShot(ang, speed);
 	}
 }

@@ -49,29 +49,29 @@ void SceneLobby::Init()
 
 	currentplayer = pilot;
 
-	test1 = (Enemy*)AddGo(new Enemy(EnemyTypes::BulletKin)); //test
-	test1->SetOrigin(Origins::BC); //test
+	test1 = (Enemy*)AddGo(new Enemy(EnemyName::BulletKin)); //test
+	test1->SetOrigin(Origins::MC); //test
 	test1->SetPlayer(currentplayer); //test
 	test1->SetEnemy(100.f, 5.f); //test
 	test1->SetPosition(-200, -200); //test
 
-	test2 = (Enemy*)AddGo(new Enemy(EnemyTypes::ShotgunKinRed)); //test
-	test2->SetOrigin(Origins::BC); //test
+	test2 = (Enemy*)AddGo(new Enemy(EnemyName::ShotgunKinRed)); //test
+	test2->SetOrigin(Origins::MC); //test
 	test2->SetPlayer(currentplayer); //test
 	test2->SetEnemy(100.f, 5.f, 50.f, 1.f); //test
 	test2->SetPosition(200, 200); //test
 
-	test3 = (Enemy*)AddGo(new Enemy(EnemyTypes::ShotgunKinBlue)); //test
-	test3->SetOrigin(Origins::BC); //test
+	test3 = (Enemy*)AddGo(new Enemy(EnemyName::ShotgunKinBlue)); //test
+	test3->SetOrigin(Origins::MC); //test
 	test3->SetPlayer(currentplayer); //test
 	test3->SetEnemy(100.f, 5.f, 100.f, 1.f); //test
 	test3->SetPosition(400, -200); //test
 
-	test4 = (Boss*)AddGo(new Boss(EnemyTypes::GatlingGull));
-	test4->SetOrigin(Origins::BC);
-	test4->SetPlayer(currentplayer);
-	test4->SetEnemy(50.f, 5.f, 50.f, 0.2f, true);
-	test4->SetPosition(400, 200);
+	test4 = (Boss*)AddGo(new Boss(EnemyName::GatlingGull)); //test
+	test4->SetOrigin(Origins::MC); //test
+	test4->SetPlayer(currentplayer); //test
+	test4->SetEnemy(50.f, 5.f, 50.f, 0.2f, true); //test
+	test4->SetPosition(400, 200); //test
 
 	for (auto go : gameObjects)
 	{

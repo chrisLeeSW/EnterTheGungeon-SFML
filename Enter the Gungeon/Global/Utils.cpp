@@ -177,7 +177,7 @@ std::wstring Utils::ConverToUTF(const std::string& text)
 }
 
 
-sf::Vector2f Utils::RotateVector(const sf::Vector2f& vector, float angle, const sf::Vector2f& rotationAxis)
+sf::Vector2f Utils::RotateVector(const sf::Vector2f& vector, float angle)
 {
 	float radian = Utils::DegreesToRadians(angle);
 	float cosAngle = std::cos(radian);

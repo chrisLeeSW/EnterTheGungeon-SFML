@@ -2,7 +2,8 @@ ID,FPS,LOOPTYPE,,
 AttackDown,10,0,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
-graphics/GatlingGull.png,30,23,43,68
-graphics/GatlingGull.png,127,23,46,68
-graphics/GatlingGull.png,227,22,47,64
-graphics/GatlingGull.png,331,22,44,66
+graphics/GatlingGull.png,34,1087,61,48
+graphics/GatlingGull.png,134,1087,61,48
+graphics/GatlingGull.png,233,1087,62,48
+graphics/GatlingGull.png,317,1059,88,88
+graphics/GatlingGull.png,438,1085,57,45

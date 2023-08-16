@@ -4,7 +4,7 @@
 
 class Player;
 
-enum class EnemyTypes
+enum class EnemyName
 {
 	None = -1,
 
@@ -43,10 +43,10 @@ protected:
 
 	Player* player;
 	sf::Sprite hand;
-	EnemyTypes type;
+	EnemyName type;
 
 public:
-	Enemy(EnemyTypes type, const std::string& textureId="", const std::string& n="");
+	Enemy(EnemyName type, const std::string& textureId="", const std::string& n="");
 	virtual ~Enemy() override;
 
 	virtual void Init() override;

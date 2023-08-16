@@ -12,6 +12,8 @@ public:
 	int quantity = 1;
 	float interval = 0.f;
 
+	bool isEdit = true;
+
 protected:
 	bool isPlay = false;
 	float innerdelay = 0.f;

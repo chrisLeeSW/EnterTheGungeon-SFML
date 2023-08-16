@@ -36,7 +36,7 @@ public:
 	static float Angle(float a, float b);
 
 	static float DegreesToRadians(float angle);
-	static sf::Vector2f RotateVector(const sf::Vector2f& vector, float angle, const sf::Vector2f& rotationAxis);
+	static sf::Vector2f RotateVector(const sf::Vector2f& vector, float angle);
 
 	static sf::Vector2f DirectionFromAngle(float angle);
 	static std::wstring ConverToUTF(const std::string& text);

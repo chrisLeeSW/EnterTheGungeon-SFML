@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Muzzle.h"
-#include "SceneMgr.h"
 #include "SceneBulletEditor.h"
 
 #include "EnemyBullet.h"
@@ -37,7 +36,7 @@ void Muzzle::SetOrigin(Origins origin)
 void Muzzle::Init()
 {
 	circle.setRadius(5);
-	circle.setFillColor(sf::Color::White);
+	if (isEdit) circle.setFillColor(sf::Color::White);
 
 	SetOrigin(Origins::MC);
 }
@@ -83,6 +82,8 @@ void Muzzle::Update(float dt)
 	else
 	{
 		Reset();
+		if (isEdit) return;
+		SCENE_MGR.GetCurrScene()->RemoveGo(this);
 	}
 }
 

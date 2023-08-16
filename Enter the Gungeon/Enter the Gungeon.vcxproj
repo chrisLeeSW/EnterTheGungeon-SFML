@@ -168,7 +168,7 @@
     <ClCompile Include="DataTables\BulletTable.cpp" />
     <ClCompile Include="DataTables\WeaponTable.cpp" />
     <ClCompile Include="Map\InteractionObject.cpp" />
-    <ClCompile Include="Room.cpp" />
+    <ClCompile Include="Map\Room.cpp" />
     <ClCompile Include="Scenes\GameMapTestScene.cpp" />
     <ClCompile Include="GameObjects\Enemy.cpp" />
     <ClCompile Include="PlayerObjects\Item\Weapon\PilotWeapon.cpp" />
@@ -234,7 +234,7 @@
     <ClInclude Include="DataTables\BulletTable.h" />
     <ClInclude Include="DataTables\WeaponTable.h" />
     <ClInclude Include="Map\InteractionObject.h" />
-    <ClInclude Include="Room.h" />
+    <ClInclude Include="Map\Room.h" />
     <ClInclude Include="Scenes\GameMapTestScene.h" />
     <ClInclude Include="GameObjects\Enemy.h" />
     <ClInclude Include="PlayerObjects\Item\Weapon\PilotWeapon.h" />

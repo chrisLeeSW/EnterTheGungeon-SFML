@@ -1,9 +1,13 @@
 #pragma once
 #include "Scene.h"
+#include "Room.h"
+
+
+
 class TestRom : public Scene
 {
 protected:
-
+	Room* room;
 public :
 	TestRom();
 	virtual ~TestRom() override = default;
@@ -14,5 +18,9 @@ public :
 	virtual void Exit() override;
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
+
+	void MoveWorldView();
+
+	
 };
 

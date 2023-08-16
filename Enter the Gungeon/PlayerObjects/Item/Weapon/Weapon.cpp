@@ -73,7 +73,7 @@ void Weapon::SwapWeapon()
 		if (INPUT_MGR.GetKeyDown(pair.first))
 		{
 			int weaponIndex = pair.second;
-			WEAPON_MGR.SwapWeapon(weaponIndex);
+			//WEAPON_MGR.SwapWeapon(weaponIndex);
 			std::cout << "스왑웨폰, 현재 웨폰 인덱스 : " << weaponIndex << std::endl;
 			break;
 		}

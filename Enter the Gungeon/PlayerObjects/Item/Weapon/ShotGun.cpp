@@ -55,12 +55,12 @@ void ShotGun::Update(float dt)
 	SetOrigin(Origins::BL);
 
 	float angle = Utils::Angle(look);
-	sf::Vector2f gunOffset = Utils::RotateVector(gunOffset1, angle, { 1, 0 });
+	sf::Vector2f gunOffset = Utils::RotateVector(gunOffset1, angle);
 
 	//이거 마우스인데 플레이어랑 몬스터 포지션 뺀걸 노멀라이즈해서 넣어야될듯
 	if (flipX)
 	{
-		gunOffset = Utils::RotateVector(gunOffset2, angle, { 1, 0 });
+		gunOffset = Utils::RotateVector(gunOffset2, angle);
 		angle += FLIP_ANGLE_X;
 	}
 	sprite.setRotation(angle);

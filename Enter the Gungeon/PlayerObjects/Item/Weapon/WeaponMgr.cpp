@@ -102,6 +102,7 @@ void WeaponMgr::Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir)
 
 
 
+
 void WeaponMgr::SetWeaPonFlipx(bool flip)
 {
 	currentWeapon->SetGunFlipx(flip);

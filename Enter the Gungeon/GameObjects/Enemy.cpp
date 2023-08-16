@@ -12,7 +12,7 @@
 #include "Weapon.h"
 #include "Magnum.h"
 
-Enemy::Enemy(EnemyTypes type, const std::string& textureId, const std::string& n)
+Enemy::Enemy(EnemyName type, const std::string& textureId, const std::string& n)
 	:SpriteGo(textureId, n), type(type)
 {
 	way.push_back({ 0.f, -1.f }); // Up
@@ -58,8 +58,6 @@ void Enemy::Init()
 			SixWayDie(dir, speed, 20); // table 사용
 		};
 		maxHp = 30.f; // table 사용
-		shotgun = new ShotGun();
-		shotgun->SetEnemy(this);
 		break;
 	case EnemyName::ShotgunKinBlue:
 		name = "ShotgunKinBlue/ShotgunKinBlue";
@@ -73,8 +71,6 @@ void Enemy::Init()
 			SixWayDie(dir, speed, 33); // table 사용
 		};
 		maxHp = 40.f; // table 사용
-		shotgun = new ShotGun();
-		shotgun->SetEnemy(this);
 		break;
 	default:
 		std::cerr << "ERROR: Not Exist EnemyName (Enemy Init())" << std::endl;
@@ -127,16 +123,13 @@ void Enemy::Reset()
 		{
 			hand.setTexture(*tex);
 			hand.setTextureRect({ 121, 16, 4, 4 });
-
-
-
 		}
 	}
 
 	animation.Play("IdleDown");
 	SetFlipX(false);
 	SetOrigin(origin);
-	hand.setOrigin(sprite.getLocalBounds().width * 0.8, sprite.getLocalBounds().height * 0.25);
+	hand.setOrigin(sprite.getLocalBounds().width * 0.8f, sprite.getLocalBounds().height * 0.25f);
 
 	hp = maxHp;
 	isAlive = true;
@@ -146,13 +139,15 @@ void Enemy::Reset()
 	Scene* scene = SCENE_MGR.GetCurrScene();
 	switch (type)
 	{
-	case EnemyTypes::BulletKin:
+	case EnemyName::BulletKin:
 		magnum = (Magnum*)scene->AddGo(new Magnum());
 		magnum->SetEnemy(this);
 		break;
-	case EnemyTypes::ShotgunKinRed:
+	case EnemyName::ShotgunKinRed:
+		shotgun = (ShotGun*)scene->AddGo(new ShotGun());
+		shotgun->SetEnemy(this);
 		break;
-	case EnemyTypes::ShotgunKinBlue:
+	case EnemyName::ShotgunKinBlue:
 		shotgun = (ShotGun*)scene->AddGo(new ShotGun());
 		shotgun->SetEnemy(this);
 		break;

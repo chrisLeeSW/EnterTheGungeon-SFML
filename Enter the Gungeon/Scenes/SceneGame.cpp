@@ -40,7 +40,7 @@ void SceneGame::Init()
 
 	equipment = (Equipment*)AddGo(new Equipment());
 
-	testenm1 = (Enemy*)AddGo(new Enemy(EnemyTypes::ShotgunKinRed)); //test
+	testenm1 = (Enemy*)AddGo(new Enemy(EnemyName::ShotgunKinRed)); //test
 	testenm1->SetOrigin(Origins::BC); //test
 	testenm1->SetEnemy(100.f, 5.f, 50.f, 1.f); //test
 	testenm1->SetPosition(200, 200); //test

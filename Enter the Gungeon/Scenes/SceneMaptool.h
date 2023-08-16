@@ -12,11 +12,7 @@ struct TileSpriteInfo
 	SpriteGo* spr;
 	MapObjectType type;
 };
-struct WallTypeInfo
-{
-	WallType type;
-	sf::RectangleShape  shape;
-};
+
 class SceneMaptool : public Scene
 {
 protected:
@@ -93,6 +89,7 @@ protected:
 
 
 	bool setWall;
+	bool deleteWall;
 	std::vector<WallTypeInfo> colliedShape;
 	sf::Vector2f isPrevPos;
 	int currentCplliedShapeType;

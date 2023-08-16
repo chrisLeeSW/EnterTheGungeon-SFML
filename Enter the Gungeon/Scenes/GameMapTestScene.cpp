@@ -15,7 +15,7 @@ void GameMapTestScene::Init()
 	tileRoom1 = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
 	sf::Vector2f pos = { -300.f,-300.f }; // 랜덤 설정
 	tileRoom1->SetStartPos(pos);
-	tileRoom1->Load("Room/TileMapFile/Room1.csv", false);
+	tileRoom1->Load("Room/TileMapFile/direction.csv");
 	for (int i = 0; i < tileRoom1->tiles.size(); ++i)
 	{
 		//	objects
@@ -48,51 +48,63 @@ void GameMapTestScene::Init()
 		break;
 		}
 	}
-
-	tileRoom2 = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-	sf::Vector2f pos1 = { pos.x,pos.y + (tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height)*7.f}; // 랜덤 설정
-	tileRoom2->SetStartPos(pos1);
-	tileRoom2->Load("Room/TileMapFile/Room3.csv", false);
-	for (int i = 0; i < tileRoom2->tiles.size(); ++i)
+	tileRoom1->MakeWall("Room/TileMapFile/direction.csv");
+	for (int i = 0; i < tileRoom1->colliedShape.size(); ++i)
 	{
-		//	objects
-		switch (static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes))
-		{
-		case MapObjectType::WallDown:
-		{
-			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
-			spr->sprite.setTextureRect({ 0,250,50,50 });
-			spr->SetPosition(pos1.x + tileRoom2->tiles[i].x * tileRoom2->GetTileSize().x, pos1.y + tileRoom2->tiles[i].y * tileRoom2->GetTileSize().y);
-			spr->sortLayer = 2;
-			objects.push_back(spr); // wall클래스 생성
-		}
-		break;
-		case MapObjectType::Pot:
-		{
-			InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
-			spr->SetPosition(pos1.x + tileRoom2->tiles[i].x * tileRoom2->GetTileSize().x, pos1.y + tileRoom2->tiles[i].y * tileRoom2->GetTileSize().y);
-			spr->sortLayer = 0;
-			interaction.push_back({ static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes), spr });
-		}
-		break;
-		case MapObjectType::Book1:
-		{
-			InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
-			spr->SetPosition(pos1.x + tileRoom2->tiles[i].x * tileRoom2->GetTileSize().x, pos1.y + tileRoom2->tiles[i].y * tileRoom2->GetTileSize().y);
-			spr->sortLayer = 0;
-			interaction.push_back({ static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes), spr });
-		}
-		break;
-		}
+		tileRoom1->colliedShape[i].shape.setPosition(tileRoom1->colliedShape[i].shape.getPosition() + pos);
+		colliedShape.push_back(tileRoom1->colliedShape[i]);
 	}
+	tileRoom1->colliedShape;
+	colliedShape;
+
+
+
+
+
+
+	//tileRoom2 = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+	//sf::Vector2f pos1 = { pos.x,pos.y + (tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height)*7.f}; // 랜덤 설정
+	//tileRoom2->SetStartPos(pos1);
+	//tileRoom2->Load("Room/TileMapFile/Room3.csv", false);
+	//for (int i = 0; i < tileRoom2->tiles.size(); ++i)
+	//{
+	//	//	objects
+	//	switch (static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes))
+	//	{
+	//	case MapObjectType::WallDown:
+	//	{
+	//		SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
+	//		spr->sprite.setTextureRect({ 0,250,50,50 });
+	//		spr->SetPosition(pos1.x + tileRoom2->tiles[i].x * tileRoom2->GetTileSize().x, pos1.y + tileRoom2->tiles[i].y * tileRoom2->GetTileSize().y);
+	//		spr->sortLayer = 2;
+	//		objects.push_back(spr); // wall클래스 생성
+	//	}
+	//	break;
+	//	case MapObjectType::Pot:
+	//	{
+	//		InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
+	//		spr->SetPosition(pos1.x + tileRoom2->tiles[i].x * tileRoom2->GetTileSize().x, pos1.y + tileRoom2->tiles[i].y * tileRoom2->GetTileSize().y);
+	//		spr->sortLayer = 0;
+	//		interaction.push_back({ static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes), spr });
+	//	}
+	//	break;
+	//	case MapObjectType::Book1:
+	//	{
+	//		InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
+	//		spr->SetPosition(pos1.x + tileRoom2->tiles[i].x * tileRoom2->GetTileSize().x, pos1.y + tileRoom2->tiles[i].y * tileRoom2->GetTileSize().y);
+	//		spr->sortLayer = 0;
+	//		interaction.push_back({ static_cast<MapObjectType>(tileRoom2->tiles[i].objectTypes), spr });
+	//	}
+	//	break;
+	//	}
+	//}
 	shape.setSize({ 5.f,5.f });
 	shape.setPosition(tileRoom1->vertexArray.getBounds().left + tileRoom1->vertexArray.getBounds().width * 0.5f, tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height * 0.5f);
 
-	// Create a rectangle shape to represent the corridor
-	std::cout << tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height << " " << pos1.y << std::endl;
+	/*std::cout << tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height << " " << pos1.y << std::endl;
 	shape2.setSize({ 400.f,pos1.y - (tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height)  });
 	shape2.setPosition({ tileRoom1->vertexArray.getBounds().left + tileRoom1->vertexArray.getBounds().width*0.5f -shape2.getSize().x*0.5f  ,(tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height)});
-	shape2.setFillColor(sf::Color::Red);
+	shape2.setFillColor(sf::Color::Red);*/
 	
 	for (auto go : gameObjects)
 	{
@@ -175,17 +187,38 @@ void GameMapTestScene::Update(float dt)
 	{
 		std::cout << "???" << std::endl;
 	}
-
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Numpad0))
+	for (auto& arry : colliedShape)
 	{
-
+		if (arry.shape.getGlobalBounds().intersects(shape.getGlobalBounds()))
+		{
+			switch (arry.type)
+			{
+			case WallType::Wall:
+				std::cout << "Wall Collied" << std::endl;
+				break;
+			case WallType::WalloBlocker:
+				std::cout << "Wall WalloBlocker" << std::endl;
+				break;
+			case WallType::FallingZone:
+				std::cout << "Wall FallingZone" << std::endl;
+				break;
+			case WallType::TeleportZone:
+				std::cout << "Wall TeleportZone" << std::endl;
+				break;
+			}
+		}
 	}
+	
 }
 
 void GameMapTestScene::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
 	window.setView(worldView);
-	window.draw(shape2);
+	//window.draw(shape2);
 	window.draw(shape);
+	for (auto& arry : colliedShape)
+	{
+		window.draw(arry.shape);
+	}
 }

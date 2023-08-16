@@ -21,6 +21,8 @@ protected:
 
 	sf::RectangleShape shape;
 	sf::RectangleShape shape2;
+
+	std::vector<WallTypeInfo>colliedShape;
 public:
 	GameMapTestScene();
 	virtual ~GameMapTestScene() override = default;

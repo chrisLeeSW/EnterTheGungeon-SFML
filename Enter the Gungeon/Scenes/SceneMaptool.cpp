@@ -142,6 +142,21 @@ void SceneMaptool::Update(float dt)
 			currentTileSprite->sprite.setTextureRect(tile.spr->sprite.getTextureRect());
 		}
 	}
+	//
+	if (INPUT_MGR.GetKey(sf::Keyboard::Delete))
+	{
+		deleteWall = true;
+	}
+	for (auto it = colliedShape.begin(); it != colliedShape.end();) {
+		if (INPUT_MGR.GetKey(sf::Keyboard::Delete) && it->shape.getGlobalBounds().contains(ScreenToWorldPos(INPUT_MGR.GetMousePos()))) {
+			it = colliedShape.erase(it);
+		}
+		else {
+			++it;
+		}
+	}
+	// 함수만들기
+
 
 	if (INPUT_MGR.GetMouseButton(sf::Mouse::Left))
 	{
@@ -243,6 +258,7 @@ void SceneMaptool::SettingUiSprite()
 
 		std::string path = route + file + csv;
 		SaveRoom(path, route, file + csv);
+		WallResetCollied();
 	};
 	saveUi->sortLayer = 100;
 
@@ -761,24 +777,28 @@ void SceneMaptool::WallMakeCollied()
 	{
 		sf::RectangleShape temp1;
 		temp1.setOutlineThickness(2);
-
+		WallType type = WallType::None;
 		switch (currentCplliedShapeType)
 		{
 		case 0:
 			wallButtonText->text.setFillColor(sf::Color::Red);
 			temp1.setOutlineColor(sf::Color::Red);
+			type = WallType::Wall;
 			break;
 		case 1:
 			wallBlockerButtonText->text.setFillColor(sf::Color::Green);
 			temp1.setOutlineColor(sf::Color::Green);
+			type = WallType::WalloBlocker;
 			break;
 		case 2:
 			fallingZoneButtonText->text.setFillColor(sf::Color::Yellow);
 			temp1.setOutlineColor(sf::Color::Yellow);
+			type = WallType::FallingZone;
 			break;
 		case 3:
 			teleportZoneButtonText->text.setFillColor(sf::Color::Blue);
 			temp1.setOutlineColor(sf::Color::Blue);
+			type = WallType::TeleportZone;
 			break;
 		}
 		sf::Vector2f isNowPos;
@@ -789,14 +809,14 @@ void SceneMaptool::WallMakeCollied()
 		}
 		if (INPUT_MGR.GetMouseButtonUp(sf::Mouse::Middle))
 		{
-			std::cout << "Mouse : " << isPrevPos.x << "  /   " << isPrevPos.y << std::endl;
+			
 			isNowPos = ScreenToWorldPos(INPUT_MGR.GetMousePos());
 			shapeSize = isNowPos - isPrevPos;
 
 			temp1.setSize({ shapeSize.x - 2.f, shapeSize.y - 2.f });
 			temp1.setFillColor(sf::Color::Transparent);
 			temp1.setPosition(isPrevPos);
-			colliedShape.push_back({ WallType::Wall,temp1 });
+			colliedShape.push_back({ type,temp1 });
 			setWall = false;
 			AllWallTyepeTextReset();
 		}
@@ -854,6 +874,27 @@ void SceneMaptool::SaveRoom(std::string& fileName, std::string route, std::strin
 			count++;
 		}
 	}
+	int newHeight = wallHeightCount + 4 + 2;
+	doc.SetCell<std::string>(0, newHeight-1, "ShapeSize");
+	doc.SetCell<int>(1, newHeight-1, colliedShape.size());
+	doc.SetCell<std::string>(0,newHeight, "WallType");
+	doc.SetCell<std::string>(1,newHeight, "WallPosition.x");
+	doc.SetCell<std::string>(2,	newHeight, "WallPosition.y");
+	doc.SetCell<std::string>(3,	newHeight, "WallSize.x");
+	doc.SetCell<std::string>(4,newHeight, "WallSize.y");
+	
+	int indexCount = 0;
+	for (int i = newHeight+1; i < newHeight + colliedShape.size()+1; ++i)
+	{
+		doc.SetCell<int>(0,i, static_cast<int>(colliedShape[indexCount].type));
+		doc.SetCell<float>(1, i, colliedShape[indexCount].shape.getPosition().x  );
+		doc.SetCell<float>(2, i, colliedShape[indexCount].shape.getPosition().y);
+		doc.SetCell<float>(3, i, colliedShape[indexCount].shape.getSize().x);
+		doc.SetCell<float>(4, i, colliedShape[indexCount].shape.getSize().y);
+
+		indexCount++;
+	}
+
 	doc.Save();
 	std::cout << "Save File Complete" << std::endl;
 
@@ -884,7 +925,7 @@ void SceneMaptool::LoadGridAndObjectSpriteFile(std::string& fileName, std::strin
 	rapidcsv::Document doc(fileName, rapidcsv::LabelParams(-1, -1));
 	RestLine();
 	ResetGrid();
-
+	WallResetCollied();
 	wallWidthCount = doc.GetCell<int>(0, 1);
 	wallHeightCount = doc.GetCell<int>(1, 1);
 
@@ -904,6 +945,36 @@ void SceneMaptool::LoadGridAndObjectSpriteFile(std::string& fileName, std::strin
 	}
 	MakeLine();
 	makeGridCheck = true;
+	
+	int newHeight = wallHeightCount + 4 + 2+1;
+	int size = doc.GetCell<int>(1, newHeight-2);
+	for (int i = 0; i < size; ++i)
+	{
+		WallType type = static_cast<WallType>(doc.GetCell<int>(0, newHeight));
+		sf::RectangleShape shape;
+		shape.setPosition({ doc.GetCell<float>(1, newHeight) ,doc.GetCell<float>(2, newHeight) });
+		shape.setSize({ doc.GetCell<float>(3, newHeight) ,doc.GetCell<float>(4, newHeight) });
+		shape.setOutlineThickness(2);
+		switch (static_cast<int>(type))
+		{
+		case 0:
+			shape.setOutlineColor(sf::Color::Red);
+			break;
+		case 1:
+			shape.setOutlineColor(sf::Color::Green);
+			break;
+		case 2:
+			shape.setOutlineColor(sf::Color::Yellow);
+			break;
+		case 3:
+			shape.setOutlineColor(sf::Color::Blue);
+			break;
+		}
+		shape.setFillColor(sf::Color::Transparent);
+		colliedShape.push_back({ type,shape });
+
+		newHeight++;
+	}
 }
 
 

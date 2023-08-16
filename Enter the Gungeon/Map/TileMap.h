@@ -17,6 +17,8 @@ protected:
 	sf::Vector2f startPos;
 	sf::Vector2f texSize = { 50.f,50.f };
 
+
+	
 public:
 	TileMap(const std::string& textureId = "", const std::string& n = "");
 	virtual ~TileMap() override;
@@ -36,7 +38,8 @@ public:
 	{ this->startPos = {x,y}; }
 	sf::Vector2f GetStartPos() { return startPos; }
 	sf::Vector2f GetTileSize() { return texSize; }
-
+	void MakeWall(const std::string& path);
+	std::vector<WallTypeInfo>colliedShape;
 	std::vector<Tile> tiles;
 };
 

@@ -92,5 +92,11 @@ enum class WallType
 	TeleportZone,
 
 };
+struct WallTypeInfo
+{
+	WallType type;
+	sf::RectangleShape  shape;
+};
+
 
 #include "AnimationClip.h"

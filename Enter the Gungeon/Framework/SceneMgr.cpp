@@ -9,6 +9,7 @@
 #include "SceneLobby.h"
 #include "GameMapTestScene.h"
 #include "TestRom.h"
+
 void SceneMgr::Init() 
 {
 	if (!scenes.empty())

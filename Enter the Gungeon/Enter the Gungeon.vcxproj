@@ -153,6 +153,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="PlayerObjects\Item\Active\aBulletTime.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Weapon\Magnum.cpp" />
     <ClCompile Include="PlayerObjects\Item\Active\PilotActive.cpp" />
     <ClCompile Include="PlayerObjects\Item\Passive\PilotPassive.cpp" />
     <ClCompile Include="PlayerObjects\Item\Active\Active.cpp" />
@@ -209,11 +211,14 @@
     <ClCompile Include="Framework\UiButton.cpp" />
     <ClCompile Include="PlayerObjects\Item\Item.cpp" />
     <ClCompile Include="Scenes\TestRom.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Weapon\ShotGun.cpp" />
     <ClCompile Include="UI\TextBox.cpp" />
     <ClCompile Include="Map\TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
+    <ClInclude Include="PlayerObjects\Item\Active\aBulletTime.h" />
+    <ClInclude Include="PlayerObjects\Item\Weapon\Magnum.h" />
     <ClInclude Include="PlayerObjects\Item\Active\PilotActive.h" />
     <ClInclude Include="PlayerObjects\Item\Passive\PilotPassive.h" />
     <ClInclude Include="PlayerObjects\Item\Active\Active.h" />
@@ -262,6 +267,7 @@
     <ClInclude Include="GameObjects\SpriteGo.h" />
     <ClInclude Include="Scenes\SceneTitle.h" />
     <ClInclude Include="PlayerObjects\Item\Item.h" />
+    <ClInclude Include="PlayerObjects\Item\Weapon\ShotGun.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Global\Variables.h" />
     <ClInclude Include="GameObjects\TextGo.h" />

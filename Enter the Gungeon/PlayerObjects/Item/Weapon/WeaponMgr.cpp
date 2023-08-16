@@ -12,11 +12,23 @@
 
 void WeaponMgr::Init()
 {
+
 	if (!weapons.empty())
 	{
 		Release();
 	}
 
+
+	ObjectPool<Bullet>* ptr = &poolBullets;
+	poolBullets.OnCreate = [ptr](Bullet* bullet) {
+		bullet->pool = ptr;
+	};
+	poolBullets.Init();
+
+	withWeapon = true;
+
+	scene = SCENE_MGR.GetGameScene();
+	sceneGame = dynamic_cast<SceneGame*>(scene);
 }
 
 
@@ -26,23 +38,6 @@ void WeaponMgr::Enter(Weapon::Types type)
 	{
 		Release();
 	}
-
-	switch (type)
-	{
-	case Weapon::Types::PilotWeapon :
-		weapons.push_back(new PilotWeapon());
-		currentWeapon = weapons.front();
-		//currentWeapon->Init();
-		std::cout << "웨폰매니저 엔터 : 타입 파일럿 웨폰";
-		break;
-
-	case Weapon::Types::PrisonerWeapon : 
-		weapons.push_back(new PrisonerWeapon());
-		currentWeapon = weapons.front();
-		std::cout << "웨폰매니저 엔터 : 타입 프리즈너 웨폰";
-		break;
-	}
-
 
 
 	ObjectPool<Bullet>* ptr = &poolBullets;
@@ -91,10 +86,6 @@ void WeaponMgr::SwapWeapon(int swap)
 	}
 }
 
-void WeaponMgr::Update(float dt)
-{
-	currentWeapon->Update(dt);
-}
 
 void WeaponMgr::Draw(sf::RenderWindow& window)
 {
@@ -116,12 +107,14 @@ bool WeaponMgr::GetWithWeapon()
 	return withWeapon;
 }
 
-void WeaponMgr::Shoot()
+void WeaponMgr::Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir)
 {
 	bullet = poolBullets.Get();
-	bullet->SetBullet((int)currentWeapon->GetWeaponType(), currentWeapon->GetPosition(), currentWeapon->Look());
+	bullet->SetBullet(type,pos,dir);
 	sceneGame->AddGo(bullet);
 }
+
+
 
 void WeaponMgr::SetWeaPonFlipx(bool flip)
 {
@@ -148,10 +141,4 @@ const void WeaponMgr::GetWeapon(Weapon::Types id)
 			break;
 		}
 	}
-}
-
-void WeaponMgr::TestAddWeapon()
-{
-	weapons.push_back(new PrisonerWeapon());
-	std::cout << "테스트 무기 추가" << std::endl;
 }

@@ -132,3 +132,12 @@
 3,Animations/Equipment.csv
 0,graphics/EquipmentBook.png
 3,Animations/EquipmentClose.csv
+3,weapon/MagnumIdle.csv
+3,weapon/MagnumShoot.csv
+0,graphics/Magnum.png
+0,graphics/PrisonerBottle.png
+3,weapon/PrisonerBottle.csv
+3,weapon/PrisonerBottleBreak.csv
+0,graphics/PrisonerFire.png
+0,graphics/walkEffect.png
+3,playercsv/WalkEffect.csv

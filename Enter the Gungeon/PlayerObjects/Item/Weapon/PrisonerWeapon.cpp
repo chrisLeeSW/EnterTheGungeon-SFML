@@ -56,14 +56,9 @@ void PrisonerWeapon::Update(float dt)
 	sprite.setRotation(Utils::Angle(look));
 	if (flipX) sprite.setRotation(FLIP_ANGLE_X + Utils::Angle(look));
 
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F1))
-	{
-		WEAPON_MGR.TestAddWeapon();
-	}
-
 	if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
 	{
-		WEAPON_MGR.Shoot();
+		//WEAPON_MGR.Shoot();
 	}
 }
 

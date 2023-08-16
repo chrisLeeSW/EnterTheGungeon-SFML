@@ -14,10 +14,7 @@ public:
         None,
         Passive,
         Active,
-        PilotActive,
-        PilotPassvie,
-        PrisonerActive,
-        PrisonerPassive,
+        Weapon,
     };
 
 
@@ -27,6 +24,9 @@ protected:
 
     Player* player;
     Weapon* weapon;
+
+    sf::Vector2f mousePos;
+    sf::Vector2f look;
 
 public:
 

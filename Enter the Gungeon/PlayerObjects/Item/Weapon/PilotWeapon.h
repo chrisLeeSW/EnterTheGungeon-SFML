@@ -11,6 +11,7 @@ protected:
 	Player* player = nullptr;
 
 	Types weaponType;
+	Bullet::Types bulletType;
 	float attackrate;
 	int bulletcount;
 	int bulletmax;
@@ -23,6 +24,8 @@ protected:
 	AnimationController shootEffect;
 
 	float WeaponXpos = 9.f;
+
+	sf::RectangleShape gunend;
 
 public:
 
@@ -38,9 +41,9 @@ public:
 
 	virtual void SetGunFlipx(bool flipX) override;
 
-	virtual void SetPlayer();
 	virtual void SetType(Types t);
 	virtual Types GetWeaponType() override { return weaponType; }
+	virtual Bullet::Types GetBulletType() override { return bulletType; }
 
 };
 

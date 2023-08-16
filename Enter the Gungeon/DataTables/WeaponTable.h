@@ -5,6 +5,7 @@
 struct WeaponInfo
 {
 	Weapon::Types weaponType;
+	Bullet::Types bulletType;
 	float attackrate;
 	int bulletcount;
 	int bulletmax;

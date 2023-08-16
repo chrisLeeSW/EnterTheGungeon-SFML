@@ -21,6 +21,8 @@ public:
 		PilotWeapon,
 		PrisonerWeapon,
 		Ak47,
+		Magnum,
+		ShotGun,
 	};
 
 protected:
@@ -46,6 +48,7 @@ protected:
 	int santan;
 
 	sf::Vector2f handPos;
+	sf::Vector2f gunPoint;
 
 	int weaponIndex = 0;
 
@@ -61,7 +64,7 @@ protected:
 	{sf::Keyboard::Num9, 9},
 	};
 
-
+	bool flipX = false;
 
 
 public:
@@ -82,15 +85,10 @@ public:
 	virtual void SetType(Types t);
 	virtual void SetGunFlipx(bool flip) = 0;
 	virtual Types GetWeaponType() = 0;
-
+	virtual Bullet::Types GetBulletType() = 0;
 	virtual void SwapWeapon();
 
 	virtual sf::Vector2f Look();
-	//sf::Vector2f ScreenToWorldPos(sf::Vector2f screenPos);
-	//sf::Vector2f ScreenToUiPos(sf::Vector2f screenPos);
-	//sf::Vector2f WorldPosToScreen(sf::Vector2f worldPos);
-	//sf::Vector2f UiPosPosToScreen(sf::Vector2f uiPos);
-
 
 	//¾È¾µµí?
 	//template<typename T>

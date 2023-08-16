@@ -1,7 +1,19 @@
 #pragma once
 #include "Item.h"
+
 class Active : public Item
 {
+
+public:
+
+    enum class Types
+    {
+        PilotActive,
+        PrisonerActive,
+        BulletTime,
+    };
+
+
 
 protected:
 
@@ -9,7 +21,8 @@ protected:
 
 public:
 
-    Types type = Types::Active;
+    bool isUsingActiveSkill = false;
+   // Types type = Types::Active;
 
     Active(const std::string& textureId = "", const std::string& n = "");
     virtual ~Active() override { Release(); }

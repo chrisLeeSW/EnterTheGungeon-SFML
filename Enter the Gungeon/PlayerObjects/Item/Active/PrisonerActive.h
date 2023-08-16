@@ -15,6 +15,12 @@ protected:
     sf::Vector2f dir;
     sf::Vector2f pos;
 
+    float tick = 0.3;
+    float speed = 100.f;
+    bool isone = true;
+    float breaktime = 2.0f;
+    int angle45;
+    float charge;
 public:
 
     PrisonerActive(const std::string& textureId = "", const std::string& n = "");
@@ -27,6 +33,6 @@ public:
     virtual void Update(float dt) override;
     virtual void Draw(sf::RenderWindow& window) override;
 
-
+    void SetPlayer(Player* player) { this->player = player; }
 };
 

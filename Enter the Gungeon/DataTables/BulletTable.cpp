@@ -19,15 +19,17 @@ bool BulletTable::Load()
 
 	rapidcsv::Document doc(bulletfile);
 	std::vector<int> ids = doc.GetColumn<int>(0);
-	std::vector<float> bulletSpeed = doc.GetColumn<float>(1);
-	std::vector<float> bulletDamage = doc.GetColumn<float>(2);
-	std::vector<int> bulletrange = doc.GetColumn<int>(3);
-	std::vector<int> bulletkonckback = doc.GetColumn<int>(4);
+	std::vector<std::string> bulletids = doc.GetColumn<std::string>(1);
+	std::vector<float> bulletSpeed = doc.GetColumn<float>(2);
+	std::vector<float> bulletDamage = doc.GetColumn<float>(3);
+	std::vector<int> bulletrange = doc.GetColumn<int>(4);
+	std::vector<int> bulletkonckback = doc.GetColumn<int>(5);
 
 	for (int i = 0; i < ids.size(); ++i)
 	{
 		BulletInfo bulletinfo;
 		bulletinfo.bulletType = (Bullet::Types)ids[i];
+		bulletinfo.bulletid = bulletids[i];
 		bulletinfo.speed = bulletSpeed[i];
 		bulletinfo.damage = bulletDamage[i];
 		bulletinfo.range = bulletrange[i];

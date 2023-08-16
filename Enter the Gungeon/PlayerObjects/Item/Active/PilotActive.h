@@ -13,6 +13,7 @@ protected:
 
 public:
 
+    
     PilotActive(const std::string& textureId = "", const std::string& n = "");
     virtual ~PilotActive() override { Release(); }
 
@@ -22,5 +23,7 @@ public:
 
     virtual void Update(float dt) override;
     virtual void Draw(sf::RenderWindow& window) override;
+
+
 };
 

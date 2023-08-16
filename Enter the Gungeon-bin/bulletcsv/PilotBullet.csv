@@ -1,5 +1,5 @@
 ID,FPS,LOOPTYPE,,
-1,10,1,,
+pilot,10,1,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
 graphics/PilotBullet.png,0,0,7,17

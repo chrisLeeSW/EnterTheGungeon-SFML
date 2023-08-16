@@ -5,7 +5,7 @@ class TileMap;
 class SpriteGo;
 class InteractionObject;
 
-struct RoomObjectsInfo
+struct RoomObjectsInfoTest
 {
 	MapObjectType type;
 	InteractionObject* interactionObj;
@@ -17,7 +17,7 @@ protected:
 	TileMap* tileRoom1;
 	TileMap* tileRoom2;
 	std::vector<SpriteGo*> objects;
-	std::vector<RoomObjectsInfo> interaction;
+	std::vector<RoomObjectsInfoTest> interaction;
 
 	sf::RectangleShape shape;
 	sf::RectangleShape shape2;

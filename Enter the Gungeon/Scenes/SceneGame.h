@@ -7,7 +7,13 @@ class SpriteGo;
 class TileMap;
 class Equipment;
 class Enemy;
+class InteractionObject;
 
+struct RoomObjectsInfo
+{
+	MapObjectType type;
+	InteractionObject* interactionObj;
+};
 class SceneGame : public Scene
 {
 protected:
@@ -18,7 +24,14 @@ protected:
 
 	Enemy* testenm1;
 
-	TileMap* gameDevMap;
+	std::vector<TileMap*> tileRoom;
+	std::vector<SpriteGo*> objects;
+	std::vector<RoomObjectsInfo> interaction;
+
+	sf::RectangleShape shape;
+	sf::RectangleShape shape2;
+
+	std::vector<WallTypeInfo>colliedShape;
 
 	int playertype;
 
@@ -39,5 +52,7 @@ public:
 
 	virtual void SetPlayer(int a);
 
+	void MakeTestRoom(int size);
+	void ColliedTest();
 };
 

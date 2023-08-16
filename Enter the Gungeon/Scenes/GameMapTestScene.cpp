@@ -15,7 +15,7 @@ void GameMapTestScene::Init()
 	tileRoom1 = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
 	sf::Vector2f pos = { -300.f,-300.f }; // ·£´ý ¼³Á¤
 	tileRoom1->SetStartPos(pos);
-	tileRoom1->Load("Room/TileMapFile/direction.csv");
+	tileRoom1->Load("Room/TileMapFile/Room03.csv");
 	for (int i = 0; i < tileRoom1->tiles.size(); ++i)
 	{
 		//	objects
@@ -48,14 +48,12 @@ void GameMapTestScene::Init()
 		break;
 		}
 	}
-	tileRoom1->MakeWall("Room/TileMapFile/direction.csv");
+	tileRoom1->MakeWall("Room/TileMapFile/Room03.csv");
 	for (int i = 0; i < tileRoom1->colliedShape.size(); ++i)
 	{
 		tileRoom1->colliedShape[i].shape.setPosition(tileRoom1->colliedShape[i].shape.getPosition() + pos);
 		colliedShape.push_back(tileRoom1->colliedShape[i]);
 	}
-	tileRoom1->colliedShape;
-	colliedShape;
 
 
 

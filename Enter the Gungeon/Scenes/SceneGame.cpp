@@ -241,7 +241,10 @@ void SceneGame::MakeTestRoom(int size)
 			tileRoom1->colliedShape[i].shape.setPosition(tileRoom1->colliedShape[i].shape.getPosition() + pos);
 			colliedShape.push_back(tileRoom1->colliedShape[i]);
 		}
+		/*tileRoom1->Init();
+		tileRoom1->Reset();*/
 		tileRoom.push_back(tileRoom1);
+		
 	}
 }
 

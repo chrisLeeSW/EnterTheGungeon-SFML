@@ -8,6 +8,8 @@
 #include "TileMap.h"
 #include "WeaponMgr.h"
 #include "Equipment.h"
+#include "Enemy.h"
+
 
 SceneGame::SceneGame() : Scene(SceneId::Game)
 {
@@ -33,10 +35,17 @@ void SceneGame::Init()
 	//weapon = (Weapon*)AddGo(new Weapon());
 
 	gameDevMap = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-	gameDevMap->Load("MapFile/map1.csv");
+	gameDevMap->Load("MapFile/map1.csv"); 
 	gameDevMap->sortLayer = -1;
 
 	equipment = (Equipment*)AddGo(new Equipment());
+
+	testenm1 = (Enemy*)AddGo(new Enemy(EnemyTypes::ShotgunKinRed)); //test
+	testenm1->SetOrigin(Origins::BC); //test
+	testenm1->SetEnemy(100.f, 5.f, 50.f, 1.f); //test
+	testenm1->SetPosition(200, 200); //test
+
+
 
 	for (auto go : gameObjects)
 	{
@@ -65,10 +74,14 @@ void SceneGame::Enter()
 
 	player = (Player*)AddGo(new Player((Player::Types)playertype));
 	player->Init();
-	//WEAPON_MGR.SetPlayer(player);
-	Scene::Enter();
+	testenm1->SetPlayer(player); //test
+	WEAPON_MGR.SetPlayer(player);
 
 	player->SetPosition((gameDevMap->vertexArray.getBounds().left + gameDevMap->vertexArray.getBounds().width)/2, (gameDevMap->vertexArray.getBounds().top + gameDevMap->vertexArray.getBounds().height) / 2);
+
+
+
+	Scene::Enter();
 }
 
 void SceneGame::Exit()
@@ -125,6 +138,11 @@ void SceneGame::Update(float dt)
 	if (INPUT_MGR.GetKey(sf::Keyboard::Numpad5))
 	{
 		worldView.move(0.0f, -0.5f);
+	}
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Escape))
+	{
+		SCENE_MGR.ChangeScene(SceneId::Title);
 	}
 
 	worldView.setCenter(player->GetPosition());

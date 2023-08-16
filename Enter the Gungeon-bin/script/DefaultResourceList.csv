@@ -166,3 +166,14 @@
 0,graphics/PrisonerFire.png
 0,graphics/walkEffect.png
 3,playercsv/WalkEffect.csv
+3,weapon/ShotGunShoot.csv
+3,weapon/ShotGunIdle.csv
+0,graphics/ShotGun.png
+3,playercsv/PrisonerWeaponIdleUp.csv
+3,playercsv/PrisonerWeaponIdleDown.csv
+3,playercsv/PrisonerWeaponIdleRight.csv
+3,playercsv/PrisonerWeaponIdleUpRight.csv
+3,playercsv/PrisonerWeaponWalkUp.csv
+3,playercsv/PrisonerWeaponWalkUpRight.csv
+3,playercsv/PrisonerWeaponWalkRight.csv
+3,playercsv/PrisonerWeaponWalkDown.csv

@@ -34,6 +34,7 @@ void Weapon::Update(float dt)
 
 	look = Utils::Normalize(mousePos - playerScreenPos);
 
+	//monsterlook = Utils::Normalize(playerScreenPos)
 }
 
 void Weapon::Draw(sf::RenderWindow& window)
@@ -83,3 +84,8 @@ sf::Vector2f Weapon::Look()
 {
 	return look;
 }
+
+void Weapon::SetEnemy(Enemy* enemy)
+{
+}
+

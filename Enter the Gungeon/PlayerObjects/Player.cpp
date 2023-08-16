@@ -83,7 +83,21 @@ void Player::Init()
 	}
 	case Types::WeaponPrisoner:
 	{
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerWeaponIdleUp.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerWeaponIdleDown.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerWeaponIdleRight.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerWeaponIdleUpRight.csv"));
 
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerWeaponWalkUp.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerWeaponWalkUpRight.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerWeaponWalkRight.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerWeaponWalkDown.csv"));
+
+
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerRollUp.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerRollDown.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerRollRight.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/PrisonerRollUpRight.csv"));
 		break;
 	}
 
@@ -113,14 +127,14 @@ void Player::Init()
 	clipInfos.push_back({ "IdleDown", "WalkDown","RollDown",true,{0.f, 1.f} });
 	clipInfos.push_back({ "IdleRight", "WalkRight","RollRight",false, Utils::Normalize({1.f, 1.f}) });
 
-		if (type == Types::WeaponPilot || type == Types::WeaponPrisoner)
-		{
-			playerchoise = true;
-			SetSceneGame();
-			GetItem(Passive::Types::PilotPassive);
-			GetItem(Active::Types::BulletTime);
-			GetItem(Weapon::Types::Magnum);
-		}
+	if (type == Types::WeaponPilot || type == Types::WeaponPrisoner)
+	{
+		playerchoise = true;
+		SetSceneGame();
+		GetItem(Passive::Types::PilotPassive);
+		GetItem(Active::Types::BulletTime);
+		GetItem(Weapon::Types::PilotWeapon);
+	}
 }
 
 void Player::Release()
@@ -141,7 +155,7 @@ void Player::Reset()
 	}
 
 	speed = 150.f;
-	rollspeed = 250.f;
+	rollspeed = 180.f;
 	currentClipInfo = clipInfos[6];
 
 }
@@ -169,8 +183,9 @@ void Player::Update(float dt)
 		walk.setScale(0, 0);
 	}
 
-	if(!weaponList.empty())
-	weaponList[currentIndex]->Update(dt);
+
+
+	
 
 	if (playerchoise)
 	{
@@ -188,6 +203,9 @@ void Player::Update(float dt)
 			animation.Play("IdleRight");
 		}
 	}
+
+	if (!weaponList.empty())
+	weaponList[currentIndex]->Update(dt);
 
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Space))
 	{
@@ -349,7 +367,7 @@ void Player::PlayerAct(float dt)
 	else
 		iswalk = false;
 
-	if (INPUT_MGR.GetKey(sf::Keyboard::Num9))
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num9))
 	{
 		GetItem(Passive::Types::PilotPassive);
 		GetItem(Active::Types::PrisonerActive);

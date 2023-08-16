@@ -2,4 +2,4 @@ ID,FPS,LOOPTYPE,,
 Idle,10,1,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
-graphics/Shotgun.png,203,17,24,5
+graphics/ShotGun.png,203,17,24,5

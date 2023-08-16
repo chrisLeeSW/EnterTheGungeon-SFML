@@ -6,6 +6,7 @@
 #include "WeaponMgr.h"
 #include "Scene.h"
 #include "SceneGame.h"
+#include "Enemy.h"
 
 Magnum::Magnum(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
 {
@@ -27,14 +28,13 @@ Magnum::Magnum(const std::string& textureId, const std::string& n) : Weapon(text
 
 	gunend.setFillColor(sf::Color::Transparent);
 	gunend.setOutlineColor(sf::Color::Red);
-	gunend.setOutlineThickness(2.f);
+	gunend.setOutlineThickness(1.f);
 	gunend.setSize(sf::Vector2f{ 5,5 });
 
 }
 
 void Magnum::Init()
 {
-	player = PLAYER_MGR.GetPlayer();
 	//gun.Play("Idle");
 }
 
@@ -49,12 +49,13 @@ void Magnum::Reset()
 
 void Magnum::Update(float dt)
 {
-	Weapon::Update(dt);
+		//Weapon::Update(dt);
 
-	if(!player->isRolling())//주현씨는 이거 뻄
-	{
+		sf::Vector2f gunOffset1(16, -9);
+		sf::Vector2f gunOffset2(16, 9);
+
 		gun.Update(dt);
-		SetPosition(player->PlayerHandPos());
+		SetPosition(enemy->GetPosition());
 
 		//주현씨는 몬스터 손 이거 근데 포지션 손 포지션을 플레이어 포지션으로하고 오리진으로 하면 
 		//총도 포지션을 손으로 잡고 손 오리진 맞춘 것 처럼 위치를 만들어야 되는데
@@ -63,26 +64,34 @@ void Magnum::Update(float dt)
 
 		SetOrigin(Origins::BL);
 
-		sprite.setRotation(Utils::Angle(look)); //이거 마우스인데 플레이어랑 몬스터 포지션 뺀걸 노멀라이ㅡㅈ해서 넣어야될듯
-		if (flipX) sprite.setRotation(FLIP_ANGLE_X + Utils::Angle(look)); //자살하고싶다
+		float angle = Utils::Angle(look);
+		sf::Vector2f gunOffset = Utils::RotateVector(gunOffset1, angle, { 1, 0 });
 
-		SetGunFlipx(player->GetFilpX());
+		 //이거 마우스인데 플레이어랑 몬스터 포지션 뺀걸 노멀라이즈해서 넣어야될듯
+		if (flipX)
+		{
+			gunOffset = Utils::RotateVector(gunOffset2, angle, { 1, 0 });
+			angle += FLIP_ANGLE_X;
+		}
+
+		sprite.setRotation(angle);
+
+		//SetGunFlipx(player->GetFilpX());
 
 
 		gunend.setPosition(gunPoint);
-		gunPoint = position + look * sprite.getLocalBounds().width; //총구 포지션을 아직 못잡음
+		gunPoint = enemy->GetPosition();
+		gunPoint += gunOffset;
 
-		if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
-		{
-			gun.Play("Shoot");
-			WEAPON_MGR.Shoot(bulletType, gunPoint, look);
-		}
+		//if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
+		//{
+		//	gun.Play("Shoot");
+		//	WEAPON_MGR.Shoot(bulletType, gunPoint, look);
+		//}
 	}
-}
 
 void Magnum::Draw(sf::RenderWindow& window)
 {
-	if(!player->isRolling()) //주현씨는 이것도 뺌
 	SpriteGo::Draw(window);
 	window.draw(gunend);
 }
@@ -93,7 +102,6 @@ void Magnum::SetGunFlipx(bool flipX)
 	this->flipX = flipX;
 	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
 	sprite.setScale(scale);
-
 }
 
 void Magnum::SetType(Weapon::Types t)

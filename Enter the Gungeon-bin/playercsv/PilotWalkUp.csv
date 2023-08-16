@@ -2,9 +2,9 @@ ID,FPS,LOOPTYPE,,
 WalkUp,10,1,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
-graphics/Pilot.png,22,249,15,21
-graphics/Pilot.png,39,246,16,20
-graphics/Pilot.png,57,247,16,20
-graphics/Pilot.png,75,249,15,21
-graphics/Pilot.png,92,246,16,20
-graphics/Pilot.png,110,247,17,20
+graphics/Pilot.png,22,246,15,24
+graphics/Pilot.png,39,246,16,24
+graphics/Pilot.png,57,246,16,24
+graphics/Pilot.png,75,246,15,24
+graphics/Pilot.png,92,246,16,24
+graphics/Pilot.png,110,246,17,24

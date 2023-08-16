@@ -18,12 +18,6 @@ void SceneTitle::Init()
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
 
-	TextGo* sceneName = (TextGo*)AddGo(new TextGo("", "Scene Name"));
-	sceneName->sortLayer = 100;
-	sceneName->text.setCharacterSize(25);
-	sceneName->text.setFillColor(sf::Color::White);
-	sceneName->text.setString(L"¾À Å¸ÀÌÆ²");
-
 	SpriteGo* bg = (SpriteGo*)AddGo(new SpriteGo("graphics/background.png"));
 	bg->SetOrigin(Origins::MC);
 	bg->sortLayer = -1;

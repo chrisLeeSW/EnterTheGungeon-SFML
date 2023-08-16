@@ -1,13 +1,13 @@
 ID,FPS,LOOPTYPE,,
-RollUpRight,10,1,,
+RollUpRight,15,1,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
-graphics/Pilot.png,22,403,16,18
-graphics/Pilot.png,40,403,16,14
-graphics/Pilot.png,58,403,17,13
-graphics/Pilot.png,78,407,15,13
-graphics/Pilot.png,95,416,14,9
-graphics/Pilot.png,111,411,14,14
-graphics/Pilot.png,127,413,13,12
-graphics/Pilot.png,142,412,14,12
-graphics/Pilot.png,158,409,12,14
+graphics/Pilot.png,22,403,16,22
+graphics/Pilot.png,40,403,16,22
+graphics/Pilot.png,58,403,17,22
+graphics/Pilot.png,78,403,15,22
+graphics/Pilot.png,95,403,14,22
+graphics/Pilot.png,111,403,14,22
+graphics/Pilot.png,127,403,13,22
+graphics/Pilot.png,142,403,14,22
+graphics/Pilot.png,158,403,12,22

@@ -105,14 +105,11 @@ void Equipment::Insert()
 	but1->OnEnter = [this, textbut]() {
 
 		textbut->SetActive(true);
-		std::cout << "장비인써트!";
 	};
 
 	but1->OnExit = [this, textbut]() {
 		textbut->SetActive(false);
-		std::cout << "장비인써트!";
 	};
 	
-	std::cout << "흑흑 제발 나와라 : " << it->second << std::endl;
 
 }

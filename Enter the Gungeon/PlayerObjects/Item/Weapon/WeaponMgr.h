@@ -58,9 +58,6 @@ public:
 	void Enter(Weapon::Types type);
 	void Release();
 
-
-    void SwapWeapon(int swap);
-	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 	void SetWeaPonFlipx(bool flip);
 	bool GetWithWeapon();

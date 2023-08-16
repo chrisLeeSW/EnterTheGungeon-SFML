@@ -6,33 +6,36 @@
 #include "WeaponMgr.h"
 #include "Scene.h"
 #include "SceneGame.h"
+#include "Enemy.h"
 
 ShotGun::ShotGun(const std::string& textureId, const std::string& n) : Weapon(textureId,n)
 {
 	//SetType(Types::ShotGun);
 
 
-	//gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/ShotGunIdle.csv"));
-	//gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/ShotGunShoot.csv"));
+	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/ShotGunIdle.csv"));
+	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/ShotGunShoot.csv"));
 
-	//gun.SetTarget(&sprite);
+	gun.SetTarget(&sprite);
 
-	//SpriteGo::Reset();
+	SpriteGo::Reset();
 
-	//gun.Play("Idle");
+	gun.Play("Idle");
 
-	//SetOrigin(sprite.getLocalBounds().left, sprite.getLocalBounds().height);
+	SetOrigin(sprite.getLocalBounds().left, sprite.getLocalBounds().height);
 
 
-	//gunend.setFillColor(sf::Color::Transparent);
-	//gunend.setOutlineColor(sf::Color::Red);
-	//gunend.setOutlineThickness(2.f);
-	//gunend.setSize(sf::Vector2f{ 5,5 });
+	gunend.setFillColor(sf::Color::Transparent);
+	gunend.setOutlineColor(sf::Color::Red);
+	gunend.setOutlineThickness(2.f);
+	gunend.setSize(sf::Vector2f{ 5,5 });
+
+	gunOffset1 = { sprite.getGlobalBounds().width, -sprite.getGlobalBounds().height + 4 };
+	gunOffset2 = { sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - 4 };
 }
 
 void ShotGun::Init()
 {
-	player = PLAYER_MGR.GetPlayer();
 }
 
 void ShotGun::Release()
@@ -41,40 +44,43 @@ void ShotGun::Release()
 
 void ShotGun::Reset()
 {
-	player = PLAYER_MGR.GetPlayer();
 }
 
 void ShotGun::Update(float dt)
 {
-	Weapon::Update(dt);
+	//Weapon::Update(dt);
 
-	if (!player->isRolling())
+	gun.Update(dt);
+	SetPosition(enemy->GetPosition());
+	SetOrigin(Origins::BL);
+
+	float angle = Utils::Angle(look);
+	sf::Vector2f gunOffset = Utils::RotateVector(gunOffset1, angle, { 1, 0 });
+
+	//이거 마우스인데 플레이어랑 몬스터 포지션 뺀걸 노멀라이즈해서 넣어야될듯
+	if (flipX)
 	{
-		gun.Update(dt);
-		SetPosition(player->PlayerHandPos());
-		SetOrigin(Origins::BL);
-
-		sprite.setRotation(Utils::Angle(look));
-		if (flipX) sprite.setRotation(FLIP_ANGLE_X + Utils::Angle(look));
-
-		SetGunFlipx(player->GetFilpX());
-
-
-		gunend.setPosition(gunPoint);
-		gunPoint = position + look * sprite.getLocalBounds().width;
-
-		if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
-		{
-			gun.Play("Shoot");
-			WEAPON_MGR.Shoot(bulletType, gunPoint, look);
-		}
+		gunOffset = Utils::RotateVector(gunOffset2, angle, { 1, 0 });
+		angle += FLIP_ANGLE_X;
 	}
+	sprite.setRotation(angle);
+
+	//SetGunFlipx(player->GetFilpX());
+
+
+	gunend.setPosition(gunPoint);
+	gunPoint = enemy->GetPosition();
+	gunPoint += gunOffset;
+
+
+
 }
+
 
 void ShotGun::Draw(sf::RenderWindow& window)
 {
-	if (!player->isRolling())
-		SpriteGo::Draw(window);
+
+	SpriteGo::Draw(window);
 	window.draw(gunend);
 }
 

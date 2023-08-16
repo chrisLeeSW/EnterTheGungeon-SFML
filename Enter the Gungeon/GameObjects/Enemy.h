@@ -9,7 +9,7 @@ enum class EnemyTypes
 	None = -1,
 
 	BulletKin,
-	KeyBulletKin, //Escape함수 구현 필요
+	KeyBulletKin,
 	ShotgunKinRed,
 	ShotgunKinBlue,
 
@@ -23,6 +23,7 @@ protected:
 
 	std::vector<sf::Vector2f> way;
 	sf::Vector2f direction;
+	sf::Vector2f prevDir;
 	float speed = 0.f;
 	float maxHp = 0.f;
 	float hp = 0.f;
@@ -30,6 +31,8 @@ protected:
 	bool flipX = false;
 	bool isAlive = true;
 	float attackRange = 0.f;
+	float attackInterval = 0.f;
+	float attackTimer = 0.f;
 	bool superarmor = false;
 
 	Player* player;
@@ -52,15 +55,22 @@ public:
 	sf::Vector2f WhereWay(sf::Vector2f dir);
 
 	void SetPlayer(Player* player);
-	void SetEnemy(float speed = 0.f, float maxHp = 0.f, float attackRange = 0.f, bool superarmor = false);
+	void SetEnemy(float speed = 0.f, float maxHp = 0.f, float attackRange = 0.f, float attackInterval = 0.f, bool superarmor = false);
 
 	std::function<void(float)> IfHit; // Bullet에게 맞았을 때
 	std::function<void()> IfBump; // Player와 몸이 충돌했을 때
-	std::function<void()> IfDie; // 사망 시
+	std::function<void(sf::Vector2f dir)> IfDie; // 사망 시
+	std::function<void(sf::Vector2f dir, float speed)> IfShoot;
 
-	void OnDamage(const float& damage, const sf::Vector2f& dir = {0.f, 0.f}, const float& knockback = 0.f);
+	void OnDamage(const float& damage, sf::Vector2f dir = {0.f, 0.f}, const float& knockback = 0.f);
 	void OnBump();
-	void OnDie(const sf::Vector2f& dir);
+	void OnDie(const sf::Vector2f& look);
 
-	// 사격의 경우 함수포인터를 사용하여 Enemy에 있는 여러 사격 함수들 중 하나를 호출하는 방식으로 진행하면 어떨까?
+	// 단발사격
+	void OneShot(sf::Vector2f dir, float speed, bool isBlink = false);
+	// 전방으로 5개의 총알을 산개하여 발사
+	void FiveWayShot(sf::Vector2f dir, float speed);
+
+	// 6방향으로 총알을 발사하며 사망
+	void SixWayDie(sf::Vector2f dir, float speed, int chance);
 };

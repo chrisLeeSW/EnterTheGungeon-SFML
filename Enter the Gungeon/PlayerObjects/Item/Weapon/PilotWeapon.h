@@ -15,9 +15,14 @@ protected:
 	float attackrate;
 	int bulletcount;
 	int bulletmax;
+	int currentbulletcount;
 	float reload;
 	int santan;
+	float tick;
 
+	float reloadtick;
+
+	bool isreload = false;
 	bool flipX = false;
 
 	AnimationController gun;
@@ -26,6 +31,9 @@ protected:
 	float WeaponXpos = 9.f;
 
 	sf::RectangleShape gunend;
+
+
+	
 
 public:
 

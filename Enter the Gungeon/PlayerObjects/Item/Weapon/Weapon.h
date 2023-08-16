@@ -9,7 +9,7 @@
 class Player;
 class Bullet;
 class GameObject;
-
+class Enemy;
 
 class Weapon : public Item
 {
@@ -33,6 +33,8 @@ protected:
 
 	sf::Vector2f mousePos;
 	sf::Vector2f look;
+	sf::Vector2f monsterlook;
+
 
 	AnimationController animation;
 
@@ -67,6 +69,9 @@ protected:
 	bool flipX = false;
 
 
+	sf::Vector2f gunOffset1;
+	sf::Vector2f gunOffset2;
+
 public:
 
 	Weapon(const std::string& textureId = "", const std::string& n = "");
@@ -89,6 +94,8 @@ public:
 	virtual void SwapWeapon();
 
 	virtual sf::Vector2f Look();
+	virtual void SetEnemy(Enemy* enemy);
+
 
 	//¾È¾µµí?
 	//template<typename T>

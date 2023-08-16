@@ -2,9 +2,9 @@ ID,FPS,LOOPTYPE,,
 WalkUpRight,10,1,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
-graphics/Prisoner.png,22,244,15,19
-graphics/Prisoner.png,39,241,18,19
-graphics/Prisoner.png,59,242,17,20
-graphics/Prisoner.png,78,245,15,19
-graphics/Prisoner.png,95,242,15,19
-graphics/Prisoner.png,112,243,14,18
+graphics/Prisoner.png,22,241,15,23
+graphics/Prisoner.png,39,241,18,23
+graphics/Prisoner.png,59,241,17,23
+graphics/Prisoner.png,78,241,15,23
+graphics/Prisoner.png,95,241,15,23
+graphics/Prisoner.png,112,241,14,23

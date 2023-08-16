@@ -3,6 +3,6 @@ IdleRight,10,1,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
 graphics/Pilot.png,154,95,13,21
-graphics/Pilot.png,169,96,13,20
-graphics/Pilot.png,184,97,13,19
-graphics/Pilot.png,199,96,13,20
+graphics/Pilot.png,169,95,13,21
+graphics/Pilot.png,184,95,13,21
+graphics/Pilot.png,199,95,13,21

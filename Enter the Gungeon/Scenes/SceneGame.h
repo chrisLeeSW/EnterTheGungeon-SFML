@@ -6,6 +6,7 @@ class Weapon;
 class SpriteGo;
 class TileMap;
 class Equipment;
+class Enemy;
 
 class SceneGame : public Scene
 {
@@ -14,6 +15,8 @@ protected:
 	Player* player = nullptr;
 	Weapon* weapon;
 	SpriteGo* shadow;
+
+	Enemy* testenm1;
 
 	TileMap* gameDevMap;
 

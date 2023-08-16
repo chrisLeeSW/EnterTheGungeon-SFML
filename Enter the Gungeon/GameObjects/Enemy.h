@@ -3,6 +3,10 @@
 #include "AnimationController.h"
 
 class Player;
+//±èÇıÁØ Ãß°¡
+class ShotGun;
+class Magnum;
+class SceneGame;
 
 enum class EnemyTypes
 {
@@ -34,6 +38,10 @@ protected:
 	float attackInterval = 0.f;
 	float attackTimer = 0.f;
 	bool superarmor = false;
+
+	//Enemy Weapon - ±èÇıÁØ Ãß°¡
+	ShotGun* shotgun;
+	Magnum* magnum;
 
 	Player* player;
 	sf::Sprite hand;

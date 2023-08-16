@@ -28,6 +28,13 @@ PilotWeapon::PilotWeapon(const std::string& textureId, const std::string& n) : W
 	gunend.setOutlineThickness(2.f);
 	gunend.setSize(sf::Vector2f{ 5,5 });
 
+	tick = attackrate;
+	reloadtick = reload;
+
+	gunOffset1 = { sprite.getGlobalBounds().width, -sprite.getGlobalBounds().height + 4};
+	gunOffset2 = { sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - 4};
+
+	currentbulletcount = bulletcount;
 }
 
 void PilotWeapon::Init()
@@ -48,26 +55,67 @@ void PilotWeapon::Reset()
 
 void PilotWeapon::Update(float dt)
 {
+
 	Weapon::Update(dt);
 	if (!player->isRolling())
 	{
+		SetOrigin(Origins::BL);
 		gun.Update(dt);
 		SetPosition(player->PlayerHandPos());
-		SetOrigin(Origins::BL);
 
-		sprite.setRotation(Utils::Angle(look));
-		if (flipX) sprite.setRotation(FLIP_ANGLE_X + Utils::Angle(look));
+		float angle = Utils::Angle(look);
+		sf::Vector2f gunOffset = Utils::RotateVector(gunOffset1, angle, { 1, 0 });
+
+		//이거 마우스인데 플레이어랑 몬스터 포지션 뺀걸 노멀라이즈해서 넣어야될듯
+		if (flipX)
+		{
+			gunOffset = Utils::RotateVector(gunOffset2, angle, { 1, 0 });
+			angle += FLIP_ANGLE_X;
+		}
+
+		sprite.setRotation(angle);
+
 
 		SetGunFlipx(player->GetFilpX());
 
 
 		gunend.setPosition(gunPoint);
-		gunPoint = position + look * sprite.getLocalBounds().width;
+		gunPoint = player->PlayerHandPos();
+		gunPoint += gunOffset;
 
-		if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
+
+		if (!isreload)
 		{
-			gun.Play("Shoot");
-			WEAPON_MGR.Shoot(bulletType, gunPoint, look);
+			tick -= dt;
+			if (INPUT_MGR.GetMouseButton(sf::Mouse::Left) && tick <= 0.f && currentbulletcount > 0 && bulletmax >= 0)
+			{
+
+				--currentbulletcount;
+				--bulletmax;
+				gun.Play("Shoot");
+				WEAPON_MGR.Shoot(bulletType, gunPoint, look);
+
+				std::cout << "현재 탄창 : " << currentbulletcount << std::endl;
+				std::cout << "총 탄창 : " << bulletmax << std::endl;
+				tick = attackrate;
+			}
+
+			if (INPUT_MGR.GetKeyDown(sf::Keyboard::R) && currentbulletcount != bulletcount && bulletmax >= 0)
+			{
+				reloadtick = reload;
+				isreload = true;
+			}
+		}
+		else if (isreload)
+		{
+			reloadtick -= dt; // 재장전 시간 감소
+			if (reloadtick <= 0.f)
+			{
+				currentbulletcount = bulletcount; // 재장전 완료되면 탄창을 최대치로 채움
+				isreload = false; // 재장전 플래그 해제
+				std::cout << "장전완료" << std::endl;
+
+			}
 		}
 
 	}

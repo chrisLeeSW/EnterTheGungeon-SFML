@@ -17,11 +17,11 @@ void aBulletTime::Init()
 
 	textbut = (TextGo*)sceneGame->AddGo(new TextGo("fonts/AurulentSansMono-Regular.otf", "textbut"));
 	textbut->sortLayer = 103;
-	textbut->text.setCharacterSize(300);
-	textbut->text.setFillColor(sf::Color::Magenta);
+	textbut->text.setCharacterSize(100);
+	textbut->text.setFillColor(sf::Color::White);
 	textbut->SetPosition(FRAMEWORK.GetWindowSize()/2.f);
-	textbut->SetOrigin(Origins::MC);
-	textbut->text.setString("The World");
+	textbut->SetOrigin(Origins::BC);
+	textbut->text.setString("Bullet Time");
 	textbut->SetActive(false);
 }
 
@@ -37,7 +37,7 @@ void aBulletTime::Update(float dt)
 {
 	if (isUsingActiveSkill)
 	{
-		textbut->SetPosition(FRAMEWORK.GetWindowSize() * Utils::RandomValue());
+		textbut->SetPosition(FRAMEWORK.GetWindowSize() * 0.5f);
 
 		textbut->SetActive(true);
 		ITEM_MGR.BulletTimeOn(isbullettime);

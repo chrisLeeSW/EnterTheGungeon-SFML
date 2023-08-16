@@ -6,6 +6,12 @@
 
 #include "SceneLobby.h" //test
 
+//HaeJun
+#include "ShotGun.h"
+#include "ItemMgr.h"
+#include "Weapon.h"
+#include "Magnum.h"
+
 Enemy::Enemy(EnemyTypes type, const std::string& textureId, const std::string& n)
 	:SpriteGo(textureId, n), type(type)
 {
@@ -52,6 +58,8 @@ void Enemy::Init()
 			SixWayDie(dir, speed, 20); // table 사용
 		};
 		maxHp = 30.f; // table 사용
+		shotgun = new ShotGun();
+		shotgun->SetEnemy(this);
 		break;
 	case EnemyTypes::ShotgunKinBlue:
 		name = "ShotgunKinBlue";
@@ -65,11 +73,16 @@ void Enemy::Init()
 			SixWayDie(dir, speed, 33); // table 사용
 		};
 		maxHp = 40.f; // table 사용
+		shotgun = new ShotGun();
+		shotgun->SetEnemy(this);
 		break;
 	default:
 		std::cerr << "ERROR: Not Exist EnemyTypes (Enemy Init())" << std::endl;
 		break;
 	}
+
+
+
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleUp.csv"));
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleLeftUp.csv"));
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleLeft.csv"));
@@ -101,6 +114,7 @@ void Enemy::Init()
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "DieDown.csv"));
 
 	animation.SetTarget(&sprite);
+
 }
 
 void Enemy::Reset()
@@ -113,6 +127,9 @@ void Enemy::Reset()
 		{
 			hand.setTexture(*tex);
 			hand.setTextureRect({ 121, 16, 4, 4 });
+
+
+
 		}
 	}
 
@@ -124,6 +141,24 @@ void Enemy::Reset()
 	hp = maxHp;
 	isAlive = true;
 	attackTimer = attackInterval;
+
+
+	Scene* scene = SCENE_MGR.GetCurrScene();
+	switch (type)
+	{
+	case EnemyTypes::BulletKin:
+		magnum = (Magnum*)scene->AddGo(new Magnum());
+		magnum->SetEnemy(this);
+		break;
+	case EnemyTypes::ShotgunKinRed:
+		break;
+	case EnemyTypes::ShotgunKinBlue:
+		shotgun = (ShotGun*)scene->AddGo(new ShotGun());
+		shotgun->SetEnemy(this);
+		break;
+	default:
+		break;
+	}
 }
 
 void Enemy::Update(float dt)

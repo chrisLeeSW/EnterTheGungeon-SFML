@@ -12,11 +12,6 @@ void SceneTitle::Init()
 {
 	Release();
 
-	TextGo* sceneName = (TextGo*)AddGo(new TextGo("", "Scene Name"));
-	sceneName->sortLayer = 100;
-	sceneName->text.setCharacterSize(25);
-	sceneName->text.setFillColor(sf::Color::White);
-	sceneName->text.setString(L"æ¿ ≈∏¿Ã∆≤");
 
 	for (auto go : gameObjects)	
 	{

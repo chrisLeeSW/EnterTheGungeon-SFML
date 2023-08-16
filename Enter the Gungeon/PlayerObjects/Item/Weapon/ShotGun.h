@@ -3,12 +3,15 @@
 #include "AnimationController.h"
 #include "Bullet.h"
 
+class Enemy;
+
 class ShotGun : public Weapon
 {
 
 protected:
 
 	Player* player = nullptr;
+	Enemy* enemy = nullptr;
 
 	Types weaponType;
 	Bullet::Types bulletType;
@@ -44,7 +47,6 @@ public:
 	virtual Types GetWeaponType() override { return weaponType; }
 	virtual void SetType(Types type) override;
 	virtual Bullet::Types GetBulletType() override { return bulletType; }
+
+	virtual void SetEnemy(Enemy* enemy) override { this->enemy = enemy; }
 };
-
-
-

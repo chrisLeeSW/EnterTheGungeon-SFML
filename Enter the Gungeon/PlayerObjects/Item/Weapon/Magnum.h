@@ -4,6 +4,9 @@
 #include "Bullet.h"
 
 class Player;
+class Enemy;
+
+
 
 class Magnum : public Weapon
 {
@@ -11,6 +14,7 @@ class Magnum : public Weapon
 protected:
 
 	Player* player = nullptr;
+	Enemy* enemy = nullptr;
 
 	Types weaponType;
 	Bullet::Types bulletType;
@@ -19,6 +23,8 @@ protected:
 	int bulletmax;
 	float reload;
 	int santan;
+
+
 
 	bool flipX = false;
 
@@ -46,5 +52,8 @@ public:
 	virtual Types GetWeaponType() override { return weaponType; }
 	virtual void SetType(Types type) override;
 	virtual Bullet::Types GetBulletType() override { return bulletType; }
+
+	virtual void SetEnemy(Enemy* enemy) override { this->enemy = enemy; }
+
 };
 

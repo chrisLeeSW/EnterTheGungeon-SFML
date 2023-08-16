@@ -72,20 +72,6 @@ void WeaponMgr::Release()
 	currentWeaponType = Weapon::Types::None;
 }
 
-void WeaponMgr::SwapWeapon(int swap)
-{
-	if (swap >= 0 && swap <= weapons.size())
-	{
-		swap--;
-		currentWeapon = weapons[swap];
-		std::cout << "int swap ÀÇ °ª : " << swap << std::endl;
-	}
-	else
-	{
-		std::cout << "Invalid weapon index!" << std::endl;
-	}
-}
-
 
 void WeaponMgr::Draw(sf::RenderWindow& window)
 {

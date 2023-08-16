@@ -13,6 +13,8 @@ enum class EnemyTypes
 	ShotgunKinRed,
 	ShotgunKinBlue,
 
+
+
 	Count,
 };
 
@@ -57,9 +59,13 @@ public:
 	void SetPlayer(Player* player);
 	void SetEnemy(float speed = 0.f, float maxHp = 0.f, float attackRange = 0.f, float attackInterval = 0.f, bool superarmor = false);
 
-	std::function<void(float)> IfHit; // Bullet에게 맞았을 때
-	std::function<void()> IfBump; // Player와 몸이 충돌했을 때
-	std::function<void(sf::Vector2f dir)> IfDie; // 사망 시
+	// Bullet에게 맞았을 때
+	std::function<void(float)> IfHit;
+	// Player와 몸이 충돌했을 때
+	std::function<void()> IfBump;
+	// 사망 시
+	std::function<void(sf::Vector2f dir)> IfDie;
+	// 사격 시
 	std::function<void(sf::Vector2f dir, float speed)> IfShoot;
 
 	void OnDamage(const float& damage, sf::Vector2f dir = {0.f, 0.f}, const float& knockback = 0.f);

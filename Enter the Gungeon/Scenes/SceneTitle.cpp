@@ -5,18 +5,33 @@
 
 SceneTitle::SceneTitle() : Scene(SceneId::Title)
 {
-	
+	resourceListPath = "script/SceneTitleResourceList.csv";
 }
 
 void SceneTitle::Init() 
 {
 	Release();
 
+	worldView.setSize(windowSize * 0.7f);
+	worldView.setCenter(0.f, 0.f);
+
+	uiView.setSize(windowSize);
+	uiView.setCenter(windowSize * 0.5f);
+
 	TextGo* sceneName = (TextGo*)AddGo(new TextGo("", "Scene Name"));
 	sceneName->sortLayer = 100;
 	sceneName->text.setCharacterSize(25);
 	sceneName->text.setFillColor(sf::Color::White);
 	sceneName->text.setString(L"¾À Å¸ÀÌÆ²");
+
+	SpriteGo* bg = (SpriteGo*)AddGo(new SpriteGo("graphics/background.png"));
+	bg->SetOrigin(Origins::MC);
+	bg->sortLayer = -1;
+
+	SpriteGo* logo = (SpriteGo*)AddGo(new SpriteGo("graphics/titletext.png"));
+	logo->SetOrigin(Origins::MC);
+	logo->SetPosition(0, -200.f);
+	logo->sortLayer = 0;
 
 	for (auto go : gameObjects)	
 	{

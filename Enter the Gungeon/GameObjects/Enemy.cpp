@@ -18,7 +18,7 @@ Enemy::Enemy(EnemyTypes type, const std::string& textureId, const std::string& n
 
 Enemy::~Enemy()
 {
-
+	Release();
 }
 
 void Enemy::Init()
@@ -29,7 +29,7 @@ void Enemy::Init()
 	case EnemyTypes::BulletKin:
 		name = "BulletKin";
 		isHanded = true;
-		IfShoot = [&](sf::Vector2f dir, float speed)
+		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
 			OneShot(dir, speed);
 		};
@@ -43,11 +43,11 @@ void Enemy::Init()
 	case EnemyTypes::ShotgunKinRed:
 		name = "ShotgunKinRed";
 		isHanded = true;
-		IfShoot = [&](sf::Vector2f dir, float speed)
+		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
 			FiveWayShot(dir, speed);
 		};
-		IfDie = [&](sf::Vector2f dir)
+		IfDie = [this](sf::Vector2f dir)
 		{
 			SixWayDie(dir, speed, 20); // table 사용
 		};
@@ -56,11 +56,11 @@ void Enemy::Init()
 	case EnemyTypes::ShotgunKinBlue:
 		name = "ShotgunKinBlue";
 		isHanded = true;
-		IfShoot = [&](sf::Vector2f dir, float speed)
+		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
 			FiveWayShot(dir, speed);
 		};
-		IfDie = [&](sf::Vector2f dir)
+		IfDie = [this](sf::Vector2f dir)
 		{
 			SixWayDie(dir, speed, 33); // table 사용
 		};

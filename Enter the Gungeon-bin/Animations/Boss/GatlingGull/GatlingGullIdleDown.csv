@@ -1,0 +1,6 @@
+ID,FPS,LOOPTYPE,,
+IdleDown,5,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/GatlingGull.png,27,123,46,68
+graphics/GatlingGull.png,27,222,46,69

@@ -8,12 +8,16 @@ enum class EnemyTypes
 {
 	None = -1,
 
+	// Normal Enemy
 	BulletKin,
 	KeyBulletKin,
 	ShotgunKinRed,
 	ShotgunKinBlue,
 
+	// Unique Enemy
 
+	// Boss
+	GatlingGull,
 
 	Count,
 };

@@ -6,6 +6,7 @@
 #include "TextGo.h"
 #include "SceneGame.h"
 #include "Enemy.h" //test
+#include "Boss.h" //test
 
 SceneLobby::SceneLobby() : Scene(SceneId::Lobby)
 {
@@ -66,6 +67,12 @@ void SceneLobby::Init()
 	test3->SetEnemy(100.f, 5.f, 100.f, 1.f); //test
 	test3->SetPosition(400, -200); //test
 
+	test4 = (Boss*)AddGo(new Boss(EnemyTypes::GatlingGull));
+	test4->SetOrigin(Origins::BC);
+	test4->SetPlayer(currentplayer);
+	test4->SetEnemy(50.f, 5.f, 50.f, 0.2f, true);
+	test4->SetPosition(400, 200);
+
 	for (auto go : gameObjects)
 	{
 		go->Init();
@@ -125,7 +132,7 @@ void SceneLobby::Update(float dt)
 
 	if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left)) //test
 	{
-		test2->OnDamage(10.0f, {0.f, 1.f}, 10.f);
+		test4->OnDamage(100.0f, {1,0}, 10.f);
 	}
 }
 

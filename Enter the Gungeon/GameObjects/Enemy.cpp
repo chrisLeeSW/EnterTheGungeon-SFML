@@ -27,7 +27,7 @@ void Enemy::Init()
 	switch (type)
 	{
 	case EnemyTypes::BulletKin:
-		name = "BulletKin";
+		name = "BulletKin/BulletKin";
 		isHanded = true;
 		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
@@ -36,12 +36,12 @@ void Enemy::Init()
 		maxHp = 15.f; // table 사용
 		break;
 	case EnemyTypes::KeyBulletKin:
-		name = "KeyBulletKin";
+		name = "KeyBulletKin/KeyBulletKin";
 		// Runaway 함수
 		maxHp = 15.f;
 		break;
 	case EnemyTypes::ShotgunKinRed:
-		name = "ShotgunKinRed";
+		name = "ShotgunKinRed/ShotgunKinRed";
 		isHanded = true;
 		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
@@ -54,7 +54,7 @@ void Enemy::Init()
 		maxHp = 30.f; // table 사용
 		break;
 	case EnemyTypes::ShotgunKinBlue:
-		name = "ShotgunKinBlue";
+		name = "ShotgunKinBlue/ShotgunKinBlue";
 		isHanded = true;
 		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
@@ -133,11 +133,11 @@ void Enemy::Update(float dt)
 	if (!isAlive || player == nullptr) return;
 
 	direction = Utils::Normalize(player->GetPosition() - position);
+	SetFlipX(direction.x > 0.f);
 	if (direction != sf::Vector2f{ 0.f, 0.f }) prevDir = direction;
 	float distance = Utils::Distance(player->GetPosition(), position);
 	sf::Vector2f min = WhereWay(direction);
 
-	SetFlipX(direction.x > 0.f);
 	if (attackRange > distance)
 	{
 		direction = { 0.f, 0.f };
@@ -331,6 +331,7 @@ void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockba
 			else
 			{
 				OnDie(dir);
+				return;
 			}
 		}
 	}

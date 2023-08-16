@@ -49,6 +49,8 @@ void SceneGame::Init()
 	std::cout << "ÀÎÆ®¾¾ : " << *c << std::endl;
 	std::cout << "ÀÎÆ®¾¾ : " << *b << std::endl;
 	std::cout << "ÀÎÆ®¾¾ : " << d << std::endl;
+
+
 	for (auto go : gameObjects)
 	{
 		go->Init();

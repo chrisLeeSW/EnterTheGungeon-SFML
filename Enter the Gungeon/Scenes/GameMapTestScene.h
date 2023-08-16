@@ -15,10 +15,14 @@ class GameMapTestScene :public Scene
 {
 protected:
 	TileMap* tileRoom1;
+	TileMap* tileRoom2;
 	std::vector<SpriteGo*> objects;
 	std::vector<RoomObjectsInfo> interaction;
 
 	sf::RectangleShape shape;
+	sf::RectangleShape shape2;
+
+	std::vector<WallTypeInfo>colliedShape;
 public:
 	GameMapTestScene();
 	virtual ~GameMapTestScene() override = default;

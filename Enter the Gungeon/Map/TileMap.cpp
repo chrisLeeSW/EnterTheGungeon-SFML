@@ -183,10 +183,10 @@ void TileMap::LoadObject(const std::string& filePath,bool textureIdIn)
 	}
 }
 
-void TileMap::NoneFileLoad(int xSize, int ySize)
+void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI)
 {
 
-	texture = RESOURCE_MGR.GetTexture(textureId);
+	if(!textureIdI) texture = RESOURCE_MGR.GetTexture(textureId);
 
 
 	size = { xSize, ySize };
@@ -271,7 +271,7 @@ void TileMap::ClearTile()
 void TileMap::ChangeTile(int x, int y, int tileIndex, sf::IntRect IntRect)
 {
 	if (x < 0 || y < 0) return;
-	if (x >= size.x || y >= size.y) return;
+	else if (x >= size.x || y >= size.y) return;
 
 	int texIndex = y * size.x + x;
 	tiles[texIndex].texIndex = tileIndex;
@@ -289,6 +289,40 @@ void TileMap::ChangeTile(int x, int y, int tileIndex, sf::IntRect IntRect)
 	{
 		int vertexIndex = texIndex * 4 + k;
 		vertexArray[vertexIndex].texCoords = texOffsets[k];
+	}
+}
+
+void TileMap::MakeWall(const std::string& path)
+{
+	rapidcsv::Document map(path, rapidcsv::LabelParams(-1, -1));
+	int newHeight = map.GetCell<int>(1, 1) + 4 + 2 + 1;
+	int size = map.GetCell<int>(1, newHeight - 2);
+	for (int i = 0; i < size; ++i)
+	{
+		WallType type = static_cast<WallType>(map.GetCell<int>(0, newHeight));
+		sf::RectangleShape shape;
+		shape.setPosition({ map.GetCell<float>(1, newHeight) ,map.GetCell<float>(2, newHeight) });
+		shape.setSize({ map.GetCell<float>(3, newHeight) ,map.GetCell<float>(4, newHeight) });
+		shape.setOutlineThickness(2);
+		switch (static_cast<int>(type))
+		{
+		case 0:
+			shape.setOutlineColor(sf::Color::Red);
+			break;
+		case 1:
+			shape.setOutlineColor(sf::Color::Green);
+			break;
+		case 2:
+			shape.setOutlineColor(sf::Color::Yellow);
+			break;
+		case 3:
+			shape.setOutlineColor(sf::Color::Blue);
+			break;
+		}
+		shape.setFillColor(sf::Color::Transparent);
+		colliedShape.push_back({ type,shape });
+
+		newHeight++;
 	}
 }
 

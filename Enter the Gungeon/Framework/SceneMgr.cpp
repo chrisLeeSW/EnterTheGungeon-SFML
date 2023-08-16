@@ -8,6 +8,7 @@
 #include "SceneBulletEditor.h"
 #include "SceneLobby.h"
 #include "GameMapTestScene.h"
+#include "TestRom.h"
 void SceneMgr::Init() 
 {
 	if (!scenes.empty())
@@ -20,7 +21,7 @@ void SceneMgr::Init()
 	scenes.push_back(new SceneMaptool());
 	scenes.push_back(new SceneBulletEditor());
 	scenes.push_back(new GameMapTestScene());
-
+	scenes.push_back(new TestRom());
 	for (auto scene : scenes)
 	{
 		scene->Init();

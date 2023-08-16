@@ -59,10 +59,10 @@ void SceneTitle::Update(float dt)
 	{
 		SCENE_MGR.ChangeScene(SceneId::MapTool);
 	}
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num4))
+	/*if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num4))
 	{
 		SCENE_MGR.ChangeScene(SceneId::Game);
-	}
+	}*/
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num5))
 	{
 		SCENE_MGR.ChangeScene(SceneId::GameMapTestScene);

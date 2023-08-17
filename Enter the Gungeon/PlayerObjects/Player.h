@@ -34,6 +34,16 @@ public:
 		WeaponPrisoner,
 	};
 
+	enum class State
+	{
+		Idle,
+		Hit,
+		Roll,
+		Walk,
+		Relode
+	};
+
+
 protected:
 
 	std::string clipId;
@@ -159,8 +169,14 @@ public:
 	bool GetFilpX() { return flipX; }
 	bool isRolling() { return isrolling; }
 	bool IsAlive() { return isAlive; }
+	bool IsHit() { return isHit; }
+
 
 	sf::Vector2f PlayerHandPos() { return hand->GetPosition(); }
 
 	void SetEnemyList(std::list<Enemy*> enemylist);
+
+	//skill
+	Weapon* GetCurrenWeapon() { return weaponList[currentIndex]; }
+	
 };

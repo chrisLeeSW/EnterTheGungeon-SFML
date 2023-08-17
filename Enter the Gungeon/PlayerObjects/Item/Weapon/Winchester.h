@@ -49,4 +49,6 @@ public:
 	virtual Bullet::Types GetBulletType() override { return bulletType; }
 
 	virtual void SetEnemy(Enemy* enemy) override { this->enemy = enemy; }
+
+
 };

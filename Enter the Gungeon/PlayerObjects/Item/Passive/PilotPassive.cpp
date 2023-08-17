@@ -3,10 +3,12 @@
 
 PilotPassive::PilotPassive(const std::string& textureId, const std::string& n) : Passive(textureId, n)
 {
+
 }
 
 void PilotPassive::Init()
 {
+
 }
 
 void PilotPassive::Release()

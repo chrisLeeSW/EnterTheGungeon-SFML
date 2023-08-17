@@ -51,5 +51,7 @@ public:
 
 	virtual Types GetWeaponType() override { return weaponType; }
 	virtual Bullet::Types GetBulletType() override { return bulletType; }
+
+	virtual void RequestReload() override { currentbulletcount = bulletcount; }
 };
 

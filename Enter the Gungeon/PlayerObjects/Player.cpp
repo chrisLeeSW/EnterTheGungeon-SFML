@@ -91,7 +91,7 @@ void Player::Init()
 	{
 		playerchoise = true;
 		SetSceneGame();
-		GetItem(Passive::Types::PilotPassive);
+		GetItem(Passive::Types::PrisonerPassive);
 		GetItem(Active::Types::BulletTime);
 		GetItem(Weapon::Types::PilotWeapon);
 	}

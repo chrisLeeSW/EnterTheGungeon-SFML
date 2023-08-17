@@ -50,7 +50,9 @@ protected:
 	sf::Vector2f gunPoint;
 
 	bool flipX = false;
-
+	
+	float currentbulletcount;
+	float bulletcount;
 
 	sf::Vector2f gunOffset1;
 	sf::Vector2f gunOffset2;
@@ -94,6 +96,7 @@ public:
 	virtual void SetGunFlipx(bool flip) = 0;
 	virtual Types GetWeaponType() = 0;
 	virtual Bullet::Types GetBulletType() = 0;
+	virtual void RequestReload() { currentbulletcount = bulletcount; };
 	virtual void SwapWeapon();
 
 	virtual sf::Vector2f Look();

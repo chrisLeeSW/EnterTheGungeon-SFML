@@ -183,3 +183,5 @@
 0,graphics/Winchester.png
 3,weapon/WinchesterShoot.csv
 3,weapon/WinchesterIdle.csv
+3,weapon/PrisonerPassive.csv
+0,graphics/PrisonerPassive.png

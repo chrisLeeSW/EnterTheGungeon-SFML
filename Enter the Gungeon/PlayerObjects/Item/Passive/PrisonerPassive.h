@@ -1,12 +1,19 @@
 #pragma once
 #include "Passive.h"
+#include "AnimationController.h"
 
+class Player;
 
 class PrisonerPassive : public Passive
 {
 
 protected:
+    AnimationController animation;
 
+    Player* player = nullptr;
+
+    bool isPassiveOn = false;
+    bool onePlay = true;
 
 
 public:

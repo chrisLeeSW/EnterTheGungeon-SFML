@@ -6,8 +6,6 @@
 #include "DataTableMgr.h"
 #include "SceneGame.h"
 
-#include "SceneLobby.h" //test
-
 //HaeJun
 #include "ShotGun.h"
 #include "ItemMgr.h"
@@ -341,6 +339,8 @@ void Enemy::SetEnemy()
 
 void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockback)
 {
+	if (!isAlive) return;
+
 	if (!superarmor) SetPosition(position + dir * knockback);
 	dir = WhereWay(dir);
 	SetFlipX(dir.x > 0.f);
@@ -362,8 +362,12 @@ void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockba
 			else
 			{
 				OnDie(dir);
-				return;
 			}
+
+			isAlive = false;
+			isHanded = false;
+			hand.setTextureRect({ 0, 0, 0, 0 });
+			return;
 		}
 	}
 
@@ -419,21 +423,30 @@ void Enemy::OnDie(const sf::Vector2f& look)
 	{
 		animation.Play("DieDown");
 	}
-
-	isAlive = false;
-	isHanded = false;
-	hand.setTextureRect({ 0, 0, 0, 0 });
 }
 
 void Enemy::OneShot(sf::Vector2f dir, float speed, bool isBlink) // pool반환 필요
 {
-	//SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
-	SceneLobby* scene = (SceneLobby*)SCENE_MGR.GetCurrScene();
+	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
 	EnemyBullet* bullet = new EnemyBullet();
-	//bullet->Shoot(Utils::Normalize(player->GetPosition() - position), speed);
 	bullet->Shoot(dir, speed);
 	bullet->SetPosition(position);
 	bullet->SetBullet(isBlink);
+	bullet->SetPlayer(player);
+	bullet->Init();
+	bullet->Reset();
+	scene->AddGo(bullet);
+
+}
+
+void Enemy::AngleShot(sf::Vector2f dir, float speed, float angle)
+{
+	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+	EnemyBullet* bullet = new EnemyBullet();
+	dir = Utils::RotateVector(dir, angle);
+	bullet->Shoot(dir, speed);
+	bullet->SetPosition(position);
+	bullet->SetPlayer(player);
 	bullet->Init();
 	bullet->Reset();
 	scene->AddGo(bullet);
@@ -461,10 +474,6 @@ void Enemy::SixWayDie(sf::Vector2f dir, float speed, int chance)
 	{
 		OneShot(Utils::DirectionFromAngle(60.f + 60.f * i), speed, true);
 	}
-
-	isAlive = false;
-	isHanded = false;
-	hand.setTextureRect({ 0, 0, 0, 0 });
 
 	SetActive(false);
 }

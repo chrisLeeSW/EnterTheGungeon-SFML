@@ -35,12 +35,25 @@ void EnemyBullet::Update(float dt)
 
 	range -= speed * dt;
 	SetPosition(position + direction * speed * dt);
-	
+
 	if (range <= 0.f)
 	{
 		Scene* scene = SCENE_MGR.GetCurrScene();
 		scene->RemoveGo(this);
 	}
+
+	if (player == nullptr) return;
+	if (sprite.getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
+	{
+		// Player에게 피해를 주는 함수
+		Scene* scene = SCENE_MGR.GetCurrScene();
+		scene->RemoveGo(this);
+	}
+}
+
+void EnemyBullet::SetPlayer(Player* player)
+{
+	this->player = player;
 }
 
 void EnemyBullet::SetBullet(bool isBlink)

@@ -86,6 +86,8 @@ public:
 
 	// 단발사격
 	void OneShot(sf::Vector2f dir, float speed, bool isBlink = false);
+	// 각도를 조절한 단발사격
+	void AngleShot(sf::Vector2f dir, float speed, float angle = 0.f);
 	// 전방으로 5개의 총알을 산개하여 발사
 	void FiveWayShot(sf::Vector2f dir, float speed);
 

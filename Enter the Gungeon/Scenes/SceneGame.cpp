@@ -96,31 +96,6 @@ void SceneGame::Update(float dt)
 	//WEAPON_MGR.Update(dt);
 	shadow->SetPosition(player->GetPosition());
 
-	//sf::Vector2i playerTile = (sf::Vector2i)(player->GetPosition()/ 50.f);
-	//for (int i = 0;i < gameDevMap->tiles.size();++i)
-	//{
-	//	if (gameDevMap->tiles[i].x == playerTile.x && gameDevMap->tiles[i].y == playerTile.y)
-	//	{
-	//		if (gameDevMap->tiles[i].texIndex == static_cast<int>(MapObjectType::WallTop))
-	//		{
-	//			player->SetPosition(player->GetPosition().x, 50.f);
-	//		}
-	//		if (gameDevMap->tiles[i].texIndex == static_cast<int>(MapObjectType::WallRight))
-	//		{
-	//			player->SetPosition(50.f,player->GetPosition().y);
-	//		}
-	//		if (gameDevMap->tiles[i].texIndex == static_cast<int>(MapObjectType::WallLeft))
-	//		{
-	//			player->SetPosition((gameDevMap->vertexArray.getBounds().left + gameDevMap->vertexArray.getBounds().width)-50.f,player->GetPosition().y);
-	//		}
-	//		if (gameDevMap->tiles[i].texIndex == static_cast<int>(MapObjectType::WallDown))
-	//		{
-	//			//player->SetPosition(player->GetPosition().x, (gameDevMap->vertexArray.getBounds().top + gameDevMap->vertexArray.getBounds().height)-50.f);
-	//		}
-	//	}
-	//}
-
-
 	// 대각선 충돌이 문제가 있음 테스트 코드로 사용
 	
 	if (INPUT_MGR.GetKey(sf::Keyboard::Numpad6))

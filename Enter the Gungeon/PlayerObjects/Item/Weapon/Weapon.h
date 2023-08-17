@@ -3,6 +3,7 @@
 #include "ObjectPool.h"
 #include "Bullet.h"
 #include "AnimationController.h"
+#include "SceneGame.h"
 
 #define FLIP_ANGLE_X 180
 
@@ -54,7 +55,6 @@ protected:
 	sf::Vector2f gunOffset1;
 	sf::Vector2f gunOffset2;
 
-	Scene* scene;
 	SceneGame* sceneGame;
 
 	//Enemy Á¤º¸

@@ -2,8 +2,6 @@
 #include "Weapon.h"
 #include "Player.h"
 #include "WeaponMgr.h"
-#include "SceneGame.h"
-#include "Scene.h"
 #include "DataTableMgr.h"
 #include "WeaponTable.h"
 #include "GameObject.h"
@@ -16,7 +14,7 @@ Weapon::Weapon(const std::string& textureId, const std::string& n) : Item(textur
 
 void Weapon::Init()
 {
-	scene = SCENE_MGR.GetGameScene();
+	Scene* scene = SCENE_MGR.GetGameScene();
 	sceneGame = dynamic_cast<SceneGame*>(scene);
 
 	ObjectPool<Bullet>* ptr = &poolBullets;

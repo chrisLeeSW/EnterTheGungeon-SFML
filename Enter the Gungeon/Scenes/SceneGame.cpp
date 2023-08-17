@@ -177,7 +177,7 @@ void SceneGame::MakeTestRoom(int size)
 		{
 			pos = sf::Vector2f{ -300.f,-300.f };
 			tileRoom1->SetStartPos(pos);
-			tileRoom1->Load("Room/TileMapFile/Room01.csv");
+			tileRoom1->Load("Room/TileMapFile/direction1.csv");
 		}
 		else if (i == 1)
 		{

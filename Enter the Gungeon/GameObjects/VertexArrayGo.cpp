@@ -44,6 +44,7 @@ void VertexArrayGo::SetOrigin(Origins origin)
 	{
 		vertexArray[i].position += diff;
 	}
+
 }
 
 void VertexArrayGo::SetOrigin(float x, float y)

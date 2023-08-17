@@ -1,18 +1,41 @@
 #pragma once
-#include "GameObject.h"
-class Room :public GameObject
+
+const int min_width = 150; // 최소 너비
+const int min_height = 100; // 최소 높이
+class Room 
 {
+protected:
+    struct Rect {
+        float x, y, width, height;
+    };
 
-public :
+    struct Passage {
+        sf::Vector2f from, to;
+    };
 
-	Room( const std::string& n = "");
-	virtual ~Room() override;
+    struct Divider {
+        sf::Vector2f start, end;
+    };
 
-	virtual void Init() override;
-	virtual void Release() override;
-	virtual void Reset() override;
-	virtual void Update(float dt) override;
-	virtual void Draw(sf::RenderWindow& window) override;
+    std::vector<Rect> rooms;
+    std::vector<Passage> passages;
+    std::vector<Divider> dividers;
 
+    bool drawTest;
+    std::vector<sf::RectangleShape> tiles;
+    
+public:
+    Room();
+    void Divide(Rect rect, int depth);
+    sf::Vector2f Center(const Rect& room) {return { room.x + room.width / 2, room.y + room.height / 2 };}
+    sf::Vector2f oneFourth(const Rect& room) { return { room.x + room.width*0.25f, room.y + room.height *0.25f }; }
+    void ConnectRooms(const Rect& r1, const Rect& r2);
+    void Draw(sf::RenderWindow& window);
+    void PrintSize();
+
+    std::vector<Rect>& GetRoom() { return rooms; }
+    Rect& GetRoomIndex(int value) { return rooms[value]; }
+    int LineSize() { return dividers.size(); }
+    int length = 0;
 };
 

@@ -15,7 +15,7 @@ protected:
 
 	sf::Vector2i size;
 	sf::Vector2f startPos;
-	sf::Vector2f texSize = { 50.f,50.f };
+	sf::Vector2f tileSize = { 25.f,25.f };
 
 
 	
@@ -37,9 +37,11 @@ public:
 	void SetStartPos(float x, float y) 
 	{ this->startPos = {x,y}; }
 	sf::Vector2f GetStartPos() { return startPos; }
-	sf::Vector2f GetTileSize() { return texSize; }
+	sf::Vector2f GetTileSize() { return tileSize; }
 	void MakeWall(const std::string& path);
 	std::vector<WallTypeInfo>colliedShape;
 	std::vector<Tile> tiles;
+	
+	sf::Vector2f TileMapSize(const std::string& path);
 };
 

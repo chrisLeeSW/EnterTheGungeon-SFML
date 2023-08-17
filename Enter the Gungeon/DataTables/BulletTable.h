@@ -6,10 +6,10 @@ struct BulletInfo
 {
 	Bullet::Types bulletType;
 	std::string bulletid;
-	int speed;
+	float speed;
 	float damage;
-	int range;
-	int knockback;
+	float range;
+	float knockback;
 };
 
 class BulletTable : public DataTable

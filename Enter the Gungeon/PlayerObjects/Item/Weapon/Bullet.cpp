@@ -3,6 +3,7 @@
 #include "BulletTable.h"
 #include "DataTableMgr.h"
 #include "SpriteGo.h"
+#include "Enemy.h"
 
 Bullet::Bullet(const std::string& textureId, const std::string& n) : SpriteGo(textureId, n)
 {
@@ -12,6 +13,7 @@ void Bullet::Init()
 {
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("bulletcsv/PilotBullet.csv"));
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("bulletcsv/BasicBullet.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("bulletcsv/PrisonerBullet.csv"));
 
 	animation.SetTarget(&sprite);
 	sortLayer = -1;
@@ -36,6 +38,37 @@ void Bullet::Update(float dt)
 	SetPosition(position);
 
 	animation.Play(bulletid);
+
+	if (INPUT_MGR.GetKey(sf::Keyboard::Num6))
+	{
+		direction.x *= 1.01f;
+	}
+	if (INPUT_MGR.GetKey(sf::Keyboard::Num7))
+	{
+		direction.y *= 1.01f;
+	}
+
+	HitEnemy();
+}
+
+
+
+void Bullet::HitEnemy()
+{
+	if (!enemylist.empty())
+	{
+		for (Enemy* enemy : enemylist)
+		{
+			if (sprite.getGlobalBounds().intersects(enemy->sprite.getGlobalBounds()))
+			{
+				std::cout << "맞음";
+				enemy->OnDamage(damage, direction, knockback);
+				SCENE_MGR.GetCurrScene()->RemoveGo(this);
+				pool->Return(this);
+				break;
+			}
+		}
+	}
 }
 
 void Bullet::Draw(sf::RenderWindow& window)
@@ -55,9 +88,16 @@ void Bullet::SetBullet(Types types, sf::Vector2f pos, sf::Vector2f dir)
 	knockback = info->knockback;
 
 	position = pos;
-	sprite.setRotation(90 + Utils::Angle(dir));
-	SetPosition(position);
-	direction = dir;
+	sprite.setRotation(DEGREES_90 + Utils::Angle(dir));
+
+	float spreadAngle = Utils::RandomRange(-5.f, 5.f);
+
+	// 원래 방향 벡터에 집탄 영향을 적용하여 새로운 방향 계산
+	sf::Vector2f spreadDir = Utils::RotateVector(dir, spreadAngle);
+
+
+	// 정규화된 방향 벡터를 사용하여 일정한 속도로 이동하도록 설정
+	direction = Utils::Normalize(spreadDir);
 
 }
 

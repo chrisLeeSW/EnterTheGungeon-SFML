@@ -9,6 +9,8 @@
 
 class Item;
 class Scene;
+class Bullet;
+
 
 class Player : public SpriteGo
 {
@@ -58,20 +60,43 @@ protected:
 	std::vector<Weapon*> weaponList;
 	Active* active = nullptr;
 
+
+	//플레이어 테이블 만들어서 아래에 셋해주기
 	//플레이어 움직임
 	sf::Vector2f velocity;
 	sf::Vector2f direction;
+
+
+	//플레이어 셋팅
 	float speed;
 	float rollspeed;
-	bool isflip = false;
 	bool flipX = false;
-	bool isrolling = false;
+
 	float angle;
 	float magnitude;
 	float effect = 0.f;
-	bool iswalk = false;
-	sf::Vector2f look;
 
+	int maxHp = 6;
+	float hitDelay = 1.0f;
+	float currenthitDelay = 0.f;
+
+	//플레이어 상태
+	int hp = 6;
+	sf::Color originalColor;
+	bool isAlive = true;
+	bool iswalk = false;
+	bool isrolling = false;
+	bool isHit = false;
+	bool isSceneGame = false;
+
+	//UI
+	SpriteGo* ouch;
+	sf::Color ouchoriginalColor;
+
+	//Enemy
+	std::list<Enemy*> enemylist;
+
+	sf::Vector2f look;
 	Types type;
 
 	bool playerchoise = false;
@@ -91,7 +116,6 @@ protected:
 
 	int currentIndex = 0;
 
-
 	sf::Vector2f handPos{ 7.f,-6.f };
 
 public:
@@ -106,6 +130,10 @@ public:
 
 	virtual void SetPosition(const sf::Vector2f& p) override;
 	virtual void SetPosition(float x, float y) override;
+
+	void OnPlayerHit();
+
+	void OnDeathPlayer();
 
 	virtual void Init() override;
 	virtual void Release() override;
@@ -130,7 +158,9 @@ public:
 
 	bool GetFilpX() { return flipX; }
 	bool isRolling() { return isrolling; }
-
+	bool IsAlive() { return isAlive; }
 
 	sf::Vector2f PlayerHandPos() { return hand->GetPosition(); }
+
+	void SetEnemyList(std::list<Enemy*> enemylist);
 };

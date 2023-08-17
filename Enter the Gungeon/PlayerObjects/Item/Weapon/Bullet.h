@@ -3,10 +3,12 @@
 #include "ObjectPool.h"
 #include "Weapon.h"
 #include "AnimationController.h"
+#include "Enemy.h"
+
+class Enemy;
 
 class Bullet : public SpriteGo
 {
-
 
 public:
 
@@ -28,20 +30,31 @@ protected:
 	sf::Vector2f direction;
 	sf::Vector2f position;
 
+
+	//BulletInfo
 	Types bulletType;
 	std::string bulletid;
 	float speed;
 	float damage;
-	int range;
-	int knockback;
+	float range;
+	float knockback;
+
+	float santan1 = 1.3;
+
+	float santan2 = 0.7f;
 
 	std::string anistring;
 
 	SpriteGo* bullet;
 
-public:
+	//Enemy
+	Enemy* enemy;
+	std::list<Enemy*> enemylist;
 
+
+public:
 	ObjectPool<Bullet>* pool;
+
 	Bullet(const std::string& textureId = "", const std::string& n = "");
 	virtual ~Bullet() override { Release(); }
 
@@ -55,4 +68,7 @@ public:
 	void SetBullet(Types types, sf::Vector2f pos, sf::Vector2f dir);
 	void Shoot(Types type);
 	void Fire(sf::Vector2f pos, sf::Vector2f dir);
+	void SetEnemy(std::list<Enemy*> enemylist) { this->enemylist = enemylist; }
+
+	void HitEnemy();
 };

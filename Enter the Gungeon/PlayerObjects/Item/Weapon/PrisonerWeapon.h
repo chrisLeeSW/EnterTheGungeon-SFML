@@ -16,15 +16,22 @@ protected:
 	float attackrate;
 	int bulletcount;
 	int bulletmax;
+	int currentbulletcount;
 	float reload;
 	int santan;
+	float tick;
 
+	float reloadtick;
+
+	bool isreload = false;
 	bool flipX = false;
 
 	AnimationController gun;
 	AnimationController shootEffect;
 
 	float WeaponXpos = 9.f;
+
+	sf::RectangleShape gunend;
 
 public:
 
@@ -40,7 +47,6 @@ public:
 
 	virtual void SetGunFlipx(bool flip) override;
 
-	virtual void SetPlayer();
 	virtual void SetType(Types t);
 
 	virtual Types GetWeaponType() override { return weaponType; }

@@ -27,7 +27,8 @@ public:
 
 protected:
 
-	Bullet* bullet;
+	//불릿 풀링
+	Bullet* bullet = nullptr;
 	std::list<Bullet*> bullets;
 	ObjectPool<Bullet> poolBullets;
 
@@ -40,19 +41,26 @@ protected:
 
 	std::vector<AnimationController> shootEffect;
 
+
 	Player* player;
 
-	Types weaponType;
-	float attackrate;
-	int bulletcount;
-	int bulletmax;
-	float reload;
-	int santan;
 
 	sf::Vector2f handPos;
 	sf::Vector2f gunPoint;
 
-	int weaponIndex = 0;
+	bool flipX = false;
+
+
+	sf::Vector2f gunOffset1;
+	sf::Vector2f gunOffset2;
+
+	Scene* scene;
+	SceneGame* sceneGame;
+
+	//Enemy 정보
+	std::list<Enemy*> enemylist;
+	Enemy* enemy;
+
 
 	std::unordered_map<sf::Keyboard::Key, int> keyToIndexMap = {
 	{sf::Keyboard::Num1, 1},
@@ -66,11 +74,6 @@ protected:
 	{sf::Keyboard::Num9, 9},
 	};
 
-	bool flipX = false;
-
-
-	sf::Vector2f gunOffset1;
-	sf::Vector2f gunOffset2;
 
 public:
 
@@ -86,7 +89,7 @@ public:
 	virtual void Draw(sf::RenderWindow& window) override;
 
 	virtual void SetPlayer(Player* player);
-	virtual void Shoot(Weapon::Types type);
+	virtual void Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir);
 	virtual void SetType(Types t);
 	virtual void SetGunFlipx(bool flip) = 0;
 	virtual Types GetWeaponType() = 0;

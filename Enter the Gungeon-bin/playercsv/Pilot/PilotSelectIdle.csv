@@ -1,0 +1,9 @@
+ID,FPS,LOOPTYPE,,
+SelectIdle,5,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Pilot.png,376,421,14,21
+graphics/Pilot.png,383,421,14,21
+graphics/Pilot.png,398,421,14,21
+graphics/Pilot.png,413,421,14,21
+graphics/Pilot.png,429,421,14,21

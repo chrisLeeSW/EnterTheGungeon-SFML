@@ -17,8 +17,6 @@ PilotWeapon::PilotWeapon(const std::string& textureId, const std::string& n) : W
 
 	gun.SetTarget(&sprite);
 
-	SetType(Types::PilotWeapon);
-
 	SpriteGo::Reset();
 
 	gun.Play("Idle");
@@ -35,12 +33,13 @@ PilotWeapon::PilotWeapon(const std::string& textureId, const std::string& n) : W
 	gunOffset2 = { sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - 4};
 
 	currentbulletcount = bulletcount;
+
+	Weapon::Init();
 }
 
 void PilotWeapon::Init()
 {
 	player = PLAYER_MGR.GetPlayer();
-	std::cout << sprite.getOrigin().x << std::endl;
 }
 
 void PilotWeapon::Release()
@@ -93,7 +92,7 @@ void PilotWeapon::Update(float dt)
 				--currentbulletcount;
 				--bulletmax;
 				gun.Play("Shoot");
-				WEAPON_MGR.Shoot(bulletType, gunPoint, look);
+				Weapon::Shoot(bulletType, gunPoint, look);
 
 				std::cout << "현재 탄창 : " << currentbulletcount << std::endl;
 				std::cout << "총 탄창 : " << bulletmax << std::endl;
@@ -114,10 +113,8 @@ void PilotWeapon::Update(float dt)
 				currentbulletcount = bulletcount; // 재장전 완료되면 탄창을 최대치로 채움
 				isreload = false; // 재장전 플래그 해제
 				std::cout << "장전완료" << std::endl;
-
 			}
 		}
-
 	}
 }
 

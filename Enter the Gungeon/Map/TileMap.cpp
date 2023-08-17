@@ -245,7 +245,7 @@ void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI)
 				if (tiles[tileIndex].texIndex == -1)
 				{
 					vertexArray[vertexIndex].texCoords = texNonOffset[k];
-					vertexArray[vertexIndex].texCoords.y += texSize.y * texIndex;
+					vertexArray[vertexIndex].texCoords.y += texSize.y  * texIndex;
 				}
 				else
 				{

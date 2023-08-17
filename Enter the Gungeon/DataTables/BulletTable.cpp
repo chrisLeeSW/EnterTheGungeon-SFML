@@ -22,8 +22,8 @@ bool BulletTable::Load()
 	std::vector<std::string> bulletids = doc.GetColumn<std::string>(1);
 	std::vector<float> bulletSpeed = doc.GetColumn<float>(2);
 	std::vector<float> bulletDamage = doc.GetColumn<float>(3);
-	std::vector<int> bulletrange = doc.GetColumn<int>(4);
-	std::vector<int> bulletkonckback = doc.GetColumn<int>(5);
+	std::vector<float> bulletrange = doc.GetColumn<float>(4);
+	std::vector<float> bulletkonckback = doc.GetColumn<float>(5);
 
 	for (int i = 0; i < ids.size(); ++i)
 	{

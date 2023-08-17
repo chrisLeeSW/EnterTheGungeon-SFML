@@ -18,7 +18,6 @@ void Ak47::Init()
 
 	gun.SetTarget(&sprite);
 
-	SetPlayer();
 	SetType(Types::PilotWeapon);
 
 	SpriteGo::Reset();
@@ -78,10 +77,6 @@ void Ak47::SetGunFlipx(bool flipX)
 	sprite.setScale(scale);
 }
 
-void Ak47::SetPlayer()
-{
-	this->player = WEAPON_MGR.GetPlayer();
-}
 
 void Ak47::SetType(Types t)
 {

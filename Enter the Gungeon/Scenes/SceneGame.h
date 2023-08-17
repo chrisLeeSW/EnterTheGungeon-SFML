@@ -14,6 +14,7 @@ struct RoomObjectsInfo
 	MapObjectType type;
 	InteractionObject* interactionObj;
 };
+
 class SceneGame : public Scene
 {
 protected:
@@ -36,6 +37,8 @@ protected:
 	int playertype;
 
 	Equipment* equipment;
+
+	std::list<Enemy*> enemylist;
 
 public:
 	SceneGame();

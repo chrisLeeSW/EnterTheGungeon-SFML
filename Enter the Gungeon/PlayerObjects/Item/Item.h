@@ -1,8 +1,11 @@
 #pragma once
 #include"SpriteGo.h"
+#define DEGREES_90 90.0f
 
 class Player;
 class Weapon;
+
+
 
 class Item : public SpriteGo
 {

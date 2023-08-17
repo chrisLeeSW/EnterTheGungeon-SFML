@@ -1,0 +1,23 @@
+ID,FPS,LOOPTYPE,,
+Die,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Pilot.png,185,736,17,22
+graphics/Pilot.png,204,736,18,22
+graphics/Pilot.png,224,736,16,22
+graphics/Pilot.png,242,736,16,22
+graphics/Pilot.png,260,736,16,22
+graphics/Pilot.png,278,736,13,22
+graphics/Pilot.png,293,736,13,22
+graphics/Pilot.png,308,736,13,22
+graphics/Pilot.png,323,736,13,22
+graphics/Pilot.png,185,764,21,24
+graphics/Pilot.png,208,764,20,24
+graphics/Pilot.png,230,764,19,24
+graphics/Pilot.png,251,764,19,24
+graphics/Pilot.png,272,764,19,24
+graphics/Pilot.png,293,764,17,24
+graphics/Pilot.png,312,764,19,24
+graphics/Pilot.png,333,764,21,24
+graphics/Pilot.png,356,764,20,24
+graphics/Pilot.png,378,764,20,24

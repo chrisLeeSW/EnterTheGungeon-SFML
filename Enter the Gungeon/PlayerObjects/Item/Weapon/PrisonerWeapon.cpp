@@ -13,23 +13,29 @@ PrisonerWeapon::PrisonerWeapon(const std::string& textureId, const std::string& 
 
 	gun.SetTarget(&sprite);
 
-	SetPlayer();
 	SetType(Types::PrisonerWeapon);
 
 	SpriteGo::Reset();
 
 	gun.Play("Idle");
 
-	sf::Vector2f GunSize = sf::Vector2f{ sprite.getLocalBounds().width, sprite.getLocalBounds().height };
-	SetOrigin(sprite.getLocalBounds().left, sprite.getLocalBounds().height);
+	gunend.setFillColor(sf::Color::Transparent);
+	gunend.setOutlineColor(sf::Color::Red);
+	gunend.setOutlineThickness(2.f);
+	gunend.setSize(sf::Vector2f{ 5,5 });
 
+	tick = attackrate;
+	reloadtick = reload;
 
-	std::cout << sprite.getOrigin().x << std::endl;
+	gunOffset1 = { sprite.getGlobalBounds().width, -sprite.getGlobalBounds().height + 4 };
+	gunOffset2 = { sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - 4 };
+
+	currentbulletcount = bulletcount;
 }
 
 void PrisonerWeapon::Init()
 {
-
+	player = PLAYER_MGR.GetPlayer();
 }
 
 void PrisonerWeapon::Release()
@@ -43,60 +49,98 @@ void PrisonerWeapon::Reset()
 
 void PrisonerWeapon::Update(float dt)
 {
-	Weapon::SwapWeapon();
 
-	gun.Update(dt);
-	SetPosition(player->GetPosition() + sf::Vector2f(WeaponXpos, -7.f));
-
-	mousePos = INPUT_MGR.GetMousePos();
-	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrScene()->ScreenToWorldPos(mousePos);
-	sf::Vector2f playerScreenPos = SCENE_MGR.GetCurrScene()->WorldPosToScreen(position);
-
-	look = Utils::Normalize(mousePos - playerScreenPos);
-	sprite.setRotation(Utils::Angle(look));
-	if (flipX) sprite.setRotation(FLIP_ANGLE_X + Utils::Angle(look));
-
-	if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
+	Weapon::Update(dt);
+	if (!player->isRolling())
 	{
-		//WEAPON_MGR.Shoot();
+		SetOrigin(Origins::BL);
+		gun.Update(dt);
+		SetPosition(player->PlayerHandPos());
+
+		float angle = Utils::Angle(look);
+		sf::Vector2f gunOffset = Utils::RotateVector(gunOffset1, angle);
+
+		//이거 마우스인데 플레이어랑 몬스터 포지션 뺀걸 노멀라이즈해서 넣어야될듯
+		if (flipX)
+		{
+			gunOffset = Utils::RotateVector(gunOffset2, angle);
+			angle += FLIP_ANGLE_X;
+		}
+
+		sprite.setRotation(angle);
+
+
+		SetGunFlipx(player->GetFilpX());
+
+
+		gunend.setPosition(gunPoint);
+		gunPoint = player->PlayerHandPos();
+		gunPoint += gunOffset;
+
+
+		if (!isreload)
+		{
+			tick -= dt;
+			if (INPUT_MGR.GetMouseButton(sf::Mouse::Left) && tick <= 0.f && currentbulletcount > 0 && bulletmax >= 0)
+			{
+
+				--currentbulletcount;
+				--bulletmax;
+				gun.Play("Shoot");
+				Weapon::Shoot(bulletType, gunPoint, look);
+
+				std::cout << "현재 탄창 : " << currentbulletcount << std::endl;
+				std::cout << "총 탄창 : " << bulletmax << std::endl;
+				tick = attackrate;
+			}
+
+			if (INPUT_MGR.GetKeyDown(sf::Keyboard::R) && currentbulletcount != bulletcount && bulletmax >= 0)
+			{
+				reloadtick = reload;
+				isreload = true;
+			}
+		}
+		else if (isreload)
+		{
+			reloadtick -= dt; // 재장전 시간 감소
+			if (reloadtick <= 0.f)
+			{
+				currentbulletcount = bulletcount; // 재장전 완료되면 탄창을 최대치로 채움
+				isreload = false; // 재장전 플래그 해제
+				std::cout << "장전완료" << std::endl;
+
+			}
+		}
+
 	}
 }
 
 void PrisonerWeapon::Draw(sf::RenderWindow& window)
 {
-	SpriteGo::Draw(window);
+	if (!player->isRolling())
+		SpriteGo::Draw(window);
+	window.draw(gunend);
 }
 
 void PrisonerWeapon::SetGunFlipx(bool flipX)
 {
-	if (!flipX)
-	{
-		WeaponXpos = abs(WeaponXpos);
-	}
-	else
-	{
-		WeaponXpos = -abs(WeaponXpos);
-	}
-
 	sf::Vector2f scale = sprite.getScale();
 	this->flipX = flipX;
 	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
 	sprite.setScale(scale);
 }
 
-void PrisonerWeapon::SetPlayer()
-{
-	this->player = WEAPON_MGR.GetPlayer();
-}
 
 void PrisonerWeapon::SetType(Types t)
 {
 	const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
 
 	weaponType = (Types)info->weaponType;
+	bulletType = (Bullet::Types)info->bulletType;
 	attackrate = info->attackrate;
 	bulletcount = info->bulletcount;
 	bulletmax = info->bulletmax;
 	reload = info->reload;
 	santan = info->santan;
 }
+

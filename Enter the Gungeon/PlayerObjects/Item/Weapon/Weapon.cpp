@@ -16,7 +16,16 @@ Weapon::Weapon(const std::string& textureId, const std::string& n) : Item(textur
 
 void Weapon::Init()
 {
+	scene = SCENE_MGR.GetGameScene();
+	sceneGame = dynamic_cast<SceneGame*>(scene);
+
+	ObjectPool<Bullet>* ptr = &poolBullets;
+	poolBullets.OnCreate = [ptr](Bullet* bullet) {
+		bullet->pool = ptr;
+	};
+	poolBullets.Init();
 }
+
 void Weapon::Release()
 {
 }
@@ -34,7 +43,6 @@ void Weapon::Update(float dt)
 
 	look = Utils::Normalize(mousePos - playerScreenPos);
 
-	//monsterlook = Utils::Normalize(playerScreenPos)
 }
 
 void Weapon::Draw(sf::RenderWindow& window)
@@ -48,22 +56,21 @@ void Weapon::SetPlayer(Player* player)
 
 }
 
-void Weapon::Shoot(Weapon::Types type)
+void Weapon::Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir)
 {
+	bullet = poolBullets.Get();
+	bullet->SetBullet(type, pos, dir);
+
+	if (sceneGame != nullptr)
+	{
+		bullet->SetEnemy(WEAPON_MGR.GetEnemyList());
+		sceneGame->AddGo(bullet);
+	}
 }
 
 void Weapon::SetType(Types t)
 {
-	//const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
 
-	//weaponType = (Types)info->weaponType;
-	//attackrate = info->attackrate;
-	//bulletcount = info->bulletcount;
-	//bulletmax = info->bulletmax;
-	//reload = info->reload;
-	//santan = info->santan;
-
-	//불릿 ID까지 스트링으로 받아와서 애니메이션 animation.Play(" 요기  ") <- 넣어버리기
 }
 
 void Weapon::SwapWeapon()

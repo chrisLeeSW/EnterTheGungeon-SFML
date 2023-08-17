@@ -370,6 +370,7 @@ void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockba
 			}
 		}
 	}
+	
 
 	// Animation
 	if (dir == way[0])

@@ -38,11 +38,12 @@ void SceneGame::Init()
 
 	equipment = (Equipment*)AddGo(new Equipment());
 
-	testenm1 = (Enemy*)AddGo(new Enemy(EnemyName::ShotgunKinRed)); //test
+	testenm1 = (Enemy*)AddGo(new Enemy(EnemyName::BulletKin)); //test
 	testenm1->SetOrigin(Origins::BC); //test
-	testenm1->SetEnemy(100.f, 5.f, 50.f, 1.f); //test
+	testenm1->SetEnemy(100.f, 50.f, 50.f, 1.f); //test
 	testenm1->SetPosition(200, 200); //test
 	testenm1->sortLayer = 0;
+	enemylist.push_back(testenm1);
 
 	MakeTestRoom(3);
 	for (auto go : gameObjects)
@@ -69,13 +70,11 @@ void SceneGame::Enter()
 		delete player;
 	}
 
-
-	
 	player = (Player*)AddGo(new Player((Player::Types)playertype));
 	player->sortLayer = 0;
 	player->Init();
+	player->SetEnemyList(enemylist);
 	testenm1->SetPlayer(player); //test
-	WEAPON_MGR.SetPlayer(player);
 
 
 	player->SetPosition(0.f,0.f);

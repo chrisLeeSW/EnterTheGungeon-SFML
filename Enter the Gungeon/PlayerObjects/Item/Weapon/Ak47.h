@@ -37,7 +37,6 @@ public:
 
 	virtual void SetGunFlipx(bool flip) override;
 
-	virtual void SetPlayer();
 	virtual void SetType(Types t);
 
 	virtual Types GetWeaponType() override { return weaponType; }

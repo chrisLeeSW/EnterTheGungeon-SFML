@@ -1,5 +1,7 @@
 #pragma once
 #include "Utils.h"
+#define MAX_BYTE_VALUE 255
+
 
 class GameObject
 {

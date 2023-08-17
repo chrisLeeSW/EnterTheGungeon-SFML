@@ -4,6 +4,7 @@
 #include "BulletTable.h"
 #include "WeaponTable.h"
 #include "PlayerTable.h"
+#include "EnemyTable.h"
 
 void DataTableMgr::LoadAll()
 {
@@ -12,6 +13,7 @@ void DataTableMgr::LoadAll()
 	tables.insert({ DataTable::Ids::Bullet, new BulletTable() });
 	tables.insert({ DataTable::Ids::Weapon, new WeaponTable() });
 	tables.insert({ DataTable::Ids::Player, new PlayerTable() });
+	tables.insert({ DataTable::Ids::Enemy, new EnemyTable() });
 
 	for (auto pair : tables)
 	{

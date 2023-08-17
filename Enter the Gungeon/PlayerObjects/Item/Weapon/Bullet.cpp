@@ -2,7 +2,6 @@
 #include "Bullet.h"
 #include "BulletTable.h"
 #include "DataTableMgr.h"
-#include "SpriteGo.h"
 
 Bullet::Bullet(const std::string& textureId, const std::string& n) : SpriteGo(textureId, n)
 {

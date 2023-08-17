@@ -24,6 +24,8 @@ protected:
 	SpriteGo* shadow;
 
 	Enemy* testenm1;
+	Enemy* testenm2;
+	Enemy* testenm3;
 
 	std::vector<TileMap*> tileRoom;
 	std::vector<SpriteGo*> objects;

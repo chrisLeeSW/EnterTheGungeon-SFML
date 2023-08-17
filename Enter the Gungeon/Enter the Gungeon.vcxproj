@@ -217,6 +217,7 @@
     <ClCompile Include="PlayerObjects\Item\Weapon\ShotGun.cpp" />
     <ClCompile Include="UI\TextBox.cpp" />
     <ClCompile Include="Map\TileMap.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Weapon\Winchester.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
@@ -281,6 +282,7 @@
     <ClInclude Include="Scenes\TestRom.h" />
     <ClInclude Include="UI\TextBox.h" />
     <ClInclude Include="Map\TileMap.h" />
+    <ClInclude Include="PlayerObjects\Item\Weapon\Winchester.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

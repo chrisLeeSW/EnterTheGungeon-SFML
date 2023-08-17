@@ -268,7 +268,6 @@ void Player::SetFlipX(bool filp)
 {
 	flipX = filp;
 
-
 	sf::Vector2f scale1 = sprite.getScale();
 	scale1.x = !flipX ? abs(scale1.x) : -abs(scale1.x);
 	sprite.setScale(scale1);
@@ -489,6 +488,7 @@ void Player::SetPosition(float x, float y)
 
 void Player::OnPlayerHit()
 {
+
 	if(currenthitDelay <= 0)
 	{
 		--hp;

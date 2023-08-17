@@ -99,15 +99,4 @@ public:
 	virtual sf::Vector2f Look();
 	virtual void SetEnemy(Enemy* enemy);
 
-
-	//¾È¾µµí?
-	//template<typename T>
-	//T AddWeapon(T weapon)
-	//{
-	//	T* addweapon = &weapon
-	//	Scene* scene = SCENE_MGR.GetGameScene();
-	//	SceneGame* SG = dynamic_cast<SceneGame*>(scene);
-
-	//	addweapon = (T*)SG->AddGo(new T());
-	//}
 };

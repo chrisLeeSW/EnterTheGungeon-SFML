@@ -66,6 +66,8 @@ void PilotWeapon::Update(float dt)
 		sf::Vector2f gunOffset = Utils::RotateVector(gunOffset1, angle);
 
 		//이거 마우스인데 플레이어랑 몬스터 포지션 뺀걸 노멀라이즈해서 넣어야될듯
+		SetGunFlipx(player->GetFilpX());
+
 		if (flipX)
 		{
 			gunOffset = Utils::RotateVector(gunOffset2, angle);
@@ -75,7 +77,6 @@ void PilotWeapon::Update(float dt)
 		sprite.setRotation(angle);
 
 
-		SetGunFlipx(player->GetFilpX());
 
 
 		gunend.setPosition(gunPoint);

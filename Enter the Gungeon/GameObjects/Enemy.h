@@ -6,6 +6,7 @@ class Player;
 //±Ë«˝¡ÿ √ﬂ∞°
 class ShotGun;
 class Magnum;
+class Winchester;
 
 class Enemy : public SpriteGo
 {
@@ -48,6 +49,7 @@ protected:
 	//Enemy Weapon - ±Ë«˝¡ÿ √ﬂ∞°
 	ShotGun* shotgun;
 	Magnum* magnum;
+	Winchester* winchester;
 
 	Player* player;
 	sf::Sprite hand;
@@ -66,6 +68,13 @@ public:
 	virtual void SetPosition(float x, float y) override;
 
 	void SetFlipX(bool flip);
+
+	//±Ë«˝¡ÿ √ﬂ∞°
+	bool GetFlipX() { return flipX; }
+	sf::Vector2f GetHandOrigin() { return sf::Vector2f(sprite.getLocalBounds().width * 0.8f, sprite.getLocalBounds().height * 0.25f); }
+
+
+
 	sf::Vector2f WhereWay(sf::Vector2f dir);
 
 	void SetPlayer(Player* player);

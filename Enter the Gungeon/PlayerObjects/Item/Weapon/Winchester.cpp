@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Magnum.h"
+#include "Winchester.h"
 #include "DataTableMgr.h"
 #include "WeaponTable.h"
 #include "Player.h"
@@ -8,13 +8,13 @@
 #include "SceneGame.h"
 #include "Enemy.h"
 
-Magnum::Magnum(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
+Winchester::Winchester(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
 {
-	SetType(Types::Magnum);
+	//SetType(Types::ShotGun);
 
 
-	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/MagnumIdle.csv"));
-	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/MagnumShoot.csv"));
+	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/WinchesterIdle.csv"));
+	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/WinchesterShoot.csv"));
 
 	gun.SetTarget(&sprite);
 
@@ -22,34 +22,36 @@ Magnum::Magnum(const std::string& textureId, const std::string& n) : Weapon(text
 
 	gun.Play("Idle");
 
+	SetOrigin(sprite.getLocalBounds().left, sprite.getLocalBounds().height);
 
-	//SetScale(0.5f,0.5f);
 
 	gunend.setFillColor(sf::Color::Transparent);
 	gunend.setOutlineColor(sf::Color::Red);
-	gunend.setOutlineThickness(1.f);
+	gunend.setOutlineThickness(2.f);
 	gunend.setSize(sf::Vector2f{ 5,5 });
 
-
-
+	gunOffset1 = { sprite.getGlobalBounds().width, -sprite.getGlobalBounds().height + 4 };
+	gunOffset2 = { sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - 4 };
 }
 
-void Magnum::Init()
-{
-	//gun.Play("Idle");
-}
-
-void Magnum::Release()
+void Winchester::Init()
 {
 }
 
-void Magnum::Reset()
+void Winchester::Release()
+{
+}
+
+void Winchester::Reset()
 {
 	player = PLAYER_MGR.GetPlayer();
 }
 
-void Magnum::Update(float dt)
+void Winchester::Update(float dt)
 {
+	//Weapon::Update(dt);
+
+
 	gun.Update(dt);
 	SetPosition(enemy->GetPosition());
 	SetOrigin(Origins::BL);
@@ -76,15 +78,19 @@ void Magnum::Update(float dt)
 	gunPoint = enemy->GetPosition();
 	gunPoint += gunOffset;
 
+
+
 }
 
-void Magnum::Draw(sf::RenderWindow& window)
+
+void Winchester::Draw(sf::RenderWindow& window)
 {
+
 	SpriteGo::Draw(window);
 	window.draw(gunend);
 }
 
-void Magnum::SetGunFlipx(bool flipX)
+void Winchester::SetGunFlipx(bool flipX)
 {
 	sf::Vector2f scale = sprite.getScale();
 	this->flipX = flipX;
@@ -92,8 +98,9 @@ void Magnum::SetGunFlipx(bool flipX)
 	sprite.setScale(scale);
 }
 
-void Magnum::SetType(Weapon::Types t)
+void Winchester::SetType(Types t)
 {
+
 	const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
 
 	weaponType = (Types)info->weaponType;
@@ -103,10 +110,5 @@ void Magnum::SetType(Weapon::Types t)
 	bulletmax = info->bulletmax;
 	reload = info->reload;
 	santan = info->santan;
-}
 
-void Magnum::SetEnemy(Enemy* enemy)
-{
-	this->enemy = enemy;
-	sprite.setOrigin(this->enemy->GetHandOrigin().x, this->enemy->GetHandOrigin().y);
 }

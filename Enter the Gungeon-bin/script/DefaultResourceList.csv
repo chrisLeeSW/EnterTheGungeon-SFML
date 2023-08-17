@@ -180,3 +180,6 @@
 3,bulletcsv/PrisonerBullet.csv
 3,playercsv/Pilot/PilotDie.csv
 0,graphics/ouch.png
+0,graphics/Winchester.png
+3,weapon/WinchesterShoot.csv
+3,weapon/WinchesterIdle.csv

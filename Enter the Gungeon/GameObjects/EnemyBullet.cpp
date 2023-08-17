@@ -43,7 +43,7 @@ void EnemyBullet::Update(float dt)
 	}
 
 	if (player == nullptr) return;
-	if (sprite.getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
+	if (sprite.getGlobalBounds().intersects(player->sprite.getGlobalBounds()) && player->IsAlive())
 	{
 		player->OnPlayerHit();
 		Scene* scene = SCENE_MGR.GetCurrScene();

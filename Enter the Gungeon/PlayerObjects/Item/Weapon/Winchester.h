@@ -3,12 +3,9 @@
 #include "AnimationController.h"
 #include "Bullet.h"
 
-class Player;
 class Enemy;
 
-
-
-class Magnum : public Weapon
+class Winchester : public Weapon
 {
 
 protected:
@@ -24,8 +21,6 @@ protected:
 	float reload;
 	int santan;
 
-
-
 	bool flipX = false;
 
 	AnimationController gun;
@@ -37,8 +32,8 @@ protected:
 
 public:
 
-	Magnum(const std::string& textureId = "", const std::string& n = "");
-	virtual ~Magnum() override { Release(); }
+	Winchester(const std::string& textureId = "", const std::string& n = "");
+	virtual ~Winchester() override { Release(); }
 
 	virtual void Init() override;
 	virtual void Release() override;
@@ -53,7 +48,5 @@ public:
 	virtual void SetType(Types type) override;
 	virtual Bullet::Types GetBulletType() override { return bulletType; }
 
-	virtual void SetEnemy(Enemy* enemy) override;
-
+	virtual void SetEnemy(Enemy* enemy) override { this->enemy = enemy; }
 };
-

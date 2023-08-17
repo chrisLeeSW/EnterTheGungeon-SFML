@@ -3,8 +3,6 @@
 
 class Player;
 class SpriteGo;
-class Enemy; //test
-class Boss; //test
 
 class SceneLobby : public Scene
 {
@@ -41,11 +39,6 @@ protected:
 	std::vector<SpriteGo*> currentchoise;
 
 	SpriteGo* playerui;
-
-	Enemy* test1; //test
-	Enemy* test2; //test
-	Enemy* test3; //test
-	Boss* test4; //test
 
 public:
 	SceneLobby();

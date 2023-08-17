@@ -2,9 +2,9 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "EnemyBullet.h"
+#include "EnemyTable.h"
+#include "DataTableMgr.h"
 #include "SceneGame.h"
-
-#include "SceneLobby.h" //test
 
 //HaeJun
 #include "ShotGun.h"
@@ -34,21 +34,17 @@ void Enemy::Init()
 	{
 	case EnemyName::BulletKin:
 		name = "BulletKin/BulletKin";
-		isHanded = true;
 		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
 			OneShot(dir, speed);
 		};
-		maxHp = 15.f; // table 사용
 		break;
 	case EnemyName::KeyBulletKin:
 		name = "KeyBulletKin/KeyBulletKin";
 		// Runaway 함수
-		maxHp = 15.f;
 		break;
 	case EnemyName::ShotgunKinRed:
 		name = "ShotgunKinRed/ShotgunKinRed";
-		isHanded = true;
 		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
 			FiveWayShot(dir, speed);
@@ -57,11 +53,9 @@ void Enemy::Init()
 		{
 			SixWayDie(dir, speed, 20); // table 사용
 		};
-		maxHp = 30.f; // table 사용
 		break;
 	case EnemyName::ShotgunKinBlue:
 		name = "ShotgunKinBlue/ShotgunKinBlue";
-		isHanded = true;
 		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
 			FiveWayShot(dir, speed);
@@ -70,14 +64,12 @@ void Enemy::Init()
 		{
 			SixWayDie(dir, speed, 33); // table 사용
 		};
-		maxHp = 40.f; // table 사용
 		break;
 	default:
 		std::cerr << "ERROR: Not Exist EnemyName (Enemy Init())" << std::endl;
 		break;
 	}
-
-
+	SetEnemy();
 
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleUp.csv"));
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleLeftUp.csv"));
@@ -334,17 +326,21 @@ void Enemy::SetPlayer(Player* player)
 	this->player = player;
 }
 
-void Enemy::SetEnemy(float speed, float maxHp, float attackRange, float attackInterval, bool superarmor)
+void Enemy::SetEnemy()
 {
-	this->speed = speed;
-	this->maxHp = maxHp;
-	this->attackRange = attackRange;
-	this->attackInterval = attackInterval;
-	this->superarmor = superarmor;
+	const EnemyInfo* info = DATATABLE_MGR.Get<EnemyTable>(DataTable::Ids::Enemy)->Get(type);
+
+	this->maxHp = info->maxHp;
+	this->speed = info->speed;
+	this->attackRange = info->attackRange;
+	this->attackInterval = info->attackInterval;
+	this->superarmor = info->superarmor;
 }
 
 void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockback)
 {
+	if (!isAlive) return;
+
 	if (!superarmor) SetPosition(position + dir * knockback);
 	dir = WhereWay(dir);
 	SetFlipX(dir.x > 0.f);
@@ -366,8 +362,12 @@ void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockba
 			else
 			{
 				OnDie(dir);
-				return;
 			}
+
+			isAlive = false;
+			isHanded = false;
+			hand.setTextureRect({ 0, 0, 0, 0 });
+			return;
 		}
 	}
 	
@@ -398,7 +398,7 @@ void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockba
 
 void Enemy::OnBump()
 {
-	//player에게 피해를 주는 함수
+	player->OnPlayerHit();
 }
 
 void Enemy::OnDie(const sf::Vector2f& look)
@@ -424,21 +424,30 @@ void Enemy::OnDie(const sf::Vector2f& look)
 	{
 		animation.Play("DieDown");
 	}
-
-	isAlive = false;
-	isHanded = false;
-	hand.setTextureRect({ 0, 0, 0, 0 });
 }
 
 void Enemy::OneShot(sf::Vector2f dir, float speed, bool isBlink) // pool반환 필요
 {
-	//SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
-	SceneLobby* scene = (SceneLobby*)SCENE_MGR.GetCurrScene();
+	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
 	EnemyBullet* bullet = new EnemyBullet();
-	//bullet->Shoot(Utils::Normalize(player->GetPosition() - position), speed);
 	bullet->Shoot(dir, speed);
 	bullet->SetPosition(position);
 	bullet->SetBullet(isBlink);
+	bullet->SetPlayer(player);
+	bullet->Init();
+	bullet->Reset();
+	scene->AddGo(bullet);
+
+}
+
+void Enemy::AngleShot(sf::Vector2f dir, float speed, float angle)
+{
+	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+	EnemyBullet* bullet = new EnemyBullet();
+	dir = Utils::RotateVector(dir, angle);
+	bullet->Shoot(dir, speed);
+	bullet->SetPosition(position);
+	bullet->SetPlayer(player);
 	bullet->Init();
 	bullet->Reset();
 	scene->AddGo(bullet);
@@ -466,10 +475,6 @@ void Enemy::SixWayDie(sf::Vector2f dir, float speed, int chance)
 	{
 		OneShot(Utils::DirectionFromAngle(60.f + 60.f * i), speed, true);
 	}
-
-	isAlive = false;
-	isHanded = false;
-	hand.setTextureRect({ 0, 0, 0, 0 });
 
 	SetActive(false);
 }

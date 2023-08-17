@@ -6,28 +6,28 @@ class Player;
 //김혜준 추가
 class ShotGun;
 class Magnum;
-class SceneGame;
-
-enum class EnemyName
-{
-	None = -1,
-
-	// Normal Enemy
-	BulletKin,
-	KeyBulletKin,
-	ShotgunKinRed,
-	ShotgunKinBlue,
-
-	// Unique Enemy
-
-	// Boss
-	GatlingGull,
-
-	Count,
-};
 
 class Enemy : public SpriteGo
 {
+public:
+	enum class EnemyName
+	{
+		None = -1,
+
+		// Normal Enemy
+		BulletKin,
+		KeyBulletKin,
+		ShotgunKinRed,
+		ShotgunKinBlue,
+
+		// Unique Enemy
+
+		// Boss
+		GatlingGull,
+
+		Count,
+	};
+
 protected:
 	AnimationController animation;
 
@@ -69,7 +69,7 @@ public:
 	sf::Vector2f WhereWay(sf::Vector2f dir);
 
 	void SetPlayer(Player* player);
-	void SetEnemy(float speed = 0.f, float maxHp = 0.f, float attackRange = 0.f, float attackInterval = 0.f, bool superarmor = false);
+	void SetEnemy();
 
 	// Bullet에게 맞았을 때
 	std::function<void(float)> IfHit;
@@ -86,9 +86,14 @@ public:
 
 	// 단발사격
 	void OneShot(sf::Vector2f dir, float speed, bool isBlink = false);
+	// 각도를 조절한 단발사격
+	void AngleShot(sf::Vector2f dir, float speed, float angle = 0.f);
 	// 전방으로 5개의 총알을 산개하여 발사
 	void FiveWayShot(sf::Vector2f dir, float speed);
 
 	// 6방향으로 총알을 발사하며 사망
 	void SixWayDie(sf::Vector2f dir, float speed, int chance);
+
+	// 탄피 드랍
+	void DropCasing();
 };

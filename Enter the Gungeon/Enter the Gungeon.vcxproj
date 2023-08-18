@@ -153,7 +153,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+
     <ClCompile Include="EnemyTable.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="GameObjects\Boss.cpp" />
     <ClCompile Include="PlayerObjects\Item\Active\aBulletTime.cpp" />
     <ClCompile Include="PlayerObjects\Item\Weapon\Magnum.cpp" />
@@ -221,6 +223,7 @@
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
     <ClInclude Include="EnemyTable.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="GameObjects\Boss.h" />
     <ClInclude Include="PlayerObjects\Item\Active\aBulletTime.h" />
     <ClInclude Include="PlayerObjects\Item\Weapon\Magnum.h" />

@@ -13,9 +13,17 @@ GameMapTestScene::GameMapTestScene() :Scene(SceneId::GameMapTestScene)
 void GameMapTestScene::Init()
 {
 	tileRoom1 = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-	sf::Vector2f pos = { -300.f,-300.f }; // 랜덤 설정
+	sf::Vector2f pos = { 0,0 }; // 랜덤 설정
+
 	tileRoom1->SetStartPos(pos);
 	tileRoom1->Load("Room/TileMapFile/Room03.csv");
+	tileRoom1->SetOrigin(Origins::MC);
+
+	sf::Vector2f tileMapSize = tileRoom1->TileMapSize("Room/TileMapFile/Room03.csv");
+	sf::Vector2f objpos = pos;
+	objpos -= tileMapSize * 0.5f;
+	objpos += tileRoom1->GetTileSize() * 0.5f ;
+
 	for (int i = 0; i < tileRoom1->tiles.size(); ++i)
 	{
 		//	objects
@@ -25,7 +33,7 @@ void GameMapTestScene::Init()
 		{
 		SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
 		spr->sprite.setTextureRect({ 0,250,50,50 });
-		spr->SetPosition(pos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, pos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
+		spr->SetPosition(pos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x *0.5f, pos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
 		spr->sortLayer = 2;
 		objects.push_back(spr); // wall클래스 생성
 		}
@@ -41,7 +49,10 @@ void GameMapTestScene::Init()
 		case MapObjectType::Book1:
 		{
 			InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
-			spr->SetPosition(pos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x , pos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y );
+			spr->sprite.setTextureRect({ 0,800,50,50 });
+			spr->SetOrigin(Origins::MC);
+			spr->SetScale(0.5f, 0.5f);
+			spr->SetPosition(objpos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x , objpos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y );
 			spr->sortLayer = 0;
 			interaction.push_back({ static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), spr });
 		}
@@ -54,7 +65,7 @@ void GameMapTestScene::Init()
 		tileRoom1->colliedShape[i].shape.setPosition(tileRoom1->colliedShape[i].shape.getPosition() + pos);
 		colliedShape.push_back(tileRoom1->colliedShape[i]);
 	}
-
+	
 
 
 
@@ -97,7 +108,8 @@ void GameMapTestScene::Init()
 	//	}
 	//}
 	shape.setSize({ 5.f,5.f });
-	shape.setPosition(tileRoom1->vertexArray.getBounds().left + tileRoom1->vertexArray.getBounds().width * 0.5f, tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height * 0.5f);
+	//shape.setPosition(tileRoom1->vertexArray.getBounds().left + tileRoom1->vertexArray.getBounds().width * 0.5f, tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height * 0.5f);
+	shape.setPosition(0.f, 0.f);
 
 	/*std::cout << tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height << " " << pos1.y << std::endl;
 	shape2.setSize({ 400.f,pos1.y - (tileRoom1->vertexArray.getBounds().top + tileRoom1->vertexArray.getBounds().height)  });
@@ -122,7 +134,7 @@ void GameMapTestScene::Release()
 void GameMapTestScene::Enter()
 {
 	Scene::Enter();
-	worldView.setSize(windowSize);
+	worldView.setSize(windowSize*0.5f);
 	worldView.setCenter({ 0,0 });
 
 	uiView.setSize(windowSize);

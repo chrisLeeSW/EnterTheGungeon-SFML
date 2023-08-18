@@ -150,7 +150,7 @@ void SceneGame::MakeTestRoom(int size)
 		{
 			pos = sf::Vector2f{ -300.f,-300.f };
 			tileRoom1->SetStartPos(pos);
-			tileRoom1->Load("Room/TileMapFile/Room01.csv");
+			tileRoom1->Load("Room/TileMapFile/direction1.csv");
 		}
 		else if (i == 1)
 		{
@@ -214,7 +214,10 @@ void SceneGame::MakeTestRoom(int size)
 			tileRoom1->colliedShape[i].shape.setPosition(tileRoom1->colliedShape[i].shape.getPosition() + pos);
 			colliedShape.push_back(tileRoom1->colliedShape[i]);
 		}
+		/*tileRoom1->Init();
+		tileRoom1->Reset();*/
 		tileRoom.push_back(tileRoom1);
+		
 	}
 }
 

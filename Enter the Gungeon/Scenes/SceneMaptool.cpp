@@ -50,7 +50,7 @@ void SceneMaptool::Enter()
 	wallWidthCount = 5;
 	wallHeightCount = 3;
 
-	worldView.setSize(windowSize);
+	worldView.setSize(windowSize*0.5f);
 	worldView.setCenter({ 0,0 });
 
 	uiView.setSize(windowSize);
@@ -91,21 +91,21 @@ void SceneMaptool::Update(float dt)
 		TileMap* temp2 = objectSprite;
 
 		gridTile = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-		gridTile->tiles.resize(temp1->tiles.size());
+		/*gridTile->tiles.resize(temp1->tiles.size());
 		for (int i = 0;i < temp1->tiles.size();++i)
 		{
 			gridTile->tiles[i] = temp1->tiles[i];
-		}
+		}*/
 		gridTile->NoneFileLoad(wallWidthCount, wallHeightCount,false);
 		
 	
 		objectSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
 		
-		objectSprite->tiles.resize(temp2->tiles.size());
-		for (int i = 0;i < temp1->tiles.size();++i)
+		//objectSprite->tiles.resize(temp2->tiles.size());
+		/*for (int i = 0;i < temp1->tiles.size();++i)
 		{
 			objectSprite->tiles[i] = temp2->tiles[i];
-		}
+		}*/
 		objectSprite->NoneFileLoad(wallWidthCount, wallHeightCount, false);
 		
 		RemoveGo(temp1);
@@ -161,7 +161,7 @@ void SceneMaptool::Update(float dt)
 	if (INPUT_MGR.GetMouseButton(sf::Mouse::Left))
 	{
 		if (!drawGridAllowed) return;
-		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
+		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 25;
 		int count = -1;
 		for (int i = 0; i < tiles.size(); ++i)
 		{
@@ -184,13 +184,13 @@ void SceneMaptool::Update(float dt)
 
 	if (INPUT_MGR.GetMouseButton(sf::Mouse::Right) && INPUT_MGR.GetKey(sf::Keyboard::LControl))
 	{
-		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
+		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 25;
 		if (gridIndex.x < 0 || gridIndex.y < 0) return;
 		gridTile->ChangeTile(gridIndex.x, gridIndex.y, static_cast<int>(MapObjectType::None), sf::IntRect{ 50,0,50,50 });
 	}
 	if (INPUT_MGR.GetMouseButton(sf::Mouse::Right) && INPUT_MGR.GetKey(sf::Keyboard::LShift))
 	{
-		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 50;
+		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 25;
 		if (gridIndex.x < 0 || gridIndex.y < 0) return;
 		objectSprite->ChangeTile(gridIndex.x, gridIndex.y, static_cast<int>(MapObjectType::None), sf::IntRect{ 50,0,50,50 });
 	}
@@ -716,7 +716,7 @@ void SceneMaptool::MakeLine()
 	{
 		linesMap.clear();
 		sf::VertexArray grid(sf::Lines);
-		sf::Vector2f mapTileSize = { 50.f,50.f };
+		sf::Vector2f mapTileSize = { 25.f,25.f };
 		sf::Vector2f startPos = { 0.f,0.f };
 
 		for (int i = 0; i < wallHeightCount + 1; ++i)

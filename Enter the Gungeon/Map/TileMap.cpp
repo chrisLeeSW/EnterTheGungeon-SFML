@@ -39,7 +39,7 @@ bool TileMap::Load(const std::string& filePath, bool textureIdIn)
 			tiles.push_back(tile);
 		}
 	}
-	sf::Vector2f tileSize = { 50.f, 50.f };
+	sf::Vector2f tileSize = { 25.f, 25.f };
 	sf::Vector2f texSize = { 50.f, 50.f };
 	sf::Vector2f texOffsets[4] =
 	{
@@ -123,7 +123,7 @@ void TileMap::LoadObject(const std::string& filePath,bool textureIdIn)
 			tiles.push_back(tile);
 		}
 	}
-	sf::Vector2f tileSize = { 50.f, 50.f };
+	sf::Vector2f tileSize = { 25.f, 25.f };
 	sf::Vector2f texSize = { 50.f, 50.f };
 	sf::Vector2f texOffsets[4] =
 	{
@@ -203,7 +203,7 @@ void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI)
 		}
 	}
 
-	sf::Vector2f tileSize = { 50.f, 50.f };
+	sf::Vector2f tileSize =  { 25.f, 25.f };
 	sf::Vector2f texSize = { 50.f, 50.f };
 	sf::Vector2f texOffsets[4] =
 	{
@@ -324,5 +324,17 @@ void TileMap::MakeWall(const std::string& path)
 
 		newHeight++;
 	}
+}
+
+sf::Vector2f TileMap::TileMapSize(const std::string& path)
+{
+	rapidcsv::Document map(path, rapidcsv::LabelParams(-1, -1));
+	float width = map.GetCell<int>(0, 1);
+	float height = map.GetCell<int>(1, 1);
+
+	width *= tileSize.x;
+	height *= tileSize.y;
+
+	return sf::Vector2f{ width,height };
 }
 

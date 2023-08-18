@@ -322,7 +322,8 @@ sf::Vector2f Enemy::WhereWay(sf::Vector2f dir)
 	float minf = 1.f;
 	for (auto it : way)
 	{
-		if (float diff = Utils::Distance({ abs(dir.x), dir.y }, it) < minf)
+		float diff = Utils::Distance({ abs(dir.x), dir.y }, it);
+		if (diff <= minf)
 		{
 			minf = diff;
 			result = it;

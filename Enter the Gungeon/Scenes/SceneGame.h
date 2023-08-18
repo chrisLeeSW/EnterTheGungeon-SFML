@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "ObjectPool.h"
 
 class Player;
 class Weapon;
@@ -8,6 +9,8 @@ class TileMap;
 class Equipment;
 class Enemy;
 class InteractionObject;
+class Boss;
+class EnemyBullet;
 
 struct RoomObjectsInfo
 {
@@ -23,7 +26,10 @@ protected:
 	Weapon* weapon;
 	SpriteGo* shadow;
 
+	ObjectPool<EnemyBullet> enemyBullets;
+
 	Enemy* testenm1;
+	Boss* test2;
 
 	std::vector<TileMap*> tileRoom;
 	std::vector<SpriteGo*> objects;
@@ -57,5 +63,19 @@ public:
 
 	void MakeTestRoom(int size);
 	void ColliedTest();
+
+	ObjectPool<EnemyBullet>& GetPoolEnemyBullet();
+
+	template <typename T>
+	void ClearPool(ObjectPool<T>& pool);
 };
 
+template<typename T>
+inline void SceneGame::ClearPool(ObjectPool<T>& pool)
+{
+	for (auto it : pool.GetUseList())
+	{
+		RemoveGo(it);
+	}
+	pool.Clear();
+}

@@ -5,6 +5,7 @@
 #include "EnemyTable.h"
 #include "DataTableMgr.h"
 #include "SceneGame.h"
+#include "Muzzle.h"
 
 //HaeJun
 #include "ShotGun.h"
@@ -47,7 +48,7 @@ void Enemy::Init()
 		name = "ShotgunKinRed/ShotgunKinRed";
 		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
-			FiveWayShot(dir, speed);
+			ShotgunShot(dir, speed, 5, 15.f);
 		};
 		IfDie = [this](sf::Vector2f dir)
 		{
@@ -58,7 +59,16 @@ void Enemy::Init()
 		name = "ShotgunKinBlue/ShotgunKinBlue";
 		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
-			FiveWayShot(dir, speed);
+			if (patternCount < 1)
+			{
+				ShotgunShot(dir, speed, 5, 15.f);
+				patternCount++;
+			}
+			else
+			{
+				ShotgunShot(dir, speed, 4, 10.f);
+				patternCount = 0;
+			}
 		};
 		IfDie = [this](sf::Vector2f dir)
 		{
@@ -69,7 +79,6 @@ void Enemy::Init()
 		std::cerr << "ERROR: Not Exist EnemyName (Enemy Init())" << std::endl;
 		break;
 	}
-	SetEnemy();
 
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleUp.csv"));
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "IdleLeftUp.csv"));
@@ -117,6 +126,7 @@ void Enemy::Reset()
 			hand.setTextureRect({ 121, 16, 4, 4 });
 		}
 	}
+	SetEnemy();
 
 	animation.Play("IdleDown");
 	SetFlipX(false);
@@ -126,7 +136,7 @@ void Enemy::Reset()
 	hp = maxHp;
 	isAlive = true;
 	attackTimer = attackInterval;
-
+	patternCount = 0;
 
 	Scene* scene = SCENE_MGR.GetCurrScene();
 	switch (type)
@@ -337,6 +347,54 @@ void Enemy::SetEnemy()
 	this->superarmor = info->superarmor;
 }
 
+void Enemy::LoadMuzzle(const std::string& path)
+{
+	rapidcsv::Document doc(path, rapidcsv::LabelParams(-1, -1));
+	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+
+	for (int i = 1; i < doc.GetRowCount(); i++)
+	{
+		auto rows = doc.GetRow<std::string>(i);
+		Muzzle* muzzle = (Muzzle*)scene->AddGo(new Muzzle());
+
+		muzzle->isBlink = (bool)std::stoi(rows[1]);
+		{
+			std::string temp;
+			std::stringstream ss(rows[2]);
+			std::vector<float> values;
+			while (std::getline(ss, temp, '/'))
+			{
+				values.push_back(std::stof(temp));
+			}
+			float x = std::stof(temp);
+
+			muzzle->direction = { values[0], values[1] };
+		}
+		muzzle->speed = std::stof(rows[3]);
+		{
+			std::string temp;
+			std::stringstream ss(rows[4]);
+			std::vector<float> values;
+			while (std::getline(ss, temp, '/'))
+			{
+				values.push_back(std::stof(temp));
+			}
+			float x = std::stof(temp);
+
+			muzzle->SetPosition({ values[0] + position.x, values[1] + position.y });
+		}
+		muzzle->delay = std::stof(rows[5]);
+		muzzle->quantity = std::stoi(rows[6]);
+		muzzle->interval = std::stof(rows[7]);
+
+		muzzle->isEdit = false;
+		muzzle->SetPlayer(player);
+		muzzle->Init();
+		muzzle->Reset();
+		muzzle->Play();
+	}
+}
+
 void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockback)
 {
 	if (!isAlive) return;
@@ -429,7 +487,7 @@ void Enemy::OnDie(const sf::Vector2f& look)
 void Enemy::OneShot(sf::Vector2f dir, float speed, bool isBlink) // pool반환 필요
 {
 	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
-	EnemyBullet* bullet = new EnemyBullet();
+	EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
 	bullet->Shoot(dir, speed);
 	bullet->SetPosition(position);
 	bullet->SetBullet(isBlink);
@@ -437,30 +495,43 @@ void Enemy::OneShot(sf::Vector2f dir, float speed, bool isBlink) // pool반환 필�
 	bullet->Init();
 	bullet->Reset();
 	scene->AddGo(bullet);
-
 }
 
-void Enemy::AngleShot(sf::Vector2f dir, float speed, float angle)
+void Enemy::AngleShot(sf::Vector2f dir, float speed, float angle, bool isBlink)
 {
 	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
-	EnemyBullet* bullet = new EnemyBullet();
+	EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
 	dir = Utils::RotateVector(dir, angle);
 	bullet->Shoot(dir, speed);
 	bullet->SetPosition(position);
+	bullet->SetBullet(isBlink);
 	bullet->SetPlayer(player);
 	bullet->Init();
 	bullet->Reset();
 	scene->AddGo(bullet);
-
 }
 
-void Enemy::FiveWayShot(sf::Vector2f dir, float speed)
+void Enemy::ShotgunShot(sf::Vector2f dir, float speed, int quantity, float angle)
 {
-	for (int i = 0; i < 5; i++)
+	float sp = (float)quantity * 0.5f * -angle;
+	for (int i = 0; i < quantity; i++)
 	{
-		sf::Vector2f ang = Utils::RotateVector(dir, -30.f + 15.f * i);
-		OneShot(ang, speed);
+		AngleShot(dir, speed, sp + angle * i);
 	}
+}
+
+void Enemy::Boom(sf::Vector2f pos, float range)
+{
+	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+	EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
+	bullet->Shoot({ 0.f, 0.f }, 500.f);
+	bullet->SetPosition(pos);
+	bullet->SetBullet(false);
+	bullet->SetPlayer(player);
+	bullet->SetScale(range, range);
+	bullet->Init();
+	bullet->Reset();
+	scene->AddGo(bullet);
 }
 
 void Enemy::SixWayDie(sf::Vector2f dir, float speed, int chance)

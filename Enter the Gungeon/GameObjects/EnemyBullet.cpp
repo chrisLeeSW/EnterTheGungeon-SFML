@@ -26,6 +26,8 @@ void EnemyBullet::Reset()
 {
 	(isBlink) ? animation.Play("Blink") : animation.Play("Idle");
 	SpriteGo::Reset();
+
+	range = 1000.f;
 }
 
 void EnemyBullet::Update(float dt)
@@ -40,14 +42,19 @@ void EnemyBullet::Update(float dt)
 	{
 		Scene* scene = SCENE_MGR.GetCurrScene();
 		scene->RemoveGo(this);
+		pool->Return(this);
+		return;
 	}
 
 	if (player == nullptr) return;
 	if (sprite.getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
 	{
 		player->OnPlayerHit();
+
 		Scene* scene = SCENE_MGR.GetCurrScene();
 		scene->RemoveGo(this);
+		pool->Return(this);
+		return;
 	}
 }
 

@@ -19,15 +19,85 @@ void Boss::Init()
 	{
 	case EnemyName::GatlingGull:
 		name = "GatlingGull/GatlingGull";
-		IfShoot = [this](sf::Vector2f dir, float speed)
+		Pattern1 = [this](sf::Vector2f dir, float speed)
 		{
-			//OneShot(dir, speed);
+			if (patternCount < 30)
+			{
+				patternDuration = 0.1f;
+				AngleShot(dir, 200, Utils::RandomRange(-30.f, 30.f));
+				patternCount++;
+			}
+			else
+			{
+				patternDuration = 1.0f;
+				patternCount = 0;
+				EndPattern();
+			}
+		};
+		Pattern2 = [this](sf::Vector2f dir, float speed)
+		{
+			if (patternCount < 30)
+			{
+				patternDuration = 0.1f;
+				int value = patternCount % 10;
+				if (value > 4)
+				{
+					value = 10 - value;
+				}
+				AngleShot(dir, 200, -20.f + 10.f * value);
+				patternCount++;
+			}
+			else
+			{
+				patternDuration = 1.0f;
+				patternCount = 0;
+				EndPattern();
+			}
 		};
 		Pattern3 = [this](sf::Vector2f dir, float speed)
 		{
 			EndPattern();
 		};
-		maxHp = 700.f; // table »ç¿ë
+		Pattern4 = [this](sf::Vector2f dir, float speed)
+		{
+			if (patternCount < 2)
+			{
+				ShotgunShot(dir, 200, 10, 10.f);
+				patternCount++;
+			}
+			else
+			{
+				patternCount = 0;
+				EndPattern();
+			}
+
+		};
+		Pattern5 = [this](sf::Vector2f dir, float speed)
+		{
+			LoadMuzzle("bulletPattern/Circle.csv");
+			EndPattern();
+		};
+		Pattern6 = [this](sf::Vector2f dir, float speed)
+		{
+			SetPosition(player->GetPosition());
+			EndPattern();
+		};
+		Pattern7 = [this](sf::Vector2f dir, float speed)
+		{
+			if (patternCount < 12)
+			{
+				patternDuration = 0.5f;
+				Boom(player->GetPosition() + Utils::RandomInCircle(250.f), 4.f);
+				patternCount++;
+			}
+			else
+			{
+				patternDuration = 1.0f;
+				patternCount = 0;
+				EndPattern();
+			}
+		};
+		patternDuration = 1.0f;
 		break;
 	default:
 		std::cerr << "ERROR: Wrong EnemyName (Boss Init())" << std::endl;
@@ -86,18 +156,12 @@ void Boss::Update(float dt)
 		{
 		case PatternNum::None:
 			pattern = (PatternNum)Utils::RandomRange(1, (int)PatternNum::Count);
-			
 			break;
 		default:
+			PlayPattern(pattern);
 			break;
 		}
 	}
-
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::H)) //test
-	{
-		pattern = PatternNum::None;
-	}
-
 }
 
 void Boss::SetBoss(float patternDuration)
@@ -188,3 +252,4 @@ void Boss::EndPattern()
 {
 	pattern = PatternNum::None;
 }
+

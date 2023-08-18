@@ -10,6 +10,8 @@
 #include "Equipment.h"
 #include "Enemy.h"
 #include "InteractionObject.h"
+#include "Boss.h"
+#include "EnemyBullet.h"
 
 SceneGame::SceneGame() : Scene(SceneId::Game)
 {
@@ -38,11 +40,22 @@ void SceneGame::Init()
 
 	equipment = (Equipment*)AddGo(new Equipment());
 
-	testenm1 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::ShotgunKinRed)); //test
+	testenm1 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::ShotgunKinBlue)); //test
 	testenm1->SetOrigin(Origins::BC); //test
 	testenm1->SetPosition(200, 200); //test
 	testenm1->sortLayer = 0;
 	enemylist.push_back(testenm1);
+
+	test2 = (Boss*)AddGo(new Boss(Enemy::EnemyName::GatlingGull)); //test
+	test2->SetOrigin(Origins::BC); //test
+	test2->SetPosition(400.f, 0.f); //test
+	enemylist.push_back(test2); //test
+
+	enemyBullets.OnCreate = [this](EnemyBullet* bullet)
+	{
+		bullet->pool = &enemyBullets;
+	};
+	enemyBullets.Init();
 
 	MakeTestRoom(3);
 	for (auto go : gameObjects)
@@ -53,13 +66,12 @@ void SceneGame::Init()
 
 void SceneGame::Release()
 {
+	enemyBullets.Release();
 
 	for (auto go : gameObjects)
 	{
 		delete go;
 	}
-
-	//std::cout << "씬게임 릴리드";
 }
 
 void SceneGame::Enter()
@@ -74,6 +86,7 @@ void SceneGame::Enter()
 	player->Init();
 	player->SetEnemyList(enemylist);
 	testenm1->SetPlayer(player); //test
+	test2->SetPlayer(player);
 
 
 	player->SetPosition(0.f,0.f);
@@ -87,6 +100,8 @@ void SceneGame::Exit()
 {
 	Scene::Exit();
 	player->Reset();
+
+	ClearPool(enemyBullets);
 }
 
 void SceneGame::Update(float dt)
@@ -227,22 +242,27 @@ void SceneGame::ColliedTest()
 	{
 		if (arry.type == WallType::Wall&& arry.shape.getGlobalBounds().contains(player->GetPosition()))
 		{
-			std::cout << "Wall Collied" << std::endl;
+			//std::cout << "Wall Collied" << std::endl;
 		}
 		else if (arry.shape.getGlobalBounds().intersects(shape.getGlobalBounds()))
 		{
 			switch (arry.type)
 			{
 			case WallType::WalloBlocker:
-				std::cout << "Wall WalloBlocker" << std::endl;
+				//std::cout << "Wall WalloBlocker" << std::endl;
 				break;
 			case WallType::FallingZone:
-				std::cout << "Wall FallingZone" << std::endl;
+				//std::cout << "Wall FallingZone" << std::endl;
 				break;
 			case WallType::TeleportZone:
-				std::cout << "Wall TeleportZone" << std::endl;
+				//std::cout << "Wall TeleportZone" << std::endl;
 				break;
 			}
 		}
 	}
+}
+
+ObjectPool<EnemyBullet>& SceneGame::GetPoolEnemyBullet()
+{
+	return enemyBullets;
 }

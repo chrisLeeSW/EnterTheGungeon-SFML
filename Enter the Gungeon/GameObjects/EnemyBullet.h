@@ -1,6 +1,7 @@
 #pragma once
 #include "SpriteGo.h"
 #include "AnimationController.h"
+#include "ObjectPool.h"
 
 class Player;
 
@@ -18,6 +19,8 @@ protected:
 	bool isBlink = false;
 
 public:
+	ObjectPool<EnemyBullet>* pool;
+
 	EnemyBullet(std::string textureId = "", std::string name = "");
 	virtual ~EnemyBullet() override;
 

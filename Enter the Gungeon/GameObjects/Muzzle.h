@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
+class Player;
+
 class Muzzle : public GameObject
 {
 public:
@@ -19,6 +21,8 @@ protected:
 	float innerdelay = 0.f;
 	float innerinterval = 0.f;
 	int innerquantity = 0;
+
+	Player* player = nullptr;
 
 public:
 	sf::CircleShape circle;
@@ -39,4 +43,5 @@ public:
 	virtual void Draw(sf::RenderWindow& window) override;
 
 	void Play();
+	void SetPlayer(Player* player);
 };

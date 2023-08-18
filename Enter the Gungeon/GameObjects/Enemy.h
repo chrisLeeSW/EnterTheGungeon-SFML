@@ -45,6 +45,8 @@ protected:
 	float attackTimer = 0.f;
 	bool superarmor = false;
 
+	int patternCount = 0;
+
 	//Enemy Weapon - 김혜준 추가
 	ShotGun* shotgun;
 	Magnum* magnum;
@@ -70,6 +72,7 @@ public:
 
 	void SetPlayer(Player* player);
 	void SetEnemy();
+	void LoadMuzzle(const std::string& path);
 
 	// Bullet에게 맞았을 때
 	std::function<void(float)> IfHit;
@@ -87,9 +90,11 @@ public:
 	// 단발사격
 	void OneShot(sf::Vector2f dir, float speed, bool isBlink = false);
 	// 각도를 조절한 단발사격
-	void AngleShot(sf::Vector2f dir, float speed, float angle = 0.f);
-	// 전방으로 5개의 총알을 산개하여 발사
-	void FiveWayShot(sf::Vector2f dir, float speed);
+	void AngleShot(sf::Vector2f dir, float speed, float angle = 0.f, bool isBlink = false);
+	// 부채꼴로 n개의 총알을 산개하여 발사
+	void ShotgunShot(sf::Vector2f dir, float speed, int quantity, float angle);
+	// 위치 벡터에 총알을 유지
+	void Boom(sf::Vector2f pos, float range);
 
 	// 6방향으로 총알을 발사하며 사망
 	void SixWayDie(sf::Vector2f dir, float speed, int chance);

@@ -34,6 +34,7 @@ protected:
 	std::vector<bool> connected;
 	std::vector<sf::RectangleShape> tunnel;
 	std::vector<sf::Vector2f> positions;
+//	std::vector<sf::Vector2f> position2;
 	std::vector<sf::RectangleShape> doorShape;
 	int length = 0;
 
@@ -52,6 +53,7 @@ public :
 	void ListFilesInDirectory(const std::string& folderPath);
 	sf::Vector2f Center( TileMap* room);
 	void ConnectRooms(TileMap* r1 , TileMap* r2);
+	void CreateTunnel(sf::Vector2f start, sf::Vector2f end);
 	bool isIntersecting(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
 	sf::Vector2f intersectionPoint(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
 	bool isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, sf::Vector2f& intersection);

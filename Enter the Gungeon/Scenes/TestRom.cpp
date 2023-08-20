@@ -102,6 +102,7 @@ void TestRom::Init()
 	connected[0] = true;
 	int currentRoom = 0;
 	int lineCount = 0;
+	int prevRooom=0;
 	while (true)
 	{
 		int closestRoom = -1;
@@ -124,35 +125,65 @@ void TestRom::Init()
 		}
 		ConnectRooms(tileRoom[currentRoom].map, tileRoom[closestRoom].map);
 		connected[closestRoom] = true;
-
+		prevRooom = currentRoom;
 		currentRoom = closestRoom;
 	}
-	for (int i = 0;i < tileRoom.size();++i)
+	/*{
+		sf::Vector2f end = passages[passages.size() - 1].to;
+		sf::Vector2f start = passages[passages.size() - 1].from;
+		int end1X = end.x * 100;
+		int end1Y = end.y * 100;
+		int startX = start.x * 100;
+		int startY = start.y * 100;
+		if ((end1X != startX) || (startX != startY))
+		{
+			if (end.x > start.x)
+			{
+				end.x -= tileRoom[currentRoom].map->vertexArray.getBounds().width * 0.5f + tileRoom[currentRoom].map->GetTileSize().x * 0.5f;
+			}
+			if (end.x < start.x)
+			{
+				end.x += tileRoom[currentRoom].map->vertexArray.getBounds().width * 0.5f - tileRoom[currentRoom].map->GetTileSize().x * 0.5f;
+			}
+			if (end.y > start.y)
+			{
+				end.y -= tileRoom[currentRoom].map->vertexArray.getBounds().height * 0.5f - tileRoom[currentRoom].map->GetTileSize().y * 0.5f;
+			}
+			if (end.y < start.y)
+			{
+				end.y += tileRoom[currentRoom].map->vertexArray.getBounds().height * 0.5f - tileRoom[currentRoom].map->GetTileSize().y * 0.5f;
+			}
+			positions.push_back(end);
+		}
+	
+	}*/
+
+	for (int i = 0; i < tileRoom.size(); ++i)
 	{
-		for (int k = 0;k < passages.size();++k)
+		for (int k = 0; k < passages.size(); ++k)
 		{
 			sf::Vector2f pos;
 			if (isIntersecting(tileRoom[i].map->vertexArray.getBounds(), passages[k].from, passages[k].to, pos))
 			{
 				bool isNotPos = false;
-				for (auto& pushPos : positions)
+				/*for (auto& pushPos : positions)
 				{
 					if (pushPos == pos)
 					{
 						isNotPos = true;
 						break;
 					}
-				}
+				}*/
 				if (!isNotPos)
 				{
 					sf::Vector2f center = tileRoom[i].map->GetStartPos();
 					if (pos.x > center.x)
 					{
-						pos.x -= tileRoom[i].map->GetTileSize().x*0.5f;
+						pos.x -= tileRoom[i].map->GetTileSize().x * 0.5f;
 					}
 					if (pos.x < center.x)
 					{
-						pos.x += tileRoom[i].map->GetTileSize().x*0.5f;
+						pos.x += tileRoom[i].map->GetTileSize().x * 0.5f;
 					}
 					if (pos.y > center.y)
 					{
@@ -167,7 +198,8 @@ void TestRom::Init()
 			}
 		}
 	}
-	for (int i = 0;i < positions.size();++i)
+
+	for (int i = 0; i < positions.size(); ++i)
 	{
 		sf::RectangleShape shpae;
 		shpae.setSize({ 25.f,25.f });
@@ -175,6 +207,157 @@ void TestRom::Init()
 		Utils::SetOrigin(shpae, Origins::MC);
 		doorShape.push_back(shpae);
 	}
+
+
+
+
+	std::cout << positions.size() << std::endl;
+	for (int i = 0; i < positions.size(); ++i)
+	{
+		std::cout << i << "번째의 포지션 값 :" << positions[i].x << "\t" << positions[i].y << std::endl;
+	}
+
+	std::cout << passages.size() << std::endl;
+	for (int i = 0; i < passages.size(); ++i)
+	{
+		std::cout << i << "번째의 from 값 :" << passages[i].from.x << "\t" << passages[i].from.y << std::endl;
+		std::cout << i << "번째의 to 값 :" << passages[i].to.x << "\t" << passages[i].to.y << std::endl;
+	}
+
+	int a = 0;
+	//for (int i = 1; i < doorShape.size(); ++i)
+	//{
+	//	while (a != passages.size())
+	//	{
+	//		sf::Vector2f pos;
+	//		if (a == 0)
+	//		{
+	//			if (isIntersecting(doorShape[i].getGlobalBounds(), positions[i - 1], passages[a].to, pos))
+	//			{
+	//				CreateTunnel(positions[i - 1], passages[a].to);
+	//				a++;
+	//				break;
+	//			}
+	//			else
+	//			{
+	//				CreateTunnel(positions[i - 1], passages[a].to);
+	//				a++;
+	//			}
+	//		}
+	//		else
+	//		{
+	//			//if (a % 2 == 1)
+	//			{
+	//				if (isIntersecting(doorShape[i].getGlobalBounds(), passages[a].from, passages[a].to, pos))
+	//				{
+	//					CreateTunnel(passages[a].from, positions[i - 1]);
+	//					a++;
+	//					break;
+	//				}
+	//				else if (isIntersecting(doorShape[i].getGlobalBounds(), positions[i - 1], passages[a].to, pos))
+	//				{
+	//					CreateTunnel(positions[i - 1], passages[a].to);
+	//					a++;
+	//					break;
+	//				}
+	//				else
+	//				{
+	//					CreateTunnel(positions[i - 1], passages[a].to);
+	//					a++;
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+
+	/*for (int i = 0; i < passages.size(); ++i)
+	{
+		CreateTunnel(passages[i].from, passages[i].to);
+	}*/
+
+	
+	/*for (int i = 0; i < passages.size(); ++i)
+	{
+		if (i % 2 == 0)
+		{
+			CreateTunnel(positions[i], passages[i].to);
+		}
+		else
+		{
+			CreateTunnel(passages[i].from, positions[i]);
+		}
+	}*/
+
+	/*int testCount = 0;
+	for (int i = 0; i < positions.size(); i+=2)
+	{
+		for (; testCount < passages.size(); testCount++)
+		{
+			if (testCount == 0)
+			{
+				sf::Vector2f pos;
+				if (isIntersecting(doorShape[i + 1].getGlobalBounds(), positions[i], passages[testCount].to, pos))
+				{
+					testCount+=2;
+					CreateTunnel(positions[i], pos);
+					break;
+				}
+				else	CreateTunnel(positions[i], passages[testCount].to);
+			}
+			else if (testCount % 2 == 1)
+			{
+
+				CreateTunnel(passages[testCount].from, positions[i+1]);
+				testCount++;
+				break;
+			}
+			else if (testCount % 2 == 0 && testCount != 0)
+			{
+				sf::Vector2f pos;
+				if (isIntersecting(doorShape[i + 1].getGlobalBounds(), positions[i], passages[testCount].to, pos))
+				{
+					testCount+=2;
+					CreateTunnel(positions[i], pos);
+					break;
+				}
+				else CreateTunnel(positions[i], passages[testCount].to);
+			}
+		}
+	}*/
+
+	/*	for (int k = 0; k < passages.size(); ++k)
+		{
+			sf::Vector2f pos;
+			if (k == 0)
+			{
+				if (isIntersecting(doorShape[i].getGlobalBounds(), positions[i - 1], passages[k].to, pos))
+				{
+					CreateTunnel(positions[i - 1], passages[k].to);
+					break;
+				}
+				else CreateTunnel(positions[i - 1], passages[k].to);
+			}
+			else
+			{
+				if (k % 2 == 1)
+				{
+					if (isIntersecting(doorShape[i].getGlobalBounds(), passages[k].from, passages[k].to, pos))
+					{
+						CreateTunnel(passages[k].from, passages[k].to);
+						break;
+					}
+				}
+				else
+				{
+					if (isIntersecting(doorShape[i].getGlobalBounds(), passages[k].from, passages[k].to, pos))
+					{
+						CreateTunnel(passages[k].from, passages[k].to);
+						break;
+					}
+				}
+			}
+		}*/
+
 
 	for (auto go : gameObjects)
 	{
@@ -247,7 +430,7 @@ void TestRom::Draw(sf::RenderWindow& window)
 	window.setView(worldView);
 	//rooms->Draw(window);
 	window.draw(shape);
-	/*for (int i = 0;i < length;++i)
+	for (int i = 0; i < length; ++i)
 	{
 		sf::VertexArray line(sf::Lines, 2);
 		line[0].position = passages[i].from;
@@ -255,7 +438,8 @@ void TestRom::Draw(sf::RenderWindow& window)
 		line[0].color = sf::Color::White;
 		line[1].color = sf::Color::White;
 		window.draw(line);
-	}*/
+	}
+
 
 	/*for (const auto& passage : passages) {
 		sf::VertexArray line(sf::Lines, 2);
@@ -265,6 +449,8 @@ void TestRom::Draw(sf::RenderWindow& window)
 		line[1].color = sf::Color::White;
 		window.draw(line);
 	}*/
+
+
 	for (const auto& rect : tunnel)
 	{
 		window.draw(rect);
@@ -339,10 +525,93 @@ void TestRom::ConnectRooms(TileMap* r1, TileMap* r2)
 {
 	sf::Vector2f c1 = r1->GetStartPos();
 	sf::Vector2f c2 = r2->GetStartPos();
-
-	// L-모양 통로 생성
 	passages.push_back({ c1, {c2.x, c1.y} });
 	passages.push_back({ {c2.x, c1.y}, c2 });
+
+	
+	//for (int k = 0; k < passages.size(); ++k)
+	//{
+	//	sf::Vector2f pos;
+	//	if (isIntersecting(r1->vertexArray.getBounds(), passages[k].from, passages[k].to, pos) /*|| isIntersecting(r2->vertexArray.getBounds(), passages[k].from, passages[k].to, pos)*/)
+	//	{
+	//		bool isNotPos = false;
+	//		for (auto& pushPos : positions)
+	//		{
+	//			if (pushPos == pos)
+	//			{
+	//				isNotPos = true;
+	//				break;
+	//			}
+	//		}
+	//		if (!isNotPos)
+	//		{
+	//			sf::Vector2f center = r1->GetStartPos();
+	//			if (pos.x > center.x)
+	//			{
+	//				pos.x -= r1->GetTileSize().x * 0.5f;
+	//			}
+	//			if (pos.x < center.x)
+	//			{
+	//				pos.x += r1->GetTileSize().x * 0.5f;
+	//			}
+	//			if (pos.y > center.y)
+	//			{
+	//				pos.y -=r1->GetTileSize().y * 0.5f;
+	//			}
+	//			if (pos.y < center.y)
+	//			{
+	//				pos.y += r1->GetTileSize().y * 0.5f;
+	//			}
+	//			positions.push_back(pos);
+	//		}
+	//	}
+	//}
+	//CreateTunnel(c1, { c2.x, c1.y });
+	//CreateTunnel({ c2.x, c1.y }, c2);
+
+
+}
+
+void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
+{
+
+	// 터널의 사이즈를 설정합니다.
+	const sf::Vector2f tunnelSize(23.f, 23.f);
+	const float tunnelSpacing = 5.0f; // 터널 사각형들 간의 간격입니다.
+	sf::Vector2f midpoint(start.x, end.y);
+
+	// 시작점에서 중간점까지의 통로를 생성합니다.
+	sf::Vector2f direction1 = (midpoint - start) / Utils::Distance(start, midpoint);
+	float totalTunnelLength1 = Utils::Distance(start, midpoint);
+	int tunnelCount1 = static_cast<int>(totalTunnelLength1 / (tunnelSize.x ));
+	for (int i = 0; i < tunnelCount1; ++i)
+	{
+		sf::RectangleShape tunnelShape;
+		tunnelShape.setSize(tunnelSize);
+		tunnelShape.setPosition(start + sf::Vector2f{ direction1.x * i, direction1.y * i }*(tunnelSize.x));
+		tunnelShape.setRotation(std::atan2(direction1.y, direction1.x) * 180.0f / 3.14159265f);
+		tunnelShape.setFillColor(sf::Color::Transparent);
+		tunnelShape.setOutlineThickness(2);
+		tunnelShape.setOutlineColor(sf::Color::Red);
+		Utils::SetOrigin(tunnelShape, Origins::MC);
+		tunnel.push_back(tunnelShape);
+	}
+	// 중간점에서 끝점까지의 통로를 생성합니다.
+	sf::Vector2f direction2 = (end - midpoint) / Utils::Distance(midpoint, end);
+	float totalTunnelLength2 = Utils::Distance(midpoint, end);
+	int tunnelCount2 = static_cast<int>(totalTunnelLength2 / (tunnelSize.x ));
+	for (int i = 0; i < tunnelCount2; ++i)
+	{
+		sf::RectangleShape tunnelShape;
+		tunnelShape.setSize(tunnelSize);
+		tunnelShape.setPosition(midpoint + sf::Vector2f{ direction2.x * i ,direction2.y * i } *(tunnelSize.x));
+		tunnelShape.setRotation(std::atan2(direction2.y, direction2.x) * 180.0f / 3.14159265f);
+		tunnelShape.setFillColor(sf::Color::Transparent);
+		tunnelShape.setOutlineThickness(1);
+		tunnelShape.setOutlineColor(sf::Color::Green);
+		Utils::SetOrigin(tunnelShape, Origins::MC);
+		tunnel.push_back(tunnelShape);
+	}
 }
 
 
@@ -408,3 +677,51 @@ bool TestRom::isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, 
 
 	return false;
 }
+
+
+
+
+
+
+/*
+for (int i = 0; i < tileRoom.size(); ++i)
+	{
+		for (int k = 0; k < passages.size(); ++k)
+		{
+			sf::Vector2f pos;
+			if (isIntersecting(tileRoom[i].map->vertexArray.getBounds(), passages[k].from, passages[k].to, pos))
+			{
+				bool isNotPos = false;
+				for (auto& pushPos : positions)
+				{
+					if (pushPos == pos)
+					{
+						isNotPos = true;
+						break;
+					}
+				}
+				if (!isNotPos)
+				{
+					sf::Vector2f center = tileRoom[i].map->GetStartPos();
+					if (pos.x > center.x)
+					{
+						pos.x -= tileRoom[i].map->GetTileSize().x * 0.5f;
+					}
+					if (pos.x < center.x)
+					{
+						pos.x += tileRoom[i].map->GetTileSize().x * 0.5f;
+					}
+					if (pos.y > center.y)
+					{
+						pos.y -= tileRoom[i].map->GetTileSize().y * 0.5f;
+					}
+					if (pos.y < center.y)
+					{
+						pos.y += tileRoom[i].map->GetTileSize().y * 0.5f;
+					}
+					positions.push_back(pos);
+				}
+			}
+		}
+	}
+*/

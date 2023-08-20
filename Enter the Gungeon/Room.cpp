@@ -28,7 +28,7 @@ Room::Room()
    std::shuffle(rooms.begin(), rooms.end(), std::default_random_engine(static_cast<unsigned int>(time(nullptr))));
   // if (size == 0) rooms.resize(Utils::RandomRange(1, 5));
    //else rooms.resize(Utils::RandomRange(3, size));
-   rooms.resize(3);
+   rooms.resize(10);
 
    connected.resize(rooms.size(), false);
    connected[0] = true;
@@ -457,3 +457,186 @@ std::vector<sf::Vector2f> TestRom::Intersection(const sf::FloatRect& rect, const
         //	lineCount++;
         //	tunnel.push_back(endShpae);
         //}
+
+// 터널 생성
+
+
+
+//for (const auto& passage : passages)
+    //{
+    //	sf::Vector2f start, end;
+    //	bool foundStart = false, foundEnd = false;
+
+    //	// 통로의 시작점과 끝점을 찾습니다.
+    //	for (const auto& door : doorShape)
+    //	{
+    //		if (!foundStart && passage.from == door.getPosition())
+    //		{
+    //			start = passage.from;
+    //			foundStart = true;
+    //		}
+    //		if (!foundEnd && passage.to == door.getPosition())
+    //		{
+    //			end = passage.to;
+    //			foundEnd = true;
+    //		}
+    //		if (foundStart && foundEnd)
+    //		{
+    //			break;
+    //		}
+    //	}
+
+    //	// 시작점과 끝점을 찾았다면 터널을 생성합니다.
+    //	if (foundStart && foundEnd)
+    //	{
+    //		CreateTunnel(start, end);
+    //	}
+    //}
+    /*for (int i = 0; i < positions.size() - 1; ++i)
+    {
+        CreateTunnel(positions[i], positions[i + 1]);
+    }*/
+//
+/*
+int tunnelCount = 0;
+	int doorCount = 1;
+	lineCount = 0;
+    */
+//while (tunnelCount != doorShape.size()-1)
+    //{
+    //	
+    //	sf::Vector2f pos;
+    //	//if (isIntersecting(tileRoom[doorCount].map->vertexArray.getBounds() ,positions[tunnelCount], passages[lineCount].to, pos))
+    //	if (isIntersecting(tileRoom[doorCount].map->vertexArray.getBounds(), positions[tunnelCount], passages[lineCount].to, pos))
+    //	{
+    //		
+    //		tunnelCount++;
+    //		if (lineCount % 2 == 0 && lineCount !=0)
+    //			CreateTunnel(positions[tunnelCount], passages[lineCount++].to);
+    //		else if(lineCount % 2 == 1 && lineCount != 0)
+    //			CreateTunnel(positions[tunnelCount], passages[lineCount++].from);
+    //		else if (lineCount == 0)
+    //			CreateTunnel(positions[tunnelCount], passages[lineCount++].to);
+    //		//doorCount++;
+    //	}
+    //	else 
+    //	{
+    //		if(lineCount % 2 == 0 && lineCount != 0)
+    //			CreateTunnel(positions[tunnelCount], passages[lineCount++].to);
+    //		else if(lineCount % 2 == 1 && lineCount != 0)
+    //			CreateTunnel(positions[tunnelCount], passages[lineCount++].from);
+    //		else if (lineCount == 0)
+    //			CreateTunnel(positions[tunnelCount], passages[lineCount++].to);
+    //		
+    //	}
+    //}
+    //  코드가 터짐
+//
+//
+// 
+    //int a=0;
+    //for (int i = 1; i < doorShape.size(); ++i)
+    //{
+    //	while (a != passages.size())
+    //	{
+    //		sf::Vector2f pos;
+    //		if (a == 0)
+    //		{
+    //			if (isIntersecting(doorShape[i].getGlobalBounds(), positions[i - 1], passages[a].to, pos))
+    //			{
+    //				CreateTunnel(positions[i - 1], passages[a].to);
+    //				a++;
+    //				break;
+    //			}
+    //			else CreateTunnel(positions[i - 1], passages[a].to);
+    //		}
+    //		else
+    //		{
+    //			if (a % 2 == 1)
+    //			{
+    //				if (isIntersecting(doorShape[i].getGlobalBounds(), passages[a].from, passages[a].to, pos))
+    //				{
+    //					CreateTunnel(passages[a].from, positions[i - 1]);
+    //					a++;
+    //					break;
+    //				}
+    //				else if (isIntersecting(doorShape[i].getGlobalBounds(), positions[i - 1], passages[a].to, pos))
+    //				{
+    //					CreateTunnel(positions[i - 1], passages[a].to);
+    //					a++;
+    //					break;
+    //				}
+    //				else  CreateTunnel(positions[i - 1], passages[a].to);
+    //			}
+    //			else
+    //			{
+    //				if (isIntersecting(doorShape[i].getGlobalBounds(), passages[a].from, passages[a].to, pos))
+    //				{
+    //					CreateTunnel(passages[a].from, positions[i - 1]);
+    //					a++;
+    //					break;
+    //				}
+    //				else if (isIntersecting(doorShape[i].getGlobalBounds(), positions[i - 1], passages[a].to, pos))
+    //				{
+    //					CreateTunnel(positions[i - 1], passages[a].to);
+    //					a++;
+    //					break;
+    //				}
+    //				else CreateTunnel(positions[i - 1], passages[a].to);
+    //			}
+    //		}
+    //		a++;
+    //	}
+    //	/*for (int k = 0; k < passages.size(); ++k)
+    //	{
+    //		sf::Vector2f pos;
+    //		if (k == 0)
+    //		{
+    //			if (isIntersecting(doorShape[i].getGlobalBounds(), positions[i - 1], passages[k].to, pos))
+    //			{
+    //				CreateTunnel(positions[i - 1], passages[k].to);
+    //				break;
+    //			}
+    //			else CreateTunnel(positions[i - 1], passages[k].to);
+    //		}
+    //		else
+    //		{
+    //			if (k % 2 == 1)
+    //			{
+    //				if (isIntersecting(doorShape[i].getGlobalBounds(), passages[k].from, passages[k].to, pos))
+    //				{
+    //					CreateTunnel(passages[k].from, passages[k].to);
+    //					break;
+    //				}
+    //			}
+    //			else
+    //			{
+    //				if (isIntersecting(doorShape[i].getGlobalBounds(), passages[k].from, passages[k].to, pos))
+    //				{
+    //					CreateTunnel(passages[k].from, passages[k].to);
+    //					break;
+    //				}
+    //			}
+    //		}
+    //	}*/
+    //}
+
+
+/*
+for (int i = 0; i < positions.size() - 1; ++i)
+    {
+        sf::Vector2f startPos = positions[i];
+        sf::Vector2f endPos = positions[i + 1];
+
+        if (startPos.x > endPos.x)
+            startPos.x -= 12.5f;
+        if (startPos.x < endPos.x)
+            startPos.x += 12.5f;
+        if (startPos.y > endPos.y)
+            startPos.y -= 12.5f;
+        if (startPos.y < endPos.y)
+            startPos.y += 12.5f;
+        CreateTunnel(startPos,endPos);
+    }
+// //문이 이상하게 돌아가는 문제가 있음 
+*/

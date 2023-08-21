@@ -7,6 +7,14 @@ class TileMap;
 class InteractionObject;
 class SpriteGo;
 
+enum class DoorDirection
+{
+	None =-1,
+	Up,
+	Down,
+	Left,
+	Right
+};
 struct RoomObjectsInfoTest1
 {
 	MapObjectType type;
@@ -23,6 +31,11 @@ struct RandomMapInfo
 struct Passage {
 	sf::Vector2f from, to;
 };
+struct DoorInfo
+{
+	sf::Vector2f pos;
+	DoorDirection dir;
+};
 class TestRom : public Scene
 {
 protected:
@@ -33,9 +46,10 @@ protected:
 	std::vector<Passage> passages;
 	std::vector<bool> connected;
 	std::vector<sf::RectangleShape> tunnel;
-	std::vector<sf::Vector2f> positions;
+	std::vector<DoorInfo> doorInfo;
 //	std::vector<sf::Vector2f> position2;
 	std::vector<sf::RectangleShape> doorShape;
+	std::vector<sf::CircleShape> circle;
 	int length = 0;
 
 	bool test = false;
@@ -57,6 +71,7 @@ public :
 	bool isIntersecting(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
 	sf::Vector2f intersectionPoint(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
 	bool isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, sf::Vector2f& intersection);
+	std::vector<sf::Vector2f> isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, std::vector<sf::Vector2f>& room);
 };
 
 

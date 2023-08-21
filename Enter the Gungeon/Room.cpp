@@ -8,27 +8,29 @@ Room::Room()
     Divide(initial,5);
 
     sf::Vector2i  startPos = { -1500 ,-1500 };
-    int widht = 5000 /50;
-    int height = 5000 /50;
+    int widht = 5000 /25;
+    int height = 5000 /25;
 
     for (int i = 0;i < height;++i)
     {
         for (int k = 0;k < widht;++k)
         {
             sf::RectangleShape shape;
-            shape.setSize({ 48.f,48.f });
+            shape.setSize({ 23.f,23.f });
             shape.setFillColor(sf::Color::Transparent);
-            shape.setPosition(startPos.x + (k*50), startPos.y + (i * 50));
+            shape.setPosition(startPos.x + (k*25), startPos.y + (i * 25));
             shape.setOutlineThickness(2);
             shape.setOutlineColor(sf::Color::Yellow);
             tiles.push_back(shape);
         }
     }
-   int size = rooms.size();
+   int size = rooms.size() / 2;
    std::shuffle(rooms.begin(), rooms.end(), std::default_random_engine(static_cast<unsigned int>(time(nullptr))));
   // if (size == 0) rooms.resize(Utils::RandomRange(1, 5));
    //else rooms.resize(Utils::RandomRange(3, size));
-   rooms.resize(10);
+   rooms.resize(20);
+
+   
 
    connected.resize(rooms.size(), false);
    connected[0] = true;
@@ -65,39 +67,73 @@ Room::Room()
    }
 }
 
+const int tile_size = 25; // 타일의 크기
+
 void Room::Divide(Rect rect, int depth)
 {
-    if (depth <= 0 || rect.width < min_width*2 || rect.height < min_height*2) {
+    if (depth <= 0 || rect.width < 2 * tile_size || rect.height < 2 * tile_size)
+    {
         // 중심에 기반한 작은 방 생성
         Rect room;
-        room.width = rect.width *0.75;
-        room.height = rect.height * 0.75 ;
-        room.x = rect.x + (rect.width - room.width) * 0.75;
-        room.y = rect.y + (rect.height - room.height) * 0.75;
+        room.width = (rect.width / tile_size) * tile_size;
+        room.height = (rect.height / tile_size) * tile_size;
+        room.x = rect.x + (rect.width - room.width) / 2;
+        room.y = rect.y + (rect.height - room.height) / 2;
         rooms.push_back(room);
         return;
     }
 
-
-    float hDivider = rect.height / 2;
-    float wDivider = rect.width / 2;
-
+    int hDivider = (rect.height / tile_size / 2) * tile_size;
+    int wDivider = (rect.width / tile_size / 2) * tile_size;
 
     // 사각형을 수평 또는 수직으로 분할
-    if (rand() % 2 == 0) {
+    if (rand() % 2 == 0)
+    {
         // 수평 분할
-        if (hDivider < 2 * min_height) return;
+        if (hDivider < 2 * tile_size) return;
         dividers.push_back({ { rect.x, rect.y + hDivider }, { rect.x + rect.width, rect.y + hDivider } });
-        Divide({ rect.x, rect.y, rect.width, hDivider }, depth - 1);
+        Divide({ rect.x, rect.y, rect.width, (float)hDivider }, depth - 1);
         Divide({ rect.x, rect.y + hDivider, rect.width, rect.height - hDivider }, depth - 1);
     }
-    else {
+    else
+    {
         // 수직 분할
-        if (wDivider < 2 * min_width) return;
+        if (wDivider < 2 * tile_size) return;
         dividers.push_back({ { rect.x + wDivider, rect.y }, { rect.x + wDivider, rect.y + rect.height } });
-        Divide({ rect.x, rect.y, wDivider, rect.height }, depth - 1);
+        Divide({ rect.x, rect.y, (float)wDivider, rect.height }, depth - 1);
         Divide({ rect.x + wDivider, rect.y, rect.width - wDivider, rect.height }, depth - 1);
     }
+    //if (depth <= 0 || rect.width < min_width*2 || rect.height < min_height*2) {
+    //    // 중심에 기반한 작은 방 생성
+    //    Rect room;
+    //    room.width = rect.width *0.75;
+    //    room.height = rect.height * 0.75 ;
+    //    room.x = rect.x + (rect.width - room.width) * 0.75;
+    //    room.y = rect.y + (rect.height - room.height) * 0.75;
+    //    rooms.push_back(room);
+    //    return;
+    //}
+
+
+    //float hDivider = rect.height / 2;
+    //float wDivider = rect.width / 2;
+
+
+    //// 사각형을 수평 또는 수직으로 분할
+    //if (rand() % 2 == 0) {
+    //    // 수평 분할
+    //    if (hDivider < 2 * min_height) return;
+    //    dividers.push_back({ { rect.x, rect.y + hDivider }, { rect.x + rect.width, rect.y + hDivider } });
+    //    Divide({ rect.x, rect.y, rect.width, hDivider }, depth - 1);
+    //    Divide({ rect.x, rect.y + hDivider, rect.width, rect.height - hDivider }, depth - 1);
+    //}
+    //else {
+    //    // 수직 분할
+    //    if (wDivider < 2 * min_width) return;
+    //    dividers.push_back({ { rect.x + wDivider, rect.y }, { rect.x + wDivider, rect.y + rect.height } });
+    //    Divide({ rect.x, rect.y, wDivider, rect.height }, depth - 1);
+    //    Divide({ rect.x + wDivider, rect.y, rect.width - wDivider, rect.height }, depth - 1);
+    //}
 
 }
 
@@ -272,13 +308,13 @@ void Room::Draw(sf::RenderWindow& window)
     }
     if (drawTest)
     {
-        for (const auto& room : rooms) {
+      /*  for (const auto& room : rooms) {
             sf::RectangleShape rect;
             rect.setPosition(room.x, room.y);
             rect.setSize({ room.width, room.height });
             rect.setFillColor(sf::Color::Green);
             window.draw(rect);
-        }
+        }*/
 
         // 여기서 통로를 그림
         /*
@@ -310,10 +346,10 @@ void Room::Draw(sf::RenderWindow& window)
             line[1].color = sf::Color::White;
             window.draw(line);
         }*/
-       /* for (const auto& tile : tiles)
+       for (const auto& tile : tiles)
         {
             window.draw(tile);
-        }*/
+        }
     }
 }
 
@@ -492,9 +528,9 @@ std::vector<sf::Vector2f> TestRom::Intersection(const sf::FloatRect& rect, const
     //		CreateTunnel(start, end);
     //	}
     //}
-    /*for (int i = 0; i < positions.size() - 1; ++i)
+    /*for (int i = 0; i < doorInfo.size() - 1; ++i)
     {
-        CreateTunnel(positions[i], positions[i + 1]);
+        CreateTunnel(doorInfo[i], doorInfo[i + 1]);
     }*/
 //
 /*
@@ -506,27 +542,27 @@ int tunnelCount = 0;
     //{
     //	
     //	sf::Vector2f pos;
-    //	//if (isIntersecting(tileRoom[doorCount].map->vertexArray.getBounds() ,positions[tunnelCount], passages[lineCount].to, pos))
-    //	if (isIntersecting(tileRoom[doorCount].map->vertexArray.getBounds(), positions[tunnelCount], passages[lineCount].to, pos))
+    //	//if (isIntersecting(tileRoom[doorCount].map->vertexArray.getBounds() ,doorInfo[tunnelCount], passages[lineCount].to, pos))
+    //	if (isIntersecting(tileRoom[doorCount].map->vertexArray.getBounds(), doorInfo[tunnelCount], passages[lineCount].to, pos))
     //	{
     //		
     //		tunnelCount++;
     //		if (lineCount % 2 == 0 && lineCount !=0)
-    //			CreateTunnel(positions[tunnelCount], passages[lineCount++].to);
+    //			CreateTunnel(doorInfo[tunnelCount], passages[lineCount++].to);
     //		else if(lineCount % 2 == 1 && lineCount != 0)
-    //			CreateTunnel(positions[tunnelCount], passages[lineCount++].from);
+    //			CreateTunnel(doorInfo[tunnelCount], passages[lineCount++].from);
     //		else if (lineCount == 0)
-    //			CreateTunnel(positions[tunnelCount], passages[lineCount++].to);
+    //			CreateTunnel(doorInfo[tunnelCount], passages[lineCount++].to);
     //		//doorCount++;
     //	}
     //	else 
     //	{
     //		if(lineCount % 2 == 0 && lineCount != 0)
-    //			CreateTunnel(positions[tunnelCount], passages[lineCount++].to);
+    //			CreateTunnel(doorInfo[tunnelCount], passages[lineCount++].to);
     //		else if(lineCount % 2 == 1 && lineCount != 0)
-    //			CreateTunnel(positions[tunnelCount], passages[lineCount++].from);
+    //			CreateTunnel(doorInfo[tunnelCount], passages[lineCount++].from);
     //		else if (lineCount == 0)
-    //			CreateTunnel(positions[tunnelCount], passages[lineCount++].to);
+    //			CreateTunnel(doorInfo[tunnelCount], passages[lineCount++].to);
     //		
     //	}
     //}
@@ -542,13 +578,13 @@ int tunnelCount = 0;
     //		sf::Vector2f pos;
     //		if (a == 0)
     //		{
-    //			if (isIntersecting(doorShape[i].getGlobalBounds(), positions[i - 1], passages[a].to, pos))
+    //			if (isIntersecting(doorShape[i].getGlobalBounds(), doorInfo[i - 1], passages[a].to, pos))
     //			{
-    //				CreateTunnel(positions[i - 1], passages[a].to);
+    //				CreateTunnel(doorInfo[i - 1], passages[a].to);
     //				a++;
     //				break;
     //			}
-    //			else CreateTunnel(positions[i - 1], passages[a].to);
+    //			else CreateTunnel(doorInfo[i - 1], passages[a].to);
     //		}
     //		else
     //		{
@@ -556,33 +592,33 @@ int tunnelCount = 0;
     //			{
     //				if (isIntersecting(doorShape[i].getGlobalBounds(), passages[a].from, passages[a].to, pos))
     //				{
-    //					CreateTunnel(passages[a].from, positions[i - 1]);
+    //					CreateTunnel(passages[a].from, doorInfo[i - 1]);
     //					a++;
     //					break;
     //				}
-    //				else if (isIntersecting(doorShape[i].getGlobalBounds(), positions[i - 1], passages[a].to, pos))
+    //				else if (isIntersecting(doorShape[i].getGlobalBounds(), doorInfo[i - 1], passages[a].to, pos))
     //				{
-    //					CreateTunnel(positions[i - 1], passages[a].to);
+    //					CreateTunnel(doorInfo[i - 1], passages[a].to);
     //					a++;
     //					break;
     //				}
-    //				else  CreateTunnel(positions[i - 1], passages[a].to);
+    //				else  CreateTunnel(doorInfo[i - 1], passages[a].to);
     //			}
     //			else
     //			{
     //				if (isIntersecting(doorShape[i].getGlobalBounds(), passages[a].from, passages[a].to, pos))
     //				{
-    //					CreateTunnel(passages[a].from, positions[i - 1]);
+    //					CreateTunnel(passages[a].from, doorInfo[i - 1]);
     //					a++;
     //					break;
     //				}
-    //				else if (isIntersecting(doorShape[i].getGlobalBounds(), positions[i - 1], passages[a].to, pos))
+    //				else if (isIntersecting(doorShape[i].getGlobalBounds(), doorInfo[i - 1], passages[a].to, pos))
     //				{
-    //					CreateTunnel(positions[i - 1], passages[a].to);
+    //					CreateTunnel(doorInfo[i - 1], passages[a].to);
     //					a++;
     //					break;
     //				}
-    //				else CreateTunnel(positions[i - 1], passages[a].to);
+    //				else CreateTunnel(doorInfo[i - 1], passages[a].to);
     //			}
     //		}
     //		a++;
@@ -592,12 +628,12 @@ int tunnelCount = 0;
     //		sf::Vector2f pos;
     //		if (k == 0)
     //		{
-    //			if (isIntersecting(doorShape[i].getGlobalBounds(), positions[i - 1], passages[k].to, pos))
+    //			if (isIntersecting(doorShape[i].getGlobalBounds(), doorInfo[i - 1], passages[k].to, pos))
     //			{
-    //				CreateTunnel(positions[i - 1], passages[k].to);
+    //				CreateTunnel(doorInfo[i - 1], passages[k].to);
     //				break;
     //			}
-    //			else CreateTunnel(positions[i - 1], passages[k].to);
+    //			else CreateTunnel(doorInfo[i - 1], passages[k].to);
     //		}
     //		else
     //		{
@@ -623,10 +659,10 @@ int tunnelCount = 0;
 
 
 /*
-for (int i = 0; i < positions.size() - 1; ++i)
+for (int i = 0; i < doorInfo.size() - 1; ++i)
     {
-        sf::Vector2f startPos = positions[i];
-        sf::Vector2f endPos = positions[i + 1];
+        sf::Vector2f startPos = doorInfo[i];
+        sf::Vector2f endPos = doorInfo[i + 1];
 
         if (startPos.x > endPos.x)
             startPos.x -= 12.5f;

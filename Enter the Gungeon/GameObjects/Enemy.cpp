@@ -128,13 +128,13 @@ void Enemy::Reset()
 	}
 	SetEnemy();
 
+	state = Enemy::State::Idle;
 	animation.Play("IdleDown");
 	SetFlipX(false);
 	SetOrigin(origin);
 	hand.setOrigin(sprite.getLocalBounds().width * 0.8f, sprite.getLocalBounds().height * 0.25f);
 
 	hp = maxHp;
-	isAlive = true;
 	attackTimer = attackInterval;
 	patternCount = 0;
 
@@ -162,54 +162,129 @@ void Enemy::Update(float dt)
 {
 	animation.Update(dt);
 
-	if (!isAlive || player == nullptr) return;
+	if (player == nullptr || state == Enemy::State::Die) return;
 
 	direction = Utils::Normalize(player->GetPosition() - position);
 	SetFlipX(direction.x > 0.f);
-	if (direction != sf::Vector2f{ 0.f, 0.f }) prevDir = direction;
 	float distance = Utils::Distance(player->GetPosition(), position);
-	sf::Vector2f min = WhereWay(direction);
+	sf::Vector2f look = WhereWay(direction);
+	if (attackTimer < attackInterval) attackTimer += dt;
 
-	if (attackRange > distance)
+	switch (state)
 	{
-		direction = { 0.f, 0.f };
+	case Enemy::State::Idle:
+		if (direction.x != 0.f || direction.y != 0.f)
+		{
+			state = Enemy::State::Move;
+			return;
+		}
+		else
+		{
+			if (animation.GetCurrentClipId() != "IdleUp" && look == way[0])
+			{
+				animation.Play("IdleUp");
+			}
+			else if (animation.GetCurrentClipId() != "IdleLeftUp" && look == way[1])
+			{
+				animation.Play("IdleLeftUp");
+			}
+			else if (animation.GetCurrentClipId() != "IdleLeft" && look == way[2])
+			{
+				animation.Play("IdleLeft");
+			}
+			else if (animation.GetCurrentClipId() != "IdleLeftDown" && look == way[3])
+			{
+				animation.Play("IdleLeftDown");
+			}
+			else if (animation.GetCurrentClipId() != "IdleDown" && look == way[4])
+			{
+				animation.Play("IdleDown");
+			}
+		}
+		break;
+	case Enemy::State::Move:
+		if (attackRange > distance)
+		{
+			state = Enemy::State::Attack;
+			return;
+		}
 
-		attackTimer += dt;
+		if (animation.GetCurrentClipId() != "MoveUp" && look == way[0])
+		{
+			animation.Play("MoveUp");
+		}
+		else if (animation.GetCurrentClipId() != "MoveLeftUp" && look == way[1])
+		{
+			animation.Play("MoveLeftUp");
+		}
+		else if (animation.GetCurrentClipId() != "MoveLeft" && look == way[2])
+		{
+			animation.Play("MoveLeft");
+		}
+		else if (animation.GetCurrentClipId() != "MoveLeftDown" && look == way[3])
+		{
+			animation.Play("MoveLeftDown");
+		}
+		else if (animation.GetCurrentClipId() != "MoveDown" && look == way[4])
+		{
+			animation.Play("MoveDown");
+		}
+		SetPosition(position + direction * speed * dt);
+		break;
+	case Enemy::State::Attack:
+		if (attackRange < distance - 100.f)
+		{
+			state = Enemy::State::Idle;
+			return;
+		}
+
 		if (attackTimer >= attackInterval)
 		{
 			attackTimer = 0.f;
 			if (IfShoot != nullptr)
 			{
-				IfShoot(prevDir, speed); //총알 속도 지정 필요
-			}
+				IfShoot(direction, speed); //총알 속도 지정 필요
 
-			// Animation
-			if (min == way[0] && animation.GetCurrentClipId() != "AttackUp")
-			{
-				animation.Play("AttackUp");
-				animation.PlayQueue("IdleUp");
+				// Animation
+				if (look == way[0] && animation.GetCurrentClipId() != "AttackUp")
+				{
+					animation.Play("AttackUp");
+				}
+				else if (look == way[1] && animation.GetCurrentClipId() != "AttackLeftUp")
+				{
+					animation.Play("AttackLeftUp");
+				}
+				else if (look == way[2] && animation.GetCurrentClipId() != "AttackLeft")
+				{
+					animation.Play("AttackLeft");
+				}
+				else if (look == way[3] && animation.GetCurrentClipId() != "AttackLeftDown")
+				{
+					animation.Play("AttackLeftDown");
+				}
+				else if (look == way[4] && animation.GetCurrentClipId() != "AttackDown")
+				{
+					animation.Play("AttackDown");
+				}
 			}
-			else if (min == way[1] && animation.GetCurrentClipId() != "AttackLeftUp")
-			{
-				animation.Play("AttackLeftUp");
-				animation.PlayQueue("IdleLeftUp");
-			}
-			else if (min == way[2] && animation.GetCurrentClipId() != "AttackLeft")
-			{
-				animation.Play("AttackLeft");
-				animation.PlayQueue("IdleLeft");
-			}
-			else if (min == way[3] && animation.GetCurrentClipId() != "AttackLeftDown")
-			{
-				animation.Play("AttackLeftDown");
-				animation.PlayQueue("IdleLeftDown");
-			}
-			else if (min == way[4] && animation.GetCurrentClipId() != "AttackDown")
-			{
-				animation.Play("AttackDown");
-				animation.PlayQueue("IdleDown");
-			}
+			state = Enemy::State::Idle;
 		}
+		break;
+	case Enemy::State::Hit:
+		if (animation.AnimationEnd())
+		{
+			state = Enemy::State::Idle;
+			return;
+		}
+		break;
+	case Enemy::State::Die:
+		return;
+		break;
+	case Enemy::State::Count:
+		std::cout << "WARNING: Wrong State (Enemy Update(dt))" << std::endl;
+		break;
+	default:
+		break;
 	}
 
 	if (player->sprite.getGlobalBounds().intersects(sprite.getGlobalBounds())) // Collider 충돌로 변경 요구
@@ -225,61 +300,7 @@ void Enemy::Update(float dt)
 	}
 	
 
-	// Animation
-	if (direction.x != 0.f || direction.y != 0.f)
-	{
-		if (animation.GetCurrentClipId() != "MoveUp" && animation.AnimationEnd() &&
-			min == way[0])
-		{
-			animation.Play("MoveUp");
-		}
-		else if (animation.GetCurrentClipId() != "MoveLeftUp" && animation.AnimationEnd() &&
-			min == way[1])
-		{
-			animation.Play("MoveLeftUp");
-		}
-		else if (animation.GetCurrentClipId() != "MoveLeft" && animation.AnimationEnd() &&
-			min == way[2])
-		{
-			animation.Play("MoveLeft");
-		}
-		else if (animation.GetCurrentClipId() != "MoveLeftDown" && animation.AnimationEnd() &&
-			min == way[3])
-		{
-			animation.Play("MoveLeftDown");
-		}
-		else if (animation.GetCurrentClipId() != "MoveDown" && animation.AnimationEnd() &&
-			min == way[4])
-		{
-			animation.Play("MoveDown");
-		}
-		SetPosition(position + direction * speed * dt); // 피격 시 안움직이는 기능 구현 필요
-
-	}
-	else
-	{
-		if (animation.GetCurrentClipId() == "MoveUp")
-		{
-			animation.Play("IdleUp");
-		}
-		else if (animation.GetCurrentClipId() == "MoveLeftUp")
-		{
-			animation.Play("IdleLeftUp");
-		}
-		else if (animation.GetCurrentClipId() == "MoveLeft")
-		{
-			animation.Play("IdleLeft");
-		}
-		else if (animation.GetCurrentClipId() == "MoveLeftDown")
-		{
-			animation.Play("IdleLeftDown");
-		}
-		else if (animation.GetCurrentClipId() == "MoveDown")
-		{
-			animation.Play("IdleDown");
-		}
-	}
-
+	
 }
 
 void Enemy::Draw(sf::RenderWindow& window)
@@ -398,11 +419,11 @@ void Enemy::LoadMuzzle(const std::string& path)
 
 void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockback)
 {
-	if (!isAlive) return;
+	if (state == Enemy::State::Die) return;
 
 	if (!superarmor) SetPosition(position + dir * knockback);
-	dir = WhereWay(dir);
 	SetFlipX(dir.x > 0.f);
+	dir = WhereWay(dir);
 
 	if (IfHit != nullptr)
 	{
@@ -423,15 +444,17 @@ void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockba
 				OnDie(dir);
 			}
 
-			isAlive = false;
+			state = Enemy::State::Die;
 			isHanded = false;
 			hand.setTextureRect({ 0, 0, 0, 0 });
 			return;
 		}
 	}
 	
-
 	// Animation
+	if (state == Enemy::State::Attack) return;
+	else state = Enemy::State::Hit;
+
 	if (dir == way[0])
 	{
 		animation.Play("HitUp");
@@ -527,12 +550,20 @@ void Enemy::Boom(sf::Vector2f pos, float range)
 	EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
 	bullet->Shoot({ 0.f, 0.f }, 500.f);
 	bullet->SetPosition(pos);
-	bullet->SetBullet(false);
+	bullet->SetBullet(true);
 	bullet->SetPlayer(player);
-	bullet->SetScale(range, range);
 	bullet->Init();
 	bullet->Reset();
+	bullet->SetScale(range, range);
 	scene->AddGo(bullet);
+}
+
+void Enemy::CloseAttack(float range)
+{
+	if (Utils::Distance(player->GetPosition(), position) <= range)
+	{
+		player->OnPlayerHit();
+	}
 }
 
 void Enemy::SixWayDie(sf::Vector2f dir, float speed, int chance)

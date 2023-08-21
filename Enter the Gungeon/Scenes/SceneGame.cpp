@@ -86,7 +86,7 @@ void SceneGame::Enter()
 	player->Init();
 	player->SetEnemyList(enemylist);
 	testenm1->SetPlayer(player); //test
-	test2->SetPlayer(player);
+	test2->SetPlayer(player); //test
 
 
 	player->SetPosition(0.f,0.f);

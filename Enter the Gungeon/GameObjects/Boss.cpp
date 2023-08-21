@@ -19,6 +19,10 @@ void Boss::Init()
 	{
 	case EnemyName::GatlingGull:
 		name = "GatlingGull/GatlingGull";
+		IfShoot = [this](sf::Vector2f dir, float speed)
+		{
+			CloseAttack(200.f);
+		};
 		Pattern1 = [this](sf::Vector2f dir, float speed)
 		{
 			if (patternCount < 30)
@@ -100,7 +104,7 @@ void Boss::Init()
 		patternDuration = 1.0f;
 		break;
 	default:
-		std::cerr << "ERROR: Wrong EnemyName (Boss Init())" << std::endl;
+		std::cerr << "ERROR: Wrong BossName (Boss Init())" << std::endl;
 		break;
 	}
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Boss/" + name + "IdleUp.csv"));
@@ -176,7 +180,7 @@ void Boss::PlayPattern(const PatternNum& p)
 	case PatternNum::P1:
 		if (Pattern1 != nullptr)
 		{
-			Pattern1(prevDir, speed);
+			Pattern1(direction, speed);
 		}
 		else
 		{
@@ -186,7 +190,7 @@ void Boss::PlayPattern(const PatternNum& p)
 	case PatternNum::P2:
 		if (Pattern2 != nullptr)
 		{
-			Pattern2(prevDir, speed);
+			Pattern2(direction, speed);
 		}
 		else
 		{
@@ -196,7 +200,7 @@ void Boss::PlayPattern(const PatternNum& p)
 	case PatternNum::P3:
 		if (Pattern3 != nullptr)
 		{
-			Pattern3(prevDir, speed);
+			Pattern3(direction, speed);
 		}
 		else
 		{
@@ -206,7 +210,7 @@ void Boss::PlayPattern(const PatternNum& p)
 	case PatternNum::P4:
 		if (Pattern4 != nullptr)
 		{
-			Pattern4(prevDir, speed);
+			Pattern4(direction, speed);
 		}
 		else
 		{
@@ -216,7 +220,7 @@ void Boss::PlayPattern(const PatternNum& p)
 	case PatternNum::P5:
 		if (Pattern5 != nullptr)
 		{
-			Pattern5(prevDir, speed);
+			Pattern5(direction, speed);
 		}
 		else
 		{
@@ -226,7 +230,7 @@ void Boss::PlayPattern(const PatternNum& p)
 	case PatternNum::P6:
 		if (Pattern6 != nullptr)
 		{
-			Pattern6(prevDir, speed);
+			Pattern6(direction, speed);
 		}
 		else
 		{
@@ -236,7 +240,7 @@ void Boss::PlayPattern(const PatternNum& p)
 	case PatternNum::P7:
 		if (Pattern7 != nullptr)
 		{
-			Pattern7(prevDir, speed);
+			Pattern7(direction, speed);
 		}
 		else
 		{

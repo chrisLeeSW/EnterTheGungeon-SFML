@@ -28,6 +28,7 @@ void EnemyBullet::Reset()
 	SpriteGo::Reset();
 
 	range = 1000.f;
+	SetScale(1.f, 1.f);
 }
 
 void EnemyBullet::Update(float dt)

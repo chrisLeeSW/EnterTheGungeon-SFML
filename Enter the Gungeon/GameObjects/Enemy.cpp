@@ -126,6 +126,14 @@ void Enemy::Reset()
 			hand.setTextureRect({ 121, 16, 4, 4 });
 		}
 	}
+	{
+		sf::Texture* tex = RESOURCE_MGR.GetTexture("graphics/Shadow.png");
+		if (tex != nullptr)
+		{
+			shadow.setTexture(*tex);
+			Utils::SetOrigin(shadow, Origins::MC);
+		}
+	}
 	SetEnemy();
 
 	state = Enemy::State::Idle;
@@ -305,18 +313,21 @@ void Enemy::Update(float dt)
 
 void Enemy::Draw(sf::RenderWindow& window)
 {
+	window.draw(shadow);
 	SpriteGo::Draw(window);
 	window.draw(hand);
 }
 
 void Enemy::SetPosition(const sf::Vector2f& p)
 {
+	shadow.setPosition(p);
 	SpriteGo::SetPosition(p);
 	hand.setPosition(p);
 }
 
 void Enemy::SetPosition(float x, float y)
 {
+	shadow.setPosition(x, y);
 	SpriteGo::SetPosition(x, y);
 	hand.setPosition(x, y);
 }
@@ -446,7 +457,8 @@ void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockba
 
 			state = Enemy::State::Die;
 			isHanded = false;
-			hand.setTextureRect({ 0, 0, 0, 0 });
+			hand.setColor(sf::Color::Transparent);
+			shadow.setColor(sf::Color::Transparent);
 			return;
 		}
 	}

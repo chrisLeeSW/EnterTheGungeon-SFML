@@ -62,6 +62,7 @@ protected:
 
 	Player* player;
 	sf::Sprite hand;
+	sf::Sprite shadow;
 	EnemyName type;
 	Enemy::State state;
 

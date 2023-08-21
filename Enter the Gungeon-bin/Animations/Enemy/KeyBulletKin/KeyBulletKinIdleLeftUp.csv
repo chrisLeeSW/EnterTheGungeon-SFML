@@ -1,0 +1,5 @@
+ID,FPS,LOOPTYPE,,
+IdleLeftUp,5,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/KeyBulletKin.png,20,17,12,31

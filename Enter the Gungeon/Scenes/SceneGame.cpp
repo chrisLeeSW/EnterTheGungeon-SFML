@@ -40,7 +40,7 @@ void SceneGame::Init()
 
 	equipment = (Equipment*)AddGo(new Equipment());
 
-	testenm1 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::ShotgunKinBlue)); //test
+	testenm1 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::KeyBulletKin)); //test
 	testenm1->SetOrigin(Origins::BC); //test
 	testenm1->SetPosition(200, 200); //test
 	testenm1->sortLayer = 0;

@@ -35,6 +35,7 @@ public:
 		Attack,
 		Hit,
 		Die,
+		Runaway,
 
 		Count,
 	};
@@ -114,4 +115,6 @@ public:
 
 	// ÅºÇÇ µå¶ø
 	void DropCasing();
+	// ¿­¼è µå¶ø
+	void DropKey();
 };

@@ -42,7 +42,10 @@ void Enemy::Init()
 		break;
 	case EnemyName::KeyBulletKin:
 		name = "KeyBulletKin/KeyBulletKin";
-		// Runaway ÇÔ¼ö
+		IfBump = []()
+		{
+
+		};
 		break;
 	case EnemyName::ShotgunKinRed:
 		name = "ShotgunKinRed/ShotgunKinRed";
@@ -152,6 +155,9 @@ void Enemy::Reset()
 	case EnemyName::BulletKin:
 		magnum = (Magnum*)scene->AddGo(new Magnum());
 		magnum->SetEnemy(this);
+		break;
+	case EnemyName::KeyBulletKin:
+		state = Enemy::State::Runaway;
 		break;
 	case EnemyName::ShotgunKinRed:
 		shotgun = (ShotGun*)scene->AddGo(new ShotGun());
@@ -287,6 +293,31 @@ void Enemy::Update(float dt)
 		break;
 	case Enemy::State::Die:
 		return;
+		break;
+	case Enemy::State::Runaway:
+		if (animation.GetCurrentClipId() != "MoveUp" && look == way[0])
+		{
+			animation.Play("MoveUp");
+		}
+		else if (animation.GetCurrentClipId() != "MoveLeftUp" && look == way[1])
+		{
+			animation.Play("MoveLeftUp");
+		}
+		else if (animation.GetCurrentClipId() != "MoveLeft" && look == way[2])
+		{
+			animation.Play("MoveLeft");
+		}
+		else if (animation.GetCurrentClipId() != "MoveLeftDown" && look == way[3])
+		{
+			animation.Play("MoveLeftDown");
+		}
+		else if (animation.GetCurrentClipId() != "MoveDown" && look == way[4])
+		{
+			animation.Play("MoveDown");
+		}
+		direction = -direction;
+		SetFlipX(direction.x > 0.f);
+		SetPosition(position + direction * speed * dt);
 		break;
 	case Enemy::State::Count:
 		std::cout << "WARNING: Wrong State (Enemy Update(dt))" << std::endl;

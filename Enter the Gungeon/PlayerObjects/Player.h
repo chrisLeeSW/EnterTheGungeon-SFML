@@ -188,6 +188,7 @@ public:
 
 	sf::Vector2f PlayerHandPos() { return hand->GetPosition(); }
 	int GetHp() { return hp; }
+	const sf::Vector2f& GetDirection() const;
 
 	void SetEnemyList(std::list<Enemy*> enemylist);
 

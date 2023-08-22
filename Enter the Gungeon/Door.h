@@ -1,18 +1,19 @@
 #pragma once
 #include "SpriteGo.h"
 #include "AnimationController.h"
-class Door :	public SpriteGo
+class Door : public SpriteGo
 {
 public:
 	enum class DoorDirectionLook
 	{
+		None = -1,
 		Up,
-		Left,
-		Right,
 		Down,
+		Left,
+		Right
 	};
-	Door(const std::string& textureId = "", const std::string& n = "");
-	virtual ~Door() override;
+	Door(int type,const std::string& textureId = "", const std::string& n = "");
+	virtual ~Door()= default;
 
 	virtual void Init() override;
 	virtual void Reset() override;
@@ -25,7 +26,8 @@ public:
 
 protected:
 	AnimationController animation;
-
+	DoorDirectionLook type;
+	bool open;
 
 };
 

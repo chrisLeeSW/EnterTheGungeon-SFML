@@ -27,7 +27,7 @@ public:
 	void LoadObject(const std::string& filePath,bool textureIdIn=true);
 	void NoneFileLoad(int xSize, int ySize,bool textureIdI = true);
 	void ClearTile();
-
+	virtual void Reset();
 	void ChangeTile(int x,int y, int tileIndex, sf::IntRect IntRect);
 	void SetWallSize(sf::Vector2i wallSize) { this->size = wallSize; }
 	void SetWallSize(int x, int y) { this->size = { x,y }; };
@@ -40,8 +40,11 @@ public:
 	sf::Vector2f GetTileSize() { return tileSize; }
 	void MakeWall(const std::string& path);
 	std::vector<WallTypeInfo>colliedShape;
+
 	std::vector<Tile> tiles;
 	
 	sf::Vector2f TileMapSize(const std::string& path);
+	int GetTexIndex(int x, int y);
+	
 };
 

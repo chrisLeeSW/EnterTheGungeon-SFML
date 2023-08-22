@@ -6,7 +6,8 @@ class Room;
 class TileMap;
 class InteractionObject;
 class SpriteGo;
-
+class Door;
+class Player;
 enum class DoorDirection
 {
 	None =-1,
@@ -52,7 +53,10 @@ protected:
 	std::vector<sf::CircleShape> circle;
 	int length = 0;
 
+	std::vector<Door*> doors;
+	Player* player = nullptr;
 	bool test = false;
+	std::vector<SpriteGo*> tunnelSprite;
 public :
 	TestRom();
 	virtual ~TestRom() override = default;
@@ -68,10 +72,11 @@ public :
 	sf::Vector2f Center( TileMap* room);
 	void ConnectRooms(TileMap* r1 , TileMap* r2);
 	void CreateTunnel(sf::Vector2f start, sf::Vector2f end);
+	void CreateTunnel2(sf::Vector2f start, sf::Vector2f end);
 	bool isIntersecting(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
 	sf::Vector2f intersectionPoint(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
 	bool isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, sf::Vector2f& intersection);
-	std::vector<sf::Vector2f> isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, std::vector<sf::Vector2f>& room);
+	std::vector<DoorInfo> isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, std::vector<DoorInfo>& room);
 };
 
 

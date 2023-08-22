@@ -1,10 +1,12 @@
 #pragma once
 #include "Scene.h"
 
+
 class TileMap;
 class SpriteGo;
 class InteractionObject;
-
+class BSPNode;
+class Room1;
 struct RoomObjectsInfoTest
 {
 	MapObjectType type;
@@ -15,14 +17,9 @@ class GameMapTestScene :public Scene
 {
 protected:
 	TileMap* tileRoom1;
-	TileMap* tileRoom2;
-	std::vector<SpriteGo*> objects;
-	std::vector<RoomObjectsInfoTest> interaction;
-
-	sf::RectangleShape shape;
-	sf::RectangleShape shape2;
-
-	std::vector<WallTypeInfo>colliedShape;
+	TileMap* rooms;
+	BSPNode* root;
+	Room1* room;
 public:
 	GameMapTestScene();
 	virtual ~GameMapTestScene() override = default;
@@ -33,5 +30,7 @@ public:
 	virtual void Exit() override;
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
+
+	void GenerateTileMap(BSPNode* node);
 };
 

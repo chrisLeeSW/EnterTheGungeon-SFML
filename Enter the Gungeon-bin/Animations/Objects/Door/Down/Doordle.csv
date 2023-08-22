@@ -1,0 +1,5 @@
+ID,FPS,LOOPTYPE,,
+Idle,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/DoorSprite.png,8,83,25,25

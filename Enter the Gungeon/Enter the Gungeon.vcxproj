@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BspNodeNew.cpp" />
     <ClCompile Include="PlayerObjects\Item\DropItem.cpp" />
     <ClCompile Include="DataTables\EnemyTable.cpp" />
     <ClCompile Include="Door.cpp" />
@@ -201,7 +202,10 @@
     <ClCompile Include="PlayerObjects\Item\Weapon\PrisonerWeapon.cpp" />
     <ClCompile Include="PlayerObjects\Item\Active\PrisonerActive.cpp" />
     <ClCompile Include="PlayerObjects\Item\Passive\PrisonerPassive.cpp" />
-    <ClCompile Include="Scenes\SceneMaptool.cpp" />
+    <ClCompile Include="Scenes\SceneMaptool.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="DataTables\PlayerTable.cpp" />
     <ClCompile Include="PlayerObjects\PlayerMgr.cpp" />
     <ClCompile Include="Scenes\SceneLobby.cpp" />
@@ -224,6 +228,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
+    <ClInclude Include="BspNodeNew.h" />
     <ClInclude Include="PlayerObjects\Item\DropItem.h" />
     <ClInclude Include="DataTables\EnemyTable.h" />
     <ClInclude Include="Door.h" />
@@ -267,7 +272,10 @@
     <ClInclude Include="PlayerObjects\Item\Weapon\PrisonerWeapon.h" />
     <ClInclude Include="PlayerObjects\Item\Active\PrisonerActive.h" />
     <ClInclude Include="PlayerObjects\Item\Passive\PrisonerPassive.h" />
-    <ClInclude Include="Scenes\SceneMaptool.h" />
+    <ClInclude Include="Scenes\SceneMaptool.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="DataTables\PlayerTable.h" />
     <ClInclude Include="PlayerObjects\PlayerMgr.h" />
     <ClInclude Include="Scenes\SceneLobby.h" />

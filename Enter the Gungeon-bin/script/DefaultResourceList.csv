@@ -224,3 +224,15 @@
 3,Animations/Enemy/KeyBulletKin/KeyBulletKinDieLeft.csv
 3,Animations/Enemy/KeyBulletKin/KeyBulletKinDieLeftDown.csv
 3,Animations/Enemy/KeyBulletKin/KeyBulletKinDieDown.csv
+3,Animations/Objects/Door/Down/DoorClose.csv
+3,Animations/Objects/Door/Down/Doordle.csv
+3,Animations/Objects/Door/Down/DoorOpen.csv
+3,Animations/Objects/Door/Left/DoorClose.csv
+3,Animations/Objects/Door/Left/Doordle.csv
+3,Animations/Objects/Door/Left/DoorOpen.csv
+3,Animations/Objects/Door/Right/DoorClose.csv
+3,Animations/Objects/Door/Right/Doordle.csv
+3,Animations/Objects/Door/Right/DoorOpen.csv
+3,Animations/Objects/Door/Up/DoorClose.csv
+3,Animations/Objects/Door/Up/Doordle.csv
+3,Animations/Objects/Door/Up/DoorOpen.csv

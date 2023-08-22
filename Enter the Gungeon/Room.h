@@ -22,9 +22,9 @@ protected:
     std::vector<Divider> dividers;
 
     bool drawTest;
-    std::vector<sf::RectangleShape> tiles;
     std::vector<bool> connected;
 public:
+    std::vector<sf::RectangleShape> tiles;
     Room();
     void Divide(Rect rect, int depth);
     sf::Vector2f Center(const Rect& room) {return { room.x + room.width / 2, room.y + room.height / 2 };}
@@ -41,5 +41,7 @@ public:
     Rect& GetRoomIndex(int value) { return rooms[value]; }
     int LineSize() { return dividers.size(); }
     int length = 0;
+
+   
 };
 

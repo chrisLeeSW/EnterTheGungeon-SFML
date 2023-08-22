@@ -83,5 +83,5 @@ void InteractionObject::Update(float dt)
 
 void InteractionObject::PlayAnimation(MapObjectType type)
 {
-
+	animation.Play("Break");
 }

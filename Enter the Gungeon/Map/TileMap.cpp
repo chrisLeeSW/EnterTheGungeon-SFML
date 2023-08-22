@@ -268,6 +268,11 @@ void TileMap::ClearTile()
 	}
 }
 
+void TileMap::Reset()
+{
+	VertexArrayGo::Reset();
+}
+
 void TileMap::ChangeTile(int x, int y, int tileIndex, sf::IntRect IntRect)
 {
 	if (x < 0 || y < 0) return;
@@ -336,5 +341,12 @@ sf::Vector2f TileMap::TileMapSize(const std::string& path)
 	height *= tileSize.y;
 
 	return sf::Vector2f{ width,height };
+}
+
+int TileMap::GetTexIndex(int x, int y)
+{
+	int tileIndex = size.x * y + x;
+	return tiles[tileIndex].texIndex;
+
 }
 

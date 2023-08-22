@@ -4,12 +4,12 @@
 Room::Room()
 {
     srand(static_cast<unsigned int>(time(nullptr)));
-    Rect initial = { -1500, -1500,5000, 5000 };
-    Divide(initial,5);
+    Rect initial = { 0, 0,3000, 3000 };
+    Divide(initial,4);
 
-    sf::Vector2i  startPos = { -1500 ,-1500 };
-    int widht = 5000 /25;
-    int height = 5000 /25;
+    sf::Vector2i  startPos = { (int)initial.x ,(int)initial.y };
+    int widht = initial.width /25;
+    int height = initial.height /25;
 
     for (int i = 0;i < height;++i)
     {
@@ -26,45 +26,8 @@ Room::Room()
     }
    int size = rooms.size() / 2;
    std::shuffle(rooms.begin(), rooms.end(), std::default_random_engine(static_cast<unsigned int>(time(nullptr))));
-  // if (size == 0) rooms.resize(Utils::RandomRange(1, 5));
-   //else rooms.resize(Utils::RandomRange(3, size));
-   rooms.resize(2);
-
-   
-
-   connected.resize(rooms.size(), false);
-   connected[0] = true;
-   int currentRoom = 0;
-   while (true)
-   {
-       int closestRoom = -1;
-       float minDistance = std::numeric_limits<float>::max();
-
-       // 가장 가까운 방을 찾습니다.
-       for (size_t i = 1; i < rooms.size(); ++i)
-       {
-           if (!connected[i])
-           {
-               float dist = Distance(rooms[currentRoom], rooms[i]);
-               if (dist < minDistance)
-               {
-                   minDistance = dist;
-                   closestRoom = i;
-               }
-           }
-       }
-
-       // 더 이상 연결되지 않은 방이 없으면 종료합니다.
-       if (closestRoom == -1)
-       {
-           break;
-       }
-
-       // 가장 가까운 방을 연결하고 다음 방을 찾습니다.
-       ConnectRooms(rooms[currentRoom], rooms[closestRoom]);
-       connected[closestRoom] = true;
-       currentRoom = closestRoom;
-   }
+   if (size == 0) rooms.resize(Utils::RandomRange(1, 5));
+   else rooms.resize(Utils::RandomRange(3, size));
 }
 
 const int tile_size = 25; // 타일의 크기
@@ -103,37 +66,6 @@ void Room::Divide(Rect rect, int depth)
         Divide({ rect.x, rect.y, (float)wDivider, rect.height }, depth - 1);
         Divide({ rect.x + wDivider, rect.y, rect.width - wDivider, rect.height }, depth - 1);
     }
-    //if (depth <= 0 || rect.width < min_width*2 || rect.height < min_height*2) {
-    //    // 중심에 기반한 작은 방 생성
-    //    Rect room;
-    //    room.width = rect.width *0.75;
-    //    room.height = rect.height * 0.75 ;
-    //    room.x = rect.x + (rect.width - room.width) * 0.75;
-    //    room.y = rect.y + (rect.height - room.height) * 0.75;
-    //    rooms.push_back(room);
-    //    return;
-    //}
-
-
-    //float hDivider = rect.height / 2;
-    //float wDivider = rect.width / 2;
-
-
-    //// 사각형을 수평 또는 수직으로 분할
-    //if (rand() % 2 == 0) {
-    //    // 수평 분할
-    //    if (hDivider < 2 * min_height) return;
-    //    dividers.push_back({ { rect.x, rect.y + hDivider }, { rect.x + rect.width, rect.y + hDivider } });
-    //    Divide({ rect.x, rect.y, rect.width, hDivider }, depth - 1);
-    //    Divide({ rect.x, rect.y + hDivider, rect.width, rect.height - hDivider }, depth - 1);
-    //}
-    //else {
-    //    // 수직 분할
-    //    if (wDivider < 2 * min_width) return;
-    //    dividers.push_back({ { rect.x + wDivider, rect.y }, { rect.x + wDivider, rect.y + rect.height } });
-    //    Divide({ rect.x, rect.y, wDivider, rect.height }, depth - 1);
-    //    Divide({ rect.x + wDivider, rect.y, rect.width - wDivider, rect.height }, depth - 1);
-    //}
 
 }
 
@@ -237,35 +169,6 @@ void Room::ConnectClosestRooms()
             currentRoomIndex = closest_room; // 다음 연결할 방을 현재 방으로 설정
         }
     }
-
-    ///
-
-    //std::vector<std::pair<float, std::pair<int, int>>> distances;
-    //// 각 방의 중심점을 계산하고 다른 방과의 거리를 계산합니다.
-    //for (size_t i = 0; i < rooms.size(); ++i)
-    //{
-    //    sf::Vector2f c1 = Center(rooms[i]);
-    //    for (size_t j = i + 1; j < rooms.size(); ++j)
-    //    {
-    //        sf::Vector2f c2 = Center(rooms[j]);
-    //        float distance = std::sqrt(std::pow(c2.x - c1.x, 2) + std::pow(c2.y - c1.y, 2));
-    //        distances.push_back({ distance, {i, j} });
-    //    }
-    //}
-
-    //// 거리를 기준으로 오름차순으로 정렬합니다.
-    //std::sort(distances.begin(), distances.end(), [](const auto& a, const auto& b)
-    //    {
-    //        return a.first < b.first;
-    //    });
-
-    //// 가장 가까운 방끼리 연결합니다.
-    //for (const auto& d : distances)
-    //{
-    //    int i = d.second.first;
-    //    int j = d.second.second;
-    //    ConnectRooms(rooms[i], rooms[j]);
-    //}
 }
 
 void Room::ValidateAndModifyPassages()

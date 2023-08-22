@@ -186,11 +186,8 @@
     <ClCompile Include="GameObjects\Boss.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyTable.cpp">
-     <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Door.cpp">
-     <Filter>소스 파일</Filter>
+      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PlayerObjects\Item\Weapon\Winchester.cpp">
       <Filter>소스 파일</Filter>
@@ -199,6 +196,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PlayerObjects\Item\DropItem.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DataTables\EnemyTable.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -377,11 +377,8 @@
     <ClInclude Include="GameObjects\Boss.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyTable.h">
-     <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Door.h">
-     <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="PlayerObjects\Item\Weapon\Winchester.h">
       <Filter>헤더 파일</Filter>
@@ -390,6 +387,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="PlayerObjects\Item\DropItem.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DataTables\EnemyTable.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

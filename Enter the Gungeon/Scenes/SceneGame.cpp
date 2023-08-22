@@ -100,8 +100,8 @@ void SceneGame::Enter()
 	player->sortLayer = 0;
 	player->Init();
 	player->SetEnemyList(enemylist);
-	testenm1->SetPlayer(player); //test
 
+	testenm1->SetPlayer(player); //test
 	testenm2->SetPlayer(player); //test
 	testenm3->SetPlayer(player); //test
 

@@ -114,12 +114,12 @@ void Player::Reset()
 
 	animation.Play("IdleRight");
 	SetFlipX(false);
+	
+	hp = maxHp;
+	isAlive = true;
 
-	speed = 150.f;
-	rollspeed = 180.f;
 	currentClipInfo = clipInfos[6];
 
-	isAlive = true;
 
 	if(isSceneGame)
 	playerUI->CurrentWeapon(weaponList[currentIndex]);

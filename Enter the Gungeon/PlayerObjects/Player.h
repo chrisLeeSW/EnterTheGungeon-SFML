@@ -46,30 +46,35 @@ public:
 
 protected:
 
-	std::string clipId;
+	sf::Vector2f windowsize;
 
+	//Animation
 	AnimationController animation;
 	AnimationController actEffect;
 	AnimationController blankBullet;
+
+	//BlankBullet
 	sf::CircleShape blankEffect;
 	bool isBlank = false;
 	bool isBlankEffect = false;
 	bool isBlankAnimation = false;
 
-	bool isGame = false;
-	bool isLobby = true;
 
-	//선생님꺼
+
+	//Player Move
 	std::vector<ClipInfo> clipInfos;
 	ClipInfo currentClipInfo;
+	sf::Vector2f velocity;
+	sf::Vector2f direction;
+	std::string clipId;
 
-	sf::Vector2f windowsize;
+	int currentIndex = 0;
+
+
 
 	//플레이어 손
-	SpriteGo* hand;
-	sf::Sprite shadow;
 
-	bool handflipX = false;
+
 
 	//아이템
 	std::vector<Passive*> passiveList;
@@ -77,47 +82,58 @@ protected:
 	Active* active = nullptr;
 
 
-	//플레이어 테이블 만들어서 아래에 셋해주기
-	//플레이어 움직임
-	sf::Vector2f velocity;
-	sf::Vector2f direction;
-
 
 	//플레이어 셋팅
+	Types type;
 	float speed;
 	float rollspeed;
-	bool flipX = false;
+	int maxHp = 6;
+	int blankBulletCount = 0;
+	float hitDelay = 1.0f;
+	bool isGame = false;
+	bool isLobby = true;
 
-	float angle;
-	float magnitude;
+	int hp;
+
 	float effect = 0.f;
 
-	int maxHp = 6;
-	float hitDelay = 1.0f;
 	float currenthitDelay = 0.f;
-	int blankBulletCount = 0;
 
 	//플레이어 상태
-	int hp = 6;
-	sf::Color originalColor;
+
+
+
 	bool isAlive = true;
 	bool iswalk = false;
 	bool isrolling = false;
 	bool isHit = false;
 	bool isSceneGame = false;
+	bool flipX = false;
+
+	bool playerchoise = false;
+
+
+	sf::Vector2f look;
+	float angle;
+	float magnitude;
+
 
 	//UI
 	SpriteGo* ouch;
 	sf::Color ouchoriginalColor;
+	sf::Color originalColor;
+	sf::Sprite shadow;
 	PlayerUI* playerUI;
+
+	sf::Vector2f handPos{ 7.f,-6.f };
+	SpriteGo* hand;
+	bool handflipX = false;
+
 
 	//Enemy
 	std::list<Enemy*> enemylist;
 
-	sf::Vector2f look;
-	Types type;
 
-	bool playerchoise = false;
 
 	std::unordered_map<sf::Keyboard::Key, int> keyToIndexMap = {
 	{sf::Keyboard::Num1, 1},
@@ -132,9 +148,7 @@ protected:
 	};
 
 
-	int currentIndex = 0;
 
-	sf::Vector2f handPos{ 7.f,-6.f };
 
 public:
 

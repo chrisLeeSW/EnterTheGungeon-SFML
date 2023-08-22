@@ -66,22 +66,21 @@ void BossUI::Reset()
 		name.setCharacterSize(10);
 	}
 
+	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable »ç¿ë
 	std::string bossname;
 	switch (boss->GetType())
 	{
 	case Enemy::EnemyName::GatlingGull:
-		bossname = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String)->Get("GATLING_GULL");
-		break;
-	default:
+		bossname = table->Get("GATLING_GULL");
 		break;
 	}
+
 	name.setString(bossname);
 	SetOrigin(origin);
 	SetPosition(position);
 	hp = maxHp;
 
 	innerbar.setScale(1.f, 1.f);
-
 }
 
 void BossUI::Update(float dt)

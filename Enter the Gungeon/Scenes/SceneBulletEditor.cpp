@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SceneBulletEditor.h"
+#include "EnemyBullet.h"
 #include "Muzzle.h"
 #include "UiButton.h"
 #include "TextBox.h"
@@ -153,6 +154,12 @@ void SceneBulletEditor::Init()
 		}
 	};
 
+	enemyBullets.OnCreate = [this](EnemyBullet* bullet)
+	{
+		bullet->pool = &enemyBullets;
+	};
+	enemyBullets.Init();
+
 	for (auto go : gameObjects)
 	{
 		go->Init();
@@ -161,6 +168,8 @@ void SceneBulletEditor::Init()
 
 void SceneBulletEditor::Release()
 {
+	enemyBullets.Release();
+
 	for (auto go : gameObjects)
 	{
 		delete go;
@@ -175,6 +184,8 @@ void SceneBulletEditor::Enter()
 void SceneBulletEditor::Exit()
 {
 	Scene::Exit();
+
+	ClearPool(enemyBullets);
 }
 
 void SceneBulletEditor::Update(float dt)
@@ -400,4 +411,9 @@ void SceneBulletEditor::LoadCSV(const std::string& filepath)
 
 		muzzlelist.push_back(muzzle);
 	}
+}
+
+ObjectPool<EnemyBullet>& SceneBulletEditor::GetPoolEnemyBullet()
+{
+	return enemyBullets;
 }

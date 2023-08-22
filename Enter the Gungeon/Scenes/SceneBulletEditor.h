@@ -1,12 +1,16 @@
 #pragma once
 #include "Scene.h"
+#include "ObjectPool.h"
 
 class Muzzle;
 class TextBox;
+class EnemyBullet;
 
 class SceneBulletEditor : public Scene
 {
 protected:
+	ObjectPool<EnemyBullet> enemyBullets;
+
 	Muzzle* curMuzzle = nullptr;
 	std::list<Muzzle*> muzzlelist;
 
@@ -34,4 +38,19 @@ public:
 	void SaveCSV(const std::string& filepath);
 	void OverwriteCSV(const std::string& filepath);
 	void LoadCSV(const std::string& filepath);
+
+	ObjectPool<EnemyBullet>& GetPoolEnemyBullet();
+
+	template <typename T>
+	void ClearPool(ObjectPool<T>& pool);
 };
+
+template<typename T>
+inline void SceneBulletEditor::ClearPool(ObjectPool<T>& pool)
+{
+	for (auto it : pool.GetUseList())
+	{
+		RemoveGo(it);
+	}
+	pool.Clear();
+}

@@ -1,0 +1,10 @@
+ID,FPS,LOOPTYPE,,
+AttackLeftDown,5,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/KeyBulletKin.png,5,249,14,29
+graphics/KeyBulletKin.png,22,250,18,28
+graphics/KeyBulletKin.png,43,244,34,34
+graphics/KeyBulletKin.png,80,226,57,52
+graphics/KeyBulletKin.png,140,202,91,76
+graphics/KeyBulletKin.png,234,191,107,87

@@ -1,5 +1,5 @@
 ID,FPS,LOOPTYPE,,
-HitDown,10,0,,
+IdleLeft,5,1,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
-graphics/GatlingGull.png,679,211,34,50
+graphics/KeyBulletKin.png,20,17,12,31

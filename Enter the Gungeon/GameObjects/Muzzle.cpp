@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "Muzzle.h"
 #include "SceneBulletEditor.h"
-
+#include "SceneGame.h"
 #include "EnemyBullet.h"
+#include "Player.h"
 
 Muzzle::Muzzle(const std::string& n)
 	:GameObject(n)
@@ -66,15 +67,30 @@ void Muzzle::Update(float dt)
 		innerinterval += dt;
 		if (innerinterval < interval) return;
 
-		EnemyBullet* bullet = new EnemyBullet();
+		EnemyBullet* bullet;
+		if (isEdit)
+		{
+			SceneBulletEditor* scene = (SceneBulletEditor*)SCENE_MGR.GetCurrScene();
+
+			bullet = scene->GetPoolEnemyBullet().Get();
+
+			scene->AddGo(bullet);
+		}
+		else
+		{
+			SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+
+			bullet = scene->GetPoolEnemyBullet().Get();
+			bullet->SetPlayer(player);
+
+			scene->AddGo(bullet);
+		}
+		
 		bullet->SetBullet(isBlink);
 		bullet->SetPosition(position);
 		bullet->Shoot(direction, speed, range);
 		bullet->Init();
 		bullet->Reset();
-
-		SceneBulletEditor* scene = (SceneBulletEditor*)SCENE_MGR.GetCurrScene();
-		scene->AddGo(bullet);
 
 		innerinterval = 0.f;
 		innerquantity++;
@@ -95,4 +111,9 @@ void Muzzle::Draw(sf::RenderWindow& window)
 void Muzzle::Play()
 {
 	isPlay = true;
+}
+
+void Muzzle::SetPlayer(Player* player)
+{
+	this->player = player;
 }

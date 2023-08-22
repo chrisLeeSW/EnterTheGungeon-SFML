@@ -1,0 +1,17 @@
+ID,FPS,LOOPTYPE,,
+DieLeftUp,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/KeyBulletKin.png,5,294,23,29
+graphics/KeyBulletKin.png,31,312,23,11
+graphics/KeyBulletKin.png,57,304,18,19
+graphics/KeyBulletKin.png,78,305,17,18
+graphics/KeyBulletKin.png,98,306,16,17
+graphics/KeyBulletKin.png,117,305,20,18
+graphics/KeyBulletKin.png,140,304,18,19
+graphics/KeyBulletKin.png,161,311,14,12
+graphics/KeyBulletKin.png,178,308,14,15
+graphics/KeyBulletKin.png,195,311,17,12
+graphics/KeyBulletKin.png,215,309,16,14
+graphics/KeyBulletKin.png,234,310,16,13
+graphics/KeyBulletKin.png,253,309,16,14

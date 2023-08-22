@@ -47,4 +47,7 @@ public:
 	std::function<void(sf::Vector2f dir, float speed)> Pattern5;
 	std::function<void(sf::Vector2f dir, float speed)> Pattern6;
 	std::function<void(sf::Vector2f dir, float speed)> Pattern7;
+
+	const Enemy::EnemyName& GetType() const;
+
 };

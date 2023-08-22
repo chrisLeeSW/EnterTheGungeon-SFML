@@ -19,6 +19,11 @@ void Boss::Init()
 	{
 	case EnemyName::GatlingGull:
 		name = "GatlingGull/GatlingGull";
+		IfHit = [this]()
+		{
+			SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+			scene->RenewBossUI();
+		};
 		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
 			CloseAttack(200.f);
@@ -255,5 +260,10 @@ void Boss::PlayPattern(const PatternNum& p)
 void Boss::EndPattern()
 {
 	pattern = PatternNum::None;
+}
+
+const Enemy::EnemyName& Boss::GetType() const
+{
+	return type;
 }
 

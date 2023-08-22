@@ -507,6 +507,11 @@ void Player::GetItem(Weapon::Types type)
 	}
 }
 
+const sf::Vector2f& Player::GetDirection() const
+{
+	return direction;
+}
+
 void Player::SetEnemyList(std::list<Enemy*> enemylist)
 {
 	this->enemylist = enemylist;

@@ -13,6 +13,7 @@ class InteractionObject;
 class PlayerUI;
 
 class Boss;
+class BossUI;
 class EnemyBullet;
 
 struct RoomObjectsInfo
@@ -39,13 +40,11 @@ protected:
 	Enemy* testenm3;
 
 	Boss* test2;
+	BossUI* bossui;
 
 	std::vector<TileMap*> tileRoom;
 	std::vector<SpriteGo*> objects;
 	std::vector<RoomObjectsInfo> interaction;
-
-	sf::RectangleShape shape;
-	sf::RectangleShape shape2;
 
 	std::vector<WallTypeInfo>colliedShape;
 
@@ -72,6 +71,7 @@ public:
 
 	void MakeTestRoom(int size);
 	void ColliedTest();
+	void RenewBossUI();
 
 	ObjectPool<EnemyBullet>& GetPoolEnemyBullet();
 

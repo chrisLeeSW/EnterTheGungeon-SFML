@@ -1,0 +1,6 @@
+ID,FPS,LOOPTYPE,,
+Play,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/GameUIAtlas.png,288,1005,166,8
+graphics/GameUIAtlas.png,288,1013,166,8

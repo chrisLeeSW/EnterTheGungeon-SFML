@@ -381,6 +381,11 @@ void Enemy::SetFlipX(bool flip)
 	}
 }
 
+const float& Enemy::GetHp()
+{
+	return hp;
+}
+
 sf::Vector2f Enemy::WhereWay(sf::Vector2f dir)
 {
 	sf::Vector2f result;
@@ -461,7 +466,7 @@ void Enemy::LoadMuzzle(const std::string& path)
 	}
 }
 
-void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockback)
+void Enemy::OnDamage(float damage, sf::Vector2f dir, float knockback)
 {
 	if (state == Enemy::State::Die) return;
 
@@ -469,32 +474,30 @@ void Enemy::OnDamage(const float& damage, sf::Vector2f dir, const float& knockba
 	SetFlipX(dir.x > 0.f);
 	dir = WhereWay(dir);
 
+	hp = std::max(0.f, hp - damage);
 	if (IfHit != nullptr)
 	{
-		IfHit(damage);
+		IfHit();
 	}
-	else
+
+	if (hp <= 0.f)
 	{
-		hp = std::max(0.f, hp - damage);
-
-		if (hp <= 0.f)
+		if (IfDie != nullptr)
 		{
-			if (IfDie != nullptr)
-			{
-				IfDie(dir);
-			}
-			else
-			{
-				OnDie(dir);
-			}
-
-			state = Enemy::State::Die;
-			isHanded = false;
-			hand.setColor(sf::Color::Transparent);
-			shadow.setColor(sf::Color::Transparent);
-			return;
+			IfDie(dir);
 		}
+		else
+		{
+			OnDie(dir);
+		}
+
+		state = Enemy::State::Die;
+		isHanded = false;
+		hand.setColor(sf::Color::Transparent);
+		shadow.setColor(sf::Color::Transparent);
+		return;
 	}
+	
 	
 	// Animation
 	if (state == Enemy::State::Attack) return;

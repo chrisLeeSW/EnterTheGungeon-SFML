@@ -28,7 +28,7 @@ Room::Room()
    std::shuffle(rooms.begin(), rooms.end(), std::default_random_engine(static_cast<unsigned int>(time(nullptr))));
   // if (size == 0) rooms.resize(Utils::RandomRange(1, 5));
    //else rooms.resize(Utils::RandomRange(3, size));
-   rooms.resize(20);
+   rooms.resize(2);
 
    
 

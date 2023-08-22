@@ -181,26 +181,44 @@ void SceneGame::MakeTestRoom(int size)
 		TileMap* tileRoom1 = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
 		sf::Vector2f pos; //= { -300.f+(i * 500.f),-300.f + (i * 500.f) }; // 랜덤 설정
 		
+
+		sf::Vector2f tileMapSize;
+		sf::Vector2f objpos;
+		objpos -= tileMapSize * 0.5f;
 		if (i == 0)
 		{
 			pos = sf::Vector2f{ -300.f,-300.f };
 			tileRoom1->SetStartPos(pos);
 			tileRoom1->Load("Room/TileMapFile/direction1.csv");
+			tileMapSize =tileRoom1->TileMapSize("Room/TileMapFile/direction1.csv");
+			objpos = pos;
+			objpos += tileRoom1->GetTileSize() * 0.5f;
 		}
 		else if (i == 1)
 		{
 			pos = sf::Vector2f{ 200.f,200.f };
 			tileRoom1->SetStartPos(pos);
 			tileRoom1->Load("Room/TileMapFile/Room02.csv");
+			tileMapSize = tileRoom1->TileMapSize("Room/TileMapFile/Room02.csv");
+			objpos = pos;
+			objpos += tileRoom1->GetTileSize() * 0.5f;
 		}
 		else if (i == 2)
 		{
 			pos = sf::Vector2f{	-300.f,150.f };
 			tileRoom1->SetStartPos(pos);
 			tileRoom1->Load("Room/TileMapFile/Room03.csv");
+			tileMapSize = tileRoom1->TileMapSize("Room/TileMapFile/Room03.csv");
+			objpos = pos;
+			objpos += tileRoom1->GetTileSize() * 0.5f;
 		}
 		
 		tileRoom1->sortLayer = -1;
+
+		
+		
+		
+		
 		for (int i = 0; i < tileRoom1->tiles.size(); ++i)
 		{
 			//	objects
@@ -210,7 +228,9 @@ void SceneGame::MakeTestRoom(int size)
 			{
 				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
 				spr->sprite.setTextureRect({ 0,250,50,50 });
-				spr->SetPosition(pos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, pos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
+				spr->SetScale(0.5f, 0.5f);
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, objpos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
 				spr->sortLayer = 2;
 				objects.push_back(spr); // wall클래스 생성
 			}
@@ -219,7 +239,9 @@ void SceneGame::MakeTestRoom(int size)
 			{
 				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
 				spr->sprite.setTextureRect({ 0,650,50,50 });
-				spr->SetPosition(pos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, pos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
+				spr->SetScale(0.5f, 0.5f);
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, objpos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
 				spr->sortLayer = 2;
 				objects.push_back(spr); // wall클래스 생성
 			}
@@ -227,7 +249,10 @@ void SceneGame::MakeTestRoom(int size)
 			case MapObjectType::Pot:
 			{
 				InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
-				spr->SetPosition(pos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, pos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
+				spr->sprite.setTextureRect({ 0,800,50,50 });
+				spr->SetScale(0.5f, 0.5f);
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, objpos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
 				spr->sortLayer = 0;
 				interaction.push_back({ static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), spr });
 			}
@@ -235,12 +260,14 @@ void SceneGame::MakeTestRoom(int size)
 			case MapObjectType::Book1:
 			{
 				InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
-				spr->SetPosition(pos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, pos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
+				spr->sprite.setTextureRect({ 0,850,50,50 });
+				spr->SetScale(0.5f, 0.5f);
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, objpos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
 				spr->sortLayer = 0;
 				interaction.push_back({ static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), spr });
 			}
 			break;
-			
 			}
 		}
 		tileRoom1->MakeWall("Room/TileMapFile/Room01.csv");

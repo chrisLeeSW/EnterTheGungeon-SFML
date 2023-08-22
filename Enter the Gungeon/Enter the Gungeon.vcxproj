@@ -154,7 +154,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="PlayerObjects\Item\DropItem.cpp" />
-    <ClCompile Include="EnemyTable.cpp" />
     <ClCompile Include="DataTables\EnemyTable.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="GameObjects\Boss.cpp" />
@@ -226,7 +225,6 @@
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
     <ClInclude Include="PlayerObjects\Item\DropItem.h" />
-    <ClInclude Include="EnemyTable.h" />
     <ClInclude Include="DataTables\EnemyTable.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="GameObjects\Boss.h" />

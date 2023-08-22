@@ -1,22 +1,36 @@
 #pragma once
-#include "SpriteGo.h"
+#include "GameObject.h"
 
-class ItemButton : public SpriteGo
+class Book;
+
+class ItemButton : public GameObject
 {
 
 public:
 
 	std::string itemname;
 	std::string manual;
-	std::string itemsprite;
+	std::string itemspriteId;
+	std::string textureId;
+	std::string fontId;
 	sf::Vector2f namepos;
 	sf::Vector2f manualpos;
+	int textsize;
+	int namesize;
 
 	bool isHover = false;
-	std::string fontId;
+	bool isClickButton = false;
+	sf::Vector2f spriteposition;
+
+	sf::Sprite sprite;
+	sf::Sprite itemsprite;
+	sf::Text manualtext;
+	sf::Text nametext;
+
+	Book* book;
 
 public:
-	ItemButton(const std::string& textureId = "", const std::string& fontId = "", const std::string& n = "");
+	ItemButton(const std::string& n = "");
 	virtual ~ItemButton() override;
 
 	virtual void Init() override;
@@ -30,7 +44,11 @@ public:
 
 	virtual void SetOrigin(Origins origin);
 
-	sf::Text text;
+	void SetSpritePosition(float x, float y);
+	void SetSpritePosition(float x);
+
+	void SetBook(Book* book) { this->book = book; }
+	sf::Vector2f GetSpritePosition();
 	std::function<void()> OnClick;
 	std::function<void()> OnEnter;
 	std::function<void()> OnExit;

@@ -216,6 +216,11 @@ void Player::Update(float dt)
 		walk.setScale(0,0);
 		hand->SetActive(false);
 	}
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F2))
+	{
+		hp == 1000;
+	}
 }
 
 void Player::Draw(sf::RenderWindow& window)

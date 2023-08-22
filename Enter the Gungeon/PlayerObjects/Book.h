@@ -26,13 +26,9 @@ protected:
 
 
 
-	std::vector<ItemButton*> weaponsUI;
 
-	ItemButton* but1;
+	ItemButton* currentClickButton = nullptr;
 
-	sf::Sprite equWeapon;
-	sf::Sprite equActive;
-	sf::Sprite equPassive;
 
 	sf::RectangleShape test1;
 	sf::RectangleShape test2;
@@ -40,19 +36,20 @@ protected:
 
 	sf::RectangleShape black;
 
-	std::vector<ItemButton> weaponbuttons;
-	std::vector<ItemButton> passivebuttons;
-	std::vector<ItemButton> activebuttons;
+	std::vector<ItemButton*> weaponbuttons;
+	std::vector<ItemButton*> passivebuttons;
+	std::vector<ItemButton*> activebuttons;
 
 	sf::Vector2f weaponline;
 	sf::Vector2f passiveline;
 	sf::Vector2f activeline;
 
-	ItemButton& it;
+
 
 
 	bool bookOn = false;
 	bool isSprite = false;
+	bool isBookOpen = false;
 
 	bool draw;
 
@@ -67,6 +64,8 @@ public:
 
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
+
+	void SetCurrentClickButton(ItemButton* button) { currentClickButton = button; }
 
 	void Insert();
 	void GetItem(Item::Types t, Item::WAP w);

@@ -32,7 +32,6 @@ void Book::Init()
 	SetPosition(windowsize * 0.5f);
 	SetOrigin(Origins::MC);
 	sortLayer = 103;
-	SetScale(0.5, 0.5);
 	draw = false;
 
 	//sf::Vector2f bookleft(sprite.getPosition().x, sprite.getPosition().y);
@@ -71,9 +70,6 @@ void Book::Reset()
 	player = PLAYER_MGR.GetPlayer();
 	Insert();
 
-
-
-
 }
 
 void Book::Update(float dt)
@@ -88,14 +84,14 @@ void Book::Update(float dt)
 
 		if (animation.AnimationEnd())
 		{
-			isSprite = true;
+			isBookOpen = true;
 		}
 	}
 	else
 	{
 		if (animation.GetCurrentClipId() != "BookClose")
 		animation.Play("BookClose");
-			isSprite = false;
+		isBookOpen = false;
 
 		if (animation.AnimationEnd())
 		{
@@ -109,6 +105,14 @@ void Book::Update(float dt)
 		draw = true;
 		PLAYER_MGR.SetPause(bookOn);
 	}
+
+	if(isBookOpen)
+	{
+		for (auto it : weaponbuttons)
+		{
+			it->Update(dt);
+		}
+	}
 }
 
 void Book::Draw(sf::RenderWindow& window)
@@ -117,20 +121,29 @@ void Book::Draw(sf::RenderWindow& window)
 	{
 		window.draw(black);
 		SpriteGo::Draw(window);
+
+	}
+
+	if(isBookOpen)
+	{
+		for (auto& it : weaponbuttons)
+			window.draw(it->sprite);
+
+		for (auto& it : passivebuttons)
+			window.draw(it->sprite);
+
+		for (auto& it : activebuttons)
+			window.draw(it->sprite);
+
+		if(currentClickButton!=nullptr)
+		{
+			currentClickButton->Draw(window);
+		}
+
 		window.draw(test1);
 		window.draw(test2);
 		window.draw(test3);
-		//window.draw(pilotweapon->sprite);
 	}
-
-	for (auto& it : weaponbuttons)
-		window.draw(it.sprite);
-
-	for (auto& it : passivebuttons)
-		window.draw(it.sprite);
-
-	for (auto& it : activebuttons)
-		window.draw(it.sprite);
 }
 
 void Book::Insert()
@@ -155,23 +168,44 @@ void Book::GetItem(Item::Types t, Item::WAP w)
 	switch (w)
 	{
 	case Item::WAP::Active :
-		it = DATATABLE_MGR.Get<ButtonTable>(DataTable::Ids::Button)->Get(t);
+	{
+		ItemButton* it = DATATABLE_MGR.Get<ButtonTable>(DataTable::Ids::Button)->Get(t);
 		//sceneGame->AddGo(it);
 		activebuttons.push_back(it);
 		break;
+	}
 
 	case Item::WAP::Passive :
-		it = DATATABLE_MGR.Get<ButtonTable>(DataTable::Ids::Button)->Get(t);
+	{
+		ItemButton* it = DATATABLE_MGR.Get<ButtonTable>(DataTable::Ids::Button)->Get(t);
 		//sceneGame->AddGo(it);
 		passivebuttons.push_back(it);
 		break;
+	}
 
 	case Item::WAP::Weapon :
-		it = DATATABLE_MGR.Get<ButtonTable>(DataTable::Ids::Button)->Get(t);
+	{
+		ItemButton* it = DATATABLE_MGR.Get<ButtonTable>(DataTable::Ids::Button)->Get(t);
 		//sceneGame->AddGo(it);
 		//it->Reset();
+		it->Init();
+		it->SetBook(this);
 		weaponbuttons.push_back(it);
+		if (weaponbuttons.size() == 1)
+		{
+			it->SetSpritePosition(200,110);
+		}
+		else
+		{
+			it->SetSpritePosition(weaponbuttons[weaponbuttons.size() - 2]->GetSpritePosition().x + 20.f, weaponbuttons[weaponbuttons.size() - 2]->GetSpritePosition().y);
+			std::cout << weaponbuttons[weaponbuttons.size() - 1]->GetSpritePosition().x;
+			for(int i = 0; i <= weaponbuttons.size() - 1; i++)
+			{
+				weaponbuttons[i]->SetSpritePosition(20.f);
+			}
+		}
 		break;
+	}
 	}
 
 }

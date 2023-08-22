@@ -22,6 +22,6 @@ public:
 	virtual bool Load() override;
 	virtual void Release() override;
 
-	ItemButton& Get(Item::Types id);
+	ItemButton* Get(Item::Types id);
 };
 

@@ -8,6 +8,7 @@ public:
 
     enum class Types
     {
+        None,
         PilotActive,
         PrisonerActive,
         BulletTime,

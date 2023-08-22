@@ -118,7 +118,7 @@ void SceneLobby::Draw(sf::RenderWindow& window)
 
 void SceneLobby::PlayerChoise()
 {
-	if (choiseindex == 0)
+	if (choiseindex == 1)
 	{
 		sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
 		sprite.setPosition(windowSize.x * 0.5f, windowSize.y * 0.44f);
@@ -129,7 +129,7 @@ void SceneLobby::PlayerChoise()
 			if (animation.GetCurrentClipId() != "PilotFaceIdle")
 				animation.Play("PilotFaceIdle");
 	}
-	else
+	else if(choiseindex == 2)
 	{
 		sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
 		sprite.setPosition(windowSize.x * 0.604f, windowSize.y * 0.625f);
@@ -146,17 +146,17 @@ void SceneLobby::PlayerChoise()
 		if (INPUT_MGR.GetKeyDown(sf::Keyboard::A))
 		{
 			choiseindex--;
-			if (choiseindex < 0)
+			if (choiseindex < 1)
 			{
-				choiseindex = 1;
+				choiseindex = 2;
 			}
 		}
 		if (INPUT_MGR.GetKeyDown(sf::Keyboard::D))
 		{
 			choiseindex++;
-			if (choiseindex == 2)
+			if (choiseindex == 3)
 			{
-				choiseindex = 0;
+				choiseindex = 1;
 			}
 		}
 
@@ -182,11 +182,6 @@ void SceneLobby::PlayerChoise()
 	}
 	else
 	{
-
-	}
-
-	if (playerchoise)
-	{
 		switch (playertype)
 		{
 		case Types::Pilot:
@@ -195,7 +190,7 @@ void SceneLobby::PlayerChoise()
 				playerface = true;
 				sprite.setPosition(windowSize.x * 0.604f, windowSize.y * 0.625f);
 
-				choiseindex = 1;
+				choiseindex = 2;
 				if (INPUT_MGR.GetKeyDown(sf::Keyboard::E))
 				{
 					playerface = false;
@@ -207,7 +202,7 @@ void SceneLobby::PlayerChoise()
 			}
 			else
 				playerface = false;
-			break;
+				break;
 
 		case Types::Prisoner:
 			if (Utils::Distance(prisoner->GetPosition(), pilot->GetPosition()) <= 30.f)
@@ -216,7 +211,7 @@ void SceneLobby::PlayerChoise()
 
 				sprite.setPosition(windowSize.x * 0.5f, windowSize.y * 0.44f);
 
-				choiseindex = 0;
+				choiseindex = 1;
 				if (INPUT_MGR.GetKeyDown(sf::Keyboard::E))
 				{
 					playerface = false;
@@ -228,9 +223,7 @@ void SceneLobby::PlayerChoise()
 			}
 			else
 				playerface = false;
-
-
-			break;
+				break;
 		}
 	}
 }

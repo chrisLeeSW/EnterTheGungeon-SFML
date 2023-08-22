@@ -1,0 +1,10 @@
+ID,FPS,LOOPTYPE,,
+padfire,15,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/PadFire.png,9,13,27,15
+graphics/PadFire.png,44,9,25,23
+graphics/PadFire.png,80,9,25,23
+graphics/PadFire.png,121,15,25,15
+graphics/PadFire.png,165,17,25,15
+graphics/PadFire.png,202,15,25,15

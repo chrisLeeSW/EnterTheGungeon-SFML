@@ -1,16 +1,23 @@
 #pragma once
 #include "SpriteGo.h"
 
-class UiButton : public SpriteGo
+class ItemButton : public SpriteGo
 {
-protected:
+
+public:
+
+	std::string itemname;
+	std::string manual;
+	std::string itemsprite;
+	sf::Vector2f namepos;
+	sf::Vector2f manualpos;
 
 	bool isHover = false;
 	std::string fontId;
 
 public:
-	UiButton(const std::string& textureId="", const std::string& fontId="", const std::string& n = "");
-	virtual ~UiButton() override;
+	ItemButton(const std::string& textureId = "", const std::string& fontId = "", const std::string& n = "");
+	virtual ~ItemButton() override;
 
 	virtual void Init() override;
 	virtual void Release() override;
@@ -29,4 +36,3 @@ public:
 	std::function<void()> OnExit;
 };
 
-// Ui 버튼 쓸수 있는 Class 만듬

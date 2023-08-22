@@ -3,6 +3,7 @@
 #include "BulletTable.h"
 #include "DataTableMgr.h"
 #include "Enemy.h"
+#include "PlayerMgr.h"
 
 Bullet::Bullet(const std::string& textureId, const std::string& n) : SpriteGo(textureId, n)
 {
@@ -13,6 +14,9 @@ void Bullet::Init()
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("bulletcsv/PilotBullet.csv"));
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("bulletcsv/BasicBullet.csv"));
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("bulletcsv/PrisonerBullet.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("bulletcsv/Pad.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("bulletcsv/PadFire.csv"));
+
 
 	animation.SetTarget(&sprite);
 	sortLayer = -1;
@@ -30,12 +34,16 @@ void Bullet::Reset()
 
 void Bullet::Update(float dt)
 {
+	//if (PLAYER_MGR.IsPause())
+	//	return;
+
 	SetOrigin(Origins::MC);
 	animation.Update(dt);
 
 	position += direction * speed * dt;
 	SetPosition(position);
 
+	if(animation.GetCurrentClipId()!= bulletid)
 	animation.Play(bulletid);
 
 	if (INPUT_MGR.GetKey(sf::Keyboard::Num6))
@@ -48,6 +56,7 @@ void Bullet::Update(float dt)
 	}
 
 	HitEnemy();
+
 }
 
 
@@ -87,8 +96,8 @@ void Bullet::SetBullet(Types types, sf::Vector2f pos, sf::Vector2f dir)
 	knockback = info->knockback;
 
 	position = pos;
-	sprite.setRotation(DEGREES_90 + Utils::Angle(dir));
-
+	//sprite.setRotation(DEGREES_90 + Utils::Angle(dir));
+	sprite.setRotation(Utils::Angle(dir));
 	float spreadAngle = Utils::RandomRange(-5.f, 5.f);
 
 	// 원래 방향 벡터에 집탄 영향을 적용하여 새로운 방향 계산
@@ -100,18 +109,6 @@ void Bullet::SetBullet(Types types, sf::Vector2f pos, sf::Vector2f dir)
 
 }
 
-void Bullet::Shoot(Types type)
-{
-	switch (type)
-	{
-	case Types::PilotBullet :
-		break;
-	case Types::PrisonerBullet:
-		break;
-	case Types::Ak47:
-		break;
-	}
-}
 
 void Bullet::Fire(sf::Vector2f pos, sf::Vector2f dir)
 {

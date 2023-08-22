@@ -6,7 +6,7 @@ class Player;
 class Weapon;
 class SpriteGo;
 class TileMap;
-class Equipment;
+class Book;
 class Enemy;
 class InteractionObject;
 
@@ -51,7 +51,7 @@ protected:
 
 	int playertype;
 
-	Equipment* equipment;
+	Book* book;
 
 	std::list<Enemy*> enemylist;
 

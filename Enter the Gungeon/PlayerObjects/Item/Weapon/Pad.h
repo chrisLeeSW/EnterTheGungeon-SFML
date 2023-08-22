@@ -1,5 +1,8 @@
 #pragma once
 #include "Weapon.h"
+#include "AnimationController.h"
+
+class Player;
 
 
 class Pad : public Weapon
@@ -31,9 +34,16 @@ protected:
 
 	sf::RectangleShape gunend;
 
+	float commandtick = 0.5f;
 
+	bool sKeyPressed = false;
+	bool dKeyPressed = false;
+	bool mouseClicked = false;
 
 public:
+	
+	Item::Types itemtype = Item::Types::Pad;
+	Item::WAP wap = Item::WAP::Weapon;
 
 	sf::Sprite shooteffect;
 
@@ -49,12 +59,15 @@ public:
 
 	virtual void SetGunFlipx(bool flipX) override;
 
-	virtual void SetType(Types t);
+	virtual void SetType(Types t) override;
 	virtual Types GetWeaponType() override { return weaponType; }
 	virtual Bullet::Types GetBulletType() override { return bulletType; }
 
 	virtual void RequestReload() override { currentbulletcount = bulletcount; }
 
 	virtual AnimationController* GetWeaponAnimation() override { return &gun; }
+
+	virtual Item::Types GetItemType() { return itemtype; }
+	virtual Item::WAP GetItemWAP() { return wap; }
 
 };

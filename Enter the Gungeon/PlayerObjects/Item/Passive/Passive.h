@@ -9,6 +9,7 @@ public:
 
     enum class Types
     {
+        None,
         PilotPassive,
         PrisonerPassive,
     };

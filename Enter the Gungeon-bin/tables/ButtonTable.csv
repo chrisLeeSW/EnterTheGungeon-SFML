@@ -1,0 +1,8 @@
+itemtype,buttonTexture,itemName,manual,itemsprite,namepos,namepos,manualpos,manualpos
+1,graphics/pilotweaponbutton.png,pilotweapon,pi,graphics/pilotweaponsprite.png,500.f,500.f,800.f,800.f
+2,graphics/pilotweaponbutton.png,pilotweapon,pi,graphics/padsprite.png,500.f,500.f,800.f,800.f
+3,graphics/pilotweaponbutton.png,pilotweapon,pi,graphics/padsprite.png,500.f,500.f,800.f,800.f
+4,graphics/prisonerweaponbutton.png,prisonerweapon,pri,graphics/prisonerweaponsprite.png,500.f,500.f,800.f,800.f
+5,graphics/prisonerweaponbutton.png,prisonerweapon,pri,graphics/padsprite.png,500.f,500.f,800.f,800.f
+6,graphics/prisonerweaponbutton.png,prisonerweapon,pri,graphics/padsprite.png,500.f,500.f,800.f,800.f
+7,graphics/padbutton.png,pad,padpad,graphics/padsprite.png,500.f,500.f,800.f,800.f

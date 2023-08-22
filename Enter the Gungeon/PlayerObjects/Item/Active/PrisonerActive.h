@@ -22,6 +22,10 @@ protected:
     int angle45;
     float charge;
 public:
+    Item::Types itemtype = Item::Types::PrisonerActive;
+    Item::WAP wap = Item::WAP::Active;
+
+
 
     PrisonerActive(const std::string& textureId = "", const std::string& n = "");
     virtual ~PrisonerActive() override { Release(); }
@@ -34,5 +38,8 @@ public:
     virtual void Draw(sf::RenderWindow& window) override;
 
     void SetPlayer(Player* player) { this->player = player; }
+
+    virtual Item::Types GetItemType() { return itemtype; }
+    virtual Item::WAP GetItemWAP() { return wap; }
 };
 

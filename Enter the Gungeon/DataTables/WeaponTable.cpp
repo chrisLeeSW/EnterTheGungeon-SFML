@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "WeaponTable.h"
+#include "Weapon.h"
 
 const WeaponInfo* WeaponTable::Get(Weapon::Types id)
 {

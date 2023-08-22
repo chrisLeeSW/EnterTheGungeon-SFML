@@ -25,3 +25,13 @@ void Item::Update(float dt)
 void Item::Draw(sf::RenderWindow& window)
 {
 }
+
+Item::Types Item::GetItemType()
+{
+	return Item::Types::None;
+}
+
+Item::WAP Item::GetItemWAP()
+{
+	return Item::WAP::None;
+}

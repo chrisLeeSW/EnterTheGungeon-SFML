@@ -11,6 +11,8 @@ class Item;
 class Scene;
 class Bullet;
 class PlayerUI;
+class SceneGame;
+class Book;
 
 class Player : public SpriteGo
 {
@@ -28,6 +30,7 @@ public:
 
 	enum class Types
 	{
+		None,
 		Pilot,
 		Prisoner,
 		WeaponPilot,
@@ -47,6 +50,15 @@ public:
 protected:
 
 	sf::Vector2f windowsize;
+
+	Book* book;
+
+	Bullet* bullet = nullptr;
+	std::list<Bullet*> bullets;
+	ObjectPool<Bullet> poolBullets;
+	SceneGame* sceneGame;
+
+
 
 	//Animation
 	AnimationController animation;
@@ -72,11 +84,8 @@ protected:
 
 
 
-	//플레이어 손
 
-
-
-	//아이템
+	//Item
 	std::vector<Passive*> passiveList;
 	std::vector<Weapon*> weaponList;
 	Active* active = nullptr;
@@ -85,24 +94,26 @@ protected:
 
 	//플레이어 셋팅
 	Types type;
+	Active::Types activetype;
+	Passive::Types passivetype;
+	Weapon::Types weapontype;
 	float speed;
 	float rollspeed;
-	int maxHp = 6;
-	int blankBulletCount = 0;
-	float hitDelay = 1.0f;
-	bool isGame = false;
-	bool isLobby = true;
+	int maxHp;
+	float hitDelay;
+	bool isGame;
+	bool isLobby;
+	int blankBulletCount;
+
+
 
 	int hp;
-
 	float effect = 0.f;
-
 	float currenthitDelay = 0.f;
 
-	//플레이어 상태
 
 
-
+	//Player States
 	bool isAlive = true;
 	bool iswalk = false;
 	bool isrolling = false;
@@ -166,7 +177,6 @@ public:
 
 	void OnPlayerHit();
 
-	void OnDeathPlayer();
 
 	virtual void Init() override;
 	virtual void Release() override;
@@ -189,19 +199,24 @@ public:
 	void GetItem(Passive::Types type);
 	void GetItem(Active::Types type);
 	void GetItem(Weapon::Types type);
+	void Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir);
 
 	bool GetFilpX() { return flipX; }
 	bool isRolling() { return isrolling; }
 	bool IsAlive() { return isAlive; }
 	bool IsHit() { return isHit; }
 	bool IsBlankBullet() { return isBlank; }
+	bool IsGame() { return isGame; }
 	void SetBalnkBUllet(bool blank) { isBlank = blank; }
 
 	void SetPlayerUI(PlayerUI* playerui) { playerUI = playerui; }
+	void SetType(Types type);
 
+	void SetBook(Book* book);
 
 	sf::Vector2f PlayerHandPos() { return hand->GetPosition(); }
 	int GetHp() { return hp; }
+	int GetBlankBulletCount() { return blankBulletCount; }
 
 	void SetEnemyList(std::list<Enemy*> enemylist);
 

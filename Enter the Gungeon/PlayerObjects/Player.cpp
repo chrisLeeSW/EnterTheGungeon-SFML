@@ -8,6 +8,12 @@
 #include "Passive.h"
 #include "Active.h"
 #include "PlayerUI.h"
+#include "DataTableMgr.h"
+#include "PlayerTable.h"
+#include "Weapon.h"
+#include "SceneGame.h"
+#include "Book.h"
+
 
 Player::Player(Types type, const std::string& textureId, const std::string& n) : SpriteGo(textureId, n), type(type)
 {
@@ -15,13 +21,18 @@ Player::Player(Types type, const std::string& textureId, const std::string& n) :
 
 void Player::Init()
 {
+	if (PLAYER_MGR.player != nullptr)
+		PLAYER_MGR.player = nullptr;
+		PLAYER_MGR.SetPlayer(this);
+
+
+	SetType(type);
+
 	std::string name;
 	std::string rollname;
 	windowsize = FRAMEWORK.GetWindowSize();
 
-	if (PLAYER_MGR.player != nullptr)
-		PLAYER_MGR.player = nullptr;
-		PLAYER_MGR.SetPlayer(this);
+
 
 
 		switch (type)
@@ -37,7 +48,7 @@ void Player::Init()
 		case Types::WeaponPilot :
 			name = "Pilot/PilotWeapon";
 			rollname = "Pilot/Pilot";
-			isSceneGame = true;
+			//isSceneGame = true;
 			animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + rollname + "Die.csv"));
 			blankBullet.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/BlankBullet.csv"));
 			blankBullet.SetTarget(&blanksprite);
@@ -51,7 +62,7 @@ void Player::Init()
 		case Types::WeaponPrisoner : 
 			name = "Prisoner/PrisonerWeapon";
 			rollname = "Prisoner/Prisoner";
-			isSceneGame = true;
+			//isSceneGame = true;
 			break;
 		}
 
@@ -91,15 +102,7 @@ void Player::Init()
 	clipInfos.push_back({ "IdleDown", "WalkDown","RollDown",true,{0.f, 1.f} });
 	clipInfos.push_back({ "IdleRight", "WalkRight","RollRight",false, Utils::Normalize({1.f, 1.f}) });
 
-	if (isSceneGame)
-	{
-		playerchoise = true;
-		SetSceneGame();
-		GetItem(Passive::Types::PrisonerPassive);
-		GetItem(Active::Types::BulletTime);
-		GetItem(Weapon::Types::PilotWeapon);
 
-	}
 
 	originalColor = sprite.getColor();
 }
@@ -121,21 +124,26 @@ void Player::Reset()
 	currentClipInfo = clipInfos[6];
 
 
-	if(isSceneGame)
+	if(isGame)
 	playerUI->CurrentWeapon(weaponList[currentIndex]);
 
 }
 
 void Player::Update(float dt)
 {
+	//if (PLAYER_MGR.IsPause())
+		//return;
+
+
 	SetOrigin(Origins::BC);
 	animation.Update(dt);
 
 	effect -= dt;
 
-	BlankBullet(dt);
 	if(isAlive)
 	{
+		BlankBullet(dt);
+
 		currenthitDelay -= dt;
 		if(currenthitDelay <= 0)
 		sprite.setColor(originalColor);
@@ -212,6 +220,7 @@ void Player::Update(float dt)
 
 void Player::Draw(sf::RenderWindow& window)
 {
+
 	if (!weaponList.empty() && isAlive)
 	weaponList[currentIndex]->Draw(window);
 
@@ -224,8 +233,6 @@ void Player::Draw(sf::RenderWindow& window)
 	}
 
 	SpriteGo::Draw(window);
-
-
 }
 
 void Player::PlayerRotation()
@@ -287,12 +294,14 @@ void Player::PlayerRotation()
 
 void Player::BlankBullet(float dt)
 {
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::E))
+	if (blankBulletCount != 0 && INPUT_MGR.GetKeyDown(sf::Keyboard::Q))
 	{
 		blanksprite.setPosition(sprite.getPosition());
 		blankEffect.setPosition(sprite.getPosition());
 		blankEffect.setScale(1, 1);
 		blankBullet.Play("BlankBullet");
+		blankBulletCount--;
+		playerUI->UseBlankBullet();
 		isBlank = true;
 	}
 
@@ -408,13 +417,13 @@ void Player::PlayerAct(float dt)
 	else
 		iswalk = false;
 
-	if (isSceneGame && INPUT_MGR.GetKeyDown(sf::Keyboard::Num9))
+	if (isGame && INPUT_MGR.GetKeyDown(sf::Keyboard::Num9))
 	{
-		GetItem(Passive::Types::PilotPassive);
-		GetItem(Weapon::Types::PrisonerWeapon);
+		//GetItem(Passive::Types::PilotPassive);
+		GetItem(Weapon::Types::Pad);
 	}
 
-	if (isSceneGame && INPUT_MGR.GetKeyDown(sf::Keyboard::Num8))
+	if (isGame && INPUT_MGR.GetKeyDown(sf::Keyboard::Num8))
 		GetItem(Active::Types::PrisonerActive);
 }
 
@@ -427,7 +436,7 @@ void Player::ChangePlayer(sf::Vector2f pos,bool choise)
 
 void Player::SetSceneGame()
 {
-	isGame = true;
+	//isGame = true;
 	Scene* scene = SCENE_MGR.GetCurrScene();
 	SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
 
@@ -455,11 +464,15 @@ void Player::SetSceneGame()
 
 void Player::GetItem(Passive::Types type)
 {
+	if (type == Passive::Types::None)
+		return;
+
 	auto it = ITEM_MGR.GetItem(type);
 
 	if (it != nullptr)
 	{
 		it->Init();
+		book->GetItem(it->GetItemType(), it->GetItemWAP());
 		passiveList.push_back(it);
 		Scene* scene = SCENE_MGR.GetCurrScene();
 		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
@@ -474,6 +487,9 @@ void Player::GetItem(Passive::Types type)
 
 void Player::GetItem(Active::Types type)
 {
+	if (type == Active::Types::None)
+		return;
+
 	auto it = ITEM_MGR.GetItem(type);
 
 	if (it != nullptr)
@@ -482,6 +498,8 @@ void Player::GetItem(Active::Types type)
 			active = nullptr; // 이게 맞나?
 
 			active = it;
+			book->GetItem(it->GetItemType(), it->GetItemWAP());
+
 			Scene* scene = SCENE_MGR.GetCurrScene();
 			SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
 			sceneGame->AddGo(active);
@@ -495,15 +513,32 @@ void Player::GetItem(Active::Types type)
 
 void Player::GetItem(Weapon::Types type)
 {
+	if (type == Weapon::Types::None)
+		return;
+
 	auto it = ITEM_MGR.GetItem(type);
 	if (it!=nullptr)
 	{
 		it->Init();
+		book->GetItem(it->GetItemType(), it->GetItemWAP());
+
 		weaponList.push_back(it);
 	}
 	else
 	{
 		std::cerr << "Not Exist Weapon Item" << std::endl;
+	}
+}
+
+void Player::Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir)
+{
+	bullet = poolBullets.Get();
+	bullet->SetBullet(type, pos, dir);
+
+	if (sceneGame != nullptr)
+	{
+		bullet->SetEnemy(WEAPON_MGR.GetEnemyList());
+		sceneGame->AddGo(bullet);
 	}
 }
 
@@ -573,7 +608,45 @@ void Player::OnPlayerHit()
 	}
 }
 
-void Player::OnDeathPlayer()
+void Player::SetType(Types t)
 {
-	
+	const PlayerInfo* info = DATATABLE_MGR.Get<PlayerTable>(DataTable::Ids::Player)->Get(t);
+
+	type = info->type;
+	activetype = info->activetype;
+	passivetype = info->passivetype;
+	weapontype = info->weapontype;
+	speed = info->speed;
+	rollspeed = info->rollspeed;
+	maxHp = info->maxHp;
+	hp = maxHp;
+
+	hitDelay = info->hitDelay;
+	isGame = info->isGame;
+	isLobby = info->isLobby;
+	blankBulletCount = info->blankBulletCount;
+
+
+	if(isGame)
+	{
+		playerchoise = true;
+		SetSceneGame();
+		Scene* scene = SCENE_MGR.GetGameScene();
+		sceneGame = dynamic_cast<SceneGame*>(scene);
+
+		ObjectPool<Bullet>* ptr = &poolBullets;
+		poolBullets.OnCreate = [ptr](Bullet* bullet) {
+			bullet->pool = ptr;
+		};
+		poolBullets.Init();
+		book = PLAYER_MGR.GetBook();
+		GetItem(activetype);
+		GetItem(passivetype);
+		GetItem(weapontype);
+	}
+}
+
+void Player::SetBook(Book* book)
+{
+	this->book = book;
 }

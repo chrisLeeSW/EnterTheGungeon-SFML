@@ -6,20 +6,22 @@
 #include "WeaponMgr.h"
 #include "Scene.h"
 #include "SceneGame.h"
+#include "Bullet.h"
 
 
 
 Pad::Pad(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
 {
 	SetType(Types::Pad);
+	player = PLAYER_MGR.GetPlayer();
 
 	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PadIdle.csv"));
 	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PadShoot.csv"));
 	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PadRelode.csv"));
 
-	effect.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PadShootEffect.csv"));
+	//effect.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PadShootEffect.csv"));
 
-	effect.SetTarget(&shooteffect);
+	//effect.SetTarget(&shooteffect);
 	gun.SetTarget(&sprite);
 
 	SpriteGo::Reset();
@@ -60,9 +62,9 @@ void Pad::Update(float dt)
 	Weapon::Update(dt);
 	if (!player->isRolling())
 	{
-		SetOrigin(Origins::BL);
+		SetOrigin(Origins::MC);
 		gun.Update(dt);
-		effect.Update(dt);
+		//effect.Update(dt);
 		SetPosition(player->PlayerHandPos());
 
 		float angle = Utils::Angle(look);
@@ -81,17 +83,52 @@ void Pad::Update(float dt)
 
 
 
+		gunPoint = position + look * sprite.getLocalBounds().width;
 		gunend.setPosition(gunPoint);
-		gunPoint = player->PlayerHandPos();
-		gunPoint += gunOffset;
 
-		shooteffect.setOrigin(shooteffect.getLocalBounds().left, shooteffect.getLocalBounds().height / 2);
-		shooteffect.setRotation(angle);
-		shooteffect.setPosition(gunPoint);
+
+		//shooteffect.setOrigin(shooteffect.getLocalBounds().left, shooteffect.getLocalBounds().height / 2);
+		//shooteffect.setRotation(angle);
+		//shooteffect.setPosition(gunPoint);
 
 		if (!isreload)
 		{
 			tick -= dt;
+			if(commandtick >= 0.f)
+			commandtick -= dt;
+
+			if (INPUT_MGR.GetKeyUp(sf::Keyboard::S)) {
+				sKeyPressed = true;
+				commandtick = 0.5f;
+			}
+
+			if (commandtick >= 0.f && sKeyPressed && INPUT_MGR.GetKeyUp(sf::Keyboard::D)) {
+				dKeyPressed = true;
+			}
+
+			if (commandtick >= 0.f && dKeyPressed && INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left)) {
+				mouseClicked = true;
+			}
+
+			if (sKeyPressed && dKeyPressed && mouseClicked && tick <= 0.f && currentbulletcount > 0 && bulletmax >= 0 ) 
+			{
+				// 여기서 발사 로직 수행
+				gun.Play("Shoot");
+				int shootCount = 4;
+				float patternAngle = 360.f / shootCount;
+				for (int i = 0; i < shootCount; ++i) 
+				{
+					player->Shoot(Bullet::Types::PadFire, gunPoint, Utils::RotateVector(look, patternAngle * i));
+				}
+
+				sKeyPressed = false;
+				dKeyPressed = false;
+				mouseClicked = false;
+			}
+
+
+
+
 			if (INPUT_MGR.GetMouseButton(sf::Mouse::Left) && tick <= 0.f && currentbulletcount > 0 && bulletmax >= 0)
 			{
 				--currentbulletcount;
@@ -100,8 +137,12 @@ void Pad::Update(float dt)
 				state = State::Shoot;
 
 				gun.Play("Shoot");
-				effect.Play("Effect");
-				Weapon::Shoot(bulletType, gunPoint, look);
+				int shootCount = 4;
+				float pattenAngle = 360.f / shootCount;
+				for(int i = 0; i < shootCount; ++i)
+				{
+					player->Shoot(bulletType, gunPoint, Utils::RotateVector(look, pattenAngle*i));
+				}
 
 				std::cout << "현재 탄창 : " << currentbulletcount << std::endl;
 				std::cout << "총 탄창 : " << bulletmax << std::endl;
@@ -141,7 +182,8 @@ void Pad::Draw(sf::RenderWindow& window)
 {
 	if (!player->isRolling())
 		SpriteGo::Draw(window);
-	window.draw(shooteffect);
+
+	//window.draw(shooteffect);
 	window.draw(gunend);
 }
 
@@ -152,16 +194,16 @@ void Pad::SetGunFlipx(bool flipX)
 	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
 	sprite.setScale(scale);
 
-	scale = shooteffect.getScale();
-	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
-	shooteffect.setScale(scale);
+	//scale = shooteffect.getScale();
+	//scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
+	//shooteffect.setScale(scale);
 }
 
 void Pad::SetType(Types t)
 {
 	const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
 
-	weaponType = (Types)info->weaponType;
+	weaponType = info->weaponType;
 	bulletType = (Bullet::Types)info->bulletType;
 	attackrate = info->attackrate;
 	bulletcount = info->bulletcount;
@@ -169,3 +211,4 @@ void Pad::SetType(Types t)
 	reload = info->reload;
 	santan = info->santan;
 }
+

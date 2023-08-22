@@ -7,7 +7,7 @@
 #include "Weapon.h"
 #include "TileMap.h"
 #include "WeaponMgr.h"
-#include "Equipment.h"
+#include "Book.h"
 #include "Enemy.h"
 #include "InteractionObject.h"
 #include "PlayerUI.h"
@@ -29,7 +29,9 @@ void SceneGame::Init()
 	shadow->SetOrigin(Origins::MC);
 	shadow->sortLayer = -1;
 
-	worldView.setSize(windowSize * 0.5f);
+	windowSize *= 0.3f;
+
+	worldView.setSize(windowSize);
 	worldView.setCenter(0.f, 0.f);
 
 	uiView.setSize(windowSize);
@@ -40,7 +42,7 @@ void SceneGame::Init()
 
 	
 
-	equipment = (Equipment*)AddGo(new Equipment());
+	book = (Book*)AddGo(new Book());
 
 	testenm1 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::KeyBulletKin)); //test
 	testenm1->SetOrigin(Origins::BC); //test
@@ -110,10 +112,12 @@ void SceneGame::Enter()
 
 	player->SetPosition(0.f,0.f);
 
+
 	playerui = (PlayerUI*)AddGo(new PlayerUI(player));
 	playerui->Init();
-
+	playerui->Reset();
 	Scene::Enter();
+
 }
 
 void SceneGame::Exit()
@@ -127,7 +131,6 @@ void SceneGame::Exit()
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
-	//WEAPON_MGR.Update(dt);
 	shadow->SetPosition(player->GetPosition());
 
 	// 대각선 충돌이 문제가 있음 테스트 코드로 사용

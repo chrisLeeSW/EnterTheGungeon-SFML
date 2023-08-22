@@ -1,5 +1,5 @@
 ID,FPS,LOOPTYPE,,
-Idle,10,0,,
+pad,10,1,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
-graphics/Pad.png,32,13,17,18
+graphics/PadBullet.png,0,0,13,13

@@ -7,7 +7,7 @@
 #include "Item.h"
 #include "Passive.h"
 #include "Active.h"
-
+#include "PlayerUI.h"
 
 Player::Player(Types type, const std::string& textureId, const std::string& n) : SpriteGo(textureId, n), type(type)
 {
@@ -39,6 +39,14 @@ void Player::Init()
 			rollname = "Pilot/Pilot";
 			isSceneGame = true;
 			animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + rollname + "Die.csv"));
+			blankBullet.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/BlankBullet.csv"));
+			blankBullet.SetTarget(&blanksprite);
+
+			blankEffect.setFillColor(sf::Color::Transparent);
+			blankEffect.setOutlineColor(sf::Color::White);
+			blankEffect.setOutlineThickness(1);
+			blankEffect.setOutlineColor(sf::Color(255, 255, 255, 88));
+			blankEffect.setRadius(30.f);
 			break;
 		case Types::WeaponPrisoner : 
 			name = "Prisoner/PrisonerWeapon";
@@ -47,7 +55,6 @@ void Player::Init()
 			break;
 		}
 
-		//파일럿 기본 애니메이션
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+name+"IdleUp.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+name+"IdleDown.csv"));
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+name+"IdleRight.csv"));
@@ -64,13 +71,10 @@ void Player::Init()
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+rollname+"RollUpRight.csv"));
 				
 		
-
-
-
-
 	actEffect.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/WalkEffect.csv"));
 
 	actEffect.SetTarget(&walk);
+
 	walk.setScale(0.5,0.5);
 	animation.SetTarget(&sprite);
 	SetOrigin(Origins::BC);
@@ -94,6 +98,7 @@ void Player::Init()
 		GetItem(Passive::Types::PrisonerPassive);
 		GetItem(Active::Types::BulletTime);
 		GetItem(Weapon::Types::PilotWeapon);
+
 	}
 
 	originalColor = sprite.getColor();
@@ -115,6 +120,10 @@ void Player::Reset()
 	currentClipInfo = clipInfos[6];
 
 	isAlive = true;
+
+	if(isSceneGame)
+	playerUI->CurrentWeapon(weaponList[currentIndex]);
+
 }
 
 void Player::Update(float dt)
@@ -124,6 +133,7 @@ void Player::Update(float dt)
 
 	effect -= dt;
 
+	BlankBullet(dt);
 	if(isAlive)
 	{
 		currenthitDelay -= dt;
@@ -189,6 +199,8 @@ void Player::Update(float dt)
 			OnPlayerHit();
 			std::cout << hp << std::endl;
 		}
+
+		
 	}
 	else if(!isAlive && animation.GetCurrentClipId() != "Die")
 	{
@@ -204,7 +216,16 @@ void Player::Draw(sf::RenderWindow& window)
 	weaponList[currentIndex]->Draw(window);
 
 	window.draw(walk);
+
+	if(isBlankAnimation)
+	{
+		window.draw(blanksprite);
+		window.draw(blankEffect);
+	}
+
 	SpriteGo::Draw(window);
+
+
 }
 
 void Player::PlayerRotation()
@@ -264,6 +285,48 @@ void Player::PlayerRotation()
 
 }
 
+void Player::BlankBullet(float dt)
+{
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::E))
+	{
+		blanksprite.setPosition(sprite.getPosition());
+		blankEffect.setPosition(sprite.getPosition());
+		blankEffect.setScale(1, 1);
+		blankBullet.Play("BlankBullet");
+		isBlank = true;
+	}
+
+	if (isBlank)
+	{
+		isBlankEffect = true;
+		isBlankAnimation = true;
+	}
+
+	if (isBlankAnimation)
+	{
+		blankBullet.Update(dt);
+		blanksprite.setOrigin(blanksprite.getLocalBounds().width * 0.5f, blanksprite.getLocalBounds().height * 0.5f);
+		if (blankBullet.AnimationEnd())
+			isBlankAnimation = false;
+
+		if (blankEffect.getScale().x >= 15.f)
+		{
+			isBlank = false;
+			isBlankEffect = false;
+		}
+		if (!isBlankEffect)
+		{
+			blankEffect.setScale(0, 0);
+		}
+		else
+		{
+			blankEffect.setScale(blankEffect.getScale().x + 0.3, blankEffect.getScale().y + 0.3);
+			blankEffect.setOrigin(blankEffect.getLocalBounds().width / 2, blankEffect.getLocalBounds().height / 2);
+
+		}
+	}
+}
+
 void Player::SetFlipX(bool filp)
 {
 	flipX = filp;
@@ -294,6 +357,8 @@ void Player::PlayerAct(float dt)
 			SetPosition(position);
 			PlayerRotation();
 			clipId = magnitude == 0.f ? currentClipInfo.idle : currentClipInfo.walk;
+			if (hand != nullptr && !hand->GetActive())
+				hand->SetActive(true);
 		}
 		else
 		{
@@ -459,6 +524,8 @@ void Player::SwapWeapon()
 				int temp = pair.second;
 				--temp;
 				currentIndex = temp;
+				playerUI->CurrentWeapon(weaponList[currentIndex]);
+
 			}
 		}
 	}
@@ -488,7 +555,7 @@ void Player::SetPosition(float x, float y)
 
 void Player::OnPlayerHit()
 {
-
+	
 	if(currenthitDelay <= 0)
 	{
 		--hp;
@@ -497,6 +564,7 @@ void Player::OnPlayerHit()
 		ouchoriginalColor.a = MAX_BYTE_VALUE;
 
 		isHit = true;
+		playerUI->IsHited();
 	}
 	if (hp <= 0)
 	{

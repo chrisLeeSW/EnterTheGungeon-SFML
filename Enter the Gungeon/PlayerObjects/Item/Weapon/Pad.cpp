@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "PilotWeapon.h"
+#include "Pad.h"
 #include "DataTableMgr.h"
 #include "WeaponTable.h"
 #include "Player.h"
@@ -8,15 +8,16 @@
 #include "SceneGame.h"
 
 
-PilotWeapon::PilotWeapon(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
+
+Pad::Pad(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
 {
-	SetType(Types::PilotWeapon);
+	SetType(Types::Pad);
 
-	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PilotWeaponIdle.csv"));
-	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PilotWeaponShoot.csv"));
-	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PilotWeaponRelode.csv"));
+	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PadIdle.csv"));
+	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PadShoot.csv"));
+	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PadRelode.csv"));
 
-	effect.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PilotShootEffect.csv"));
+	effect.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PadShootEffect.csv"));
 
 	effect.SetTarget(&shooteffect);
 	gun.SetTarget(&sprite);
@@ -33,32 +34,29 @@ PilotWeapon::PilotWeapon(const std::string& textureId, const std::string& n) : W
 	tick = attackrate;
 	reloadtick = reload;
 
-	gunOffset1 = { sprite.getGlobalBounds().width, -sprite.getGlobalBounds().height + 4};
-	gunOffset2 = { sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - 4};
+	gunOffset1 = { sprite.getGlobalBounds().width, -sprite.getGlobalBounds().height + 4 };
+	gunOffset2 = { sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - 4 };
 
 	currentbulletcount = bulletcount;
 
-	Weapon::Init();
 }
 
-void PilotWeapon::Init()
+void Pad::Init()
 {
 	player = PLAYER_MGR.GetPlayer();
 }
 
-void PilotWeapon::Release()
+void Pad::Release()
 {
 }
 
-void PilotWeapon::Reset()
+void Pad::Reset()
 {
 	player = PLAYER_MGR.GetPlayer();
-
 }
 
-void PilotWeapon::Update(float dt)
+void Pad::Update(float dt)
 {
-
 	Weapon::Update(dt);
 	if (!player->isRolling())
 	{
@@ -87,7 +85,7 @@ void PilotWeapon::Update(float dt)
 		gunPoint = player->PlayerHandPos();
 		gunPoint += gunOffset;
 
-		shooteffect.setOrigin(shooteffect.getLocalBounds().left,shooteffect.getLocalBounds().height / 2);
+		shooteffect.setOrigin(shooteffect.getLocalBounds().left, shooteffect.getLocalBounds().height / 2);
 		shooteffect.setRotation(angle);
 		shooteffect.setPosition(gunPoint);
 
@@ -132,14 +130,14 @@ void PilotWeapon::Update(float dt)
 				std::cout << "장전완료" << std::endl;
 
 				state = State::Idle;
-				
+
 				gun.Play("Idle");
 			}
 		}
 	}
 }
 
-void PilotWeapon::Draw(sf::RenderWindow& window)
+void Pad::Draw(sf::RenderWindow& window)
 {
 	if (!player->isRolling())
 		SpriteGo::Draw(window);
@@ -147,9 +145,8 @@ void PilotWeapon::Draw(sf::RenderWindow& window)
 	window.draw(gunend);
 }
 
-void PilotWeapon::SetGunFlipx(bool flipX)
+void Pad::SetGunFlipx(bool flipX)
 {
-
 	sf::Vector2f scale = sprite.getScale();
 	this->flipX = flipX;
 	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
@@ -158,11 +155,9 @@ void PilotWeapon::SetGunFlipx(bool flipX)
 	scale = shooteffect.getScale();
 	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
 	shooteffect.setScale(scale);
-
 }
 
-
-void PilotWeapon::SetType(Types t)
+void Pad::SetType(Types t)
 {
 	const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
 

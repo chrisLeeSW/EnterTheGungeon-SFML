@@ -10,6 +10,7 @@
 #include "Equipment.h"
 #include "Enemy.h"
 #include "InteractionObject.h"
+#include "PlayerUI.h"
 
 SceneGame::SceneGame() : Scene(SceneId::Game)
 {
@@ -93,6 +94,8 @@ void SceneGame::Enter()
 
 	player->SetPosition(0.f,0.f);
 
+	playerui = (PlayerUI*)AddGo(new PlayerUI(player));
+	playerui->Init();
 
 	Scene::Enter();
 }

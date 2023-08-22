@@ -38,12 +38,14 @@ public:
     Item(const std::string& textureId = "", const std::string& n = "");
     virtual ~Item() override { Release(); }
 
-    virtual void Init() override;
-    virtual void Release() override;
-    virtual void Reset() override;
+    virtual void Init() =0;
+    virtual void Release()=0;
+    virtual void Reset()=0;
 
-    virtual void Update(float dt) override;
-    virtual void Draw(sf::RenderWindow& window) override;
+    virtual void Update(float dt) =0;
+    virtual void Draw(sf::RenderWindow& window) =0;
+    
+
 };
 
 

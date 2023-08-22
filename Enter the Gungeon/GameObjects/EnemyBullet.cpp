@@ -45,9 +45,22 @@ void EnemyBullet::Update(float dt)
 	if (player == nullptr) return;
 	if (sprite.getGlobalBounds().intersects(player->sprite.getGlobalBounds()) && player->IsAlive())
 	{
+		if (player->isRolling())
+			return;
 		player->OnPlayerHit();
 		Scene* scene = SCENE_MGR.GetCurrScene();
 		scene->RemoveGo(this);
+	}
+
+
+	//Player-BlnakBullet 
+	if (player->IsBlankBullet())
+	{
+		if (Utils::Distance(player->GetPosition(), GetPosition()) <= 150.f)
+		{
+			Scene* scene = SCENE_MGR.GetCurrScene();
+			scene->RemoveGo(this);
+		}
 	}
 }
 

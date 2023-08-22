@@ -19,6 +19,8 @@ public:
 		PrisonerBullet,
 		Ak47,
 		Magnum,
+		Pad,
+		PadFire,
 	};
 
 

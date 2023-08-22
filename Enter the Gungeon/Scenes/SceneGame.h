@@ -8,6 +8,7 @@ class TileMap;
 class Equipment;
 class Enemy;
 class InteractionObject;
+class PlayerUI;
 
 struct RoomObjectsInfo
 {
@@ -22,6 +23,8 @@ protected:
 	Player* player = nullptr;
 	Weapon* weapon;
 	SpriteGo* shadow;
+	PlayerUI* playerui;
+
 
 	Enemy* testenm1;
 	Enemy* testenm2;

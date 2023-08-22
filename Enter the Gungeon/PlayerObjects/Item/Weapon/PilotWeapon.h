@@ -26,16 +26,16 @@ protected:
 	bool flipX = false;
 
 	AnimationController gun;
-	AnimationController shootEffect;
+	AnimationController effect;
 
 	float WeaponXpos = 9.f;
 
 	sf::RectangleShape gunend;
 
-
 	
 
 public:
+	sf::Sprite shooteffect;
 
 	PilotWeapon(const std::string& textureId = "", const std::string& n = "");
 	virtual ~PilotWeapon() override { Release(); }
@@ -55,5 +55,6 @@ public:
 
 	virtual void RequestReload() override { currentbulletcount = bulletcount; }
 
+	virtual AnimationController* GetWeaponAnimation() override { return &gun; }
 };
 

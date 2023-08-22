@@ -1,11 +1,9 @@
 #pragma once
 #include "Weapon.h"
 
-class Player;
 
+class Pad : public Weapon
 
-
-class PrisonerWeapon : public Weapon
 {
 protected:
 
@@ -27,16 +25,20 @@ protected:
 	bool flipX = false;
 
 	AnimationController gun;
-	AnimationController shootEffect;
+	AnimationController effect;
 
 	float WeaponXpos = 9.f;
 
 	sf::RectangleShape gunend;
 
+
+
 public:
 
-	PrisonerWeapon(const std::string& textureId = "", const std::string& n = "");
-	virtual ~PrisonerWeapon() override { Release(); }
+	sf::Sprite shooteffect;
+
+	Pad(const std::string& textureId = "", const std::string& n = "");
+	virtual ~Pad() override { Release(); }
 
 	virtual void Init() override;
 	virtual void Release() override;
@@ -45,15 +47,14 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	virtual void SetGunFlipx(bool flip) override;
+	virtual void SetGunFlipx(bool flipX) override;
 
 	virtual void SetType(Types t);
-
 	virtual Types GetWeaponType() override { return weaponType; }
 	virtual Bullet::Types GetBulletType() override { return bulletType; }
 
 	virtual void RequestReload() override { currentbulletcount = bulletcount; }
 
 	virtual AnimationController* GetWeaponAnimation() override { return &gun; }
-};
 
+};

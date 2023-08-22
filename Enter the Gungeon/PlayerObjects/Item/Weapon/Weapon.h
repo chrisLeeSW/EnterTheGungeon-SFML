@@ -24,6 +24,14 @@ public:
 		Ak47,
 		Magnum,
 		ShotGun,
+		Pad,
+	};
+
+	enum class State
+	{
+		Idle,
+		Shoot,
+		Reload,
 	};
 
 protected:
@@ -37,6 +45,7 @@ protected:
 	sf::Vector2f look;
 	sf::Vector2f monsterlook;
 
+	State state;
 
 	AnimationController animation;
 
@@ -101,5 +110,9 @@ public:
 
 	virtual sf::Vector2f Look();
 	virtual void SetEnemy(Enemy* enemy);
+
+	virtual AnimationController* GetWeaponAnimation() { return &animation; }
+
+	virtual State GetWeaponState() { return state; }
 
 };

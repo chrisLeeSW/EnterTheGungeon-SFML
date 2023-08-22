@@ -10,7 +10,7 @@
 class Item;
 class Scene;
 class Bullet;
-
+class PlayerUI;
 
 class Player : public SpriteGo
 {
@@ -50,7 +50,11 @@ protected:
 
 	AnimationController animation;
 	AnimationController actEffect;
-
+	AnimationController blankBullet;
+	sf::CircleShape blankEffect;
+	bool isBlank = false;
+	bool isBlankEffect = false;
+	bool isBlankAnimation = false;
 
 	bool isGame = false;
 	bool isLobby = true;
@@ -63,6 +67,8 @@ protected:
 
 	//플레이어 손
 	SpriteGo* hand;
+	sf::Sprite shadow;
+
 	bool handflipX = false;
 
 	//아이템
@@ -89,6 +95,7 @@ protected:
 	int maxHp = 6;
 	float hitDelay = 1.0f;
 	float currenthitDelay = 0.f;
+	int blankBulletCount = 0;
 
 	//플레이어 상태
 	int hp = 6;
@@ -102,6 +109,7 @@ protected:
 	//UI
 	SpriteGo* ouch;
 	sf::Color ouchoriginalColor;
+	PlayerUI* playerUI;
 
 	//Enemy
 	std::list<Enemy*> enemylist;
@@ -131,6 +139,7 @@ protected:
 public:
 
 	sf::Sprite walk;
+	sf::Sprite blanksprite;
 	
 	sf::Vector2f playerhand;
 	bool isUsingActiveSkill = false;
@@ -153,6 +162,7 @@ public:
 	virtual void Draw(sf::RenderWindow& window) override;
 
 	void PlayerRotation();
+	void BlankBullet(float dt);
 	void SetFlipX(bool filp);
 	void PlayerAct(float dt);
 
@@ -170,9 +180,14 @@ public:
 	bool isRolling() { return isrolling; }
 	bool IsAlive() { return isAlive; }
 	bool IsHit() { return isHit; }
+	bool IsBlankBullet() { return isBlank; }
+	void SetBalnkBUllet(bool blank) { isBlank = blank; }
+
+	void SetPlayerUI(PlayerUI* playerui) { playerUI = playerui; }
 
 
 	sf::Vector2f PlayerHandPos() { return hand->GetPosition(); }
+	int GetHp() { return hp; }
 
 	void SetEnemyList(std::list<Enemy*> enemylist);
 

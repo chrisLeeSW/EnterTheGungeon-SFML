@@ -11,6 +11,7 @@
 #include "ItemMgr.h"
 #include "Weapon.h"
 #include "Magnum.h"
+#include "Winchester.h"
 
 Enemy::Enemy(EnemyName type, const std::string& textureId, const std::string& n)
 	:SpriteGo(textureId, n), type(type)
@@ -128,6 +129,7 @@ void Enemy::Reset()
 	attackTimer = attackInterval;
 
 
+	//±èÇıÁØ Ãß°¡
 	Scene* scene = SCENE_MGR.GetCurrScene();
 	switch (type)
 	{
@@ -140,8 +142,8 @@ void Enemy::Reset()
 		shotgun->SetEnemy(this);
 		break;
 	case EnemyName::ShotgunKinBlue:
-		shotgun = (ShotGun*)scene->AddGo(new ShotGun());
-		shotgun->SetEnemy(this);
+		winchester = (Winchester*)scene->AddGo(new Winchester());
+		winchester->SetEnemy(this);
 		break;
 	default:
 		break;

@@ -153,7 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-
+    <ClCompile Include="PlayerObjects\Item\DropItem.cpp" />
     <ClCompile Include="EnemyTable.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="GameObjects\Boss.cpp" />
@@ -217,11 +217,14 @@
     <ClCompile Include="PlayerObjects\Item\Item.cpp" />
     <ClCompile Include="Scenes\TestRom.cpp" />
     <ClCompile Include="PlayerObjects\Item\Weapon\ShotGun.cpp" />
+    <ClCompile Include="UI\PlayerUI.cpp" />
     <ClCompile Include="UI\TextBox.cpp" />
     <ClCompile Include="Map\TileMap.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Weapon\Winchester.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
+    <ClInclude Include="PlayerObjects\Item\DropItem.h" />
     <ClInclude Include="EnemyTable.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="GameObjects\Boss.h" />
@@ -282,8 +285,10 @@
     <ClInclude Include="GameObjects\TextGo.h" />
     <ClInclude Include="Framework\UiButton.h" />
     <ClInclude Include="Scenes\TestRom.h" />
+    <ClInclude Include="UI\PlayerUI.h" />
     <ClInclude Include="UI\TextBox.h" />
     <ClInclude Include="Map\TileMap.h" />
+    <ClInclude Include="PlayerObjects\Item\Weapon\Winchester.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

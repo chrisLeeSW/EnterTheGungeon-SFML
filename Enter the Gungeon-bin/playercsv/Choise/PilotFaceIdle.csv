@@ -1,0 +1,8 @@
+ID,FPS,LOOPTYPE,,
+PilotFaceIdle,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/PilotFaceIdle.png,27,12,38,38
+graphics/PilotFaceIdle.png,79,12,38,38
+graphics/PilotFaceIdle.png,131,12,38,38
+graphics/PilotFaceIdle.png,183,12,38,38

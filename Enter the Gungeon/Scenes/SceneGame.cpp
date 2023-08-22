@@ -10,6 +10,7 @@
 #include "Equipment.h"
 #include "Enemy.h"
 #include "InteractionObject.h"
+#include "PlayerUI.h"
 
 SceneGame::SceneGame() : Scene(SceneId::Game)
 {
@@ -42,7 +43,20 @@ void SceneGame::Init()
 	testenm1->SetOrigin(Origins::BC); //test
 	testenm1->SetPosition(200, 200); //test
 	testenm1->sortLayer = 0;
+
+	testenm2 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::BulletKin)); //test
+	testenm2->SetOrigin(Origins::BC); //test
+	testenm2->SetPosition(300, 300); //test
+	testenm2->sortLayer = 0;
+
+	testenm3 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::ShotgunKinBlue)); //test
+	testenm3->SetOrigin(Origins::BC); //test
+	testenm3->SetPosition(400, 400); //test
+	testenm3->sortLayer = 0;
+
 	enemylist.push_back(testenm1);
+	enemylist.push_back(testenm2);
+	enemylist.push_back(testenm3);
 
 	MakeTestRoom(3);
 	for (auto go : gameObjects)
@@ -74,11 +88,14 @@ void SceneGame::Enter()
 	player->Init();
 	player->SetEnemyList(enemylist);
 	testenm1->SetPlayer(player); //test
+	testenm2->SetPlayer(player); //test
+	testenm3->SetPlayer(player); //test
 
 
 	player->SetPosition(0.f,0.f);
 
-
+	playerui = (PlayerUI*)AddGo(new PlayerUI(player));
+	playerui->Init();
 
 	Scene::Enter();
 }

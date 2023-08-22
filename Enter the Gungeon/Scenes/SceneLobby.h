@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "AnimationController.h"
 
 class Player;
 class SpriteGo;
@@ -36,9 +37,10 @@ protected:
 
 	bool playerchoise = false;
 
-	std::vector<SpriteGo*> currentchoise;
+	bool playerface = true;
+	AnimationController animation;
 
-	SpriteGo* playerui;
+	sf::Sprite sprite;
 
 public:
 	SceneLobby();

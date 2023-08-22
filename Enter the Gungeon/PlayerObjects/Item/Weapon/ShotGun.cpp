@@ -44,6 +44,7 @@ void ShotGun::Release()
 
 void ShotGun::Reset()
 {
+	player = PLAYER_MGR.GetPlayer();
 }
 
 void ShotGun::Update(float dt)
@@ -57,7 +58,11 @@ void ShotGun::Update(float dt)
 	float angle = Utils::Angle(look);
 	sf::Vector2f gunOffset = Utils::RotateVector(gunOffset1, angle);
 
-	//이거 마우스인데 플레이어랑 몬스터 포지션 뺀걸 노멀라이즈해서 넣어야될듯
+	look = Utils::Normalize(player->GetPosition() - enemy->GetPosition());
+
+
+	SetGunFlipx(!enemy->GetFlipX());
+
 	if (flipX)
 	{
 		gunOffset = Utils::RotateVector(gunOffset2, angle);

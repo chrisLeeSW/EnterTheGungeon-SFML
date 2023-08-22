@@ -22,7 +22,6 @@ Magnum::Magnum(const std::string& textureId, const std::string& n) : Weapon(text
 
 	gun.Play("Idle");
 
-	SetOrigin(sprite.getLocalBounds().left, sprite.getLocalBounds().height);
 
 	//SetScale(0.5f,0.5f);
 
@@ -30,6 +29,8 @@ Magnum::Magnum(const std::string& textureId, const std::string& n) : Weapon(text
 	gunend.setOutlineColor(sf::Color::Red);
 	gunend.setOutlineThickness(1.f);
 	gunend.setSize(sf::Vector2f{ 5,5 });
+
+
 
 }
 
@@ -49,46 +50,33 @@ void Magnum::Reset()
 
 void Magnum::Update(float dt)
 {
-		//Weapon::Update(dt);
+	gun.Update(dt);
+	SetPosition(enemy->GetPosition());
+	SetOrigin(Origins::BL);
 
-		sf::Vector2f gunOffset1(16, -9);
-		sf::Vector2f gunOffset2(16, 9);
+	float angle = Utils::Angle(look);
+	sf::Vector2f gunOffset = Utils::RotateVector(gunOffset1, angle);
 
-		gun.Update(dt);
-		SetPosition(enemy->GetPosition());
-
-		//주현씨는 몬스터 손 이거 근데 포지션 손 포지션을 플레이어 포지션으로하고 오리진으로 하면 
-		//총도 포지션을 손으로 잡고 손 오리진 맞춘 것 처럼 위치를 만들어야 되는데
-		//오리진을 BL로 안하면 총이 Rotation할때 회전의 중점이 총 손잡이가 아니라서 이상하게 됨 주현씨 혹시 다른 방법이 있을까요?
+	look = Utils::Normalize(player->GetPosition() - enemy->GetPosition());
 
 
-		SetOrigin(Origins::BL);
+	SetGunFlipx(!enemy->GetFlipX());
 
-		float angle = Utils::Angle(look);
-		sf::Vector2f gunOffset = Utils::RotateVector(gunOffset1, angle);
-
-		 //이거 마우스인데 플레이어랑 몬스터 포지션 뺀걸 노멀라이즈해서 넣어야될듯
-		if (flipX)
-		{
-			gunOffset = Utils::RotateVector(gunOffset2, angle);
-			angle += FLIP_ANGLE_X;
-		}
-
-		sprite.setRotation(angle);
-
-		//SetGunFlipx(player->GetFilpX());
-
-
-		gunend.setPosition(gunPoint);
-		gunPoint = enemy->GetPosition();
-		gunPoint += gunOffset;
-
-		//if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
-		//{
-		//	gun.Play("Shoot");
-		//	WEAPON_MGR.Shoot(bulletType, gunPoint, look);
-		//}
+	if (flipX)
+	{
+		gunOffset = Utils::RotateVector(gunOffset2, angle);
+		angle += FLIP_ANGLE_X;
 	}
+	sprite.setRotation(angle);
+
+	//SetGunFlipx(player->GetFilpX());
+
+
+	gunend.setPosition(gunPoint);
+	gunPoint = enemy->GetPosition();
+	gunPoint += gunOffset;
+
+}
 
 void Magnum::Draw(sf::RenderWindow& window)
 {
@@ -115,4 +103,10 @@ void Magnum::SetType(Weapon::Types t)
 	bulletmax = info->bulletmax;
 	reload = info->reload;
 	santan = info->santan;
+}
+
+void Magnum::SetEnemy(Enemy* enemy)
+{
+	this->enemy = enemy;
+	sprite.setOrigin(this->enemy->GetHandOrigin().x, this->enemy->GetHandOrigin().y);
 }

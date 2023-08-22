@@ -24,6 +24,14 @@ public:
 		Ak47,
 		Magnum,
 		ShotGun,
+		Pad,
+	};
+
+	enum class State
+	{
+		Idle,
+		Shoot,
+		Reload,
 	};
 
 protected:
@@ -37,6 +45,7 @@ protected:
 	sf::Vector2f look;
 	sf::Vector2f monsterlook;
 
+	State state;
 
 	AnimationController animation;
 
@@ -50,7 +59,9 @@ protected:
 	sf::Vector2f gunPoint;
 
 	bool flipX = false;
-
+	
+	float currentbulletcount;
+	float bulletcount;
 
 	sf::Vector2f gunOffset1;
 	sf::Vector2f gunOffset2;
@@ -94,20 +105,14 @@ public:
 	virtual void SetGunFlipx(bool flip) = 0;
 	virtual Types GetWeaponType() = 0;
 	virtual Bullet::Types GetBulletType() = 0;
+	virtual void RequestReload() { currentbulletcount = bulletcount; };
 	virtual void SwapWeapon();
 
 	virtual sf::Vector2f Look();
 	virtual void SetEnemy(Enemy* enemy);
 
+	virtual AnimationController* GetWeaponAnimation() { return &animation; }
 
-	//¾È¾µµí?
-	//template<typename T>
-	//T AddWeapon(T weapon)
-	//{
-	//	T* addweapon = &weapon
-	//	Scene* scene = SCENE_MGR.GetGameScene();
-	//	SceneGame* SG = dynamic_cast<SceneGame*>(scene);
+	virtual State GetWeaponState() { return state; }
 
-	//	addweapon = (T*)SG->AddGo(new T());
-	//}
 };

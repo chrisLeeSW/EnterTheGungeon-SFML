@@ -27,17 +27,16 @@ void SceneLobby::Init()
 	pilot = (Player*)AddGo(new Player(Player::Types::Pilot));
 	prisoner = (Player*)AddGo(new Player(Player::Types::Prisoner));
 
+	pilot->SetOrigin(Origins::BC);
+	prisoner->SetOrigin(Origins::BC);
 
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/Choise/PilotFace.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/Choise/PilotFaceIdle.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/Choise/PrisonerFace.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/Choise/PrisonerFaceIdle.csv"));
 
-	playerui = (SpriteGo*)AddGo(new SpriteGo("graphics/PilotUI.png", "pilot"));
-	playerui->SetOrigin(Origins::BC);
-	playerui->SetActive(false);
-	currentchoise.push_back(playerui);
+	animation.SetTarget(&sprite);
 
-	playerui = (SpriteGo*)AddGo(new SpriteGo("graphics/PrisonerUI.png", "prisoner"));
-	playerui->SetOrigin(Origins::BC);
-	playerui->SetActive(false);
-	currentchoise.push_back(playerui);
 
 	elevator = (SpriteGo*)AddGo(new SpriteGo("graphics/elevator.png", ""));
 	elevator->SetPosition(200,-200);
@@ -70,8 +69,9 @@ void SceneLobby::Enter()
 	pilot->SetPosition(pilotSetPosition);
 	prisoner->SetPosition(prisonerSetPosition);
 	
-	currentchoise[0]->SetPosition(pilot->sprite.getGlobalBounds().top, (pilot->sprite.getGlobalBounds().left + pilot->sprite.getGlobalBounds().width) * 0.5);
-	currentchoise[1]->SetPosition(prisoner->sprite.getGlobalBounds().top, (prisoner->sprite.getGlobalBounds().left + prisoner->sprite.getGlobalBounds().width) * 0.5);
+	sprite.setPosition(windowSize.x * 0.5f, windowSize.y * 0.4f);
+
+
 }
 
 void SceneLobby::Exit()
@@ -85,6 +85,8 @@ void SceneLobby::Update(float dt)
 	Scene::Update(dt);
 	PlayerChoise();
 	
+	animation.Update(dt);
+
 	if (currentplayer->sprite.getGlobalBounds().intersects(elevator->sprite.getGlobalBounds()))
 	{
 		//여기 스위치로
@@ -109,34 +111,53 @@ void SceneLobby::Update(float dt)
 void SceneLobby::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
+
+	if(playerface)
+	window.draw(sprite);
 }
 
 void SceneLobby::PlayerChoise()
 {
+	if (choiseindex == 0)
+	{
+		sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
+		sprite.setPosition(windowSize.x * 0.5f, windowSize.y * 0.44f);
+		if(animation.GetCurrentClipId() != "PilotFace" && animation.GetCurrentClipId() != "PilotFaceIdle")
+			animation.Play("PilotFace");
+
+		if (animation.AnimationEnd())
+			if (animation.GetCurrentClipId() != "PilotFaceIdle")
+				animation.Play("PilotFaceIdle");
+	}
+	else
+	{
+		sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
+		sprite.setPosition(windowSize.x * 0.604f, windowSize.y * 0.625f);
+		if (animation.GetCurrentClipId() != "PrisonerFace" && animation.GetCurrentClipId() != "PrisonerFaceIdle")
+			animation.Play("PrisonerFace");
+
+		if (animation.AnimationEnd())
+			if (animation.GetCurrentClipId() != "PrisonerFaceIdle")
+				animation.Play("PrisonerFaceIdle");
+	}
+
 	if (!playerchoise)
 	{
 		if (INPUT_MGR.GetKeyDown(sf::Keyboard::A))
 		{
-			currentchoise[choiseindex]->SetActive(false);
 			choiseindex--;
-
 			if (choiseindex < 0)
 			{
-				choiseindex = currentchoise.size() - 1;
+				choiseindex = 1;
 			}
-
-			currentchoise[choiseindex]->SetActive(true);
 		}
 		if (INPUT_MGR.GetKeyDown(sf::Keyboard::D))
 		{
-			currentchoise[choiseindex]->SetActive(false);
 			choiseindex++;
-
-			if (choiseindex == currentchoise.size())
+			if (choiseindex == 2)
 			{
 				choiseindex = 0;
 			}
-			currentchoise[choiseindex]->SetActive(true);
 		}
 
 		if (INPUT_MGR.GetKeyDown(sf::Keyboard::E))
@@ -156,14 +177,12 @@ void SceneLobby::PlayerChoise()
 				break;
 			}
 			playerchoise = true;
+			playerface = false;
 		}
 	}
 	else
 	{
-		for (int i = 0; i < currentchoise.size(); ++i)
-		{
-			currentchoise[i]->SetActive(false);
-		}
+
 	}
 
 	if (playerchoise)
@@ -173,9 +192,13 @@ void SceneLobby::PlayerChoise()
 		case Types::Pilot:
 			if (Utils::Distance(pilot->GetPosition(), prisoner->GetPosition()) <= 30.f)
 			{
-				currentchoise[(int)Types::Prisoner]->SetActive(true);
+				playerface = true;
+				sprite.setPosition(windowSize.x * 0.604f, windowSize.y * 0.625f);
+
+				choiseindex = 1;
 				if (INPUT_MGR.GetKeyDown(sf::Keyboard::E))
 				{
+					playerface = false;
 					prisoner->ChangePlayer(prisonerSetPosition, true);
 					pilot->ChangePlayer(pilotSetPosition, false);
 					playertype = Types::Prisoner;
@@ -183,17 +206,20 @@ void SceneLobby::PlayerChoise()
 				}
 			}
 			else
-			{
-				currentchoise[(int)Types::Prisoner]->SetActive(false);
-			}
+				playerface = false;
 			break;
 
 		case Types::Prisoner:
 			if (Utils::Distance(prisoner->GetPosition(), pilot->GetPosition()) <= 30.f)
 			{
-				currentchoise[(int)Types::Pilot]->SetActive(true);
+				playerface = true;
+
+				sprite.setPosition(windowSize.x * 0.5f, windowSize.y * 0.44f);
+
+				choiseindex = 0;
 				if (INPUT_MGR.GetKeyDown(sf::Keyboard::E))
 				{
+					playerface = false;
 					pilot->ChangePlayer(pilotSetPosition, true);
 					prisoner->ChangePlayer(prisonerSetPosition, false);
 					playertype = Types::Pilot;
@@ -201,9 +227,9 @@ void SceneLobby::PlayerChoise()
 				}
 			}
 			else
-			{
-				currentchoise[(int)Types::Pilot]->SetActive(false);
-			}
+				playerface = false;
+
+
 			break;
 		}
 	}

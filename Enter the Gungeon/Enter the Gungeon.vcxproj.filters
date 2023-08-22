@@ -192,6 +192,15 @@
     <ClCompile Include="Door.cpp">
      <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Weapon\Winchester.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\PlayerUI.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\DropItem.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -373,6 +382,15 @@
     </ClInclude>
     <ClInclude Include="Door.h">
      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Weapon\Winchester.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\PlayerUI.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\DropItem.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

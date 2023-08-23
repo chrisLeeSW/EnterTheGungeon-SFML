@@ -63,6 +63,9 @@ public:
 	virtual Types GetWeaponType() override { return weaponType; }
 	virtual Bullet::Types GetBulletType() override { return bulletType; }
 
+	virtual float GetReloadTime()override { return reload; }
+	virtual float GetCurrentReloadTime()override { return reloadtick; }
+
 	virtual void RequestReload() override { currentbulletcount = bulletcount; }
 
 	virtual AnimationController* GetWeaponAnimation() override { return &gun; }

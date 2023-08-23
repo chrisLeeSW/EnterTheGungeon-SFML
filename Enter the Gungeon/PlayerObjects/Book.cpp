@@ -34,23 +34,11 @@ void Book::Init()
 	sortLayer = 103;
 	draw = false;
 
-	//sf::Vector2f bookleft(sprite.getPosition().x, sprite.getPosition().y);
-
-	test1.setFillColor(sf::Color::Green);
-	test1.setSize({ 10,10 });
-	test2.setFillColor(sf::Color::Red);
-	test2.setSize({ 10,10 });
-	test3.setFillColor(sf::Color::Blue);
-	test3.setSize({ 10,10 });
 
 	weaponline = { windowsize.x * 0.45f, sprite.getPosition().y * 0.9f };
 	passiveline = { windowsize.x * 0.45f, sprite.getPosition().y };
 	activeline = {windowsize.x * 0.45f, sprite.getPosition().y * 1.1f};
 
-
-	test1.setPosition(weaponline);
-	test2.setPosition(passiveline);
-	test3.setPosition(activeline);
 
 	
 
@@ -68,7 +56,6 @@ void Book::Reset()
 {
 	SpriteGo::Reset();
 	player = PLAYER_MGR.GetPlayer();
-	Insert();
 
 }
 
@@ -109,9 +96,12 @@ void Book::Update(float dt)
 	if(isBookOpen)
 	{
 		for (auto it : weaponbuttons)
-		{
 			it->Update(dt);
-		}
+		for (auto it : activebuttons)
+			it->Update(dt);
+		for (auto it : passivebuttons)
+			it->Update(dt);
+		
 	}
 }
 
@@ -139,47 +129,55 @@ void Book::Draw(sf::RenderWindow& window)
 		{
 			currentClickButton->Draw(window);
 		}
-
-		window.draw(test1);
-		window.draw(test2);
-		window.draw(test3);
 	}
-}
-
-void Book::Insert()
-{
-	Scene* scene = SCENE_MGR.GetCurrScene();
-	SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
-
-
-	TextGo* textbut = (TextGo*)sceneGame->AddGo(new TextGo("fonts/OpenSans-Semibold.ttf","textbut"));
-	textbut->sortLayer = 103;
-	textbut->text.setCharacterSize(50);
-	textbut->text.setFillColor(sf::Color::Green);
-	textbut->SetPosition(windowsize * 0.5f);
-
 }
 
 void Book::GetItem(Item::Types t, Item::WAP w)
 {
-	Scene* scene = SCENE_MGR.GetCurrScene();
-	SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
 
 	switch (w)
 	{
 	case Item::WAP::Active :
 	{
 		ItemButton* it = DATATABLE_MGR.Get<ButtonTable>(DataTable::Ids::Button)->Get(t);
-		//sceneGame->AddGo(it);
+		it->Init();
+		it->SetBook(this);
 		activebuttons.push_back(it);
+		if (activebuttons.size() == 1)
+		{
+			it->SetSpritePosition(200, 170);
+		}
+		else
+		{
+			it->SetSpritePosition(activebuttons[activebuttons.size() - 2]->GetSpritePosition().x + 20.f, activebuttons[activebuttons.size() - 2]->GetSpritePosition().y);
+			std::cout << activebuttons[activebuttons.size() - 1]->GetSpritePosition().x;
+			for (int i = 0; i <= activebuttons.size() - 1; i++)
+			{
+				activebuttons[i]->SetSpritePosition(20.f);
+			}
+		}
 		break;
 	}
 
 	case Item::WAP::Passive :
 	{
 		ItemButton* it = DATATABLE_MGR.Get<ButtonTable>(DataTable::Ids::Button)->Get(t);
-		//sceneGame->AddGo(it);
+		it->Init();
+		it->SetBook(this);
 		passivebuttons.push_back(it);
+		if (passivebuttons.size() == 1)
+		{
+			it->SetSpritePosition(200, 230);
+		}
+		else
+		{
+			it->SetSpritePosition(passivebuttons[passivebuttons.size() - 2]->GetSpritePosition().x + 20.f, passivebuttons[passivebuttons.size() - 2]->GetSpritePosition().y);
+			std::cout << passivebuttons[passivebuttons.size() - 1]->GetSpritePosition().x;
+			for (int i = 0; i <= passivebuttons.size() - 1; i++)
+			{
+				passivebuttons[i]->SetSpritePosition(20.f);
+			}
+		}
 		break;
 	}
 

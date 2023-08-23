@@ -14,6 +14,11 @@ protected:
     TextGo* textbut;
 
 public:
+
+    Item::Types itemtype = Item::Types::BulletTime;
+    Item::WAP wap = Item::WAP::Active;
+
+
     aBulletTime(const std::string& textureId = "", const std::string& n = "");
     virtual ~aBulletTime() override { Release(); }
 

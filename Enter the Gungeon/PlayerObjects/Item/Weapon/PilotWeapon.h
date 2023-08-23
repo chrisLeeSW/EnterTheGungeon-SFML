@@ -59,6 +59,9 @@ public:
 
 	virtual AnimationController* GetWeaponAnimation() override { return &gun; }
 
+	virtual float GetReloadTime()override { return reload; }
+	virtual float GetCurrentReloadTime()override { return reloadtick; }
+
 	virtual Item::Types GetItemType() { return itemtype; }
 	virtual Item::WAP GetItemWAP() { return wap; }
 };

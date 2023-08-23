@@ -32,6 +32,7 @@ public:
 		Idle,
 		Shoot,
 		Reload,
+		Roll,
 	};
 
 protected:
@@ -51,6 +52,8 @@ protected:
 
 	std::vector<AnimationController> shootEffect;
 
+	float reload;
+	float reloadtick;
 
 	Player* player;
 
@@ -107,6 +110,9 @@ public:
 	virtual Bullet::Types GetBulletType() = 0;
 	virtual void RequestReload() { currentbulletcount = bulletcount; };
 	virtual void SwapWeapon();
+
+	virtual float GetReloadTime() { return reload; }
+	virtual float GetCurrentReloadTime() { return reloadtick; }
 
 	virtual sf::Vector2f Look();
 	virtual void SetEnemy(Enemy* enemy);

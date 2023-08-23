@@ -25,5 +25,6 @@ public:
 	virtual void Draw(sf::RenderWindow& window) override;
 
 	virtual bool LoadFromFile(const std::string& path,int column=0 ,int row=1);
+	virtual sf::Sprite* GetSprite() { return &sprite; };
 };
 

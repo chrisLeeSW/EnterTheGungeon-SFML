@@ -125,7 +125,10 @@ void Player::Reset()
 
 
 	if(isGame)
-	playerUI->CurrentWeapon(weaponList[currentIndex]);
+	{
+		playerUI->CurrentWeapon(weaponList[currentIndex]);
+		playerUI->CurrentActive(active);
+	}
 
 }
 
@@ -430,6 +433,18 @@ void Player::PlayerAct(float dt)
 
 	if (isGame && INPUT_MGR.GetKeyDown(sf::Keyboard::Num8))
 		GetItem(Active::Types::PrisonerActive);
+
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F))
+	{
+		if (hp < maxHp)
+		{
+			hp++;
+			playerUI->AddHp();
+		}
+
+		blankBulletCount++;
+		playerUI->AddBlankBullet();
+	}
 }
 
 
@@ -502,6 +517,9 @@ void Player::GetItem(Active::Types type)
 		if (active != nullptr)
 			active = nullptr; // 이게 맞나?
 
+		if(playerUI!=nullptr)
+		playerUI->CurrentActive(it);
+
 			active = it;
 			book->GetItem(it->GetItemType(), it->GetItemWAP());
 
@@ -535,6 +553,27 @@ void Player::GetItem(Weapon::Types type)
 	}
 }
 
+
+void Player::HealHp()
+{
+	if (hp < maxHp)
+	{
+		hp++;
+		playerUI->AddHp();
+	}
+}
+
+void Player::AddBlankBullet()
+{
+	blankBulletCount++;
+	playerUI->AddBlankBullet();
+}
+
+void Player::AddMoney(int money)
+{
+	this->money = money;
+	playerUI->AdjustMoney();
+}
 
 const sf::Vector2f& Player::GetDirection() const
 {
@@ -571,7 +610,6 @@ void Player::SwapWeapon()
 				--temp;
 				currentIndex = temp;
 				playerUI->CurrentWeapon(weaponList[currentIndex]);
-
 			}
 		}
 	}
@@ -651,7 +689,7 @@ void Player::SetType(Types t)
 		};
 		poolBullets.Init();
 		book = PLAYER_MGR.GetBook();
-		GetItem(activetype);
+		GetItem(Active::Types::PrisonerActive);
 		GetItem(passivetype);
 		GetItem(weapontype);
 	}

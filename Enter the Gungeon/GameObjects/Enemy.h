@@ -1,6 +1,7 @@
 #pragma once
 #include "SpriteGo.h"
 #include "AnimationController.h"
+#include "DropItem.h"
 
 class Player;
 //±èÇýÁØ Ãß°¡
@@ -123,7 +124,7 @@ public:
 	void SixWayDie(sf::Vector2f dir, float speed, int chance);
 
 	// ÅºÇÇ µå¶ø
-	void DropCasing();
+	void DropCasing(DropItem::Types itemtype = DropItem::Types::Shell1, int quantity = 1, int chance = 100);
 	// ¿­¼è µå¶ø
 	void DropKey();
 };

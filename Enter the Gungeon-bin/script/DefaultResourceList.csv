@@ -244,3 +244,11 @@
 0,graphics/prisonerweaponsprite.png
 1,fonts/AurulentSansMono-Regular.otf
 1,fonts/OpenSans-Semibold.ttf
+3,Animations/Objects/Ammo.csv
+3,Animations/Objects/Blank.csv
+3,Animations/Objects/Heart.csv
+3,Animations/Objects/Hearts.csv
+3,Animations/Objects/HegemonyCredit.csv
+3,Animations/Objects/Key.csv
+3,Animations/Objects/Shell1.csv
+3,Animations/Objects/Shell2.csv

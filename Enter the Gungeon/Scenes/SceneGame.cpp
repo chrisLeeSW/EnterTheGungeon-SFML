@@ -11,6 +11,7 @@
 #include "Enemy.h"
 #include "InteractionObject.h"
 #include "PlayerUI.h"
+#include "DropItem.h"
 
 #include "Boss.h"
 #include "EnemyBullet.h"
@@ -82,6 +83,12 @@ void SceneGame::Init()
 	};
 	enemyBullets.Init();
 
+	dropitemPool.OnCreate = [this](DropItem* dropitem)
+	{
+		dropitem->pool = &dropitemPool;
+	};
+	dropitemPool.Init();
+
 	MakeTestRoom(3);
 	for (auto go : gameObjects)
 	{
@@ -92,6 +99,7 @@ void SceneGame::Init()
 void SceneGame::Release()
 {
 	enemyBullets.Release();
+	dropitemPool.Release();
 
 	for (auto go : gameObjects)
 	{
@@ -134,6 +142,7 @@ void SceneGame::Exit()
 	player->Reset();
 
 	ClearPool(enemyBullets);
+	ClearPool(dropitemPool);
 }
 
 void SceneGame::Update(float dt)
@@ -311,4 +320,9 @@ void SceneGame::RenewBossUI()
 ObjectPool<EnemyBullet>& SceneGame::GetPoolEnemyBullet()
 {
 	return enemyBullets;
+}
+
+ObjectPool<DropItem>& SceneGame::GetPoolDropItem()
+{
+	return dropitemPool;
 }

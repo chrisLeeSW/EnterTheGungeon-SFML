@@ -65,6 +65,7 @@ protected:
 	
 	float currentbulletcount;
 	float bulletcount;
+	float bulletmax;
 
 	sf::Vector2f gunOffset1;
 	sf::Vector2f gunOffset2;
@@ -113,6 +114,8 @@ public:
 
 	virtual float GetReloadTime() { return reload; }
 	virtual float GetCurrentReloadTime() { return reloadtick; }
+	virtual float GetCurrentBulleCount()  { return currentbulletcount; }
+	virtual float GetRemainingAmmo()  { return bulletmax; }
 
 	virtual sf::Vector2f Look();
 	virtual void SetEnemy(Enemy* enemy);

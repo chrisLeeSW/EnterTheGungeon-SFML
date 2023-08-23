@@ -65,6 +65,8 @@ public:
 
 	virtual float GetReloadTime()override { return reload; }
 	virtual float GetCurrentReloadTime()override { return reloadtick; }
+	virtual float GetCurrentBulleCount() override { return currentbulletcount; }
+	virtual float GetRemainingAmmo() override { return bulletmax; }
 
 	virtual void RequestReload() override { currentbulletcount = bulletcount; }
 

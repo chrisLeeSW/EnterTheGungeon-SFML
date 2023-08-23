@@ -1,8 +1,8 @@
 itemtype,buttonTexture,itemName,manual,itemsprite,namepos,namepos,manualpos,manualpos,font,textsize,namesize
 1,graphics/pilotweaponbutton.png,pilotweapon,this is pilotweapon!,graphics/pilotweaponsprite.png,375.f,160.f,375.f,225.f,fonts/OpenSans-Semibold.ttf,20,5
-2,graphics/pilotweaponbutton.png,pilotweapon,pi,graphics/padsprite.png,375.f,160.f,375.f,225.f,fonts/OpenSans-Semibold.ttf,20,5
+2,graphics/PilotPassive.png,SecretBox,PilotPassive,graphics/PilotPassivesprite.png,375.f,160.f,375.f,225.f,fonts/OpenSans-Semibold.ttf,20,5
 3,graphics/pilotweaponbutton.png,pilotweapon,pi,graphics/padsprite.png,375.f,160.f,375.f,225.f,fonts/OpenSans-Semibold.ttf,20,5
 4,graphics/prisonerweaponbutton.png,prisonerweapon,this is prisonerweapon!,graphics/prisonerweaponsprite.png,375.f,160.f,375.f,225.f,fonts/OpenSans-Semibold.ttf,20,5
 5,graphics/prisonerweaponbutton.png,prisonerweapon,pri,graphics/padsprite.png,375.f,160.f,375.f,225.f,fonts/OpenSans-Semibold.ttf,20,5
-6,graphics/prisonerweaponbutton.png,prisonerweapon,pri,graphics/padsprite.png,375.f,160.f,375.f,225.f,fonts/OpenSans-Semibold.ttf,20,5
+6,graphics/PrisonerBottle.png,FireBottle,Prisoner Active Item,graphics/PrisonerBottlesprite.png,375.f,160.f,375.f,225.f,fonts/OpenSans-Semibold.ttf,20,5
 7,graphics/padbutton.png,pad,this is pad!,graphics/padsprite.png,375.f,160.f,375.f,225.f,fonts/OpenSans-Semibold.ttf,20,5

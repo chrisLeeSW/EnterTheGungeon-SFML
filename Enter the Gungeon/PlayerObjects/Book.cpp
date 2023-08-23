@@ -40,7 +40,28 @@ void Book::Init()
 	activeline = {windowsize.x * 0.45f, sprite.getPosition().y * 1.1f};
 
 
-	
+	sf::Font* font = RESOURCE_MGR.GetFont("fonts/AurulentSansMono-Regular.otf");
+
+	textweapon.setFont(*font);
+	textactvie.setFont(*font);
+	textpassive.setFont(*font);
+	textweapon.setFillColor(sf::Color::White);
+	textactvie.setFillColor(sf::Color::White);
+	textpassive.setFillColor(sf::Color::White);
+	textweapon.setCharacterSize(10);
+	textactvie.setCharacterSize(10);
+	textpassive.setCharacterSize(10);
+	textweapon.setPosition(200, 87.5f);
+	textactvie.setPosition(200, 145);
+	textpassive.setPosition(200, 200);
+	textweapon.setString("Weapon");
+	textactvie.setString("Active");
+	textpassive.setString("Passive");
+
+	Utils::SetOrigin(textpassive, Origins::BC);
+	Utils::SetOrigin(textweapon, Origins::BC);
+	Utils::SetOrigin(textactvie, Origins::BC);
+
 
 	black.setFillColor(sf::Color::Black);
 	black.setSize(windowsize);
@@ -129,6 +150,10 @@ void Book::Draw(sf::RenderWindow& window)
 		{
 			currentClickButton->Draw(window);
 		}
+
+		window.draw(textactvie);
+		window.draw(textpassive);
+		window.draw(textweapon);
 	}
 }
 

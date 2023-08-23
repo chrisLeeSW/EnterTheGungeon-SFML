@@ -32,7 +32,9 @@ protected:
 	sf::Vector2f passiveline;
 	sf::Vector2f activeline;
 
-
+	sf::Text textweapon;
+	sf::Text textactvie;
+	sf::Text textpassive;
 
 
 	bool bookOn = false;

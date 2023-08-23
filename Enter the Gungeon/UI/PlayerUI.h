@@ -36,7 +36,11 @@ protected:
 	sf::Sprite reloadBar;
 	sf::Text currentmoney;
 	sf::Text currentkey;
+	sf::Text currentMagazine;
+	sf::Text remainingAmmo;
 
+		int bulletcount;
+	int bulletmax;
 	Weapon* playerweapon = nullptr;
 	Active* currentActive = nullptr;
 

@@ -12,12 +12,24 @@ class Item : public SpriteGo
 
 public:
 
+    enum class WAP
+    {
+        None,
+        Weapon,
+        Active,
+        Passive,
+    };
+
     enum class Types
     {
         None,
-        Passive,
-        Active,
-        Weapon,
+        PilotWeapon,
+        PilotPassive,
+        PilotActive,
+        PrisonerWeapon,
+        PrisonerPassive,
+        PrisonerActive,
+        Pad,
     };
 
 
@@ -45,6 +57,8 @@ public:
     virtual void Update(float dt) =0;
     virtual void Draw(sf::RenderWindow& window) =0;
     
+    virtual Item::Types GetItemType();
+    virtual Item::WAP GetItemWAP();
 
 };
 

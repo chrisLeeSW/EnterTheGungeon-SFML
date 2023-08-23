@@ -9,6 +9,9 @@ protected:
 
 public:
 
+    Item::Types itemtype = Item::Types::PilotPassive;
+    Item::WAP wap = Item::WAP::Passive;
+
     PilotPassive(const std::string& textureId = "", const std::string& n = "");
     virtual ~PilotPassive() override { Release(); }
 
@@ -19,5 +22,7 @@ public:
     virtual void Update(float dt) override;
     virtual void Draw(sf::RenderWindow& window) override;
 
+    virtual Item::Types GetItemType() { return itemtype; }
+    virtual Item::WAP GetItemWAP() { return wap; }
 };
 

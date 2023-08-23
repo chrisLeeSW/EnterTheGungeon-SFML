@@ -21,10 +21,13 @@ protected:
 
 	std::vector<sf::Sprite> playermaxhp;
 	std::vector<sf::Sprite> playerhp;
+	std::vector<sf::Sprite> blankbullets;
 
 	//SpriteGo* playerhp;
 	sf::Sprite spritehp;
 	sf::Sprite weaponBox;
+	sf::Sprite reload;
+	sf::Sprite reloadBar;
 
 	Weapon* playerweapon = nullptr;
 
@@ -52,6 +55,8 @@ public:
 	//void WeaponUI(Weapon::Types type);
 
 	void CurrentWeapon(Weapon* weapon);
+
+	void UseBlankBullet();
 
 };
 

@@ -10,10 +10,10 @@
 #include "PilotWeapon.h"
 #include "PrisonerWeapon.h"
 #include "Magnum.h"
+#include "Pad.h"
 #include "WeaponMgr.h"
 #include "aBulletTime.h"
 #include "ShotGun.h"
-//#include "Pad.h"
 
 void ItemMgr::Init()
 {
@@ -26,13 +26,13 @@ void ItemMgr::Init()
 	Magnum* magnum = new Magnum();
 	aBulletTime* abulletTime = new aBulletTime();
 	ShotGun* shotgun = new ShotGun();
-	//Pad* pad = new Pad();
+	Pad* pad = new Pad();
 
 	mapWeapon.insert({ Weapon::Types::Magnum,magnum });
 	mapWeapon.insert({ Weapon::Types::PilotWeapon,pilotWeapon });
 	mapWeapon.insert({ Weapon::Types::PrisonerWeapon,prisonerWeapon });
 	mapWeapon.insert({ Weapon::Types::ShotGun, shotgun });
-	//mapWeapon.insert({ Weapon::Types::Pad, pad });
+	mapWeapon.insert({ Weapon::Types::Pad, pad });
 
 	mapPassive.insert({ Passive::Types::PilotPassive,pilotPassive });
 	mapPassive.insert({ Passive::Types::PrisonerPassive,prisonerPassive });
@@ -41,7 +41,6 @@ void ItemMgr::Init()
 	mapActive.insert({ Active::Types::PrisonerActive,prisonerActive });
 	mapActive.insert({ Active::Types::BulletTime, abulletTime });
 
-	WEAPON_MGR.Init();
 }
 
 

@@ -5,7 +5,7 @@
 #include "DataTableMgr.h"
 #include "WeaponTable.h"
 #include "GameObject.h"
-
+#include "PlayerMgr.h"
 
 
 Weapon::Weapon(const std::string& textureId, const std::string& n) : Item(textureId, n)
@@ -35,6 +35,9 @@ void Weapon::Reset()
 
 void Weapon::Update(float dt)
 {
+	if (PLAYER_MGR.IsPause())
+		return;
+
 	mousePos = INPUT_MGR.GetMousePos();
 	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrScene()->ScreenToWorldPos(mousePos);
 	sf::Vector2f playerScreenPos = SCENE_MGR.GetCurrScene()->WorldPosToScreen(position);

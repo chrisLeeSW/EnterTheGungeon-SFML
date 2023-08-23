@@ -34,6 +34,7 @@ bool BulletTable::Load()
 		bulletinfo.damage = bulletDamage[i];
 		bulletinfo.range = bulletrange[i];
 		bulletinfo.knockback = bulletkonckback[i];
+
 		table.insert({ (Bullet::Types)ids[i] ,bulletinfo });
 	}
 	return true;

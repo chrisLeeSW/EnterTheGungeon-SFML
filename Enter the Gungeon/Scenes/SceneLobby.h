@@ -12,6 +12,7 @@ public:
 
 	enum class Types
 	{
+		None,
 		Pilot,
 		Prisoner,
 		WeaponPilot,
@@ -33,7 +34,7 @@ protected:
 	sf::Vector2f pilotSetPosition;
 	sf::Vector2f prisonerSetPosition;
 
-	int choiseindex = 0;
+	int choiseindex = 1;
 
 	bool playerchoise = false;
 

@@ -35,6 +35,9 @@ protected:
 
 public:
 
+	Item::Types itemtype = Item::Types::PrisonerWeapon;
+	Item::WAP wap = Item::WAP::Weapon;
+
 	PrisonerWeapon(const std::string& textureId = "", const std::string& n = "");
 	virtual ~PrisonerWeapon() override { Release(); }
 
@@ -55,5 +58,8 @@ public:
 	virtual void RequestReload() override { currentbulletcount = bulletcount; }
 
 	virtual AnimationController* GetWeaponAnimation() override { return &gun; }
+
+	virtual Item::Types GetItemType() { return itemtype; }
+	virtual Item::WAP GetItemWAP() { return wap; }
 };
 

@@ -11,6 +11,7 @@
 PilotWeapon::PilotWeapon(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
 {
 	SetType(Types::PilotWeapon);
+	player = PLAYER_MGR.GetPlayer();
 
 	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PilotWeaponIdle.csv"));
 	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PilotWeaponShoot.csv"));
@@ -38,7 +39,7 @@ PilotWeapon::PilotWeapon(const std::string& textureId, const std::string& n) : W
 
 	currentbulletcount = bulletcount;
 
-	Weapon::Init();
+	//Weapon::Init();
 }
 
 void PilotWeapon::Init()
@@ -65,6 +66,8 @@ void PilotWeapon::Update(float dt)
 		SetOrigin(Origins::BL);
 		gun.Update(dt);
 		effect.Update(dt);
+
+
 		SetPosition(player->PlayerHandPos());
 
 		float angle = Utils::Angle(look);
@@ -103,7 +106,7 @@ void PilotWeapon::Update(float dt)
 
 				gun.Play("Shoot");
 				effect.Play("Effect");
-				Weapon::Shoot(bulletType, gunPoint, look);
+				player->Shoot(bulletType, gunPoint, look);
 
 				std::cout << "ÇöÀç ÅºÃ¢ : " << currentbulletcount << std::endl;
 				std::cout << "ÃÑ ÅºÃ¢ : " << bulletmax << std::endl;

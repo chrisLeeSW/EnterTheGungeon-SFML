@@ -11,6 +11,8 @@ class Item;
 class Scene;
 class Bullet;
 class PlayerUI;
+class SceneGame;
+class Book;
 
 class Player : public SpriteGo
 {
@@ -28,6 +30,7 @@ public:
 
 	enum class Types
 	{
+		None,
 		Pilot,
 		Prisoner,
 		WeaponPilot,
@@ -46,78 +49,102 @@ public:
 
 protected:
 
-	std::string clipId;
+	sf::Vector2f windowsize;
 
+	Book* book;
+
+	Bullet* bullet = nullptr;
+	std::list<Bullet*> bullets;
+	ObjectPool<Bullet> poolBullets;
+	SceneGame* sceneGame;
+
+
+
+	//Animation
 	AnimationController animation;
 	AnimationController actEffect;
 	AnimationController blankBullet;
+
+	//BlankBullet
 	sf::CircleShape blankEffect;
 	bool isBlank = false;
 	bool isBlankEffect = false;
 	bool isBlankAnimation = false;
 
-	bool isGame = false;
-	bool isLobby = true;
 
-	//선생님꺼
+
+	//Player Move
 	std::vector<ClipInfo> clipInfos;
 	ClipInfo currentClipInfo;
+	sf::Vector2f velocity;
+	sf::Vector2f direction;
+	std::string clipId;
 
-	sf::Vector2f windowsize;
+	int currentIndex = 0;
 
-	//플레이어 손
-	SpriteGo* hand;
-	sf::Sprite shadow;
 
-	bool handflipX = false;
 
-	//아이템
+
+	//Item
 	std::vector<Passive*> passiveList;
 	std::vector<Weapon*> weaponList;
 	Active* active = nullptr;
 
 
-	//플레이어 테이블 만들어서 아래에 셋해주기
-	//플레이어 움직임
-	sf::Vector2f velocity;
-	sf::Vector2f direction;
-
 
 	//플레이어 셋팅
+	Types type;
+	Active::Types activetype;
+	Passive::Types passivetype;
+	Weapon::Types weapontype;
 	float speed;
 	float rollspeed;
-	bool flipX = false;
+	int maxHp;
+	float hitDelay;
+	bool isGame;
+	bool isLobby;
+	int blankBulletCount;
 
-	float angle;
-	float magnitude;
+
+
+	int hp;
 	float effect = 0.f;
-
-	int maxHp = 6;
-	float hitDelay = 1.0f;
 	float currenthitDelay = 0.f;
-	int blankBulletCount = 0;
 
-	//플레이어 상태
-	int hp = 6;
-	sf::Color originalColor;
+
+
+	//Player States
 	bool isAlive = true;
 	bool iswalk = false;
 	bool isrolling = false;
 	bool isHit = false;
 	bool isSceneGame = false;
+	bool flipX = false;
+
+	bool playerchoise = false;
+
+
+	sf::Vector2f look;
+	float angle;
+	float magnitude;
+
 
 	//UI
 	SpriteGo* ouch;
 	sf::Color ouchoriginalColor;
+	sf::Color originalColor;
+	sf::Sprite shadow;
 	PlayerUI* playerUI;
+
+	sf::Vector2f handPos{ 7.f,-6.f };
+	SpriteGo* hand;
+	bool handflipX = false;
+
 
 	//Enemy
 	std::list<Enemy*> enemylist;
 
-	sf::Vector2f look;
-	Types type;
 
-	bool playerchoise = false;
 
 	std::unordered_map<sf::Keyboard::Key, int> keyToIndexMap = {
 	{sf::Keyboard::Num1, 1},
@@ -132,9 +159,7 @@ protected:
 	};
 
 
-	int currentIndex = 0;
 
-	sf::Vector2f handPos{ 7.f,-6.f };
 
 public:
 
@@ -152,7 +177,6 @@ public:
 
 	void OnPlayerHit();
 
-	void OnDeathPlayer();
 
 	virtual void Init() override;
 	virtual void Release() override;
@@ -175,20 +199,27 @@ public:
 	void GetItem(Passive::Types type);
 	void GetItem(Active::Types type);
 	void GetItem(Weapon::Types type);
+	void Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir);
 
 	bool GetFilpX() { return flipX; }
 	bool isRolling() { return isrolling; }
 	bool IsAlive() { return isAlive; }
 	bool IsHit() { return isHit; }
 	bool IsBlankBullet() { return isBlank; }
+	bool IsGame() { return isGame; }
 	void SetBalnkBUllet(bool blank) { isBlank = blank; }
 
 	void SetPlayerUI(PlayerUI* playerui) { playerUI = playerui; }
+	void SetType(Types type);
 
+	void SetBook(Book* book);
 
 	sf::Vector2f PlayerHandPos() { return hand->GetPosition(); }
 	int GetHp() { return hp; }
+
 	const sf::Vector2f& GetDirection() const;
+
+	int GetBlankBulletCount() { return blankBulletCount; }
 
 	void SetEnemyList(std::list<Enemy*> enemylist);
 

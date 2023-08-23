@@ -11,6 +11,7 @@ public:
 		Bullet,
 		Player,
 		Enemy,
+		Button,
 	};
 
 	DataTable(const DataTable& other) = delete;

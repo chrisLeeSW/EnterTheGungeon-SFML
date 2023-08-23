@@ -1,3 +1,5 @@
-type,passive,active
-0,0,0
-1,1,1
+type,Active,Passive,Weapon,speed,rollspeed,Hp,isGame,isLobby,blankbullet,hitDelay
+1,0,0,0,150.f,180.f,6,0,1,0,1.f
+2,0,0,0,150.f,180.f,6,0,1,0,1.f
+3,1,1,1,150.f,180.f,6,1,0,2,1.0f
+4,2,2,2,150.f,180.f,6,1,0,2,1.0f

@@ -1,10 +1,13 @@
 #pragma once
 #include "SpriteGo.h"
+
 class UiButton : public SpriteGo
 {
 protected:
+
 	bool isHover = false;
 	std::string fontId;
+
 public:
 	UiButton(const std::string& textureId="", const std::string& fontId="", const std::string& n = "");
 	virtual ~UiButton() override;

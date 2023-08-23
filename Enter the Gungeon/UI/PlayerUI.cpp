@@ -7,6 +7,7 @@ PlayerUI::PlayerUI(Player* player, const std::string& textureId, const std::stri
 {
 	windowsize = FRAMEWORK.GetWindowSize();
 
+	windowsize *= 0.3f;
 	this->player = player;
 	this->player->SetPlayerUI(this);
 
@@ -16,23 +17,37 @@ PlayerUI::PlayerUI(Player* player, const std::string& textureId, const std::stri
 
 	tex = RESOURCE_MGR.GetTexture("graphics/hp_empty.png");
 	playermaxhp.push_back(CreateSprite(tex, 0, 0));
-	playermaxhp.push_back(CreateSprite(tex, 50, 0));
-	playermaxhp.push_back(CreateSprite(tex, 100, 0));
+	playermaxhp.push_back(CreateSprite(tex, 20, 0));
+	playermaxhp.push_back(CreateSprite(tex, 40, 0));
 
 	// Intact HP sprites
 	sf::Texture* tex1 = RESOURCE_MGR.GetTexture("graphics/hp_left.png");
 	sf::Texture* tex2 = RESOURCE_MGR.GetTexture("graphics/hp_right.png");
 	playerhp.push_back(CreateSprite(tex1, 0, 0));
 	playerhp.push_back(CreateSprite2(tex2, 0, 0));
-	playerhp.push_back(CreateSprite(tex1, 50, 0));
-	playerhp.push_back(CreateSprite2(tex2, 50, 0));
-	playerhp.push_back(CreateSprite(tex1, 100, 0));
-	playerhp.push_back(CreateSprite2(tex2, 100, 0));
+	playerhp.push_back(CreateSprite(tex1, 20, 0));
+	playerhp.push_back(CreateSprite2(tex2, 20, 0));
+	playerhp.push_back(CreateSprite(tex1, 40, 0));
+	playerhp.push_back(CreateSprite2(tex2, 40, 0));
 
 
 	sf::Texture* tex3 = RESOURCE_MGR.GetTexture("graphics/weaponBox.png");
 	weaponBox.setTexture(*tex3);
-	weaponBox.setPosition(500,500);
+	weaponBox.setPosition(windowsize * 0.9f);
+
+	tex = RESOURCE_MGR.GetTexture("graphics/ui_blank.png");
+
+	blankbullets.push_back(CreateSprite(tex,0,30));
+	blankbullets.push_back(CreateSprite(tex,15,30));
+
+	weapon.setPosition(weaponBox.getGlobalBounds().left + weaponBox.getGlobalBounds().width * 0.5f, weaponBox.getGlobalBounds().top + weaponBox.getGlobalBounds().height * 0.5f);
+	
+	tex = RESOURCE_MGR.GetTexture("graphics/Reload.png");
+	reload.setTexture(*tex);
+	tex = RESOURCE_MGR.GetTexture("graphics/ReloadBar.png");
+	reloadBar.setTexture(*tex);
+
+	Utils::SetOrigin(reload,Origins::MC);
 
 }
 
@@ -51,7 +66,16 @@ void PlayerUI::Reset()
 void PlayerUI::Update(float dt)
 {
 	currentweapon.Update(dt);
-	weapon.setPosition(500,500);
+
+
+	//sf::Vector2f playerScreenPos = SCENE_MGR.GetCurrScene()->UiPosPosToScreen(player->GetPosition());
+
+
+	sf::Vector2f playerScreenPos = SCENE_MGR.GetCurrScene()->ScreenToUiPos(player->GetPosition());
+
+	weapon.setOrigin(weapon.getLocalBounds().width / 2.f, weapon.getLocalBounds().height / 2.f);
+
+
 
 	switch(playerweapon->GetWeaponState())
 	{
@@ -65,7 +89,9 @@ void PlayerUI::Update(float dt)
 		break;
 
 	case Weapon::State::Reload :
+		if(INPUT_MGR.GetKeyDown(sf::Keyboard::R))
 		currentweapon.Play("Relode");
+		reload.setPosition(windowsize.x * 0.5f, windowsize.y * 0.4);
 		break;
 	}
 }
@@ -82,6 +108,16 @@ void PlayerUI::Draw(sf::RenderWindow& window)
 	window.draw(weaponBox);
 
 	window.draw(weapon);
+
+	for (auto& it : blankbullets)
+		window.draw(it);
+
+
+	if(playerweapon->GetWeaponState() == Weapon::State::Reload)
+	window.draw(reload);
+
+	window.draw(reloadBar);
+
 }
 
 void PlayerUI::IsHited()
@@ -114,4 +150,9 @@ void PlayerUI::CurrentWeapon(Weapon* weapon)
 	currentweapon = *playerweapon->GetWeaponAnimation();
 	currentweapon.SetTarget(&this->weapon);
 	currentweapon.Play("Idle");
+}
+
+void PlayerUI::UseBlankBullet()
+{
+	blankbullets.pop_back();
 }

@@ -35,6 +35,8 @@ protected:
 	
 
 public:
+	Item::Types itemtype = Item::Types::PilotWeapon;
+	Item::WAP wap = Item::WAP::Weapon;
 	sf::Sprite shooteffect;
 
 	PilotWeapon(const std::string& textureId = "", const std::string& n = "");
@@ -49,12 +51,15 @@ public:
 
 	virtual void SetGunFlipx(bool flipX) override;
 
-	virtual void SetType(Types t);
+	virtual void SetType(Types t) override;
 	virtual Types GetWeaponType() override { return weaponType; }
 	virtual Bullet::Types GetBulletType() override { return bulletType; }
 
 	virtual void RequestReload() override { currentbulletcount = bulletcount; }
 
 	virtual AnimationController* GetWeaponAnimation() override { return &gun; }
+
+	virtual Item::Types GetItemType() { return itemtype; }
+	virtual Item::WAP GetItemWAP() { return wap; }
 };
 

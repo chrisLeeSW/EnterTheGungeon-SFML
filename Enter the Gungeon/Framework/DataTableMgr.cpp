@@ -5,6 +5,7 @@
 #include "WeaponTable.h"
 #include "PlayerTable.h"
 #include "EnemyTable.h"
+#include "ButtonTable.h"
 
 void DataTableMgr::LoadAll()
 {
@@ -13,6 +14,8 @@ void DataTableMgr::LoadAll()
 	tables.insert({ DataTable::Ids::Weapon, new WeaponTable() });
 	tables.insert({ DataTable::Ids::Player, new PlayerTable() });
 	tables.insert({ DataTable::Ids::Enemy, new EnemyTable() });
+	tables.insert({ DataTable::Ids::Button, new ButtonTable() });
+
 
 	for (auto pair : tables)
 	{

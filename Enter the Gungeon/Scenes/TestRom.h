@@ -26,7 +26,7 @@ struct RandomMapInfo
 	TileMap* map;
 	std::vector<SpriteGo*> spr;
 	std::vector<RoomObjectsInfoTest1> roomobj;
-
+	std::vector<WallTypeInfo> roomtype;
 	// 몬스터 리스트 추가 
 };
 struct Passage {
@@ -57,6 +57,7 @@ protected:
 	Player* player = nullptr;
 	bool test = false;
 	std::vector<SpriteGo*> tunnelSprite;
+	std::list<SpriteGo*> tunnelWall;
 public :
 	TestRom();
 	virtual ~TestRom() override = default;

@@ -153,7 +153,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BspNodeNew.cpp" />
+    <ClCompile Include="BspNodeNew.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="BspRoom.cpp" />
     <ClCompile Include="PlayerObjects\Item\DropItem.cpp" />
     <ClCompile Include="DataTables\EnemyTable.cpp" />
     <ClCompile Include="Door.cpp" />
@@ -228,7 +232,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
-    <ClInclude Include="BspNodeNew.h" />
+    <ClInclude Include="BspNodeNew.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="BspRoom.h" />
     <ClInclude Include="PlayerObjects\Item\DropItem.h" />
     <ClInclude Include="DataTables\EnemyTable.h" />
     <ClInclude Include="Door.h" />

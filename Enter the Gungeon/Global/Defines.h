@@ -98,6 +98,12 @@ struct WallTypeInfo
 	sf::RectangleShape  shape;
 };
 
-
+enum class TileType
+{
+	None = -1,
+	TexIndex,
+	ObjectTypes,
+	Monster
+};
 
 #include "AnimationClip.h"

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TileMap.h"
 
-TileMap::TileMap(const std::string& textureId, const std::string& n) :VertexArrayGo(textureId, n)
+TileMap::TileMap(const std::string& textureId, const std::string& n) :VertexArrayGo(textureId, n),bsp(nullptr)
 {
 	startPos = { 0, 0 };
 }
@@ -183,7 +183,7 @@ void TileMap::LoadObject(const std::string& filePath,bool textureIdIn)
 	}
 }
 
-void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI)
+void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI, bool testDraw)
 {
 
 	if(!textureIdI) texture = RESOURCE_MGR.GetTexture(textureId);
@@ -198,7 +198,8 @@ void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI)
 			Tile tile;
 			tile.x = j;
 			tile.y = i;
-			tile.texIndex = static_cast<int>(MapObjectType::None);
+			if (testDraw) tile.texIndex = static_cast<int>(MapObjectType::Pot);
+			else tile.texIndex = static_cast<int>(MapObjectType::None);
 			tiles.push_back(tile);
 		}
 	}
@@ -273,13 +274,25 @@ void TileMap::Reset()
 	VertexArrayGo::Reset();
 }
 
-void TileMap::ChangeTile(int x, int y, int tileIndex, sf::IntRect IntRect)
+void TileMap::ChangeTile(int x, int y, int tileIndex, sf::IntRect IntRect, TileType type)
 {
 	if (x < 0 || y < 0) return;
 	else if (x >= size.x || y >= size.y) return;
 
 	int texIndex = y * size.x + x;
-	tiles[texIndex].texIndex = tileIndex;
+	switch (type)
+	{
+	case TileType::TexIndex:
+		tiles[texIndex].texIndex = tileIndex;
+		break;
+	case TileType::ObjectTypes:
+		tiles[texIndex].objectTypes = tileIndex;
+		break;
+	case TileType::Monster:
+		tiles[texIndex].monster = tileIndex;
+		break;
+	}
+
 
 	sf::FloatRect rect = (sf::FloatRect)IntRect;
 	sf::Vector2f texOffsets[4] =
@@ -326,7 +339,6 @@ void TileMap::MakeWall(const std::string& path)
 		}
 		shape.setFillColor(sf::Color::Transparent);
 		colliedShape.push_back({ type,shape });
-
 		newHeight++;
 	}
 }
@@ -350,3 +362,55 @@ int TileMap::GetTexIndex(int x, int y)
 
 }
 
+void TileMap::Divide()
+{
+	if (bsp == nullptr)
+	{
+		bsp = new BspRoom(sf::IntRect{ 0, 0, size.x, size.y});
+		ListFilesInDirectory("Room/TileMapFile/");
+	}
+	bsp->Divide(this,5,3, fileList);
+}
+
+void TileMap::MakeRoom()
+{
+	ListFilesInDirectory("Room/TileMapFile/");
+	bsp->MakeRoom(this,fileList);
+}
+
+void TileMap::ConnectRoom()
+{
+
+	if (bsp != nullptr)
+	{
+		bsp->ConnectRoom(this);
+	}
+	
+}
+
+
+void TileMap::ListFilesInDirectory(const std::string& folderPath)
+{
+	WIN32_FIND_DATAA findFileData;
+	HANDLE hFind = FindFirstFileA((folderPath + "\\*").c_str(), &findFileData);
+
+	if (hFind == INVALID_HANDLE_VALUE) {
+		std::cerr << "Error finding files in directory." << std::endl;
+		return;
+	}
+
+	int fileCount = 0;
+
+	do {
+		if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+		}
+		else {
+			//std::cout << "파일 이름: " << findFileData.cFileName << std::endl;
+			std::string filePath = folderPath + findFileData.cFileName;
+			fileList.push_back(filePath);
+			++fileCount;
+		}
+	} while (FindNextFileA(hFind, &findFileData) != 0);
+
+	FindClose(hFind);
+}

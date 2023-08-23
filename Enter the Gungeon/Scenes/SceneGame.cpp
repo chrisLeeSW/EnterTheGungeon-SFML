@@ -189,8 +189,8 @@ void SceneGame::MakeTestRoom(int size)
 		{
 			pos = sf::Vector2f{ -300.f,-300.f };
 			tileRoom1->SetStartPos(pos);
-			tileRoom1->Load("Room/TileMapFile/direction1.csv");
-			tileMapSize =tileRoom1->TileMapSize("Room/TileMapFile/direction1.csv");
+			tileRoom1->Load("Room/TileMapFile/r1.csv");
+			tileMapSize =tileRoom1->TileMapSize("Room/TileMapFile/r1.csv");
 			objpos = pos;
 			objpos += tileRoom1->GetTileSize() * 0.5f;
 		}
@@ -198,8 +198,8 @@ void SceneGame::MakeTestRoom(int size)
 		{
 			pos = sf::Vector2f{ 200.f,200.f };
 			tileRoom1->SetStartPos(pos);
-			tileRoom1->Load("Room/TileMapFile/Room02.csv");
-			tileMapSize = tileRoom1->TileMapSize("Room/TileMapFile/Room02.csv");
+			tileRoom1->Load("Room/TileMapFile/r1.csv");
+			tileMapSize = tileRoom1->TileMapSize("Room/TileMapFile/r1.csv");
 			objpos = pos;
 			objpos += tileRoom1->GetTileSize() * 0.5f;
 		}
@@ -207,8 +207,8 @@ void SceneGame::MakeTestRoom(int size)
 		{
 			pos = sf::Vector2f{	-300.f,150.f };
 			tileRoom1->SetStartPos(pos);
-			tileRoom1->Load("Room/TileMapFile/Room03.csv");
-			tileMapSize = tileRoom1->TileMapSize("Room/TileMapFile/Room03.csv");
+			tileRoom1->Load("Room/TileMapFile/r1.csv");
+			tileMapSize = tileRoom1->TileMapSize("Room/TileMapFile/r1.csv");
 			objpos = pos;
 			objpos += tileRoom1->GetTileSize() * 0.5f;
 		}
@@ -270,7 +270,7 @@ void SceneGame::MakeTestRoom(int size)
 			break;
 			}
 		}
-		tileRoom1->MakeWall("Room/TileMapFile/Room01.csv");
+		tileRoom1->MakeWall("Room/TileMapFile/r1.csv");
 		for (int i = 0; i < tileRoom1->colliedShape.size(); ++i)
 		{
 			tileRoom1->colliedShape[i].shape.setPosition(tileRoom1->colliedShape[i].shape.getPosition() + pos);

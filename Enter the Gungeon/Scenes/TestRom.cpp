@@ -42,6 +42,7 @@ void TestRom::Init()
 		}
 		map->Load(fileList[rnadFileNumber]);
 		map->SetOrigin(Origins::MC);
+		map->sortLayer = -1;
 		std::vector<SpriteGo*> objects;
 		std::vector<RoomObjectsInfoTest1> interaction;
 		for (int i = 0; i < map->tiles.size(); ++i)
@@ -94,6 +95,15 @@ void TestRom::Init()
 			}
 			break;
 			}
+
+
+
+			/*tileRoom[i].map->MakeWall(fileList[rnadFileNumber]);
+			for (int i = 0; i < tileRoom[i].map->colliedShape.size(); ++i)
+			{
+				tileRoom[i].map->colliedShape[i].shape.setPosition(tileRoom[i].map->colliedShape[i].shape.getPosition() + pos);
+				tileRoom[i].roomtype.push_back(tileRoom[i].map->colliedShape[i]);
+			}*/
 		}
 		tileRoom.push_back({ map, objects, interaction });
 		count++;
@@ -214,11 +224,11 @@ void TestRom::Init()
 		CreateTunnel(passages[i].from, passages[i].to);
 	}
 
-	
+
 	player = (Player*)AddGo(new Player((Player::Types)1));
 	player->sortLayer = 0;
 
-	
+
 	for (auto go : gameObjects)
 	{
 		go->Init();
@@ -341,10 +351,10 @@ void TestRom::Draw(sf::RenderWindow& window)
 	}*/
 
 
-	for (const auto& rect : tunnel)
+	/*for (const auto& rect : tunnel)
 	{
 		window.draw(rect);
-	}
+	}*/
 	for (const auto& rect : doorShape)
 	{
 		window.draw(rect);
@@ -408,7 +418,6 @@ void TestRom::ListFilesInDirectory(const std::string& folderPath)
 	} while (FindNextFileA(hFind, &findFileData) != 0);
 
 	FindClose(hFind);
-
 }
 
 sf::Vector2f TestRom::Center(TileMap* room)
@@ -488,7 +497,7 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 {
 
 	//// 터널의 사이즈를 설정합니다.
-	const sf::Vector2f tunnelSize(25.f, 75.f);
+	const sf::Vector2f tunnelSize(25.f, 25.f);
 	const float tunnelSpacing = 3.0f; // 터널 사각형들 간의 간격입니다.
 	sf::Vector2f midpoint(start.x, end.y);
 
@@ -496,7 +505,6 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 	sf::Vector2f direction1 = (midpoint - start) / Utils::Distance(start, midpoint);
 	float totalTunnelLength1 = Utils::Distance(start, midpoint);
 	int tunnelCount1 = static_cast<int>(totalTunnelLength1 / (tunnelSize.x));
-	//start -= tunnelSize;
 	for (int i = 0; i < tunnelCount1; ++i)
 	{
 		SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/tunnel.png"));
@@ -505,6 +513,44 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 		spr->sprite.setTextureRect({ 13,13,25,25 });
 		spr->SetOrigin(Origins::MC);
 
+		SpriteGo* spr2 = (SpriteGo*)AddGo(new SpriteGo("graphics/tunnel.png"));
+		spr2->SetPosition(spr->GetPosition().x + tunnelSize.x, spr->GetPosition().y);
+		spr2->sortLayer = -3;
+		spr2->sprite.setTextureRect({ 13,43,25,25 });
+		spr2->sprite.setRotation(90);
+		spr2->SetOrigin(Origins::MC);
+
+
+		SpriteGo* spr3 = (SpriteGo*)AddGo(new SpriteGo("graphics/tunnel.png"));
+		spr3->SetPosition(spr->GetPosition().x - tunnelSize.x, spr->GetPosition().y);
+		spr3->sortLayer = -3;
+		spr3->sprite.setTextureRect({ 13,43,25,25 });
+		spr3->sprite.setRotation(90);
+		spr3->SetOrigin(Origins::MC);
+
+		for (auto& a : tunnelSprite)
+		{
+			if (a->sprite.getGlobalBounds().intersects(spr2->sprite.getGlobalBounds()))
+			{
+				RemoveGo(spr2);
+			}
+			if (a->sprite.getGlobalBounds().intersects(spr3->sprite.getGlobalBounds()))
+			{
+				RemoveGo(spr3);
+			}
+		}
+		for (auto& a : tunnelWall)
+		{
+
+			if (a->sprite.getGlobalBounds().intersects(spr2->sprite.getGlobalBounds()))
+			{
+				RemoveGo(spr2);
+			}
+			if (a->sprite.getGlobalBounds().intersects(spr3->sprite.getGlobalBounds()))
+			{
+				RemoveGo(spr3);
+			}
+		}
 
 		sf::RectangleShape tunnelShape;
 		tunnelShape.setSize(tunnelSize);
@@ -514,29 +560,10 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 		tunnelShape.setOutlineThickness(2);
 		tunnelShape.setOutlineColor(sf::Color::Red);
 		Utils::SetOrigin(tunnelShape, Origins::MC);
-		bool collied = false;
-		for (auto& c : tunnel)
-		{
-			if (c.getGlobalBounds().contains(tunnelShape.getPosition()))
-			{
-				collied = true;
-				break;
-			}
-		}
-		if (collied) continue;
-		/*	else
-			{
-				for (auto& room : tileRoom)
-				{
-					if (room.map->vertexArray.getBounds().intersects(tunnelShape.getGlobalBounds()))
-						collied = true;
-				}
-			}
-			if (collied) continue;*/
-		else
 		{
 			tunnelSprite.push_back(spr);
-			//tunnel.push_back(tunnelShape);
+			tunnelWall.push_back(spr2);
+			tunnel.push_back(tunnelShape);
 		}
 	}
 	sf::Vector2f direction2 = (end - midpoint) / Utils::Distance(midpoint, end);
@@ -550,6 +577,55 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 		spr->sprite.setTextureRect({ 13,13,25,25 });
 		spr->SetOrigin(Origins::MC);
 
+		SpriteGo* spr2 = (SpriteGo*)AddGo(new SpriteGo("graphics/tunnel.png"));
+		spr2->SetPosition(spr->GetPosition().x, spr->GetPosition().y + tunnelSize.y);
+		spr2->sortLayer = -3;
+		spr2->sprite.setTextureRect({ 13,43,25,25 });
+		spr2->SetOrigin(Origins::MC);
+
+
+		SpriteGo* spr3 = (SpriteGo*)AddGo(new SpriteGo("graphics/tunnel.png"));
+		spr3->SetPosition(spr->GetPosition().x, spr->GetPosition().y - tunnelSize.y);
+		spr3->sortLayer = -3;
+		spr3->sprite.setTextureRect({ 13,43,25,25 });
+		spr3->SetOrigin(Origins::MC);
+
+		for (auto& a : tunnelSprite)
+		{
+			if (a->sprite.getGlobalBounds().intersects(spr2->sprite.getGlobalBounds()))
+			{
+				RemoveGo(spr2);
+			}
+			if (a->sprite.getGlobalBounds().intersects(spr3->sprite.getGlobalBounds()))
+			{
+				RemoveGo(spr3);
+			}
+		}
+
+		for (auto& a : tunnelWall)
+		{
+
+			if (a->sprite.getGlobalBounds().intersects(spr2->sprite.getGlobalBounds()))
+			{
+				RemoveGo(spr2);
+			}
+			if (a->sprite.getGlobalBounds().intersects(spr3->sprite.getGlobalBounds()))
+			{
+				RemoveGo(spr3);
+			}
+		}
+
+		for (auto& a : tileRoom)
+		{
+			if (a.map->vertexArray.getBounds().contains(spr2->GetPosition()))
+			{
+				RemoveGo(spr2);
+			}
+			if (a.map->vertexArray.getBounds().contains(spr3->GetPosition()))
+			{
+				RemoveGo(spr3);
+			}
+		}
 		sf::RectangleShape tunnelShape;
 		tunnelShape.setSize(tunnelSize);
 		tunnelShape.setPosition(midpoint + sf::Vector2f{ direction2.x * i ,direction2.y * i } *(tunnelSize.x));
@@ -558,31 +634,42 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 		tunnelShape.setOutlineThickness(2);
 		tunnelShape.setOutlineColor(sf::Color::Green);
 		Utils::SetOrigin(tunnelShape, Origins::MC);
-		bool collied = false;
-		for (auto& c : tunnel)
-		{
-			if (c.getGlobalBounds().contains(tunnelShape.getPosition()))
-			{
-				collied = true;
-				break;
-			}
-		}
-		if (collied) continue;
-		/*	else
-			{
-				for (auto& room : tileRoom)
-				{
-					if (room.map->vertexArray.getBounds().intersects(tunnelShape.getGlobalBounds()))
-						collied = true;
-				}
-			}
-			if (collied) continue;*/
-		else
 		{
 			tunnelSprite.push_back(spr);
-			//tunnel.push_back(tunnelShape);
+			tunnelWall.push_back(spr2);
+			tunnelWall.push_back(spr3);
+			tunnel.push_back(tunnelShape);
 		}
 	}
+	if (start.y < end.y)
+	{
+		for (int i = 0;i < 3;++i)
+		{
+			float xpos = end.x - tunnelSize.x;
+			SpriteGo* spr3 = (SpriteGo*)AddGo(new SpriteGo("graphics/tunnel.png"));
+			spr3->SetPosition(xpos + (tunnelSize.x * i), start.y - tunnelSize.y);
+			spr3->sortLayer = -3;
+			spr3->sprite.setTextureRect({ 13,43,25,25 });
+			spr3->SetOrigin(Origins::MC);
+
+			tunnelWall.push_back(spr3);
+		}
+	}
+	if (start.y > end.y)
+	{
+		for (int i = 0;i < 3;i++)
+		{
+			float xpos = end.x - tunnelSize.x;
+			SpriteGo* spr3 = (SpriteGo*)AddGo(new SpriteGo("graphics/tunnel.png"));
+			spr3->SetPosition(xpos +(tunnelSize.x*i), start.y + tunnelSize.y);
+			spr3->sortLayer = -3;
+			spr3->sprite.setTextureRect({ 13,43,25,25 });
+			spr3->SetOrigin(Origins::MC);
+
+			tunnelWall.push_back(spr3);
+		}
+	}
+	Exit();
 }
 
 void TestRom::CreateTunnel2(sf::Vector2f start, sf::Vector2f end)

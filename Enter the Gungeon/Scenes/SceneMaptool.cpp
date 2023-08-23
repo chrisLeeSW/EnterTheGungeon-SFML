@@ -134,6 +134,15 @@ void SceneMaptool::Update(float dt)
 	{
 		worldView.move(0.0f, -1.5f);
 	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::PageUp))
+	{
+		worldView.zoom(1.5f);
+	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::PageDown))
+	{
+		worldView.zoom(0.5f);
+	}
+
 
 	for (auto& tile : tiles)
 	{
@@ -172,7 +181,8 @@ void SceneMaptool::Update(float dt)
 			}
 		}
 		if (count < 0) return;
-		if (count == (int)MapObjectType::Pot || count == (int)MapObjectType::WallDown || count == (int)MapObjectType::LibraryDown || count == (int)MapObjectType::Book1)
+		if (count == (int)MapObjectType::Pot || count == (int)MapObjectType::WallDown || count == (int)MapObjectType::LibraryDown || count == (int)MapObjectType::Book1 || count==(int)MapObjectType::WallTop ||
+			count==(int)MapObjectType::LibraryTop)
 		{
 			objectSprite->ChangeTile(gridIndex.x, gridIndex.y, count, currentTileSprite->sprite.getTextureRect());
 		}
@@ -194,9 +204,7 @@ void SceneMaptool::Update(float dt)
 		if (gridIndex.x < 0 || gridIndex.y < 0) return;
 		objectSprite->ChangeTile(gridIndex.x, gridIndex.y, static_cast<int>(MapObjectType::None), sf::IntRect{ 50,0,50,50 });
 	}
-
 	WallMakeCollied();
-	
 
 	
 	
@@ -859,7 +867,7 @@ void SceneMaptool::SaveRoom(std::string& fileName, std::string route, std::strin
 	doc.SetCell<std::string>(2, 0, "SortLayer");
 
 	doc.SetCell<int>(0, 1, wallWidthCount);
-	doc.SetCell<int>(1, 1, wallHeightCount);
+	doc.SetCell<int>(1, 1, wallHeightCount);	
 	doc.SetCell<int>(2, 1, -1);
 
 	int count = 0;

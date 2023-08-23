@@ -4,7 +4,8 @@
 #include "SpriteGo.h"
 #include "AnimationController.h"
 #include "InteractionObject.h"
-#include "BspNodeNew.h"
+
+
 GameMapTestScene::GameMapTestScene() :Scene(SceneId::GameMapTestScene)
 {
 	resourceListPath = "script/GameMapTestScene.csv";
@@ -12,20 +13,66 @@ GameMapTestScene::GameMapTestScene() :Scene(SceneId::GameMapTestScene)
 
 void GameMapTestScene::Init()
 {
+	startTileRoom = { 0.f,0.f };
+	tileWallSize = { 100,100};
+	sf::Vector2f pos = { 0.f,0.f };
+
 	tileRoom1 = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-	sf::Vector2f pos = { 0,0 }; // 랜덤 설정
-	tileRoom1->NoneFileLoad(100, 100);
-	
+	tileRoom1->SetOrigin(Origins::MC);
+	tileRoom1->NoneFileLoad(tileWallSize.x , tileWallSize.y,true,false);
+	tileRoom1->SetStartPos(pos);
+	tileRoom1->Divide();
 
-	
-	int min_width = 25;
-	int min_height = 25;
-	int max_depth = 3;
-
-	root = new BSPNode({ 0, 0, 100 * 25, 100 * 25 });
-	room = new Room1();
-	room->Divide(root, min_width, min_height, max_depth);
-
+	for (int i = 0;i<tileRoom1->tiles.size();++i)
+	{
+		switch (static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes))
+		{
+		case MapObjectType::WallDown:
+		{
+			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
+			spr->sprite.setTextureRect({ 0,250,50,50 });
+			spr->SetScale(0.5f, 0.5f);
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition(tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x , tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y );
+			spr->sortLayer = 2;
+			objects.push_back(spr); // wall클래스 생성
+		}
+		break;
+		case MapObjectType::LibraryDown:
+		{
+			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
+			spr->sprite.setTextureRect({ 0,650,50,50 });
+			spr->SetScale(0.5f, 0.5f);
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition(tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x , tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y );
+			spr->sortLayer = 2;
+			objects.push_back(spr); // wall클래스 생성
+		}
+		break;
+		case MapObjectType::Pot:
+		{
+			InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
+			spr->sprite.setTextureRect({ 0,800,50,50 });
+			spr->SetScale(0.5f, 0.5f);
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition(tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x , tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y );
+			spr->sortLayer = 0;
+			interaction.push_back({ static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes) ,spr });
+		}
+		break;
+		case MapObjectType::Book1:
+		{
+			InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
+			spr->sprite.setTextureRect({ 0,850,50,50 });
+			spr->SetScale(0.5f, 0.5f);
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition( tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
+			spr->sortLayer = 0;
+			interaction.push_back({ static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes) ,spr });
+		}
+		break;
+		}
+	}
 	
  	for (auto go : gameObjects)
 	{
@@ -88,32 +135,22 @@ void GameMapTestScene::Update(float dt)
 	{
 		worldView.zoom(0.5f);
 	}
-	
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F1))
+	{
+		tileRoom1->Divide();
+	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F2))
+	{
+		tileRoom1->MakeRoom();
+	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F3))
+	{
+		tileRoom1->ConnectRoom();
+	}
 }
 
 void GameMapTestScene::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
 	window.setView(worldView);
-}
-void GameMapTestScene::GenerateTileMap(BSPNode* node)
-{
-	if (!node->left && !node->right)
-	{
-		int x = node->room.x / 25;
-		int y = node->room.y / 25;
-		int width = node->room.width / 25;
-		int height = node->room.height / 25;
-
-	}
-	tileRoom1->Reset();
-	if (node->left)
-	{
-		GenerateTileMap(node->left);
-	}
-
-	if (node->right)
-	{
-		GenerateTileMap(node->right);
-	}
 }

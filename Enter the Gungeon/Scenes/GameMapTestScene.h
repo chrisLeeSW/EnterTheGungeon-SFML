@@ -5,8 +5,7 @@
 class TileMap;
 class SpriteGo;
 class InteractionObject;
-class BSPNode;
-class Room1;
+
 struct RoomObjectsInfoTest
 {
 	MapObjectType type;
@@ -16,10 +15,12 @@ struct RoomObjectsInfoTest
 class GameMapTestScene :public Scene
 {
 protected:
+	sf::Vector2f startTileRoom;
+	sf::Vector2i tileWallSize;
 	TileMap* tileRoom1;
-	TileMap* rooms;
-	BSPNode* root;
-	Room1* room;
+	std::vector<SpriteGo*> objects;
+	std::vector<RoomObjectsInfoTest> interaction;
+	
 public:
 	GameMapTestScene();
 	virtual ~GameMapTestScene() override = default;
@@ -31,6 +32,6 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	void GenerateTileMap(BSPNode* node);
+	
 };
 

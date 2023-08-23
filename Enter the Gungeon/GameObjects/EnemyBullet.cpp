@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "EnemyBullet.h"
-#include "SceneMgr.h"
 
 EnemyBullet::EnemyBullet(std::string textureId, std::string name)
 	:SpriteGo(textureId, name)

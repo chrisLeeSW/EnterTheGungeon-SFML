@@ -12,6 +12,7 @@
 #include "InteractionObject.h"
 #include "PlayerUI.h"
 #include "DropItem.h"
+#include "DisplayItem.h"
 
 #include "Boss.h"
 #include "EnemyBullet.h"
@@ -76,6 +77,10 @@ void SceneGame::Init()
 	bossui->SetOrigin(Origins::MC);
 	bossui->SetPosition(windowSize.x * 0.5f, windowSize.y - 50.f);
 	bossui->sortLayer = 100;
+
+	DisplayItem* distest = (DisplayItem*)AddGo(new DisplayItem(DisplayItem::Names::Heart));
+	distest->SetOrigin(Origins::MC);
+	distest->SetPosition(-50, 0);
 
 	enemyBullets.OnCreate = [this](EnemyBullet* bullet)
 	{

@@ -19,6 +19,8 @@ public:
         Key,
         Blank,
         HegemonyCredit,
+
+        Count,
     };
 
 protected:

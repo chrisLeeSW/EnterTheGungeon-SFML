@@ -49,7 +49,7 @@ void Enemy::Init()
 		};
 		IfDie = [this](sf::Vector2f dir)
 		{
-			DropKey();
+			DropsKey();
 			OnDie(dir);
 		};
 		break;
@@ -561,7 +561,7 @@ void Enemy::OnDie(const sf::Vector2f& look)
 	}
 
 	// Drop 상태
-	DropItem::Types itemtype;
+	DropItem::Types itemtype = DropItem::Types::None;
 	int quantity = 1;
 	int chance = 0;
 
@@ -576,7 +576,6 @@ void Enemy::OnDie(const sf::Vector2f& look)
 		chance = 50;
 		break;
 	case Enemy::EnemyName::KeyBulletKin:
-		DropKey();
 		return;
 		break;
 	case Enemy::EnemyName::ShotgunKinRed:
@@ -601,7 +600,7 @@ void Enemy::OnDie(const sf::Vector2f& look)
 		break;
 	}
 
-	DropCasing(itemtype, quantity, chance);
+	DropsDropItem(itemtype, quantity, chance);
 }
 
 void Enemy::OneShot(sf::Vector2f dir, float speed, bool isBlink) // pool반환 필요
@@ -675,11 +674,11 @@ void Enemy::SixWayDie(sf::Vector2f dir, float speed, int chance)
 		OneShot(Utils::DirectionFromAngle(60.f + 60.f * i), speed, true);
 	}
 
-	DropCasing(DropItem::Types::Shell1, 1, 50);
+	DropsDropItem(DropItem::Types::Shell1, 1, 50);
 	SetActive(false);
 }
 
-void Enemy::DropCasing(DropItem::Types itemtype, int quantity, int chance)
+void Enemy::DropsDropItem(DropItem::Types itemtype, int quantity, int chance)
 {
 	if (int ran = Utils::RandomRange(0, 100) >= chance)
 	{
@@ -699,7 +698,7 @@ void Enemy::DropCasing(DropItem::Types itemtype, int quantity, int chance)
 	}
 }
 
-void Enemy::DropKey()
+void Enemy::DropsKey()
 {
 	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
 	DropItem* dropitem = scene->GetPoolDropItem().Get();

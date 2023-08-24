@@ -50,7 +50,7 @@ void SceneGame::Init()
 
 	testenm1 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::KeyBulletKin)); //test
 	testenm1->SetOrigin(Origins::BC); //test
-	testenm1->SetPosition(200, 200); //test
+	testenm1->SetPosition(-100, -100); //test
 	testenm1->sortLayer = 0;
 
 	testenm2 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::BulletKin)); //test
@@ -77,10 +77,6 @@ void SceneGame::Init()
 	bossui->SetOrigin(Origins::MC);
 	bossui->SetPosition(windowSize.x * 0.5f, windowSize.y - 50.f);
 	bossui->sortLayer = 100;
-
-	DisplayItem* distest = (DisplayItem*)AddGo(new DisplayItem(DisplayItem::Names::Heart)); //test
-	distest->SetOrigin(Origins::MC);
-	distest->SetPosition(-50, 0);
 
 	enemyBullets.OnCreate = [this](EnemyBullet* bullet)
 	{
@@ -131,7 +127,7 @@ void SceneGame::Enter()
 	test2->SetPlayer(player); //test
 
 	DropItem* droptest = dropitemPool.Get(); //test
-	droptest->SetType(DropItem::Types::Ammo);
+	droptest->SetType((DropItem::Types)Utils::RandomRange(0, (int)DropItem::Types::Count));
 	droptest->SetPosition(-200, 0);
 	droptest->Init();
 	AddGo(droptest);

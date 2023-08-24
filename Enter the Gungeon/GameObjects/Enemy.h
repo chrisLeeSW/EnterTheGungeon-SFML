@@ -127,6 +127,4 @@ public:
 
 	// 아이템 드랍
 	void DropsDropItem(DropItem::Types itemtype = DropItem::Types::Shell1, int quantity = 1, int chance = 100);
-	// 열쇠 드랍
-	void DropsKey();
 };

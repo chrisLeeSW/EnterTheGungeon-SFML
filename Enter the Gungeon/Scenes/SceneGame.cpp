@@ -131,7 +131,7 @@ void SceneGame::Enter()
 	test2->SetPlayer(player); //test
 
 	DropItem* droptest = dropitemPool.Get(); //test
-	droptest->SetType(DropItem::Types::Hearts);
+	droptest->SetType(DropItem::Types::Ammo);
 	droptest->SetPosition(-200, 0);
 	droptest->Init();
 	AddGo(droptest);

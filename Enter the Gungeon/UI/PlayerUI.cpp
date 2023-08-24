@@ -149,8 +149,6 @@ void PlayerUI::Update(float dt)
 
 		break;
 	}
-
-	std::cout << active.getPosition().x << std::endl;
 }
 
 

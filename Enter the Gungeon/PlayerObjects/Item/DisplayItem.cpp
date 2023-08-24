@@ -101,7 +101,7 @@ void DisplayItem::Reset()
 
 		action = [this]()
 		{
-			// player ammo 증가 함수
+			player->GetCurrenWeapon()->GetAmmunition();
 
 			item = DisplayItem::Names::None;
 			Reset();

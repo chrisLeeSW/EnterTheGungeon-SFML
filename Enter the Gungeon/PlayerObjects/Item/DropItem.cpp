@@ -62,6 +62,13 @@ void DropItem::Reset()
 			player->AddBlankBullet();
 		};
 		break;
+	case DropItem::Types::Ammo:
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Objects/Ammo.csv"));
+		OnBump = [this]()
+		{
+			player->GetCurrenWeapon()->GetAmmunition();
+		};
+		break;
 	case DropItem::Types::HegemonyCredit:
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Objects/HegemonyCredit.csv"));
 		OnBump = [this]()

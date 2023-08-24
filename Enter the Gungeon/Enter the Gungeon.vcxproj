@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObjects\Npc.cpp" />
     <ClCompile Include="PlayerObjects\Item\DisplayItem.cpp" />
     <ClCompile Include="UI\BossUI.cpp" />
     <ClCompile Include="DataTables\ButtonTable.cpp" />
@@ -229,6 +230,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
+    <ClInclude Include="GameObjects\Npc.h" />
     <ClInclude Include="PlayerObjects\Item\DisplayItem.h" />
     <ClInclude Include="UI\BossUI.h" />
     <ClInclude Include="DataTables\ButtonTable.h" />

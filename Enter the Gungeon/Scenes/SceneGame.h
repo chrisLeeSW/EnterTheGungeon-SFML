@@ -10,6 +10,7 @@ class Book;
 class Enemy;
 class InteractionObject;
 class DropItem;
+class Npc;
 
 class PlayerUI;
 
@@ -38,6 +39,7 @@ protected:
 
 	Boss* test2;
 	BossUI* bossui;
+	Npc* npc;
 
 	std::vector<TileMap*> tileRoom;
 	std::vector<SpriteGo*> objects;

@@ -13,6 +13,7 @@
 #include "PlayerUI.h"
 #include "DropItem.h"
 #include "DisplayItem.h"
+#include "Npc.h"
 
 #include "Boss.h"
 #include "EnemyBullet.h"
@@ -58,6 +59,9 @@ void SceneGame::Init()
 	bossui->SetOrigin(Origins::MC);
 	bossui->SetPosition(windowSize.x * 0.5f, windowSize.y - 50.f);
 	bossui->sortLayer = 100;
+
+	npc = (Npc*)AddGo(new Npc(Npc::NpcType::ShopOwner));
+	npc->SetPosition(-100, 0);
 
 	enemyBullets.OnCreate = [this](EnemyBullet* bullet)
 	{

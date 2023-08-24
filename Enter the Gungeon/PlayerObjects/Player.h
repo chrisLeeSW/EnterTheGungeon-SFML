@@ -106,9 +106,9 @@ protected:
 	int blankBulletCount;
 
 	int money = 0;
-	int key = 0;
+	int key = 1;
 
-	int hp;
+	int hp = 0;
 	float effect = 0.f;
 	float currenthitDelay = 0.f;
 
@@ -200,7 +200,7 @@ public:
 	void GetItem(Passive::Types type);
 	void GetItem(Active::Types type);
 	void GetItem(Weapon::Types type);
-	void Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir);
+	void Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir, float santan);
 
 	bool GetFilpX() { return flipX; }
 	bool isRolling() { return isrolling; }
@@ -218,9 +218,10 @@ public:
 	sf::Vector2f PlayerHandPos() { return hand->GetPosition(); }
 	int GetHp() { return hp; }
 
-	void HealHp();
+	void HealHp(int heal);
 	void AddBlankBullet();
 	void AddMoney(int money);
+	void AddKey(int key);
 	int GetMoney() { return money; }
 	int GetKey() { return key; }
 

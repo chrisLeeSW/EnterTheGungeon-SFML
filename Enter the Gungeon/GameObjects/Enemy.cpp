@@ -47,6 +47,11 @@ void Enemy::Init()
 		{
 
 		};
+		IfDie = [this](sf::Vector2f dir)
+		{
+			DropsKey();
+			OnDie(dir);
+		};
 		break;
 	case EnemyName::ShotgunKinRed:
 		name = "ShotgunKinRed/ShotgunKinRed";
@@ -176,6 +181,9 @@ void Enemy::Reset()
 
 void Enemy::Update(float dt)
 {
+	if (PLAYER_MGR.IsPause())
+		return;
+
 	animation.Update(dt);
 
 	if (player == nullptr || state == Enemy::State::Die) return;
@@ -554,6 +562,48 @@ void Enemy::OnDie(const sf::Vector2f& look)
 	{
 		animation.Play("DieDown");
 	}
+
+	// Drop 상태
+	DropItem::Types itemtype = DropItem::Types::None;
+	int quantity = 1;
+	int chance = 0;
+
+	switch (type)
+	{
+	case Enemy::EnemyName::None:
+		return;
+		break;
+	case Enemy::EnemyName::BulletKin:
+		itemtype = DropItem::Types::Shell1;
+		quantity = 1;
+		chance = 50;
+		break;
+	case Enemy::EnemyName::KeyBulletKin:
+		return;
+		break;
+	case Enemy::EnemyName::ShotgunKinRed:
+		itemtype = DropItem::Types::Shell1;
+		quantity = 1;
+		chance = 50;
+		break;
+	case Enemy::EnemyName::ShotgunKinBlue:
+		itemtype = DropItem::Types::Shell1;
+		quantity = 1;
+		chance = 50;
+		break;
+	case Enemy::EnemyName::GatlingGull:
+		itemtype = DropItem::Types::HegemonyCredit;
+		quantity = Utils::RandomRange(1, 6);
+		chance = 100;
+		break;
+	case Enemy::EnemyName::Count:
+		return;
+		break;
+	default:
+		break;
+	}
+
+	DropsDropItem(itemtype, quantity, chance);
 }
 
 void Enemy::OneShot(sf::Vector2f dir, float speed, bool isBlink) // pool반환 필요
@@ -616,7 +666,7 @@ void Enemy::CloseAttack(float range)
 
 void Enemy::SixWayDie(sf::Vector2f dir, float speed, int chance)
 {
-	if (int ran = Utils::RandomRange(1, 100) >= chance)
+	if (int ran = Utils::RandomRange(0, 100) >= chance)
 	{
 		OnDie(dir);
 		return;
@@ -627,5 +677,38 @@ void Enemy::SixWayDie(sf::Vector2f dir, float speed, int chance)
 		OneShot(Utils::DirectionFromAngle(60.f + 60.f * i), speed, true);
 	}
 
+	DropsDropItem(DropItem::Types::Shell1, 1, 50);
 	SetActive(false);
+}
+
+void Enemy::DropsDropItem(DropItem::Types itemtype, int quantity, int chance)
+{
+	if (int ran = Utils::RandomRange(0, 100) >= chance)
+	{
+		return;
+	}
+
+	for (int i = 0; i < quantity; i++)
+	{
+		SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+		DropItem* dropitem = scene->GetPoolDropItem().Get();
+		dropitem->SetType(itemtype);
+		dropitem->SetPlayer(player);
+		dropitem->SetPosition(position + Utils::RandomInCircle(100.f));
+		dropitem->Init();
+		dropitem->Reset();
+		scene->AddGo(dropitem);
+	}
+}
+
+void Enemy::DropsKey()
+{
+	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+	DropItem* dropitem = scene->GetPoolDropItem().Get();
+	dropitem->SetType(DropItem::Types::Key);
+	dropitem->SetPlayer(player);
+	dropitem->SetPosition(position);
+	dropitem->Init();
+	dropitem->Reset();
+	scene->AddGo(dropitem);
 }

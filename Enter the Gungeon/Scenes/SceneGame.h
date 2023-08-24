@@ -9,6 +9,7 @@ class TileMap;
 class Book;
 class Enemy;
 class InteractionObject;
+class DropItem;
 
 class PlayerUI;
 
@@ -33,6 +34,7 @@ protected:
 
 
 	ObjectPool<EnemyBullet> enemyBullets;
+	ObjectPool<DropItem> dropitemPool;
 
 	Enemy* testenm1;
 
@@ -74,6 +76,7 @@ public:
 	void RenewBossUI();
 
 	ObjectPool<EnemyBullet>& GetPoolEnemyBullet();
+	ObjectPool<DropItem>& GetPoolDropItem();
 
 	template <typename T>
 	void ClearPool(ObjectPool<T>& pool);

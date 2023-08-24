@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "EnemyBullet.h"
-#include "SceneMgr.h"
 
 EnemyBullet::EnemyBullet(std::string textureId, std::string name)
 	:SpriteGo(textureId, name)
@@ -33,6 +32,9 @@ void EnemyBullet::Reset()
 
 void EnemyBullet::Update(float dt)
 {
+	if (PLAYER_MGR.IsPause())
+		return;
+
 	SpriteGo::Update(dt);
 	animation.Update(dt);
 

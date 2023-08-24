@@ -154,6 +154,9 @@ void Boss::Reset()
 
 void Boss::Update(float dt)
 {
+	if (PLAYER_MGR.IsPause())
+		return;
+
 	Enemy::Update(dt);
 	
 	patternTimer += dt;

@@ -8,29 +8,6 @@ class PilotWeapon : public Weapon
 {
 protected:
 
-	Player* player = nullptr;
-
-	Types weaponType;
-	Bullet::Types bulletType;
-	float attackrate;
-	int bulletcount;
-	int bulletmax;
-	int currentbulletcount;
-	float reload;
-	int santan;
-	float tick;
-
-	float reloadtick;
-
-	bool isreload = false;
-	bool flipX = false;
-
-	AnimationController gun;
-	AnimationController effect;
-
-	float WeaponXpos = 9.f;
-
-	sf::RectangleShape gunend;
 
 	
 
@@ -56,9 +33,10 @@ public:
 	virtual Bullet::Types GetBulletType() override { return bulletType; }
 
 	virtual void RequestReload() override { currentbulletcount = bulletcount; }
+	virtual void GetAmmunition() override { currentbulletmax = bulletmax; }
 
-	virtual float GetCurrentBulleCount() override { return currentbulletcount; }
-	virtual float GetRemainingAmmo() override { return bulletmax; }
+	virtual int GetCurrentBulleCount() override { return currentbulletcount; }
+	virtual int GetRemainingAmmo() override { return bulletmax; }
 
 	virtual AnimationController* GetWeaponAnimation() override { return &gun; }
 

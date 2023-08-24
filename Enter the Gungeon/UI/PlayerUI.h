@@ -26,20 +26,26 @@ protected:
 
 	//SpriteGo* playerhp;
 	sf::Sprite spritehp;
+
 	sf::Sprite weaponBox;
 	sf::Sprite weapon;
-	sf::Sprite money;
-	sf::Sprite key;
 	sf::Sprite activeBox;
 	sf::Sprite active;
+
+	sf::Sprite money;
+	sf::Sprite key;
+
 	sf::Sprite reload;
 	sf::Sprite reloadBar;
+
 	sf::Text currentmoney;
 	sf::Text currentkey;
+
 	sf::Text currentMagazine;
 	sf::Text remainingAmmo;
+	sf::Text remainingAmmoMax;
 
-		int bulletcount;
+	int bulletcount;
 	int bulletmax;
 	Weapon* playerweapon = nullptr;
 	Active* currentActive = nullptr;
@@ -60,7 +66,6 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	void IsHited();
 	sf::Sprite CreateSprite(sf::Texture* texture, float x, float y);
 
 	sf::Sprite CreateSprite2(sf::Texture* texture, float x, float y);
@@ -74,8 +79,12 @@ public:
 	void UseBlankBullet();
 
 	void AddBlankBullet();
-	void AddHp();
-	void AdjustMoney();
-	void AdjustKey();
+
+	void RenewHp(int hp, int maxHp);
+	void RenewMoney();
+	void RenewKey();
+
+	void ShootWeapon();
+	void SwapWeaponText();
 };
 

@@ -34,8 +34,8 @@ void Bullet::Reset()
 
 void Bullet::Update(float dt)
 {
-	//if (PLAYER_MGR.IsPause())
-	//	return;
+	if (PLAYER_MGR.IsPause())
+		return;
 
 	SetOrigin(Origins::MC);
 	animation.Update(dt);
@@ -84,7 +84,7 @@ void Bullet::Draw(sf::RenderWindow& window)
 	SpriteGo::Draw(window);
 }
 
-void Bullet::SetBullet(Types types, sf::Vector2f pos, sf::Vector2f dir)
+void Bullet::SetBullet(Types types, sf::Vector2f pos, sf::Vector2f dir, float santan)
 {
 	const BulletInfo* info = DATATABLE_MGR.Get<BulletTable>(DataTable::Ids::Bullet)->Get(types);
 
@@ -98,7 +98,7 @@ void Bullet::SetBullet(Types types, sf::Vector2f pos, sf::Vector2f dir)
 	position = pos;
 	//sprite.setRotation(DEGREES_90 + Utils::Angle(dir));
 	sprite.setRotation(Utils::Angle(dir));
-	float spreadAngle = Utils::RandomRange(-5.f, 5.f);
+	float spreadAngle = Utils::RandomRange(-santan, santan);
 
 	// 원래 방향 벡터에 집탄 영향을 적용하여 새로운 방향 계산
 	sf::Vector2f spreadDir = Utils::RotateVector(dir, spreadAngle);

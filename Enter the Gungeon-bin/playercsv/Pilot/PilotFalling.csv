@@ -1,0 +1,10 @@
+ID,FPS,LOOPTYPE,,
+Falling,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Pilot.png,22,703,16,17
+graphics/Pilot.png,40,703,13,17
+graphics/Pilot.png,55,703,10,17
+graphics/Pilot.png,67,703,7,17
+graphics/Pilot.png,76,703,3,17
+graphics/Pilot.png,81,703,5,17

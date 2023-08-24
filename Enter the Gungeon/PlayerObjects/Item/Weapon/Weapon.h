@@ -38,9 +38,25 @@ public:
 protected:
 
 	//불릿 풀링
-	Bullet* bullet = nullptr;
-	std::list<Bullet*> bullets;
-	ObjectPool<Bullet> poolBullets;
+
+	AnimationController gun;
+	AnimationController effect;
+	Player* player = nullptr;
+	Types weaponType;
+	Bullet::Types bulletType;
+	float attackrate;
+	int bulletcount;
+	int bulletmax;
+	int currentbulletcount;
+	int currentbulletmax;
+	float reload;
+	int santan;
+	float tick;
+	float reloadtick;
+	bool isreload = false;
+	bool flipX = false;
+	sf::RectangleShape gunend;
+	float WeaponXpos = 9.f;
 
 	sf::Vector2f mousePos;
 	sf::Vector2f look;
@@ -48,46 +64,17 @@ protected:
 
 	State state;
 
-	AnimationController animation;
-
-	std::vector<AnimationController> shootEffect;
-
-	float reload;
-	float reloadtick;
-
-	Player* player;
-
 
 	sf::Vector2f handPos;
 	sf::Vector2f gunPoint;
 
-	bool flipX = false;
 	
-	float currentbulletcount;
-	float bulletcount;
-	float bulletmax;
 
 	sf::Vector2f gunOffset1;
 	sf::Vector2f gunOffset2;
 
 	SceneGame* sceneGame;
 
-	//Enemy 정보
-	std::list<Enemy*> enemylist;
-	Enemy* enemy;
-
-
-	std::unordered_map<sf::Keyboard::Key, int> keyToIndexMap = {
-	{sf::Keyboard::Num1, 1},
-	{sf::Keyboard::Num2, 2},
-	{sf::Keyboard::Num3, 3},
-	{sf::Keyboard::Num4, 4},
-	{sf::Keyboard::Num5, 5},
-	{sf::Keyboard::Num6, 6},
-	{sf::Keyboard::Num7, 7},
-	{sf::Keyboard::Num8, 8},
-	{sf::Keyboard::Num9, 9},
-	};
 
 
 public:
@@ -111,16 +98,19 @@ public:
 	virtual Bullet::Types GetBulletType() = 0;
 	virtual void RequestReload() { currentbulletcount = bulletcount; };
 	virtual void SwapWeapon();
+	virtual void GetAmmunition() { currentbulletmax = bulletmax; }
 
 	virtual float GetReloadTime() { return reload; }
 	virtual float GetCurrentReloadTime() { return reloadtick; }
-	virtual float GetCurrentBulleCount()  { return currentbulletcount; }
-	virtual float GetRemainingAmmo()  { return bulletmax; }
+	virtual int GetCurrentBulleCount()  { return currentbulletcount; }
+	virtual int GetRemainingAmmo()  { return bulletmax; }
+	virtual int GetCurrentRamainingAmmo() { return currentbulletmax; }
+
 
 	virtual sf::Vector2f Look();
 	virtual void SetEnemy(Enemy* enemy);
 
-	virtual AnimationController* GetWeaponAnimation() { return &animation; }
+	virtual AnimationController* GetWeaponAnimation() { return &gun; }
 
 	virtual State GetWeaponState() { return state; }
 

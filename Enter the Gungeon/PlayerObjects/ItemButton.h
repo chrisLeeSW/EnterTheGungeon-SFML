@@ -49,8 +49,5 @@ public:
 
 	void SetBook(Book* book) { this->book = book; }
 	sf::Vector2f GetSpritePosition();
-	std::function<void()> OnClick;
-	std::function<void()> OnEnter;
-	std::function<void()> OnExit;
 };
 

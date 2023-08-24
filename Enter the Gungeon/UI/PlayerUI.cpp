@@ -77,21 +77,29 @@ PlayerUI::PlayerUI(Player* player, const std::string& textureId, const std::stri
 	currentkey.setFillColor(sf::Color::White);
 	currentkey.setCharacterSize(15);
 	currentkey.setPosition(20, 45);
-	currentkey.setString(std::to_string(player->GetMoney()));
+	currentkey.setString(std::to_string(player->GetKey()));
 
 	currentMagazine.setFont(*font);
-	remainingAmmo.setFont(*font);
 	currentMagazine.setFillColor(sf::Color::White);
-	remainingAmmo.setFillColor(sf::Color::White);
-	currentMagazine.setCharacterSize(23);
-	remainingAmmo.setCharacterSize(23);
-	currentMagazine.setPosition(weaponBox.getPosition());
-	remainingAmmo.setPosition(weaponBox.getPosition());
+	currentMagazine.setCharacterSize(10);
+	currentMagazine.setPosition(weaponBox.getGlobalBounds().left + weaponBox.getGlobalBounds().width, weaponBox.getGlobalBounds().top + weaponBox.getGlobalBounds().height / 2);
 	currentMagazine.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentBulleCount()));
+
+	remainingAmmo.setFont(*font);
+	remainingAmmo.setFillColor(sf::Color::White);
+	remainingAmmo.setCharacterSize(9);
+	remainingAmmo.setPosition(weaponBox.getPosition().x, weaponBox.getGlobalBounds().top);
 	remainingAmmo.setString(std::to_string(player->GetCurrenWeapon()->GetRemainingAmmo()));
+	
+	remainingAmmoMax.setFont(*font);
+	remainingAmmoMax.setFillColor(sf::Color::White);
+	remainingAmmoMax.setCharacterSize(9);
+	remainingAmmoMax.setPosition(remainingAmmo.getGlobalBounds().left + remainingAmmo.getGlobalBounds().width, weaponBox.getGlobalBounds().top + 2);
+	remainingAmmoMax.setString("/" + std::to_string(player->GetCurrenWeapon()->GetCurrentRamainingAmmo()));
 
-
-
+	Utils::SetOrigin(remainingAmmo, Origins::BL);
+	Utils::SetOrigin(remainingAmmoMax, Origins::BL);
+	Utils::SetOrigin(currentMagazine, Origins::ML);
 }
 
 void PlayerUI::Init()
@@ -145,18 +153,20 @@ void PlayerUI::Update(float dt)
 
 		break;
 	}
-
-	std::cout << active.getPosition().x << std::endl;
 }
 
 
 void PlayerUI::Draw(sf::RenderWindow& window)
 {
-	for(auto& it : playermaxhp)
-	window.draw(it);
+	for (auto& it : playermaxhp)
+	{
+		window.draw(it);
+	}
 
 	for (auto& it : playerhp)
+	{
 		window.draw(it);
+	}
 
 	window.draw(weaponBox);
 	window.draw(weapon);
@@ -168,29 +178,22 @@ void PlayerUI::Draw(sf::RenderWindow& window)
 	window.draw(currentkey);
 	window.draw(currentMagazine);
 	window.draw(remainingAmmo);
-
+	window.draw(remainingAmmoMax);
 
 
 
 	for (auto& it : blankbullets)
+	{
 		window.draw(it);
+	}
 
 
-	if(playerweapon->GetWeaponState() == Weapon::State::Reload)
+	if (playerweapon->GetWeaponState() == Weapon::State::Reload)
 	{
 		window.draw(reload);
 		window.draw(reloadBar);
 	}
-
-
 }
-
-void PlayerUI::IsHited()
-{
-	playerhp.pop_back();
-}
-
-
 
 sf::Sprite PlayerUI::CreateSprite(sf::Texture* texture, float x, float y)
 {
@@ -248,27 +251,45 @@ void PlayerUI::AddBlankBullet()
 	blankbullets.push_back(CreateSprite(tex, blankbullets.size() * 15, 20));
 }
 
-void PlayerUI::AddHp()
+void PlayerUI::RenewHp(int hp, int maxHp)
 {
+	playermaxhp.clear();
+	sf::Texture* tex = RESOURCE_MGR.GetTexture("graphics/hp_empty.png");
+	for (int i = 0; i < maxHp / 2; i++)
+	{
+		playermaxhp.push_back(CreateSprite(tex, 20 * i, 0));
 
-	if (player->GetHp() % 2 == 1)
-	{
-		sf::Texture* tex1 = RESOURCE_MGR.GetTexture("graphics/hp_left.png");
-		playerhp.push_back(CreateSprite(tex1, playerhp.size() * 10, 0));
 	}
-	else
+
+	playerhp.clear();
+	sf::Texture* tex1 = RESOURCE_MGR.GetTexture("graphics/hp_left.png");
+	sf::Texture* tex2 = RESOURCE_MGR.GetTexture("graphics/hp_right.png");
+	for (int i = 0; i < hp; i++)
 	{
-		sf::Texture* tex2 = RESOURCE_MGR.GetTexture("graphics/hp_right.png");
-		playerhp.push_back(CreateSprite2(tex2, playerhp.back().getPosition().x, 0));
+		int p = i / 2;
+		(i % 2 == 0) ? playerhp.push_back(CreateSprite(tex1, 20 * p, 0)) : playerhp.push_back(CreateSprite2(tex2, 20 * p, 0));
 	}
 }
 
-void PlayerUI::AdjustMoney()
+void PlayerUI::RenewMoney()
 {
-	currentmoney.setString(std::to_string(player->GetHp()));
+	currentmoney.setString(std::to_string(player->GetMoney()));
 }
 
-void PlayerUI::AdjustKey()
+void PlayerUI::RenewKey()
 {
 	currentkey.setString(std::to_string(player->GetKey()));
+}
+
+void PlayerUI::ShootWeapon()
+{
+	currentMagazine.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentBulleCount()));
+	remainingAmmo.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentRamainingAmmo()));
+}
+
+void PlayerUI::SwapWeaponText()
+{
+	currentMagazine.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentBulleCount()));
+	remainingAmmo.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentRamainingAmmo()));
+	remainingAmmoMax.setString("/" + std::to_string(player->GetCurrenWeapon()->GetRemainingAmmo()));
 }

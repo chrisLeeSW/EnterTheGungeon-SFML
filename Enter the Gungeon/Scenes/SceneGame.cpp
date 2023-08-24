@@ -48,25 +48,6 @@ void SceneGame::Init()
 
 	book = (Book*)AddGo(new Book());
 
-	testenm1 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::KeyBulletKin)); //test
-	testenm1->SetOrigin(Origins::BC); //test
-	testenm1->SetPosition(-100, -100); //test
-	testenm1->sortLayer = 0;
-
-	testenm2 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::BulletKin)); //test
-	testenm2->SetOrigin(Origins::BC); //test
-	testenm2->SetPosition(300, 300); //test
-	testenm2->sortLayer = 0;
-
-	testenm3 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::ShotgunKinBlue)); //test
-	testenm3->SetOrigin(Origins::BC); //test
-	testenm3->SetPosition(400, 400); //test
-	testenm3->sortLayer = 0;
-
-	enemylist.push_back(testenm1);
-	enemylist.push_back(testenm2);
-	enemylist.push_back(testenm3);
-
 	test2 = (Boss*)AddGo(new Boss(Enemy::EnemyName::GatlingGull)); //test
 	test2->SetOrigin(Origins::BC); //test
 	test2->SetPosition(400.f, 0.f); //test
@@ -119,10 +100,6 @@ void SceneGame::Enter()
 	player->sortLayer = 0;
 	player->Init();
 	player->SetEnemyList(enemylist);
-
-	testenm1->SetPlayer(player); //test
-	testenm2->SetPlayer(player); //test
-	testenm3->SetPlayer(player); //test
 
 	test2->SetPlayer(player); //test
 

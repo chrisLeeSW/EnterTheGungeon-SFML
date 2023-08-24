@@ -36,11 +36,6 @@ protected:
 	ObjectPool<EnemyBullet> enemyBullets;
 	ObjectPool<DropItem> dropitemPool;
 
-	Enemy* testenm1;
-
-	Enemy* testenm2;
-	Enemy* testenm3;
-
 	Boss* test2;
 	BossUI* bossui;
 

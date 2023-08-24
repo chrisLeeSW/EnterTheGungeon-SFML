@@ -60,7 +60,6 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	void IsHited();
 	sf::Sprite CreateSprite(sf::Texture* texture, float x, float y);
 
 	sf::Sprite CreateSprite2(sf::Texture* texture, float x, float y);
@@ -74,8 +73,8 @@ public:
 	void UseBlankBullet();
 
 	void AddBlankBullet();
-	void AddHp();
-	void AdjustMoney();
-	void AdjustKey();
+	void RenewHp(int hp, int maxHp);
+	void RenewMoney();
+	void RenewKey();
 };
 

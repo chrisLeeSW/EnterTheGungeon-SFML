@@ -41,8 +41,7 @@ void DisplayItem::Reset()
 
 		action = [this]()
 		{
-			// if 가격이 안되면 return;
-			// player hp +1
+			player->HealHp(1);
 
 			item = DisplayItem::Names::None;
 			Reset();
@@ -57,8 +56,7 @@ void DisplayItem::Reset()
 
 		action = [this]()
 		{
-			// if 가격이 안되면 return;
-			// player hp +2
+			player->HealHp(2);
 
 			item = DisplayItem::Names::None;
 			Reset();
@@ -73,7 +71,7 @@ void DisplayItem::Reset()
 
 		action = [this]()
 		{
-			// player key +1
+			player->AddKey(1);
 
 			item = DisplayItem::Names::None;
 			Reset();
@@ -88,7 +86,7 @@ void DisplayItem::Reset()
 
 		action = [this]()
 		{
-			// player blank +1
+			player->AddBlankBullet();
 
 			item = DisplayItem::Names::None;
 			Reset();
@@ -144,6 +142,8 @@ void DisplayItem::Update(float dt)
 		interaction = true;
 		if (INPUT_MGR.GetKeyDown(sf::Keyboard::E)) // 상호작용
 		{
+			if (player->GetMoney() < price) return;
+
 			action();
 		}
 	}

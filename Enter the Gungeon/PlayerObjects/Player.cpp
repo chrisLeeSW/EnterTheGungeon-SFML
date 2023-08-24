@@ -436,14 +436,9 @@ void Player::PlayerAct(float dt)
 
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F))
 	{
-		if (hp < maxHp)
-		{
-			hp++;
-			playerUI->AddHp();
-		}
+		HealHp(10);
 
-		blankBulletCount++;
-		playerUI->AddBlankBullet();
+		AddBlankBullet();
 	}
 }
 
@@ -554,13 +549,10 @@ void Player::GetItem(Weapon::Types type)
 }
 
 
-void Player::HealHp()
+void Player::HealHp(int heal)
 {
-	if (hp < maxHp)
-	{
-		hp++;
-		playerUI->AddHp();
-	}
+	hp = std::min(hp + heal, maxHp);
+	playerUI->RenewHp(hp, maxHp);
 }
 
 void Player::AddBlankBullet()
@@ -571,8 +563,14 @@ void Player::AddBlankBullet()
 
 void Player::AddMoney(int money)
 {
-	this->money = money;
-	playerUI->AdjustMoney();
+	this->money += money;
+	playerUI->RenewMoney();
+}
+
+void Player::AddKey(int key)
+{
+	this->key += key;
+	playerUI->RenewKey();
 }
 
 const sf::Vector2f& Player::GetDirection() const
@@ -640,7 +638,7 @@ void Player::SetPosition(float x, float y)
 void Player::OnPlayerHit()
 {
 	
-	if(currenthitDelay <= 0)
+	if (currenthitDelay <= 0)
 	{
 		--hp;
 		sprite.setColor(sf::Color::Red);
@@ -648,7 +646,7 @@ void Player::OnPlayerHit()
 		ouchoriginalColor.a = MAX_BYTE_VALUE;
 
 		isHit = true;
-		playerUI->IsHited();
+		playerUI->RenewHp(hp, maxHp);
 	}
 	if (hp <= 0)
 	{

@@ -24,42 +24,42 @@ void DropItem::Reset()
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Objects/Shell1.csv"));
 		OnBump = [this]()
 		{
-			// player ÅºÇÇ +1
+			player->AddMoney(1);
 		};
 		break;
 	case DropItem::Types::Shell2:
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Objects/Shell2.csv"));
 		OnBump = [this]()
 		{
-			// player ÅºÇÇ +5
+			player->AddMoney(5);
 		};
 		break;
 	case DropItem::Types::Heart:
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Objects/Heart.csv"));
 		OnBump = [this]()
 		{
-			// player Ã¼·Â +1
+			player->HealHp(1);
 		};
 		break;
 	case DropItem::Types::Hearts:
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Objects/Hearts.csv"));
 		OnBump = [this]()
 		{
-			// player Ã¼·Â +2
+			player->HealHp(2);
 		};
 		break;
 	case DropItem::Types::Key:
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Objects/Key.csv"));
 		OnBump = [this]()
 		{
-			// player ¿­¼è +1
+			player->AddKey(1);
 		};
 		break;
 	case DropItem::Types::Blank:
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Objects/Blank.csv"));
 		OnBump = [this]()
 		{
-			// player °øÆ÷Åº +1
+			player->AddBlankBullet();
 		};
 		break;
 	case DropItem::Types::HegemonyCredit:
@@ -73,6 +73,7 @@ void DropItem::Reset()
 		break;
 	}
 
+	player = PLAYER_MGR.GetPlayer();
 	animation.Play("Idle");
 }
 

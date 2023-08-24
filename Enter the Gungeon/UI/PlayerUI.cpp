@@ -152,11 +152,15 @@ void PlayerUI::Update(float dt)
 
 void PlayerUI::Draw(sf::RenderWindow& window)
 {
-	for(auto& it : playermaxhp)
-	window.draw(it);
+	for (auto& it : playermaxhp)
+	{
+		window.draw(it);
+	}
 
 	for (auto& it : playerhp)
+	{
 		window.draw(it);
+	}
 
 	window.draw(weaponBox);
 	window.draw(weapon);
@@ -173,24 +177,17 @@ void PlayerUI::Draw(sf::RenderWindow& window)
 
 
 	for (auto& it : blankbullets)
+	{
 		window.draw(it);
+	}
 
 
-	if(playerweapon->GetWeaponState() == Weapon::State::Reload)
+	if (playerweapon->GetWeaponState() == Weapon::State::Reload)
 	{
 		window.draw(reload);
 		window.draw(reloadBar);
 	}
-
-
 }
-
-void PlayerUI::IsHited()
-{
-	playerhp.pop_back();
-}
-
-
 
 sf::Sprite PlayerUI::CreateSprite(sf::Texture* texture, float x, float y)
 {
@@ -248,27 +245,32 @@ void PlayerUI::AddBlankBullet()
 	blankbullets.push_back(CreateSprite(tex, blankbullets.size() * 15, 20));
 }
 
-void PlayerUI::AddHp()
+void PlayerUI::RenewHp(int hp, int maxHp)
 {
+	playermaxhp.clear();
+	sf::Texture* tex = RESOURCE_MGR.GetTexture("graphics/hp_empty.png");
+	for (int i = 0; i < maxHp / 2; i++)
+	{
+		playermaxhp.push_back(CreateSprite(tex, 20 * i, 0));
 
-	if (player->GetHp() % 2 == 1)
-	{
-		sf::Texture* tex1 = RESOURCE_MGR.GetTexture("graphics/hp_left.png");
-		playerhp.push_back(CreateSprite(tex1, playerhp.size() * 10, 0));
 	}
-	else
+
+	playerhp.clear();
+	sf::Texture* tex1 = RESOURCE_MGR.GetTexture("graphics/hp_left.png");
+	sf::Texture* tex2 = RESOURCE_MGR.GetTexture("graphics/hp_right.png");
+	for (int i = 0; i < hp; i++)
 	{
-		sf::Texture* tex2 = RESOURCE_MGR.GetTexture("graphics/hp_right.png");
-		playerhp.push_back(CreateSprite2(tex2, playerhp.back().getPosition().x, 0));
+		int p = i / 2;
+		(i % 2 == 0) ? playerhp.push_back(CreateSprite(tex1, 20 * p, 0)) : playerhp.push_back(CreateSprite2(tex2, 20 * p, 0));
 	}
 }
 
-void PlayerUI::AdjustMoney()
+void PlayerUI::RenewMoney()
 {
-	currentmoney.setString(std::to_string(player->GetHp()));
+	currentmoney.setString(std::to_string(player->GetMoney()));
 }
 
-void PlayerUI::AdjustKey()
+void PlayerUI::RenewKey()
 {
 	currentkey.setString(std::to_string(player->GetKey()));
 }

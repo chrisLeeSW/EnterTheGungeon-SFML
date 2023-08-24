@@ -102,9 +102,9 @@ public:
 
 	virtual float GetReloadTime() { return reload; }
 	virtual float GetCurrentReloadTime() { return reloadtick; }
-	virtual float GetCurrentBulleCount()  { return currentbulletcount; }
-	virtual float GetRemainingAmmo()  { return bulletmax; }
-	virtual float GetCurrentRamainingAmmo() { return currentbulletmax; }
+	virtual int GetCurrentBulleCount()  { return currentbulletcount; }
+	virtual int GetRemainingAmmo()  { return bulletmax; }
+	virtual int GetCurrentRamainingAmmo() { return currentbulletmax; }
 
 
 	virtual sf::Vector2f Look();

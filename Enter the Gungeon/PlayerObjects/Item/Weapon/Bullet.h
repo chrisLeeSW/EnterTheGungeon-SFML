@@ -67,7 +67,7 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	void SetBullet(Types types, sf::Vector2f pos, sf::Vector2f dir);
+	void SetBullet(Types types, sf::Vector2f pos, sf::Vector2f dir, float santan);
 	void Fire(sf::Vector2f pos, sf::Vector2f dir);
 	void SetEnemy(std::list<Enemy*> enemylist) { this->enemylist = enemylist; }
 

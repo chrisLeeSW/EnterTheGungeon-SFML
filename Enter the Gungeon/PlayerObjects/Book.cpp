@@ -132,7 +132,6 @@ void Book::Draw(sf::RenderWindow& window)
 	{
 		window.draw(black);
 		SpriteGo::Draw(window);
-
 	}
 
 	if(isBookOpen)
@@ -156,7 +155,6 @@ void Book::Draw(sf::RenderWindow& window)
 		window.draw(textweapon);
 	}
 }
-
 void Book::GetItem(Item::Types t, Item::WAP w)
 {
 

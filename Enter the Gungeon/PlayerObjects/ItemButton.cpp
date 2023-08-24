@@ -80,22 +80,10 @@ void ItemButton::Update(float dt)
 	bool prevHover = isHover;
 	isHover = sprite.getGlobalBounds().contains(uiMousePos);
 
-	if (!prevHover && isHover)
-	{
-		if (OnEnter != nullptr)
-			OnEnter();
-	}
-	if (prevHover && !isHover)
-	{
-		if (OnExit != nullptr)
-			OnExit();
-	}
 	if (isHover && INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
 	{
 		book->SetCurrentClickButton(this);
 		isClickButton = true;
-		if (OnClick != nullptr)
-			OnClick();
 	}
 }
 

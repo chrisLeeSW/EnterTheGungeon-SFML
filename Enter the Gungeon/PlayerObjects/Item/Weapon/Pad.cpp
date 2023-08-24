@@ -40,7 +40,7 @@ Pad::Pad(const std::string& textureId, const std::string& n) : Weapon(textureId,
 	gunOffset2 = { sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - 4 };
 
 	currentbulletcount = bulletcount;
-
+	currentbulletmax = bulletmax;
 }
 
 void Pad::Init()
@@ -118,17 +118,17 @@ void Pad::Update(float dt)
 				float patternAngle = 360.f / shootCount;
 				for (int i = 0; i < shootCount; ++i) 
 				{
-					player->Shoot(Bullet::Types::PadFire, gunPoint, Utils::RotateVector(look, patternAngle * i));
+					player->Shoot(Bullet::Types::PadFire, gunPoint, Utils::RotateVector(look, patternAngle * i), santan);
 				}
 
 				sKeyPressed = false;
 				dKeyPressed = false;
 				mouseClicked = false;
 			}
-			if (INPUT_MGR.GetMouseButton(sf::Mouse::Left) && tick <= 0.f && currentbulletcount > 0 && bulletmax >= 0)
+			if (INPUT_MGR.GetMouseButton(sf::Mouse::Left) && tick <= 0.f && currentbulletcount > 0 && currentbulletmax >= 0)
 			{
 				--currentbulletcount;
-				--bulletmax;
+				--currentbulletmax;
 
 				state = State::Shoot;
 
@@ -137,18 +137,18 @@ void Pad::Update(float dt)
 				float pattenAngle = 360.f / shootCount;
 				for(int i = 0; i < shootCount; ++i)
 				{
-					player->Shoot(bulletType, gunPoint, Utils::RotateVector(look, pattenAngle*i));
+					player->Shoot(bulletType, gunPoint, Utils::RotateVector(look, pattenAngle*i), santan);
 				}
 
 				std::cout << "ÇöÀç ÅºÃ¢ : " << currentbulletcount << std::endl;
-				std::cout << "ÃÑ ÅºÃ¢ : " << bulletmax << std::endl;
+				std::cout << "ÃÑ ÅºÃ¢ : " << currentbulletmax << std::endl;
 				tick = attackrate;
 			}
 			if (gun.GetCurrentClipId() == "Shoot" && gun.AnimationEnd())
 			{
 				state = State::Idle;
 			}
-			if (INPUT_MGR.GetKeyDown(sf::Keyboard::R) && currentbulletcount != bulletcount && bulletmax >= 0)
+			if (INPUT_MGR.GetKeyDown(sf::Keyboard::R) && currentbulletcount != bulletcount && currentbulletmax >= 0)
 			{
 				state = State::Reload;
 

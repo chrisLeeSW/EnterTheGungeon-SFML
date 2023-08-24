@@ -33,7 +33,7 @@ void SceneGame::Init()
 	shadow->SetOrigin(Origins::MC);
 	shadow->sortLayer = -1;
 
-	windowSize *= 0.3f;
+
 
 	worldView.setSize(windowSize);
 	worldView.setCenter(0.f, 0.f);

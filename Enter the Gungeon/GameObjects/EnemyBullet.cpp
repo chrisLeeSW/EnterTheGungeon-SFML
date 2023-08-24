@@ -32,6 +32,9 @@ void EnemyBullet::Reset()
 
 void EnemyBullet::Update(float dt)
 {
+	if (PLAYER_MGR.IsPause())
+		return;
+
 	SpriteGo::Update(dt);
 	animation.Update(dt);
 

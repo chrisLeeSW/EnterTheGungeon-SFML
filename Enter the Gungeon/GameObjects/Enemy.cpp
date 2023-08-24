@@ -181,6 +181,9 @@ void Enemy::Reset()
 
 void Enemy::Update(float dt)
 {
+	if (PLAYER_MGR.IsPause())
+		return;
+
 	animation.Update(dt);
 
 	if (player == nullptr || state == Enemy::State::Die) return;

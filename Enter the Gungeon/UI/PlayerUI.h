@@ -84,7 +84,7 @@ public:
 	void RenewMoney();
 	void RenewKey();
 
-	void GetCurrentMagazine();
-	void GetCurrentRemainingAmmo();
+	void ShootWeapon();
+	void SwapWeaponText();
 };
 

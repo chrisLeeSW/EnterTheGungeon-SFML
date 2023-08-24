@@ -200,7 +200,7 @@ public:
 	void GetItem(Passive::Types type);
 	void GetItem(Active::Types type);
 	void GetItem(Weapon::Types type);
-	void Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir);
+	void Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir, float santan);
 
 	bool GetFilpX() { return flipX; }
 	bool isRolling() { return isrolling; }

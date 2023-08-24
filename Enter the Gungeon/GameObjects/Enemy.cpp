@@ -326,8 +326,14 @@ void Enemy::Update(float dt)
 		SetFlipX(direction.x > 0.f);
 		SetPosition(position + direction * speed * dt);
 		break;
+	case Enemy::State::Skill:
+		if (animation.AnimationEnd()) state = Enemy::State::Idle;
+		break;
+	case Enemy::State::Bind:
+		break;
 	case Enemy::State::Count:
 		std::cout << "WARNING: Wrong State (Enemy Update(dt))" << std::endl;
+		state = Enemy::State::Idle;
 		break;
 	default:
 		break;
@@ -505,7 +511,7 @@ void Enemy::OnDamage(float damage, sf::Vector2f dir, float knockback)
 	
 	
 	// Animation
-	if (state == Enemy::State::Attack) return;
+	if (state == Enemy::State::Attack || state == Enemy::State::Skill) return;
 	else state = Enemy::State::Hit;
 
 	if (dir == way[0])

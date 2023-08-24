@@ -38,6 +38,8 @@ public:
 		Hit,
 		Die,
 		Runaway,
+		Skill,
+		Bind,
 
 		Count,
 	};

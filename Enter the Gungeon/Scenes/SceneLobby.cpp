@@ -46,6 +46,12 @@ void SceneLobby::Init()
 
 	currentplayer = pilot;
 
+	doorCollisionBox.setFillColor(sf::Color::Transparent);
+	doorCollisionBox.setOutlineColor(sf::Color::White);
+	doorCollisionBox.setOutlineThickness(3);
+	doorCollisionBox.setSize({ 10.f,10.f });
+	doorCollisionBox.setPosition(elevator->sprite.getGlobalBounds().left + elevator->sprite.getGlobalBounds().width * 2.f, elevator->sprite.getGlobalBounds().top + sprite.getGlobalBounds().height);
+
 	for (auto go : gameObjects)
 	{
 		go->Init();
@@ -84,24 +90,31 @@ void SceneLobby::Update(float dt)
 
 	Scene::Update(dt);
 	PlayerChoise();
-	
+
 	animation.Update(dt);
 
-	if (currentplayer->sprite.getGlobalBounds().intersects(elevator->sprite.getGlobalBounds()))
+	if (currentplayer->sprite.getGlobalBounds().intersects(doorCollisionBox.getGlobalBounds()))
 	{
 		//여기 스위치로
-		Scene* scene = SCENE_MGR.GetGameScene();
-		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
+
+
+		currentplayer->isChangeScene = true;
 
 		switch (playertype)
 		{
 		case Types::Pilot:
 			playertype = Types::WeaponPilot;
 			break;
-		case Types::Prisoner :
+		case Types::Prisoner:
 			playertype = Types::WeaponPrsioner;
 			break;
 		}
+	}
+
+	if (currentplayer->isChangeSceneGame == true)
+	{
+		Scene* scene = SCENE_MGR.GetGameScene();
+		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
 		sceneGame->SetPlayer((int)playertype);
 		SCENE_MGR.ChangeScene(SceneId::Game);
 	}
@@ -114,6 +127,8 @@ void SceneLobby::Draw(sf::RenderWindow& window)
 
 	if(playerface)
 	window.draw(sprite);
+
+	window.draw(doorCollisionBox);
 }
 
 void SceneLobby::PlayerChoise()

@@ -107,7 +107,7 @@ void PilotWeapon::Update(float dt)
 				gun.Play("Shoot");
 				effect.Play("Effect");
 				player->Shoot(bulletType, gunPoint, look, santan);
-
+				 
 				std::cout << "ÇöÀç ÅºÃ¢ : " << currentbulletcount << std::endl;
 				std::cout << "ÃÑ ÅºÃ¢ : " << currentbulletmax << std::endl;
 				tick = attackrate;

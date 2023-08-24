@@ -1,4 +1,4 @@
-"RESOURCE_TYPE(0: 텍스처 , 1: 폰트,2: 사운드 클립 3: 애니메이션 클립, 4:Sprite Font",RESOURCE_PATH
+"RESOURCE_TYPE(0: ?�스�?, 1: ?�트,2: ?�운???�립 3: ?�니메이???�립, 4:Sprite Font",RESOURCE_PATH
 3,Animations/EnemyBulletBlink.csv
 3,Animations/EnemyBulletIdle.csv
 3,playercsv/Pilot/PilotIdleDown.csv
@@ -257,3 +257,4 @@
 3,Animations/Objects/Key.csv
 3,Animations/Objects/Shell1.csv
 3,Animations/Objects/Shell2.csv
+3,playercsv/Pilot/PilotInGungeon.csv

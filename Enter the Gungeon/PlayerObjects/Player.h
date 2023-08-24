@@ -121,8 +121,8 @@ protected:
 	bool isHit = false;
 	bool isSceneGame = false;
 	bool flipX = false;
-
 	bool playerchoise = false;
+
 
 
 	sf::Vector2f look;
@@ -169,6 +169,8 @@ public:
 	
 	sf::Vector2f playerhand;
 	bool isUsingActiveSkill = false;
+	bool isChangeScene = false;
+	bool isChangeSceneGame = false;
 
 	Player(Types type, const std::string& textureId = "", const std::string& n = "");
 	virtual ~Player() override { Release(); }
@@ -224,6 +226,8 @@ public:
 	void AddKey(int key);
 	int GetMoney() { return money; }
 	int GetKey() { return key; }
+
+	void InSceneGame() {};
 
 	const sf::Vector2f& GetDirection() const;
 

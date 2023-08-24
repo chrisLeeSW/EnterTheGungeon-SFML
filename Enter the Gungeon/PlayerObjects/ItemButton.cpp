@@ -51,11 +51,6 @@ void ItemButton::Init()
 
 
 	isHover = false;
-
-	std::cout << "아이템 버튼 리셋" << std::endl;
-	std::cout << "폰트 아이디 : " << fontId << std::endl;
-	std::cout << "텍스쳐 아이디 : " << textureId << std::endl;
-	std::cout << "아이템 스프라이트 아이디 : " << itemspriteId << std::endl;
 }
 
 void ItemButton::Release()

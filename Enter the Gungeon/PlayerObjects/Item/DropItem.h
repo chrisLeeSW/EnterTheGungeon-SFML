@@ -1,32 +1,46 @@
 #pragma once
+#include "SpriteGo.h"
+#include "ObjectPool.h"
 
-#include "Item.h"
+class Player;
 
-class DropItem : public Item
+class DropItem : public SpriteGo
 {
-protected:
+public:
 
     enum class Types
     {
-        ÅºÇÇ,
-        °øÆ÷Åº,
-        ¿­¼è,
-        Ã¼·Â,
-        ÅºÃ¢,
-        Çì°Ô¸ð´ÏÅ©·¹µ÷,
+        None = -1,
+
+        Shell1,
+        Shell2,
+        Heart,
+        Hearts,
+        Key,
+        Blank,
+        HegemonyCredit,
+
+        Count,
     };
 
+protected:
+
+    AnimationController animation;
+    DropItem::Types type = DropItem::Types::None;
+    Player* player;
+
 public:
+    ObjectPool<DropItem>* pool;
 
     DropItem(const std::string& textureId = "", const std::string& n = "");
     virtual ~DropItem() override { Release(); }
 
     virtual void Init() override;
-    virtual void Release() override;
     virtual void Reset() override;
-
     virtual void Update(float dt) override;
-    virtual void Draw(sf::RenderWindow& window) override;
 
+    void SetType(DropItem::Types type);
+    void SetPlayer(Player* player);
+
+    std::function<void()> OnBump;
 };
-

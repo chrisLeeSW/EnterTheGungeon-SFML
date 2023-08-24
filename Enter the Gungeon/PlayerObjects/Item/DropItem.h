@@ -18,6 +18,7 @@ public:
         Hearts,
         Key,
         Blank,
+        Ammo,
         HegemonyCredit,
 
         Count,

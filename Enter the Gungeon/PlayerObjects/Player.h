@@ -106,9 +106,9 @@ protected:
 	int blankBulletCount;
 
 	int money = 0;
-	int key = 0;
+	int key = 1;
 
-	int hp;
+	int hp = 0;
 	float effect = 0.f;
 	float currenthitDelay = 0.f;
 
@@ -221,6 +221,7 @@ public:
 	void HealHp(int heal);
 	void AddBlankBullet();
 	void AddMoney(int money);
+	void AddKey(int key);
 	int GetMoney() { return money; }
 	int GetKey() { return key; }
 

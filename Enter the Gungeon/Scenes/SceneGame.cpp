@@ -78,7 +78,7 @@ void SceneGame::Init()
 	bossui->SetPosition(windowSize.x * 0.5f, windowSize.y - 50.f);
 	bossui->sortLayer = 100;
 
-	DisplayItem* distest = (DisplayItem*)AddGo(new DisplayItem(DisplayItem::Names::Heart));
+	DisplayItem* distest = (DisplayItem*)AddGo(new DisplayItem(DisplayItem::Names::Heart)); //test
 	distest->SetOrigin(Origins::MC);
 	distest->SetPosition(-50, 0);
 
@@ -130,9 +130,13 @@ void SceneGame::Enter()
 
 	test2->SetPlayer(player); //test
 
+	DropItem* droptest = dropitemPool.Get(); //test
+	droptest->SetType(DropItem::Types::Hearts);
+	droptest->SetPosition(-200, 0);
+	droptest->Init();
+	AddGo(droptest);
 
 	player->SetPosition(0.f,0.f);
-
 
 	playerui = (PlayerUI*)AddGo(new PlayerUI(player));
 	playerui->Init();

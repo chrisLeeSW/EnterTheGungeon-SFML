@@ -12,15 +12,19 @@ protected:
 
 	std::string resourceListPath;
 
-	std::list<GameObject*> gameObjects; 
+	std::list<GameObject*> gameObjects;
 	std::list<GameObject*> removeGameObjects;
 
 	sf::View worldView;
 	sf::View uiView;
 
 	sf::RenderWindow& window;
+	sf::Vector2f windowSize;
 
 public:
+
+	//static Player* currentPlayer;
+
 	Scene(SceneId id = SceneId::None);
 	virtual ~Scene();
 

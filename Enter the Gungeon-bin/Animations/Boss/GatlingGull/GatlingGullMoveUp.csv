@@ -1,0 +1,8 @@
+ID,FPS,LOOPTYPE,,
+MoveUp,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/GatlingGull.png,484,14,34,47
+graphics/GatlingGull.png,581,13,34,48
+graphics/GatlingGull.png,680,12,35,51
+graphics/GatlingGull.png,780,14,35,47

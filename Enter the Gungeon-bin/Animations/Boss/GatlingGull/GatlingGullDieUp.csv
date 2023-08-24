@@ -1,0 +1,13 @@
+ID,FPS,LOOPTYPE,,
+DieUp,5,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/GatlingGull.png,34,1277,57,67
+graphics/GatlingGull.png,138,1266,53,77
+graphics/GatlingGull.png,238,1276,53,67
+graphics/GatlingGull.png,346,1279,46,64
+graphics/GatlingGull.png,430,1286,66,54
+graphics/GatlingGull.png,531,1291,67,38
+graphics/GatlingGull.png,630,1299,67,36
+graphics/GatlingGull.png,726,1299,63,36
+graphics/GatlingGull.png,826,1303,63,32

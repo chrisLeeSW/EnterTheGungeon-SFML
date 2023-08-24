@@ -4,14 +4,25 @@
 #include "DataTableMgr.h"
 #include "StringTable.h"
 #include "SceneTitle.h"
+#include "SceneMaptool.h"
+#include "SceneBulletEditor.h"
+#include "SceneLobby.h"
+#include "GameMapTestScene.h"
+#include "TestRom.h"
+
 void SceneMgr::Init() 
 {
 	if (!scenes.empty())
 	{
 		Release();
 	}
-	scenes.push_back(new SceneTitle()); // 브레이크 포인트 걸었을때 383MB먹음
+	scenes.push_back(new SceneTitle());
+	scenes.push_back(new SceneLobby());
 	scenes.push_back(new SceneGame());
+	scenes.push_back(new SceneMaptool());
+	scenes.push_back(new SceneBulletEditor());
+	scenes.push_back(new GameMapTestScene());
+	scenes.push_back(new TestRom());
 	for (auto scene : scenes)
 	{
 		scene->Init();
@@ -40,6 +51,7 @@ void SceneMgr::Release()
 
 	currentSceneId = SceneId::None;
 	currentScene = nullptr;
+
 }
 
 void SceneMgr::UpdateEvent(float dt)
@@ -63,4 +75,9 @@ void SceneMgr::ChangeScene(SceneId id)
 Scene* SceneMgr::GetCurrScene() const
 {
 	return currentScene;
+}
+
+Scene* SceneMgr::GetGameScene() const
+{
+	return scenes[2];
 }

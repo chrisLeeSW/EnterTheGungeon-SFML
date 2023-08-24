@@ -1,0 +1,10 @@
+ID,FPS,LOOPTYPE,,
+MoveLeft,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/KeyBulletKin.png,5,62,12,32
+graphics/KeyBulletKin.png,20,63,18,31
+graphics/KeyBulletKin.png,41,65,18,29
+graphics/KeyBulletKin.png,62,62,12,32
+graphics/KeyBulletKin.png,77,62,16,32
+graphics/KeyBulletKin.png,96,62,17,32

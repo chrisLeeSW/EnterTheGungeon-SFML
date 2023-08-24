@@ -1,0 +1,10 @@
+ID,FPS,LOOPTYPE,,
+walkEffect,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/walkEffect.png,2,2,16,16
+graphics/walkEffect.png,65,5,10,10
+graphics/walkEffect.png,83,2,14,15
+graphics/walkEffect.png,102,4,9,13
+graphics/walkEffect.png,123,1,16,18
+graphics/walkEffect.png,142,1,17,17

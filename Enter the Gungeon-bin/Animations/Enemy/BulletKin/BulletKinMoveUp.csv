@@ -1,0 +1,11 @@
+ID,FPS,LOOPTYPE,,
+MoveUp,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/BulletKin.png,6,107,12,23
+graphics/BulletKin.png,21,107,15,23
+graphics/BulletKin.png,39,108,15,22
+graphics/BulletKin.png,57,107,12,23
+graphics/BulletKin.png,72,106,15,24
+graphics/BulletKin.png,90,108,15,22
+graphics/BulletKin.png,108,107,12,23

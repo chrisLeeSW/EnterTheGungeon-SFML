@@ -1,0 +1,22 @@
+ID,FPS,LOOPTYPE,,
+PrisonerPassive,8,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/PrisonerPassive.png,13,8,8,8
+graphics/PrisonerPassive.png,38,9,7,7
+graphics/PrisonerPassive.png,62,5,13,11
+graphics/PrisonerPassive.png,89,5,13,11
+graphics/PrisonerPassive.png,113,5,13,11
+graphics/PrisonerPassive.png,135,4,13,11
+graphics/PrisonerPassive.png,162,6,13,11
+graphics/PrisonerPassive.png,194,6,13,11
+graphics/PrisonerPassive.png,216,6,13,11
+graphics/PrisonerPassive.png,194,6,13,11
+graphics/PrisonerPassive.png,216,6,13,11
+graphics/PrisonerPassive.png,194,6,13,11
+graphics/PrisonerPassive.png,216,6,13,11
+graphics/PrisonerPassive.png,12,34,13,17
+graphics/PrisonerPassive.png,45,38,13,14
+graphics/PrisonerPassive.png,80,38,13,14
+graphics/PrisonerPassive.png,112,39,13,9
+graphics/PrisonerPassive.png,137,38,4,11

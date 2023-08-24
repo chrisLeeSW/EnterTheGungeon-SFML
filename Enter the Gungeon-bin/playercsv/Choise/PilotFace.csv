@@ -1,0 +1,15 @@
+ID,FPS,LOOPTYPE,,
+PilotFace,13,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/PilotFace.png,38,37,8,38
+graphics/PilotFace.png,81,37,27,38
+graphics/PilotFace.png,128,37,38,38
+graphics/PilotFace.png,185,37,27,38
+graphics/PilotFace.png,230,37,8,38
+graphics/PilotFace.png,255,37,27,38
+graphics/PilotFace.png,302,37,38,38
+graphics/PilotFace.png,359,37,27,38
+graphics/PilotFace.png,405,37,8,38
+graphics/PilotFace.png,422,37,27,38
+graphics/PilotFace.png,459,37,38,38

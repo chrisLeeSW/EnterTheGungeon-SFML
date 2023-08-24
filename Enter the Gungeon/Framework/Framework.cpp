@@ -5,6 +5,9 @@
 #include "Scene.h"
 #include "DataTableMgr.h"
 #include "ResourceMgr.h"
+#include "WeaponMgr.h"
+#include "ItemMgr.h"
+
 Framework::Framework(int w, int h, const std::string& t)
     : screenWidth(w), screenHeight(h), title(t)
 {
@@ -17,6 +20,7 @@ void Framework::Init(int width, int height, const std::string& title)
     DATATABLE_MGR.LoadAll();
     RESOURCE_MGR.Init();
     SCENE_MGR.Init();
+    ITEM_MGR.Init();
 }
 
 void Framework::Release()
@@ -39,6 +43,16 @@ void Framework::Run()
 {
     Init(screenWidth, screenHeight, title);
     clock.restart();
+
+    sf::Image cursorImg;
+    cursorImg.loadFromFile("graphics/mouse.png");
+
+    sf::Cursor cursor;
+    if (cursor.loadFromPixels(cursorImg.getPixelsPtr(), cursorImg.getSize(),
+        { cursorImg.getSize().x / 2, cursorImg.getSize().y / 2 }))
+    {
+        window.setMouseCursor(cursor);
+    }
 
     while (window.isOpen())
     {
@@ -64,7 +78,10 @@ void Framework::Run()
 
         if (window.isOpen())
         {
-            UpdateEvent(dt);
+            if (!ITEM_MGR.GetBulletTime())
+                UpdateEvent(dt);
+            else
+                UpdateEvent(dt * ITEM_MGR.BulletTime());
 
             window.clear();
             Draw();

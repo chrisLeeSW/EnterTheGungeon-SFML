@@ -1,6 +1,8 @@
 #pragma once
 #include "Singleton.h"
 
+class GameObject;
+
 enum class Axis
 {
 	Horizontal,
@@ -34,6 +36,7 @@ protected:
 
 	std::map<Axis, AxisInfo> axisInfoMap;
 
+
 public:
 	void Update(float dt);
 	void UpdateEvent(const sf::Event& ev);
@@ -52,6 +55,8 @@ public:
 	// Axis
 	float GetAxis(Axis axis);
 	float GetAxisRaw(Axis axis);
+	
+	std::vector<char> textList;
 };
 
 #define INPUT_MGR (InputMgr::Instance())

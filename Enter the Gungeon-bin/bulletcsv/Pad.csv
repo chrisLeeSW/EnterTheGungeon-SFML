@@ -1,0 +1,5 @@
+ID,FPS,LOOPTYPE,,
+pad,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/PadBullet.png,0,0,13,13

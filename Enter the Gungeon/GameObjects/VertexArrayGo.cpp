@@ -44,6 +44,7 @@ void VertexArrayGo::SetOrigin(Origins origin)
 	{
 		vertexArray[i].position += diff;
 	}
+
 }
 
 void VertexArrayGo::SetOrigin(float x, float y)
@@ -75,10 +76,9 @@ void VertexArrayGo::Reset()
 	texture = RESOURCE_MGR.GetTexture(textureId);
 }
 
-void VertexArrayGo::UpdateEvent(float dt)
+void VertexArrayGo::Update(float dt)
 {
 }
-
 void VertexArrayGo::Draw(sf::RenderWindow& window)
 {
 	window.draw(vertexArray, texture);

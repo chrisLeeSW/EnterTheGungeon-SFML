@@ -31,10 +31,12 @@ public:
 
 	static float Angle(const sf::Vector2f& start, const sf::Vector2f& end);
 	static float Angle(const sf::Vector2f& dir);
+	static float Angle2(const sf::Vector2f& dir);
+
 	static float Angle(float a, float b);
 
 	static float DegreesToRadians(float angle);
-	static sf::Vector2f RotateVector(const sf::Vector2f& vector, float angle, const sf::Vector2f& rotationAxis);
+	static sf::Vector2f RotateVector(const sf::Vector2f& vector, float angle);
 
 	static sf::Vector2f DirectionFromAngle(float angle);
 	static std::wstring ConverToUTF(const std::string& text);

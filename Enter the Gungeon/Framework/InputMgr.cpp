@@ -30,6 +30,7 @@ void InputMgr::Update(float dt)
 {
 	downList.clear();
 	upList.clear();
+	textList.clear();
 
 	for (auto& it : axisInfoMap)
 	{
@@ -52,6 +53,13 @@ void InputMgr::UpdateEvent(const sf::Event& ev)
 {
 	switch (ev.type)
 	{
+	case sf::Event::TextEntered:
+		if (ev.text.unicode < 128)
+		{
+			char ch = static_cast<char>(ev.text.unicode);
+			textList.push_back(ch);
+		}
+		break;
 	case sf::Event::KeyPressed:
 		if (std::find(ingList.begin(), ingList.end(), ev.key.code) == ingList.end())
 		{
@@ -79,7 +87,7 @@ void InputMgr::UpdateEvent(const sf::Event& ev)
 		ingList.remove(code);
 		upList.push_back(code);
 		break;
-	}
+	}// 마우스 휠 업다운 적용 하는거 할 것 
 	}
 
 	mousePos = (sf::Vector2f)sf::Mouse::getPosition(FRAMEWORK.GetWindow());

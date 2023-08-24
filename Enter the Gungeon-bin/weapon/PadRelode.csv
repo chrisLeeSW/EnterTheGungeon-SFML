@@ -1,0 +1,12 @@
+ID,FPS,LOOPTYPE,,
+Relode,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Pad.png,28,91,18,17
+graphics/Pad.png,28,91,18,17
+graphics/Pad.png,55,89,18,17
+graphics/Pad.png,55,89,18,17
+graphics/Pad.png,88,91,17,17
+graphics/Pad.png,115,90,17,17
+graphics/Pad.png,88,91,17,17
+graphics/Pad.png,115,90,17,17

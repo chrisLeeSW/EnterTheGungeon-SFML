@@ -1,0 +1,7 @@
+type,string,speed,damage,range,knockback
+1,pilot,2200.f,5.f,13.f,6.f
+2,prisoner,23.f,6.f,18.f,10.f
+3,ak47,23.f,5.5f,999.f,9.f
+4,magnum,23.f,13.f,60.f,30.f
+5,pad,1100.f,8.f,15.f,6.f
+6,padfire,600.f,45.f,10.f,6.f

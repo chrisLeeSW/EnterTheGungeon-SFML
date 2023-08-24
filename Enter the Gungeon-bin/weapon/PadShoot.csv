@@ -1,0 +1,10 @@
+ID,FPS,LOOPTYPE,,
+Shoot,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Pad.png,32,13,17,18
+graphics/Pad.png,63,10,16,18
+graphics/Pad.png,101,10,20,19
+graphics/Pad.png,29,47,18,18
+graphics/Pad.png,91,48,18,18
+graphics/Pad.png,120,47,17,18

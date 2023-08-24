@@ -1,0 +1,15 @@
+ID,FPS,LOOPTYPE,,
+PrisonerFace,13,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/PrisonerFace.png,16,14,8,38
+graphics/PrisonerFace.png,45,14,27,38
+graphics/PrisonerFace.png,116,14,38,38
+graphics/PrisonerFace.png,180,12,27,38
+graphics/PrisonerFace.png,241,12,8,38
+graphics/PrisonerFace.png,284,12,27,38
+graphics/PrisonerFace.png,331,12,38,38
+graphics/PrisonerFace.png,388,12,27,38
+graphics/PrisonerFace.png,449,12,8,38
+graphics/PrisonerFace.png,492,12,27,38
+graphics/PrisonerFace.png,539,12,38,38

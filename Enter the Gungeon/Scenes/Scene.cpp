@@ -1,12 +1,10 @@
 #include "stdafx.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "ResourceMgr.h"
-#include "Framework.h"
 
 Scene::Scene(SceneId id) : sceneId(id), window(FRAMEWORK.GetWindow())
 {
-	
+	windowSize = FRAMEWORK.GetWindowSize();
 }
 
 Scene::~Scene()
@@ -88,7 +86,6 @@ sf::Vector2f Scene::UiPosPosToScreen(sf::Vector2f uiPos)
 }
 void Scene::Enter()
 {
-
 	RESOURCE_MGR.LoadCSVFILE(resourceListPath);
 	for (auto go : gameObjects)
 	{
@@ -104,7 +101,6 @@ void Scene::Exit()
 	}
 	removeGameObjects.clear();
 	RESOURCE_MGR.UnLoadAll();
-	
 }
 
 void Scene::Update(float dt)

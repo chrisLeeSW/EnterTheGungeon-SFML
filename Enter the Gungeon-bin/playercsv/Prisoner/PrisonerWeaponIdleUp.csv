@@ -1,0 +1,8 @@
+ID,FPS,LOOPTYPE,,
+IdleUp,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Prisoner.png,154,91,16,20
+graphics/Prisoner.png,172,91,16,20
+graphics/Prisoner.png,190,91,16,20
+graphics/Prisoner.png,208,91,16,20

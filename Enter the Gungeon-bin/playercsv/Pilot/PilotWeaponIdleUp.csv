@@ -1,0 +1,10 @@
+ID,FPS,LOOPTYPE,,
+IdleUp,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Pilot.png,154,122,15,21
+graphics/Pilot.png,171,122,15,21
+graphics/Pilot.png,188,122,15,21
+graphics/Pilot.png,205,122,15,21
+graphics/Pilot.png,222,122,15,21
+graphics/Pilot.png,239,122,15,21

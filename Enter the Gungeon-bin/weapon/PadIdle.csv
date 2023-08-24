@@ -1,0 +1,5 @@
+ID,FPS,LOOPTYPE,,
+Idle,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Pad.png,32,13,17,18

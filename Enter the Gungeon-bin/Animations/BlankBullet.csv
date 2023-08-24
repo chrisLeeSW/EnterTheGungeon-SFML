@@ -1,0 +1,19 @@
+ID,FPS,LOOPTYPE,,
+BlankBullet,20,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/blankBullet.png,107,94,50,50
+graphics/blankBullet.png,121,196,72,72
+graphics/blankBullet.png,233,85,82,82
+graphics/blankBullet.png,238,242,92,92
+graphics/blankBullet.png,426,86,100,100
+graphics/blankBullet.png,699,70,113,116
+graphics/blankBullet.png,777,309,116,116
+graphics/blankBullet.png,588,469,122,122
+graphics/blankBullet.png,437,286,126,128
+graphics/blankBullet.png,92,422,128,128
+graphics/blankBullet.png,304,514,133,130
+graphics/blankBullet.png,76,739,132,135
+graphics/blankBullet.png,289,766,134,134
+graphics/blankBullet.png,525,818,136,136
+graphics/blankBullet.png,794,756,141,138

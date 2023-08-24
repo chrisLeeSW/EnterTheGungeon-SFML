@@ -1,0 +1,5 @@
+ID,FPS,LOOPTYPE,,
+Idle,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/PrisonerWeapon.png,2,4,13,10

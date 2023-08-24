@@ -7,7 +7,11 @@ public:
 	{
 		None = -1,
 		String,
-		Zombie,
+		Weapon,
+		Bullet,
+		Player,
+		Enemy,
+		Button,
 	};
 
 	DataTable(const DataTable& other) = delete;

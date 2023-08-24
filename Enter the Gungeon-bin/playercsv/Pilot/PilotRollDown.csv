@@ -1,0 +1,13 @@
+ID,FPS,LOOPTYPE,,
+RollDown,15,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Pilot.png,22,316,13,22
+graphics/Pilot.png,37,316,13,22
+graphics/Pilot.png,52,316,13,22
+graphics/Pilot.png,67,316,13,22
+graphics/Pilot.png,82,316,13,22
+graphics/Pilot.png,97,316,13,22
+graphics/Pilot.png,112,316,17,22
+graphics/Pilot.png,131,316,13,22
+graphics/Pilot.png,146,316,13,22

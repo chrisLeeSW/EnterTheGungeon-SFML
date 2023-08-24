@@ -1,0 +1,10 @@
+ID,FPS,LOOPTYPE,,
+WalkDown,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Prisoner.png,154,154,15,23
+graphics/Prisoner.png,171,154,15,23
+graphics/Prisoner.png,188,154,15,23
+graphics/Prisoner.png,205,154,16,23
+graphics/Prisoner.png,223,154,15,23
+graphics/Prisoner.png,240,154,15,23

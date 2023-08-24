@@ -1,0 +1,7 @@
+ID,FPS,LOOPTYPE,,
+HitLeftDown,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/KeyBulletKin.png,164,145,12,32
+graphics/KeyBulletKin.png,164,145,12,32
+graphics/KeyBulletKin.png,164,145,12,32

@@ -1,0 +1,8 @@
+ID,FPS,LOOPTYPE,,
+Effect,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/PilotShootEffect.png,10,9,13,13
+graphics/PilotShootEffect.png,36,9,18,15
+graphics/PilotShootEffect.png,63,6,19,17
+graphics/PilotShootEffect.png,63,6,0,0

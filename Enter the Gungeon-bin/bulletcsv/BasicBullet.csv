@@ -1,0 +1,5 @@
+ID,FPS,LOOPTYPE,,
+magnum,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/BasicBullet.png,0,0,5,5

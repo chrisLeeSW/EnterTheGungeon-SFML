@@ -58,6 +58,14 @@ protected:
 	bool test = false;
 	std::vector<SpriteGo*> tunnelSprite;
 	std::list<SpriteGo*> tunnelWall;
+
+	int currentRoom = 0;
+	int currentTunnel = 0;
+	bool colliedDoor = false;
+	std::vector<sf::RectangleShape> roomShape;
+	std::vector<sf::RectangleShape> doorShape2;
+
+	sf::Vector2f prevPlayerPos;
 public :
 	TestRom();
 	virtual ~TestRom() override = default;
@@ -78,6 +86,8 @@ public :
 	sf::Vector2f intersectionPoint(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
 	bool isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, sf::Vector2f& intersection);
 	std::vector<DoorInfo> isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, std::vector<DoorInfo>& room);
+
+	void CoiledPlayerByMap();
 };
 
 

@@ -72,8 +72,8 @@ void BspRoom::MakeRoom(TileMap* tile, std::vector<std::string>& fileList)
 	int randFileIndex = Utils::RandomRange(0, fileList.size());
 	LoadFile(fileList[randFileIndex], info, tileSize);
 	int count = 0;
-	std::cout << "left " << rect.left << "// top" << rect.top << "// width" << rect.width << "// height" << rect.height << std::endl;
-	std::cout << "Tile Size" << tileSize.x << "\t" << tileSize.y << std::endl;
+	//std::cout << "left " << rect.left << "// top" << rect.top << "// width" << rect.width << "// height" << rect.height << std::endl;
+	//std::cout << "Tile Size" << tileSize.x << "\t" << tileSize.y << std::endl;
 	if ((rect.width) > tileSize.x && (rect.height) > tileSize.y)
 	{
 		for (int y = 0;y < tileSize.y;++y)

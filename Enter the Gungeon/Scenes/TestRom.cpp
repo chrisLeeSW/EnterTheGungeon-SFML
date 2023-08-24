@@ -95,17 +95,15 @@ void TestRom::Init()
 			}
 			break;
 			}
-
-
-
-			/*tileRoom[i].map->MakeWall(fileList[rnadFileNumber]);
-			for (int i = 0; i < tileRoom[i].map->colliedShape.size(); ++i)
-			{
-				tileRoom[i].map->colliedShape[i].shape.setPosition(tileRoom[i].map->colliedShape[i].shape.getPosition() + pos);
-				tileRoom[i].roomtype.push_back(tileRoom[i].map->colliedShape[i]);
-			}*/
 		}
 		tileRoom.push_back({ map, objects, interaction });
+		sf::RectangleShape shape;
+		shape.setSize({ map->vertexArray.getBounds().width-50.f, map->vertexArray.getBounds().height -50.f});
+		shape.setPosition({ map->vertexArray.getBounds().left+25.f,map->vertexArray.getBounds().top+25.f});
+		shape.setFillColor(sf::Color::Transparent);
+		shape.setOutlineThickness(1);
+		shape.setOutlineColor(sf::Color::Green);
+		roomShape.push_back(shape);
 		count++;
 	}
 
@@ -172,53 +170,23 @@ void TestRom::Init()
 
 	for (int i = 0; i < doorInfo.size(); ++i)
 	{
-		/*sf::RectangleShape shpae;
-		shpae.setSize({ 25.f,25.f });
-		shpae.setPosition(doorInfo[i].pos);
-		switch (doorInfo[i].dir)
-		{
-		case DoorDirection::Up:
-			shpae.setFillColor(sf::Color::Red);
-			break;
-		case DoorDirection::Down:
-			shpae.setFillColor(sf::Color::Yellow);
-			break;
-		case DoorDirection::Right:
-			shpae.setFillColor(sf::Color::White);
-			break;
-		case DoorDirection::Left:
-			shpae.setFillColor(sf::Color::Green);
-			break;
-		}
-		Utils::SetOrigin(shpae, Origins::MC);
-		doorShape.push_back(shpae);*/
-
 		Door* temp = (Door*)AddGo(new Door(static_cast<int>(doorInfo[i].dir), "graphics/DoorSprite.png"));
 		temp->SetPosition(doorInfo[i].pos);
 		temp->SetOrigin(Origins::MC);
 		temp->SetScale(2.0f, 2.0f);
-		temp->sortLayer = 2;
+		temp->sortLayer = 3;
 		doors.push_back(temp);
+
+		sf::RectangleShape shape;
+		shape.setSize({ 25.f,25.f });
+		shape.setPosition(doorInfo[i].pos);
+		shape.setFillColor(sf::Color::Transparent);
+		shape.setOutlineColor(sf::Color::Red);
+		shape.setOutlineThickness(1);
+		Utils::SetOrigin(shape, Origins::MC);
+		doorShape2.push_back(shape);
 	}
-	for (int i = 0;i < tileRoom.size();++i)
-	{
-		for (int ii = 0;ii < tileRoom[i].spr.size();++ii)
-		{
-			for (int k = 0;k < doors.size();++k)
-			{
-				if (tileRoom[i].spr[ii]->sprite.getGlobalBounds().contains(doors[k]->GetPosition()))
-				{
-					RemoveGo(tileRoom[i].spr[ii]);
-					//tileRoom[i].spr[ii]->SetActive(false);
-				}
-			}
-		}
-	}
-	Exit();
-	/*for (int i = 0;i < passages.size();++i)
-	{
-		CreateTunnel(passages[i].from, passages[i].to);
-	}*/
+
 	for (int i = 0;i < passages.size();++i)
 	{
 		CreateTunnel(passages[i].from, passages[i].to);
@@ -233,6 +201,21 @@ void TestRom::Init()
 	{
 		go->Init();
 	}
+
+	for (int i = 0;i < tileRoom.size();++i)
+	{
+		for (int ii = 0;ii < tileRoom[i].spr.size();++ii)
+		{
+			for (int k = 0;k < doorShape2.size();++k)
+			{
+				if (tileRoom[i].spr[ii]->sprite.getGlobalBounds().intersects(doorShape2[k].getGlobalBounds()))
+				{
+					RemoveGo(tileRoom[i].spr[ii]);
+				}
+			}
+		}
+	}
+	Exit();
 
 }
 
@@ -260,6 +243,7 @@ void TestRom::Enter()
 	uiView.setCenter(windowSize * 0.5f);
 
 	player->SetPosition(tileRoom[0].map->GetStartPos());
+	player->SetOrigin(Origins::MC);
 }
 
 void TestRom::Exit()
@@ -271,26 +255,8 @@ void TestRom::Update(float dt)
 {
 	Scene::Update(dt);
 	MoveWorldView();
-	if (INPUT_MGR.GetKey(sf::Keyboard::Right))
-	{
-		//shape.move(5.f, 0.f);
-		player->sprite.move(1.0f, 0.f);
-	}
-	if (INPUT_MGR.GetKey(sf::Keyboard::Left))
-	{
-		//shape.move(-5.f, 0.f);
-		player->sprite.move(-1.0f, 0.0f);
-	}
-	if (INPUT_MGR.GetKey(sf::Keyboard::Up))
-	{
-		//shape.move(0.0f, -5.f);
-		player->sprite.move(0.0f, -1.0);
-	}
-	if (INPUT_MGR.GetKey(sf::Keyboard::Down))
-	{
-		//shape.move(0.0f, 5.f);
-		player->sprite.move(0.0f, 1.0f);
-	}
+	CoiledPlayerByMap();
+	
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Add))
 	{
 		length++;
@@ -302,6 +268,7 @@ void TestRom::Update(float dt)
 		if (door->sprite.getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
 		{
 			door->Open();
+			colliedDoor = true;
 		}
 	}
 
@@ -315,13 +282,14 @@ void TestRom::Update(float dt)
 			}
 		}
 	}
-	for (auto& t : tunnelSprite)
+	/*for (auto& t : tunnelSprite)
 	{
 		if (t->sprite.getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
 		{
 			std::cout << "A" << std::endl;
 		}
-	}
+	}*/
+
 }
 
 void TestRom::Draw(sf::RenderWindow& window)
@@ -349,17 +317,23 @@ void TestRom::Draw(sf::RenderWindow& window)
 		line[1].color = sf::Color::White;
 		window.draw(line);
 	}*/
+	for (auto& r : roomShape)
+	{
+		window.draw(r);
+	}
 
-
-	/*for (const auto& rect : tunnel)
+	for (const auto& rect : tunnel)
 	{
 		window.draw(rect);
-	}*/
+	}
 	for (const auto& rect : doorShape)
 	{
 		window.draw(rect);
 	}
-
+	for (const auto& rect : doorShape2)
+	{
+		window.draw(rect);
+	}
 	for (const auto& cir : circle)
 	{
 		window.draw(cir);
@@ -368,7 +342,7 @@ void TestRom::Draw(sf::RenderWindow& window)
 
 void TestRom::MoveWorldView()
 {
-	if (INPUT_MGR.GetKey(sf::Keyboard::Right))
+	/*if (INPUT_MGR.GetKey(sf::Keyboard::Right))
 	{
 		worldView.move(1.f, 0.f);
 	}
@@ -383,6 +357,30 @@ void TestRom::MoveWorldView()
 	if (INPUT_MGR.GetKey(sf::Keyboard::Down))
 	{
 		worldView.move(0.0f, 1.f);
+	}*/
+
+
+	prevPlayerPos = player->GetPosition();
+
+	if (INPUT_MGR.GetKey(sf::Keyboard::Right))
+	{
+		player->sprite.move(1.0f, 0.f);
+		player->SetPosition(player->GetPosition() + sf::Vector2f{1.f, 0.f});
+	}
+	if (INPUT_MGR.GetKey(sf::Keyboard::Left))
+	{
+		player->sprite.move(-1.0f, 0.0f);
+		player->SetPosition(player->GetPosition() + sf::Vector2f{ -1.0f, 0.f });
+	}
+	if (INPUT_MGR.GetKey(sf::Keyboard::Up))
+	{
+		player->sprite.move(0.0f, -1.0);
+		player->SetPosition(player->GetPosition() + sf::Vector2f{ 0.0f, -1.0 });
+	}
+	if (INPUT_MGR.GetKey(sf::Keyboard::Down))
+	{
+		player->sprite.move(0.0f, 1.0f);
+		player->SetPosition(player->GetPosition() + sf::Vector2f{ 0.0f, 1.0f });
 	}
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::PageUp))
 	{
@@ -392,6 +390,9 @@ void TestRom::MoveWorldView()
 	{
 		worldView.zoom(0.5f);
 	}
+
+	worldView.setCenter(player->GetPosition());
+
 }
 
 void TestRom::ListFilesInDirectory(const std::string& folderPath)
@@ -563,7 +564,6 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 		{
 			tunnelSprite.push_back(spr);
 			tunnelWall.push_back(spr2);
-			tunnel.push_back(tunnelShape);
 		}
 	}
 	sf::Vector2f direction2 = (end - midpoint) / Utils::Distance(midpoint, end);
@@ -638,7 +638,6 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 			tunnelSprite.push_back(spr);
 			tunnelWall.push_back(spr2);
 			tunnelWall.push_back(spr3);
-			tunnel.push_back(tunnelShape);
 		}
 	}
 	if (start.y < end.y)
@@ -648,7 +647,7 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 			float xpos = end.x - tunnelSize.x;
 			SpriteGo* spr3 = (SpriteGo*)AddGo(new SpriteGo("graphics/tunnel.png"));
 			spr3->SetPosition(xpos + (tunnelSize.x * i), start.y - tunnelSize.y);
-			spr3->sortLayer = -3;
+			spr3->sortLayer = -2;
 			spr3->sprite.setTextureRect({ 13,43,25,25 });
 			spr3->SetOrigin(Origins::MC);
 
@@ -662,98 +661,51 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 			float xpos = end.x - tunnelSize.x;
 			SpriteGo* spr3 = (SpriteGo*)AddGo(new SpriteGo("graphics/tunnel.png"));
 			spr3->SetPosition(xpos +(tunnelSize.x*i), start.y + tunnelSize.y);
-			spr3->sortLayer = -3;
+			spr3->sortLayer = -2;
 			spr3->sprite.setTextureRect({ 13,43,25,25 });
 			spr3->SetOrigin(Origins::MC);
 
 			tunnelWall.push_back(spr3);
 		}
 	}
+	sf::RectangleShape startShape;
+	sf::Vector2f shapeSize = { 50.f,50.f };
+	sf::Vector2f startPos = {start.x -12.5f, start.y};
+	if (start.x > end.x)
+	{
+		shapeSize.x = end.x - start.x;
+		startPos.y -= 12.5f;
+	}
+	else if (start.x < end.x)
+	{
+		//shapeSize.x = start.x - end.x;
+		shapeSize.x = end.x - start.x;
+		shapeSize.x += 12.5f;
+		startPos.y -= 12.5f;
+	}
+	else if (start.y > end.y)
+	{
+		shapeSize.y = start.y - end.y;
+		shapeSize.y = -shapeSize.y;
+		startPos.y += 12.5f;
+	}
+	else if (start.y < end.y)
+	{
+		shapeSize.y = end.y - start.y;
+		startPos.y -= 12.5f;
+	}
+	startShape.setSize(shapeSize);
+	startShape.setPosition(startPos);
+	startShape.setFillColor(sf::Color::Transparent);
+	startShape.setOutlineThickness(2);
+	startShape.setOutlineColor(sf::Color::Yellow);
+	tunnel.push_back(startShape);
+
 	Exit();
 }
 
 void TestRom::CreateTunnel2(sf::Vector2f start, sf::Vector2f end)
 {
-
-	////// 터널의 사이즈를 설정합니다.
-	//const sf::Vector2f tunnelSize(25.f, 75.f);
-	//const float tunnelSpacing = 3.0f; // 터널 사각형들 간의 간격입니다.
-	//sf::Vector2f midpoint(start.x, end.y);
-
-
-	//sf::Vector2f direction1 = (midpoint - start) / Utils::Distance(start, midpoint);
-	//float totalTunnelLength1 = Utils::Distance(start, midpoint);
-	//int tunnelCount1 = static_cast<int>(totalTunnelLength1 / (tunnelSize.x));
-	////start -= tunnelSize;
-	//for (int i = 0; i <= tunnelCount1; ++i)
-	//{
-	//	SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/tunnel.png"));
-	//	spr->SetPosition((start + sf::Vector2f{ direction1.x * i, direction1.y * i }*(tunnelSize.x)));
-	//	spr->sortLayer = -2;
-	//	spr->sprite.setTextureRect({ 13,13,25,25 });
-	//	spr->SetOrigin(Origins::MC);
-
-
-	//	sf::RectangleShape tunnelShape;
-	//	tunnelShape.setSize(tunnelSize);
-	//	tunnelShape.setPosition((start + sf::Vector2f{ direction1.x * i, direction1.y * i }*(tunnelSize.x)));
-	//	tunnelShape.setRotation(std::atan2(direction1.y, direction1.x) * 180.0f / 3.14159265f);
-	//	tunnelShape.setFillColor(sf::Color::Transparent);
-	//	tunnelShape.setOutlineThickness(2);
-	//	tunnelShape.setOutlineColor(sf::Color::Red);
-	//	Utils::SetOrigin(tunnelShape, Origins::MC);
-	//	bool collied = false;
-	//	for (auto& c : tunnel)
-	//	{
-	//		if (c.getGlobalBounds().contains(tunnelShape.getPosition()))
-	//		{
-	//			collied = true;
-	//			break;
-	//		}
-	//	}
-	//	if (collied) continue;
-	//	else
-	//	{
-	//		tunnelSprite.push_back(spr);
-	//		tunnel.push_back(tunnelShape);
-	//	}
-	//}
-	//sf::Vector2f direction2 = (end - midpoint) / Utils::Distance(midpoint, end);
-	//float totalTunnelLength2 = Utils::Distance(midpoint, end);
-	//int tunnelCount2 = static_cast<int>(totalTunnelLength2 / (tunnelSize.x));
-	//for (int i = 0; i <= tunnelCount2; ++i)
-	//{
-	//	SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/tunnel.png"));
-	//	spr->SetPosition(midpoint + sf::Vector2f{ direction2.x * i ,direction2.y * i } *(tunnelSize.x));
-	//	spr->sortLayer = -2;
-	//	spr->sprite.setTextureRect({ 13,13,25,25 });
-	//	spr->SetOrigin(Origins::MC);
-
-	//	sf::RectangleShape tunnelShape;
-	//	tunnelShape.setSize(tunnelSize);
-	//	tunnelShape.setPosition(midpoint + sf::Vector2f{ direction2.x * i ,direction2.y * i } *(tunnelSize.x));
-	//	tunnelShape.setRotation(std::atan2(direction2.y, direction2.x) * 180.0f / 3.14159265f);
-	//	tunnelShape.setFillColor(sf::Color::Transparent);
-	//	tunnelShape.setOutlineThickness(2);
-	//	tunnelShape.setOutlineColor(sf::Color::Green);
-	//	Utils::SetOrigin(tunnelShape, Origins::MC);
-	//	bool collied = false;
-	//	for (auto& c : tunnel)
-	//	{
-	//		if (c.getGlobalBounds().contains(tunnelShape.getPosition()))
-	//		{
-	//			collied = true;
-	//			break;
-	//		}
-	//	}
-	//	if (collied) continue;
-	//	else
-	//	{
-	//		tunnelSprite.push_back(spr);
-	//		//tunnel.push_back(tunnelShape);
-	//	}
-	//}
-
 
 }
 
@@ -858,4 +810,84 @@ std::vector<DoorInfo> TestRom::isIntersecting(const sf::FloatRect& rect, const s
 	}
 
 	return room;
+}
+
+void TestRom::CoiledPlayerByMap()
+{
+	/*if(!colliedDoor)
+	for (int i = 0;i < tileRoom.size();++i)
+	{
+
+	}*/
+	if (tileRoom[currentRoom].map->vertexArray.getBounds().contains(player->GetPosition()))
+	{
+		if(!roomShape[currentRoom].getGlobalBounds().contains(player->GetPosition()) && !colliedDoor)
+			player->SetPosition(prevPlayerPos);
+	}
+
+	if (colliedDoor)
+	{
+		
+	}
+	for (int i = 0;i < tileRoom.size();++i)
+	{
+		if (tileRoom[i].map->vertexArray.getBounds().contains(player->GetPosition())&& colliedDoor)
+		{
+			currentRoom = i;
+			colliedDoor = false;
+			break;
+		}
+	}
+	for (int i = 0;i < tunnel.size();++i)
+	{
+		if (tunnel[i].getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
+		{
+			currentTunnel = i;
+			break;
+		}
+	}
+	bool test = false;
+	bool test1 = false;
+	if (!tunnel[currentTunnel].getGlobalBounds().contains(player->GetPosition()) && colliedDoor)
+	{
+		for (int i = 0;i < tunnel.size();++i)
+		{
+			if (tunnel[i].getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
+			{
+				test1 = true;
+				currentTunnel = i;
+			}
+		}
+		if (!test1) player->SetPosition(prevPlayerPos);
+	}
+	/*if (test)
+	{
+		for (int i = 0;i < tunnel.size();++i)
+		{
+			if (tunnel[i].getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
+			{
+				test1 = true;
+				currentTunnel = i;
+				break;
+			}
+		}
+	}*/
+	//if (test1)
+	//{
+	//	player->SetPosition(tunnel[currentTunnel].getPosition());
+	//}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F11))
+	{
+		std::cout << "현재방 : " << currentRoom<<"터널 :"<<currentTunnel << std::endl;
+	}
+	/*for (auto& tu : tunnel)
+	{
+		if (colliedDoor)
+		{
+			if (!tu.getGlobalBounds().contains(player->GetPosition()))
+			{
+				std::cout << "OutTunnel" << std::endl;
+			}
+		}
+	}*/
 }

@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\BossUI.cpp" />
     <ClCompile Include="DataTables\ButtonTable.cpp" />
     <ClCompile Include="PlayerObjects\ItemButton.cpp" />
     <ClCompile Include="PlayerObjects\Item\DropItem.cpp" />
@@ -227,6 +228,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
+    <ClInclude Include="UI\BossUI.h" />
     <ClInclude Include="DataTables\ButtonTable.h" />
     <ClInclude Include="PlayerObjects\ItemButton.h" />
     <ClInclude Include="PlayerObjects\Item\DropItem.h" />

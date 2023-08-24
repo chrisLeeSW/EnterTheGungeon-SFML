@@ -57,7 +57,13 @@ public:
 
 	virtual void RequestReload() override { currentbulletcount = bulletcount; }
 
+	virtual float GetCurrentBulleCount() override { return currentbulletcount; }
+	virtual float GetRemainingAmmo() override { return bulletmax; }
+
 	virtual AnimationController* GetWeaponAnimation() override { return &gun; }
+
+	virtual float GetReloadTime()override { return reload; }
+	virtual float GetCurrentReloadTime()override { return reloadtick; }
 
 	virtual Item::Types GetItemType() { return itemtype; }
 	virtual Item::WAP GetItemWAP() { return wap; }

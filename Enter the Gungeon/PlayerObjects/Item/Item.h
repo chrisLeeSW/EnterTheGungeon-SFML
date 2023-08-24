@@ -30,6 +30,7 @@ public:
         PrisonerPassive,
         PrisonerActive,
         Pad,
+        BulletTime,
     };
 
 

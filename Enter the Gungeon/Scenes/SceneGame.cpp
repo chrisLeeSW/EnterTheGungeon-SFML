@@ -15,6 +15,8 @@
 #include "Boss.h"
 #include "EnemyBullet.h"
 
+#include "BossUI.h"
+
 SceneGame::SceneGame() : Scene(SceneId::Game)
 {
 	resourceListPath = "script/SceneGameResourceList.csv";
@@ -67,6 +69,12 @@ void SceneGame::Init()
 	test2->SetOrigin(Origins::BC); //test
 	test2->SetPosition(400.f, 0.f); //test
 	enemylist.push_back(test2); //test
+
+	bossui = (BossUI*)AddGo(new BossUI()); //test
+	bossui->SetBoss(test2);
+	bossui->SetOrigin(Origins::MC);
+	bossui->SetPosition(windowSize.x * 0.5f, windowSize.y - 50.f);
+	bossui->sortLayer = 100;
 
 	enemyBullets.OnCreate = [this](EnemyBullet* bullet)
 	{
@@ -134,23 +142,6 @@ void SceneGame::Update(float dt)
 	shadow->SetPosition(player->GetPosition());
 
 	// 대각선 충돌이 문제가 있음 테스트 코드로 사용
-	
-	if (INPUT_MGR.GetKey(sf::Keyboard::Numpad6))
-	{
-		worldView.move(-0.5f, 0.f);
-	}
-	if (INPUT_MGR.GetKey(sf::Keyboard::Numpad4))
-	{
-		worldView.move(0.5f, 0.f);
-	}
-	if (INPUT_MGR.GetKey(sf::Keyboard::Numpad8))
-	{
-		worldView.move(0.0f, 0.5f);
-	}
-	if (INPUT_MGR.GetKey(sf::Keyboard::Numpad5))
-	{
-		worldView.move(0.0f, -0.5f);
-	}
 
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Escape))
 	{
@@ -294,7 +285,7 @@ void SceneGame::ColliedTest()
 		{
 			//std::cout << "Wall Collied" << std::endl;
 		}
-		else if (arry.shape.getGlobalBounds().intersects(shape.getGlobalBounds()))
+		else if (arry.shape.getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
 		{
 			switch (arry.type)
 			{
@@ -310,6 +301,11 @@ void SceneGame::ColliedTest()
 			}
 		}
 	}
+}
+
+void SceneGame::RenewBossUI()
+{
+	bossui->Renew();
 }
 
 ObjectPool<EnemyBullet>& SceneGame::GetPoolEnemyBullet()

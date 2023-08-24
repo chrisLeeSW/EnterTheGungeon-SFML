@@ -224,6 +224,7 @@
 3,Animations/Enemy/KeyBulletKin/KeyBulletKinDieLeft.csv
 3,Animations/Enemy/KeyBulletKin/KeyBulletKinDieLeftDown.csv
 3,Animations/Enemy/KeyBulletKin/KeyBulletKinDieDown.csv
+3,Animations/Boss/BossHp.csv
 0,graphics/ui_blank.png
 3,weapon/PadIdle.csv
 3,weapon/PadRelode.csv
@@ -243,3 +244,8 @@
 0,graphics/prisonerweaponsprite.png
 1,fonts/AurulentSansMono-Regular.otf
 1,fonts/OpenSans-Semibold.ttf
+0,graphics/ui_coin.png
+0,graphics/ui_key.png
+0,graphics/PrisonerBottlesprite.png
+0,graphics/PilotPassive.png
+0,graphics/PilotPassivesprite.png

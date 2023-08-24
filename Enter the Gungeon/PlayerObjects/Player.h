@@ -105,7 +105,8 @@ protected:
 	bool isLobby;
 	int blankBulletCount;
 
-
+	int money = 0;
+	int key = 0;
 
 	int hp;
 	float effect = 0.f;
@@ -216,6 +217,15 @@ public:
 
 	sf::Vector2f PlayerHandPos() { return hand->GetPosition(); }
 	int GetHp() { return hp; }
+
+	void HealHp();
+	void AddBlankBullet();
+	void AddMoney(int money);
+	int GetMoney() { return money; }
+	int GetKey() { return key; }
+
+	const sf::Vector2f& GetDirection() const;
+
 	int GetBlankBulletCount() { return blankBulletCount; }
 
 	void SetEnemyList(std::list<Enemy*> enemylist);

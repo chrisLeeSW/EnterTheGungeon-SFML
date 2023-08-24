@@ -87,7 +87,7 @@ public:
 	bool GetFlipX() { return flipX; }
 	sf::Vector2f GetHandOrigin() { return sf::Vector2f(sprite.getLocalBounds().width * 0.8f, sprite.getLocalBounds().height * 0.25f); }
 
-
+	const float& GetHp();
 
 	sf::Vector2f WhereWay(sf::Vector2f dir);
 
@@ -96,7 +96,7 @@ public:
 	void LoadMuzzle(const std::string& path);
 
 	// Bullet에게 맞았을 때
-	std::function<void(float)> IfHit;
+	std::function<void()> IfHit;
 	// Player와 몸이 충돌했을 때
 	std::function<void()> IfBump;
 	// 사망 시
@@ -104,7 +104,7 @@ public:
 	// 사격 시
 	std::function<void(sf::Vector2f dir, float speed)> IfShoot;
 
-	void OnDamage(const float& damage, sf::Vector2f dir = {0.f, 0.f}, const float& knockback = 0.f);
+	void OnDamage(float damage, sf::Vector2f dir = {0.f, 0.f}, float knockback = 0.f);
 	void OnBump();
 	void OnDie(const sf::Vector2f& look);
 

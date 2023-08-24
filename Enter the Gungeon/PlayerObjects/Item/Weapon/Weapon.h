@@ -32,6 +32,7 @@ public:
 		Idle,
 		Shoot,
 		Reload,
+		Roll,
 	};
 
 protected:
@@ -51,6 +52,8 @@ protected:
 
 	std::vector<AnimationController> shootEffect;
 
+	float reload;
+	float reloadtick;
 
 	Player* player;
 
@@ -62,6 +65,7 @@ protected:
 	
 	float currentbulletcount;
 	float bulletcount;
+	float bulletmax;
 
 	sf::Vector2f gunOffset1;
 	sf::Vector2f gunOffset2;
@@ -107,6 +111,11 @@ public:
 	virtual Bullet::Types GetBulletType() = 0;
 	virtual void RequestReload() { currentbulletcount = bulletcount; };
 	virtual void SwapWeapon();
+
+	virtual float GetReloadTime() { return reload; }
+	virtual float GetCurrentReloadTime() { return reloadtick; }
+	virtual float GetCurrentBulleCount()  { return currentbulletcount; }
+	virtual float GetRemainingAmmo()  { return bulletmax; }
 
 	virtual sf::Vector2f Look();
 	virtual void SetEnemy(Enemy* enemy);

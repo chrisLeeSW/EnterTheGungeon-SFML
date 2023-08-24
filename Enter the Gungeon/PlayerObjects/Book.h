@@ -18,21 +18,9 @@ protected:
 
 	sf::Vector2f windowsize;
 
-	std::unordered_map<ItemButton*, std::string> mapString;
-
-	std::unordered_map<Weapon::Types, ItemButton*> mapWeapon;
-	std::unordered_map<Passive::Types, ItemButton*> mapPassive;
-	std::unordered_map<Active::Types, ItemButton*> mapActvie;
-
-
-
 
 	ItemButton* currentClickButton = nullptr;
 
-
-	sf::RectangleShape test1;
-	sf::RectangleShape test2;
-	sf::RectangleShape test3;
 
 	sf::RectangleShape black;
 
@@ -44,7 +32,9 @@ protected:
 	sf::Vector2f passiveline;
 	sf::Vector2f activeline;
 
-
+	sf::Text textweapon;
+	sf::Text textactvie;
+	sf::Text textpassive;
 
 
 	bool bookOn = false;
@@ -67,6 +57,5 @@ public:
 
 	void SetCurrentClickButton(ItemButton* button) { currentClickButton = button; }
 
-	void Insert();
 	void GetItem(Item::Types t, Item::WAP w);
 };

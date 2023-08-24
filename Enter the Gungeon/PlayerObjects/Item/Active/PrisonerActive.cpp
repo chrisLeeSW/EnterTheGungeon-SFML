@@ -8,11 +8,11 @@ PrisonerActive::PrisonerActive(const std::string& textureId, const std::string& 
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PrisonerBottle.csv"));
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PrisonerBottleBreak.csv"));
 	animation.SetTarget(&sprite);
+	SpriteGo::Reset();
 }
 
 void PrisonerActive::Init()
 {
-	SpriteGo::Reset();
 	player = PLAYER_MGR.GetPlayer();
 	
 

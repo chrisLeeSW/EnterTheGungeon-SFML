@@ -125,10 +125,6 @@ void Pad::Update(float dt)
 				dKeyPressed = false;
 				mouseClicked = false;
 			}
-
-
-
-
 			if (INPUT_MGR.GetMouseButton(sf::Mouse::Left) && tick <= 0.f && currentbulletcount > 0 && bulletmax >= 0)
 			{
 				--currentbulletcount;
@@ -157,14 +153,14 @@ void Pad::Update(float dt)
 				state = State::Reload;
 
 				gun.Play("Relode");
-				reloadtick = reload;
+				reloadtick = 0.f;
 				isreload = true;
 			}
 		}
 		else if (isreload)
 		{
-			reloadtick -= dt; // 재장전 시간 감소
-			if (reloadtick <= 0.f)
+			reloadtick += dt; // 재장전 시간 감소
+			if (reloadtick >= reload)
 			{
 				currentbulletcount = bulletcount; // 재장전 완료되면 탄창을 최대치로 채움
 				isreload = false; // 재장전 플래그 해제
@@ -176,6 +172,8 @@ void Pad::Update(float dt)
 			}
 		}
 	}
+	else
+		state = State::Roll;
 }
 
 void Pad::Draw(sf::RenderWindow& window)

@@ -5,6 +5,7 @@
 
 class Player;
 class Weapon;
+class Active;
 
 class PlayerUI : public GameObject
 {
@@ -26,12 +27,24 @@ protected:
 	//SpriteGo* playerhp;
 	sf::Sprite spritehp;
 	sf::Sprite weaponBox;
+	sf::Sprite weapon;
+	sf::Sprite money;
+	sf::Sprite key;
+	sf::Sprite activeBox;
+	sf::Sprite active;
 	sf::Sprite reload;
 	sf::Sprite reloadBar;
+	sf::Text currentmoney;
+	sf::Text currentkey;
+	sf::Text currentMagazine;
+	sf::Text remainingAmmo;
 
+		int bulletcount;
+	int bulletmax;
 	Weapon* playerweapon = nullptr;
+	Active* currentActive = nullptr;
 
-	sf::Sprite weapon;
+
 
 	bool isone = true;
 
@@ -56,7 +69,13 @@ public:
 
 	void CurrentWeapon(Weapon* weapon);
 
+	void CurrentActive(Active* active);
+
 	void UseBlankBullet();
 
+	void AddBlankBullet();
+	void AddHp();
+	void AdjustMoney();
+	void AdjustKey();
 };
 

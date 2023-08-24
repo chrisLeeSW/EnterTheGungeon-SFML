@@ -1,4 +1,4 @@
-"RESOURCE_TYPE(0: ÅØ½ºÃ³ , 1: ÆùÆ®,2: »ç¿îµå Å¬¸³ 3: ¾Ö´Ï¸ŞÀÌ¼Ç Å¬¸³, 4:Sprite Font",RESOURCE_PATH
+"RESOURCE_TYPE(0: í…ìŠ¤ì²˜ , 1: í°íŠ¸,2: ì‚¬ìš´ë“œ í´ë¦½ 3: ì• ë‹ˆë©”ì´ì…˜ í´ë¦½, 4:Sprite Font",RESOURCE_PATH
 3,Animations/EnemyBulletBlink.csv
 3,Animations/EnemyBulletIdle.csv
 3,playercsv/Pilot/PilotIdleDown.csv
@@ -244,6 +244,11 @@
 0,graphics/prisonerweaponsprite.png
 1,fonts/AurulentSansMono-Regular.otf
 1,fonts/OpenSans-Semibold.ttf
+0,graphics/ui_coin.png
+0,graphics/ui_key.png
+0,graphics/PrisonerBottlesprite.png
+0,graphics/PilotPassive.png
+0,graphics/PilotPassivesprite.png
 3,Animations/Objects/Ammo.csv
 3,Animations/Objects/Blank.csv
 3,Animations/Objects/Heart.csv

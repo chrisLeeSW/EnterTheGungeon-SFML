@@ -6,24 +6,12 @@ Item::Item(const std::string& textureId, const std::string& n) : SpriteGo(textur
 {
 }
 
-void Item::Init()
-{
-}
-
-void Item::Reset()
-{
-}
-
-void Item::Update(float dt)
-{
-}
-
 Item::Types Item::GetItemType()
 {
-	return Item::Types::None;
+	return type;
 }
 
 Item::WAP Item::GetItemWAP()
 {
-	return Item::WAP::None;
+	return wap;
 }

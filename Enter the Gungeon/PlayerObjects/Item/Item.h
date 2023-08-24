@@ -32,8 +32,6 @@ public:
 
 protected:
 
-    std::unordered_map<std::string, Item*> items;
-
     Player* player;
 
     sf::Vector2f mousePos;
@@ -41,7 +39,8 @@ protected:
 
 public:
 
-    Types type;
+    Item::WAP wap;
+    Item::Types type;
 
     Item(const std::string& textureId = "", const std::string& n = "");
     virtual ~Item() override { Release(); }
@@ -52,7 +51,6 @@ public:
     
     virtual Item::Types GetItemType();
     virtual Item::WAP GetItemWAP();
-
 };
 
 

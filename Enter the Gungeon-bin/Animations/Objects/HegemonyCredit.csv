@@ -1,0 +1,9 @@
+ID,FPS,LOOPTYPE,,
+Idle,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Items.png,1,100,11,24
+graphics/Items.png,14,100,11,24
+graphics/Items.png,27,100,11,24
+graphics/Items.png,41,100,11,24
+graphics/Items.png,53,100,11,24

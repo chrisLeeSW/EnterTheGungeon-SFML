@@ -1,0 +1,20 @@
+ID,FPS,LOOPTYPE,,
+Idle,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Items.png,256,1,10,10
+graphics/Items.png,268,1,9,10
+graphics/Items.png,279,1,8,10
+graphics/Items.png,289,1,9,10
+graphics/Items.png,300,1,10,10
+graphics/Items.png,312,1,10,9
+graphics/Items.png,324,1,8,10
+graphics/Items.png,334,1,10,9
+graphics/Items.png,346,1,10,10
+graphics/Items.png,358,1,9,10
+graphics/Items.png,369,1,8,10
+graphics/Items.png,379,1,9,10
+graphics/Items.png,390,1,10,10
+graphics/Items.png,402,1,10,9
+graphics/Items.png,414,1,8,10
+graphics/Items.png,424,1,10,9

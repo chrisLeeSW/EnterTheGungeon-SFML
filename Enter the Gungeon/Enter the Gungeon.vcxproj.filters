@@ -210,6 +210,12 @@
     <ClCompile Include="DataTables\ButtonTable.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="UI\BossUI.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\DisplayItem.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -408,6 +414,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="DataTables\ButtonTable.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\BossUI.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\DisplayItem.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

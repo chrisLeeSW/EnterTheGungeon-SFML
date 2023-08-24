@@ -10,8 +10,6 @@ class PrisonerPassive : public Passive
 protected:
     AnimationController animation;
 
-    Player* player = nullptr;
-
     bool isPassiveOn = false;
     bool onePlay = true;
 

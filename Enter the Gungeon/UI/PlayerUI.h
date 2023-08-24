@@ -26,20 +26,26 @@ protected:
 
 	//SpriteGo* playerhp;
 	sf::Sprite spritehp;
+
 	sf::Sprite weaponBox;
 	sf::Sprite weapon;
-	sf::Sprite money;
-	sf::Sprite key;
 	sf::Sprite activeBox;
 	sf::Sprite active;
+
+	sf::Sprite money;
+	sf::Sprite key;
+
 	sf::Sprite reload;
 	sf::Sprite reloadBar;
+
 	sf::Text currentmoney;
 	sf::Text currentkey;
+
 	sf::Text currentMagazine;
 	sf::Text remainingAmmo;
+	sf::Text remainingAmmoMax;
 
-		int bulletcount;
+	int bulletcount;
 	int bulletmax;
 	Weapon* playerweapon = nullptr;
 	Active* currentActive = nullptr;
@@ -77,5 +83,7 @@ public:
 	void AddHp();
 	void AdjustMoney();
 	void AdjustKey();
+	void GetCurrentMagazine();
+	void GetCurrentRemainingAmmo();
 };
 

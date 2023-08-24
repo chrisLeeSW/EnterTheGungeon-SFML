@@ -38,7 +38,7 @@ PilotWeapon::PilotWeapon(const std::string& textureId, const std::string& n) : W
 	gunOffset2 = { sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - 4};
 
 	currentbulletcount = bulletcount;
-
+	currentbulletmax = bulletmax;
 	//Weapon::Init();
 }
 
@@ -97,10 +97,10 @@ void PilotWeapon::Update(float dt)
 		if (!isreload)
 		{
 			tick -= dt;
-			if (INPUT_MGR.GetMouseButton(sf::Mouse::Left) && tick <= 0.f && currentbulletcount > 0 && bulletmax >= 0)
+			if (INPUT_MGR.GetMouseButton(sf::Mouse::Left) && tick <= 0.f && currentbulletcount > 0 && currentbulletmax >= 0)
 			{
 				--currentbulletcount;
-				--bulletmax;
+				--currentbulletmax;
 
 				state = State::Shoot;
 
@@ -109,14 +109,14 @@ void PilotWeapon::Update(float dt)
 				player->Shoot(bulletType, gunPoint, look);
 
 				std::cout << "ÇöÀç ÅºÃ¢ : " << currentbulletcount << std::endl;
-				std::cout << "ÃÑ ÅºÃ¢ : " << bulletmax << std::endl;
+				std::cout << "ÃÑ ÅºÃ¢ : " << currentbulletmax << std::endl;
 				tick = attackrate;
 			}
 			if (gun.GetCurrentClipId() == "Shoot" && gun.AnimationEnd())
 			{
 				state = State::Idle;
 			}
-			if (INPUT_MGR.GetKeyDown(sf::Keyboard::R) && currentbulletcount != bulletcount && bulletmax >= 0)
+			if (INPUT_MGR.GetKeyDown(sf::Keyboard::R) && currentbulletcount != bulletcount && currentbulletmax >= 0)
 			{
 				state = State::Reload;
 

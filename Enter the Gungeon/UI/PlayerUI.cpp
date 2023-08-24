@@ -83,13 +83,17 @@ PlayerUI::PlayerUI(Player* player, const std::string& textureId, const std::stri
 	remainingAmmo.setFont(*font);
 	currentMagazine.setFillColor(sf::Color::White);
 	remainingAmmo.setFillColor(sf::Color::White);
-	currentMagazine.setCharacterSize(23);
-	remainingAmmo.setCharacterSize(23);
+	currentMagazine.setCharacterSize(15);
+	remainingAmmo.setCharacterSize(15);
 	currentMagazine.setPosition(weaponBox.getPosition());
 	remainingAmmo.setPosition(weaponBox.getPosition());
 	currentMagazine.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentBulleCount()));
 	remainingAmmo.setString(std::to_string(player->GetCurrenWeapon()->GetRemainingAmmo()));
-
+	
+	remainingAmmoMax.setFont(*font);
+	remainingAmmoMax.setFillColor(sf::Color::White);
+	remainingAmmoMax.setCharacterSize(15);
+	remainingAmmoMax.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentRamainingAmmo()));
 
 
 }
@@ -153,7 +157,7 @@ void PlayerUI::Update(float dt)
 void PlayerUI::Draw(sf::RenderWindow& window)
 {
 	for(auto& it : playermaxhp)
-	window.draw(it);
+		window.draw(it);
 
 	for (auto& it : playerhp)
 		window.draw(it);
@@ -271,4 +275,16 @@ void PlayerUI::AdjustMoney()
 void PlayerUI::AdjustKey()
 {
 	currentkey.setString(std::to_string(player->GetKey()));
+}
+
+void PlayerUI::GetCurrentMagazine()
+{
+	currentMagazine.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentBulleCount()));
+	remainingAmmo.setString(std::to_string(player->GetCurrenWeapon()->GetRemainingAmmo()));
+}
+
+void PlayerUI::GetCurrentRemainingAmmo()
+{
+	currentMagazine.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentBulleCount()));
+	remainingAmmo.setString(std::to_string(player->GetCurrenWeapon()->GetRemainingAmmo()));
 }

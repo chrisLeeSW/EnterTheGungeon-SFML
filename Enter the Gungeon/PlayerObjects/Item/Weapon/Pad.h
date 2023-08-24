@@ -10,29 +10,6 @@ class Pad : public Weapon
 {
 protected:
 
-	Player* player = nullptr;
-
-	Types weaponType;
-	Bullet::Types bulletType;
-	float attackrate;
-	int bulletcount;
-	int bulletmax;
-	int currentbulletcount;
-	float reload;
-	int santan;
-	float tick;
-
-	float reloadtick;
-
-	bool isreload = false;
-	bool flipX = false;
-
-	AnimationController gun;
-	AnimationController effect;
-
-	float WeaponXpos = 9.f;
-
-	sf::RectangleShape gunend;
 
 	float commandtick = 0.5f;
 
@@ -62,6 +39,7 @@ public:
 	virtual void SetType(Types t) override;
 	virtual Types GetWeaponType() override { return weaponType; }
 	virtual Bullet::Types GetBulletType() override { return bulletType; }
+	virtual void GetAmmunition() override { currentbulletmax = bulletmax; }
 
 	virtual float GetReloadTime()override { return reload; }
 	virtual float GetCurrentReloadTime()override { return reloadtick; }

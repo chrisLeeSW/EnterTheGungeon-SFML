@@ -554,7 +554,7 @@ void Player::GetItem(Weapon::Types type)
 }
 
 
-void Player::HealHp()
+void Player::HealHp(int heal)
 {
 	if (hp < maxHp)
 	{

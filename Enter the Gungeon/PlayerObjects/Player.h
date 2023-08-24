@@ -218,7 +218,7 @@ public:
 	sf::Vector2f PlayerHandPos() { return hand->GetPosition(); }
 	int GetHp() { return hp; }
 
-	void HealHp();
+	void HealHp(int heal);
 	void AddBlankBullet();
 	void AddMoney(int money);
 	int GetMoney() { return money; }

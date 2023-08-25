@@ -59,7 +59,7 @@ void BossUI::Reset()
 		bar.setTextureRect({ 288, 1021, 200, 13 });
 	}
 
-	sf::Font* font = RESOURCE_MGR.GetFont("fonts/AurulentSansMono-Regular.otf");
+	sf::Font* font = RESOURCE_MGR.GetFont("fonts/PF.ttf");
 	if (font != nullptr)
 	{
 		name.setFont(*font);
@@ -67,11 +67,11 @@ void BossUI::Reset()
 	}
 
 	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable »ç¿ë
-	std::string bossname;
+	std::wstring bossname;
 	switch (boss->GetType())
 	{
 	case Enemy::EnemyName::GatlingGull:
-		bossname = table->Get("GATLING_GULL");
+		bossname = table->GetW("GATLING_GULL");
 		break;
 	}
 

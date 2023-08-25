@@ -51,11 +51,6 @@ void ItemButton::Init()
 
 
 	isHover = false;
-
-	std::cout << "아이템 버튼 리셋" << std::endl;
-	std::cout << "폰트 아이디 : " << fontId << std::endl;
-	std::cout << "텍스쳐 아이디 : " << textureId << std::endl;
-	std::cout << "아이템 스프라이트 아이디 : " << itemspriteId << std::endl;
 }
 
 void ItemButton::Release()
@@ -73,10 +68,6 @@ void ItemButton::Update(float dt)
 	sf::Vector2f mousePos = INPUT_MGR.GetMousePos();
 	sf::Vector2f uiMousePos = SCENE_MGR.GetCurrScene()->ScreenToUiPos(mousePos);
 	
-	
-	std::cout << "마우스 X 포지션 :" << uiMousePos.x << "\n"<<"마우스 Y 포지션 : " << uiMousePos.y << std::endl;
-
-
 	bool prevHover = isHover;
 	isHover = sprite.getGlobalBounds().contains(uiMousePos);
 

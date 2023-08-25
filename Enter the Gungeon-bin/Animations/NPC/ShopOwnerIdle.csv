@@ -1,0 +1,8 @@
+ID,FPS,LOOPTYPE,,
+Idle,10,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/ShopOwner.png,0,0,38,35
+graphics/ShopOwner.png,39,0,38,35
+graphics/ShopOwner.png,78,0,38,35
+graphics/ShopOwner.png,117,0,38,35

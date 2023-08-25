@@ -145,6 +145,7 @@ void DisplayItem::Update(float dt)
 			if (player->GetMoney() < price) return;
 
 			action();
+			player->AddMoney(-price);
 		}
 	}
 	else

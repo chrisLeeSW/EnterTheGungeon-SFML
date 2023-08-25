@@ -49,8 +49,35 @@ void Enemy::Init()
 		};
 		IfDie = [this](sf::Vector2f dir)
 		{
-			DropsKey();
-			OnDie(dir);
+			state = Enemy::State::Bind;
+			// Animation
+			if (dir == way[0])
+			{
+				animation.Play("DieUp");
+			}
+			else if (dir == way[1])
+			{
+				animation.Play("DieLeftUp");
+			}
+			else if (dir == way[2])
+			{
+				animation.Play("DieLeft");
+			}
+			else if (dir == way[3])
+			{
+				animation.Play("DieLeftDown");
+			}
+			else if (dir == way[4])
+			{
+				animation.Play("DieDown");
+			}
+
+			IfBump = [this]()
+			{
+				player->AddKey(1);
+				state = Enemy::State::Die;
+				SetActive(false);
+			};
 		};
 		break;
 	case EnemyName::ShotgunKinRed:
@@ -326,8 +353,14 @@ void Enemy::Update(float dt)
 		SetFlipX(direction.x > 0.f);
 		SetPosition(position + direction * speed * dt);
 		break;
+	case Enemy::State::Skill:
+		if (animation.AnimationEnd()) state = Enemy::State::Idle;
+		break;
+	case Enemy::State::Bind:
+		break;
 	case Enemy::State::Count:
 		std::cout << "WARNING: Wrong State (Enemy Update(dt))" << std::endl;
+		state = Enemy::State::Idle;
 		break;
 	default:
 		break;
@@ -496,7 +529,6 @@ void Enemy::OnDamage(float damage, sf::Vector2f dir, float knockback)
 			OnDie(dir);
 		}
 
-		state = Enemy::State::Die;
 		isHanded = false;
 		hand.setColor(sf::Color::Transparent);
 		shadow.setColor(sf::Color::Transparent);
@@ -505,7 +537,7 @@ void Enemy::OnDamage(float damage, sf::Vector2f dir, float knockback)
 	
 	
 	// Animation
-	if (state == Enemy::State::Attack) return;
+	if (state == Enemy::State::Attack || state == Enemy::State::Skill) return;
 	else state = Enemy::State::Hit;
 
 	if (dir == way[0])
@@ -601,6 +633,7 @@ void Enemy::OnDie(const sf::Vector2f& look)
 	}
 
 	DropsDropItem(itemtype, quantity, chance);
+	state = Enemy::State::Die;
 }
 
 void Enemy::OneShot(sf::Vector2f dir, float speed, bool isBlink) // pool반환 필요
@@ -675,6 +708,7 @@ void Enemy::SixWayDie(sf::Vector2f dir, float speed, int chance)
 	}
 
 	DropsDropItem(DropItem::Types::Shell1, 1, 50);
+	state = Enemy::State::Die;
 	SetActive(false);
 }
 
@@ -696,16 +730,4 @@ void Enemy::DropsDropItem(DropItem::Types itemtype, int quantity, int chance)
 		dropitem->Reset();
 		scene->AddGo(dropitem);
 	}
-}
-
-void Enemy::DropsKey()
-{
-	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
-	DropItem* dropitem = scene->GetPoolDropItem().Get();
-	dropitem->SetType(DropItem::Types::Key);
-	dropitem->SetPlayer(player);
-	dropitem->SetPosition(position);
-	dropitem->Init();
-	dropitem->Reset();
-	scene->AddGo(dropitem);
 }

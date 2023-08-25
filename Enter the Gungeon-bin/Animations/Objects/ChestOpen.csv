@@ -1,0 +1,13 @@
+ID,FPS,LOOPTYPE,,
+Open,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Chest.png,2,1,25,21
+graphics/Chest.png,29,1,25,21
+graphics/Chest.png,56,1,25,21
+graphics/Chest.png,83,1,25,21
+graphics/Chest.png,110,1,25,21
+graphics/Chest.png,137,1,25,21
+graphics/Chest.png,164,1,25,21
+graphics/Chest.png,191,1,25,21
+graphics/Chest.png,218,1,25,21

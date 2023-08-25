@@ -13,6 +13,8 @@
 #include "PlayerUI.h"
 #include "DropItem.h"
 #include "DisplayItem.h"
+#include "Npc.h"
+#include "Chest.h"
 
 #include "Boss.h"
 #include "EnemyBullet.h"
@@ -48,25 +50,6 @@ void SceneGame::Init()
 
 	book = (Book*)AddGo(new Book());
 
-	testenm1 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::KeyBulletKin)); //test
-	testenm1->SetOrigin(Origins::BC); //test
-	testenm1->SetPosition(200, 200); //test
-	testenm1->sortLayer = 0;
-
-	testenm2 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::BulletKin)); //test
-	testenm2->SetOrigin(Origins::BC); //test
-	testenm2->SetPosition(300, 300); //test
-	testenm2->sortLayer = 0;
-
-	testenm3 = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::ShotgunKinBlue)); //test
-	testenm3->SetOrigin(Origins::BC); //test
-	testenm3->SetPosition(400, 400); //test
-	testenm3->sortLayer = 0;
-
-	enemylist.push_back(testenm1);
-	enemylist.push_back(testenm2);
-	enemylist.push_back(testenm3);
-
 	test2 = (Boss*)AddGo(new Boss(Enemy::EnemyName::GatlingGull)); //test
 	test2->SetOrigin(Origins::BC); //test
 	test2->SetPosition(400.f, 0.f); //test
@@ -78,9 +61,12 @@ void SceneGame::Init()
 	bossui->SetPosition(windowSize.x * 0.5f, windowSize.y - 50.f);
 	bossui->sortLayer = 100;
 
-	DisplayItem* distest = (DisplayItem*)AddGo(new DisplayItem(DisplayItem::Names::Heart)); //test
-	distest->SetOrigin(Origins::MC);
-	distest->SetPosition(-50, 0);
+	shopowner = (Npc*)AddGo(new Npc(Npc::NpcType::ShopOwner));
+	shopowner->SetPosition(-100, 0);
+
+	chest = (Chest*)AddGo(new Chest());
+	chest->SetOrigin(Origins::BC);
+	chest->SetPosition(0, -100);
 
 	enemyBullets.OnCreate = [this](EnemyBullet* bullet)
 	{
@@ -124,17 +110,7 @@ void SceneGame::Enter()
 	player->Init();
 	player->SetEnemyList(enemylist);
 
-	testenm1->SetPlayer(player); //test
-	testenm2->SetPlayer(player); //test
-	testenm3->SetPlayer(player); //test
-
 	test2->SetPlayer(player); //test
-
-	DropItem* droptest = dropitemPool.Get(); //test
-	droptest->SetType(DropItem::Types::Ammo);
-	droptest->SetPosition(-200, 0);
-	droptest->Init();
-	AddGo(droptest);
 
 	player->SetPosition(0.f,0.f);
 

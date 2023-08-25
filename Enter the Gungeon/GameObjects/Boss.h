@@ -38,7 +38,7 @@ public:
 
 	void SetBoss(float patternDuration = 0.f);
 	void PlayPattern(const PatternNum& p);
-	void EndPattern();
+	void EndPattern(bool idle = true);
 
 	std::function<void(sf::Vector2f dir, float speed)> Pattern1;
 	std::function<void(sf::Vector2f dir, float speed)> Pattern2;

@@ -19,6 +19,10 @@ void Boss::Init()
 	{
 	case EnemyName::GatlingGull:
 		name = "GatlingGull/GatlingGull";
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Boss/GatlingGull/GatlingGullPattern6-1.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Boss/GatlingGull/GatlingGullPattern6-2.csv"));
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Boss/GatlingGull/GatlingGullPattern7.csv"));
+
 		IfHit = [this]()
 		{
 			SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
@@ -26,6 +30,7 @@ void Boss::Init()
 		};
 		IfShoot = [this](sf::Vector2f dir, float speed)
 		{
+			state = Enemy::State::Skill;
 			CloseAttack(200.f);
 		};
 		Pattern1 = [this](sf::Vector2f dir, float speed)
@@ -69,6 +74,8 @@ void Boss::Init()
 		};
 		Pattern4 = [this](sf::Vector2f dir, float speed)
 		{
+			state = Enemy::State::Bind;
+
 			if (patternCount < 2)
 			{
 				ShotgunShot(dir, 200, 10, 10.f);
@@ -83,16 +90,39 @@ void Boss::Init()
 		};
 		Pattern5 = [this](sf::Vector2f dir, float speed)
 		{
-			LoadMuzzle("bulletPattern/Circle.csv");
-			EndPattern();
+			state = Enemy::State::Bind;
+
+			if (animation.AnimationEnd())
+			{
+				LoadMuzzle("bulletPattern/Circle.csv");
+				EndPattern();
+			}
 		};
 		Pattern6 = [this](sf::Vector2f dir, float speed)
 		{
-			SetPosition(player->GetPosition());
-			EndPattern();
+			state = Enemy::State::Bind;
+			if (animation.GetCurrentClipId() != "Pattern6-1")
+			{
+				animation.Play("Pattern6-1");
+			}
+
+			if (animation.AnimationEnd())
+			{
+				state = Enemy::State::Skill;
+				animation.Play("Pattern6-2");
+				SetPosition(player->GetPosition());
+				EndPattern(false);
+			}
 		};
 		Pattern7 = [this](sf::Vector2f dir, float speed)
 		{
+			state = Enemy::State::Bind;
+
+			if (animation.AnimationEnd())
+			{
+				animation.Play("Pattern7");
+			}
+
 			if (patternCount < 12)
 			{
 				patternDuration = 0.5f;
@@ -257,8 +287,9 @@ void Boss::PlayPattern(const PatternNum& p)
 	}
 }
 
-void Boss::EndPattern()
+void Boss::EndPattern(bool idle)
 {
+	if (idle) state = Enemy::State::Idle;
 	pattern = PatternNum::None;
 }
 

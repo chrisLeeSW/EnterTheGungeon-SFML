@@ -10,6 +10,8 @@ class Book;
 class Enemy;
 class InteractionObject;
 class DropItem;
+class Npc;
+class Chest;
 
 class PlayerUI;
 
@@ -36,13 +38,10 @@ protected:
 	ObjectPool<EnemyBullet> enemyBullets;
 	ObjectPool<DropItem> dropitemPool;
 
-	Enemy* testenm1;
-
-	Enemy* testenm2;
-	Enemy* testenm3;
-
 	Boss* test2;
 	BossUI* bossui;
+	Npc* shopowner;
+	Chest* chest; // test
 
 	std::vector<TileMap*> tileRoom;
 	std::vector<SpriteGo*> objects;

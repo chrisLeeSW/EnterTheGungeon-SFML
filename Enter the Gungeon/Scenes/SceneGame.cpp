@@ -14,6 +14,7 @@
 #include "DropItem.h"
 #include "DisplayItem.h"
 #include "Npc.h"
+#include "Chest.h"
 
 #include "Boss.h"
 #include "EnemyBullet.h"
@@ -60,8 +61,12 @@ void SceneGame::Init()
 	bossui->SetPosition(windowSize.x * 0.5f, windowSize.y - 50.f);
 	bossui->sortLayer = 100;
 
-	npc = (Npc*)AddGo(new Npc(Npc::NpcType::ShopOwner));
-	npc->SetPosition(-100, 0);
+	shopowner = (Npc*)AddGo(new Npc(Npc::NpcType::ShopOwner));
+	shopowner->SetPosition(-100, 0);
+
+	chest = (Chest*)AddGo(new Chest());
+	chest->SetOrigin(Origins::BC);
+	chest->SetPosition(0, -100);
 
 	enemyBullets.OnCreate = [this](EnemyBullet* bullet)
 	{
@@ -106,12 +111,6 @@ void SceneGame::Enter()
 	player->SetEnemyList(enemylist);
 
 	test2->SetPlayer(player); //test
-
-	DropItem* droptest = dropitemPool.Get(); //test
-	droptest->SetType((DropItem::Types)Utils::RandomRange(0, (int)DropItem::Types::Count));
-	droptest->SetPosition(-200, 0);
-	droptest->Init();
-	AddGo(droptest);
 
 	player->SetPosition(0.f,0.f);
 

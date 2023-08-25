@@ -11,6 +11,7 @@ class Enemy;
 class InteractionObject;
 class DropItem;
 class Npc;
+class Chest;
 
 class PlayerUI;
 
@@ -39,7 +40,8 @@ protected:
 
 	Boss* test2;
 	BossUI* bossui;
-	Npc* npc;
+	Npc* shopowner;
+	Chest* chest; // test
 
 	std::vector<TileMap*> tileRoom;
 	std::vector<SpriteGo*> objects;

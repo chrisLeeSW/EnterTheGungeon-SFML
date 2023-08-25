@@ -1,0 +1,5 @@
+ID,FPS,LOOPTYPE,,
+Idle,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Chest.png,2,1,25,21

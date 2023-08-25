@@ -20,14 +20,16 @@ void TestRom::Init()
 	ListFilesInDirectory("Room/TileMapFile/");
 	int count = 0;
 	int rnadFileNumber = 0;
+
 	while (count != rooms->GetRoom().size())
 	{
 		bool collied = false;
 		rnadFileNumber = Utils::RandomRange(0, fileList.size());
 		TileMap* map = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-		sf::Vector2f pos = { rooms->Center(rooms->GetRoomIndex(count)) };
+		// sf::Vector2f pos = { rooms->Center(rooms->GetRoomIndex(count)) };
+		sf::Vector2f pos = { rooms->GetRoomIndex(count).x,rooms->GetRoomIndex(count).y};
 		map->SetStartPos(pos);
-
+		
 		sf::Vector2f tileMapSize = map->TileMapSize(fileList[rnadFileNumber]);
 		sf::Vector2f objpos = pos;
 		objpos -= tileMapSize * 0.5f;
@@ -50,7 +52,7 @@ void TestRom::Init()
 			//	objects
 			switch (static_cast<MapObjectType>(map->tiles[i].objectTypes))
 			{
-			case MapObjectType::WallDown:
+			case MapObjectType::NormalWallTop:
 			{
 				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
 				spr->sprite.setTextureRect({ 0,250,50,50 });
@@ -82,24 +84,14 @@ void TestRom::Init()
 				spr->sortLayer = 0;
 				interaction.push_back({ static_cast<MapObjectType>(map->tiles[i].objectTypes), spr });
 			}
-			break;
-			case MapObjectType::Book1:
-			{
-				InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(map->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
-				spr->sprite.setTextureRect({ 0,850,50,50 });
-				spr->SetScale(0.5f, 0.5f);
-				spr->SetOrigin(Origins::MC);
-				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
-				spr->sortLayer = 0;
-				interaction.push_back({ static_cast<MapObjectType>(map->tiles[i].objectTypes), spr });
-			}
+			
 			break;
 			}
 		}
 		tileRoom.push_back({ map, objects, interaction });
 		sf::RectangleShape shape;
-		shape.setSize({ map->vertexArray.getBounds().width-50.f, map->vertexArray.getBounds().height -50.f});
-		shape.setPosition({ map->vertexArray.getBounds().left+25.f,map->vertexArray.getBounds().top+25.f});
+		shape.setSize({ map->vertexArray.getBounds().width- map->GetTileSize().x * 1.75f, map->vertexArray.getBounds().height - map->GetTileSize().y * 1.75f});
+		shape.setPosition({ map->vertexArray.getBounds().left+ map->GetTileSize().x  ,map->vertexArray.getBounds().top+ map->GetTileSize().y });
 		shape.setFillColor(sf::Color::Transparent);
 		shape.setOutlineThickness(1);
 		shape.setOutlineColor(sf::Color::Green);
@@ -131,6 +123,7 @@ void TestRom::Init()
 		}
 		if (closestRoom == -1)
 		{
+			lastRoom = currentRoom;
 			break;
 		}
 		ConnectRooms(tileRoom[currentRoom].map, tileRoom[closestRoom].map);
@@ -217,6 +210,7 @@ void TestRom::Init()
 	}
 	Exit();
 
+	std::cout << "TestRoom의 끝방 :" << lastRoom << "\t" << "Room의 끝방 :" << rooms->GetLastRoom() << " 중간 지점 :"<<rooms->GetMidRoom() << std::endl;
 }
 
 void TestRom::Release()
@@ -256,7 +250,10 @@ void TestRom::Update(float dt)
 	Scene::Update(dt);
 	MoveWorldView();
 	CoiledPlayerByMap();
-	
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F6))
+	{
+		rooms->PrintSize();
+	}
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Add))
 	{
 		length++;
@@ -669,45 +666,47 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 		}
 	}
 	sf::RectangleShape startShape;
-	sf::Vector2f shapeSize = { 50.f,50.f };
-	sf::Vector2f startPos = {start.x -12.5f, start.y};
+	
+	sf::Vector2f shapeSize = { 37.5f,37.5f };
+	sf::Vector2f startPos = {start.x, start.y};
 	if (start.x > end.x)
 	{
 		shapeSize.x = end.x - start.x;
+		shapeSize.y -= 19.75f;
 		startPos.y -= 12.5f;
 	}
 	else if (start.x < end.x)
 	{
 		//shapeSize.x = start.x - end.x;
 		shapeSize.x = end.x - start.x;
-		shapeSize.x += 12.5f;
+		shapeSize.y -= 19.75f;
 		startPos.y -= 12.5f;
+		
 	}
 	else if (start.y > end.y)
 	{
 		shapeSize.y = start.y - end.y;
 		shapeSize.y = -shapeSize.y;
-		startPos.y += 12.5f;
+		shapeSize.x -= 25.f;
+		startPos.x -= 7.25f;
 	}
 	else if (start.y < end.y)
 	{
 		shapeSize.y = end.y - start.y;
-		startPos.y -= 12.5f;
+		shapeSize.x -= 25.f;
+		startPos.x -= 7.25f;
 	}
 	startShape.setSize(shapeSize);
 	startShape.setPosition(startPos);
 	startShape.setFillColor(sf::Color::Transparent);
 	startShape.setOutlineThickness(2);
 	startShape.setOutlineColor(sf::Color::Yellow);
+
 	tunnel.push_back(startShape);
 
 	Exit();
 }
 
-void TestRom::CreateTunnel2(sf::Vector2f start, sf::Vector2f end)
-{
-
-}
 
 
 

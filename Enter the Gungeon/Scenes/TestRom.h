@@ -8,6 +8,7 @@ class InteractionObject;
 class SpriteGo;
 class Door;
 class Player;
+class Enemy;
 enum class DoorDirection
 {
 	None =-1,
@@ -27,6 +28,7 @@ struct RandomMapInfo
 	std::vector<SpriteGo*> spr;
 	std::vector<RoomObjectsInfoTest1> roomobj;
 	std::vector<WallTypeInfo> roomtype;
+	std::vector< Enemy*> monster;
 	// 몬스터 리스트 추가 
 };
 struct Passage {
@@ -66,6 +68,7 @@ protected:
 	std::vector<sf::RectangleShape> doorShape2;
 
 	sf::Vector2f prevPlayerPos;
+	int lastRoom = 0;
 public :
 	TestRom();
 	virtual ~TestRom() override = default;
@@ -81,7 +84,6 @@ public :
 	sf::Vector2f Center( TileMap* room);
 	void ConnectRooms(TileMap* r1 , TileMap* r2);
 	void CreateTunnel(sf::Vector2f start, sf::Vector2f end);
-	void CreateTunnel2(sf::Vector2f start, sf::Vector2f end);
 	bool isIntersecting(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
 	sf::Vector2f intersectionPoint(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
 	bool isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, sf::Vector2f& intersection);

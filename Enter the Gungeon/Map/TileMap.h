@@ -8,7 +8,7 @@ struct Tile
 	int y = 0;
 	int texIndex = 0;
 	int objectTypes = 0;
-	int monster = 0;
+	int monsterAndObject = 0;
 };
 
 class TileMap : public VertexArrayGo

@@ -89,6 +89,7 @@ void SceneMaptool::Update(float dt)
 
 		TileMap* temp1 = gridTile;
 		TileMap* temp2 = objectSprite;
+		TileMap* temp3 = thirdSprite;
 
 		gridTile = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
 		/*gridTile->tiles.resize(temp1->tiles.size());
@@ -108,13 +109,20 @@ void SceneMaptool::Update(float dt)
 		}*/
 		objectSprite->NoneFileLoad(wallWidthCount, wallHeightCount, false);
 		
+
+		thirdSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+		thirdSprite->NoneFileLoad(wallWidthCount, wallHeightCount, false);
+
 		RemoveGo(temp1);
 		temp1 = nullptr;
 
 		RemoveGo(temp2);
 		temp2 = nullptr;
+
+
+		RemoveGo(temp3);
+		temp3 = nullptr;
 		IncreaseOrDecrease = false;
-		// 후반작업
 	}
 
 
@@ -146,7 +154,8 @@ void SceneMaptool::Update(float dt)
 
 	for (auto& tile : tiles)
 	{
-		if (tile.spr->sprite.getGlobalBounds().contains(INPUT_MGR.GetMousePos()) && INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
+		
+		if (tile.spr->GetActive()&&tile.spr->sprite.getGlobalBounds().contains(INPUT_MGR.GetMousePos()) && INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
 		{
 			currentTileSprite->sprite.setTextureRect(tile.spr->sprite.getTextureRect());
 		}
@@ -181,10 +190,20 @@ void SceneMaptool::Update(float dt)
 			}
 		}
 		if (count < 0) return;
-		if (count == (int)MapObjectType::Pot || count == (int)MapObjectType::WallDown || count == (int)MapObjectType::LibraryDown || count == (int)MapObjectType::Book1 || count==(int)MapObjectType::WallTop ||
-			count==(int)MapObjectType::LibraryTop)
+		if (count == (int)MapObjectType::NormalWallTop || count == (int)MapObjectType::NorMalWallRight || count == (int)MapObjectType::NormalWallLeft||count == (int)MapObjectType::LightWallTop || 	count==(int)MapObjectType::LibraryTop ||
+			count == (int)MapObjectType::LightWallLeft || count == (int)MapObjectType::LightWallRight || count == (int)MapObjectType::LibraryLeft || count == (int)MapObjectType::LibraryRight ||
+			count == (int)MapObjectType::LibraryDown|| count == (int)MapObjectType::StoreTop || count == (int)MapObjectType::StoreRight || count == (int)MapObjectType::StoreLeft ||
+			count == (int)MapObjectType:: Grass|| count == (int)MapObjectType::QueenPicture||
+			count == (int)MapObjectType::HeadObject || count == (int)MapObjectType::Stair || count == (int)MapObjectType::Flag1 || count == (int)MapObjectType::Flag2 || 
+			count == (int)MapObjectType::Flag3|| count == (int)MapObjectType::StoreTable1 || count == (int)MapObjectType::StoreTable2 || count == (int)MapObjectType::StoreTable3 ||
+			count == (int)MapObjectType::StoreTable4 || count == (int)MapObjectType::StoreTable5 || count == (int)MapObjectType::StoreTable6 || count == (int)MapObjectType::StoreTableDisplay1 ||
+			count == (int)MapObjectType::StoreTableDisplay2 || count == (int)MapObjectType::TreasureRoomFlag || count == (int)MapObjectType::Armor|| count == (int)MapObjectType::Chiar||
+			 count == (int)MapObjectType::TreasureObject ||count == (int)MapObjectType::Pot|| count == (int)MapObjectType::MonsterKin||
+			count == (int)MapObjectType::MonsterKinKey|| count == (int)MapObjectType::MonsterBlue|| count == (int)MapObjectType::MonsterRed || count == (int)MapObjectType::Boss || 
+			count == (int)MapObjectType::StoreOner)
 		{
 			objectSprite->ChangeTile(gridIndex.x, gridIndex.y, count, currentTileSprite->sprite.getTextureRect());
+			//thirdSprite
 		}
 		else
 		{
@@ -203,6 +222,7 @@ void SceneMaptool::Update(float dt)
 		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 25;
 		if (gridIndex.x < 0 || gridIndex.y < 0) return;
 		objectSprite->ChangeTile(gridIndex.x, gridIndex.y, static_cast<int>(MapObjectType::None), sf::IntRect{ 50,0,50,50 });
+		// thirdSprite
 	}
 	WallMakeCollied();
 
@@ -246,7 +266,7 @@ void SceneMaptool::SettingUiSprite()
 	saveUi = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "SaveUi"));
 	saveUi->sprite.setTextureRect({ 10,27,50,20 });
 	saveUi->SetScale(doubleBySclaeX, doubleBySclaeY);
-	saveUi->SetPosition(windowSize.x * 0.05f, windowSize.y * 0.5f);
+	saveUi->SetPosition(windowSize.x * 0.05f, windowSize.y * 0.35f);
 	saveUi->SetOrigin(Origins::MC);
 	saveUi->OnEnter = [this]()
 	{
@@ -275,7 +295,7 @@ void SceneMaptool::SettingUiSprite()
 	loadUi = (UiButton*)AddGo(new UiButton("graphics/MapMakerMenu.png", "LoadUi"));
 	loadUi->sprite.setTextureRect({ 10,27,50,20 });
 	loadUi->SetScale(doubleBySclaeX, doubleBySclaeY);
-	loadUi->SetPosition(windowSize.x * 0.11f, windowSize.y * 0.5f);
+	loadUi->SetPosition(windowSize.x * 0.11f, windowSize.y * 0.35f);
 	loadUi->SetOrigin(Origins::MC);
 	loadUi->OnEnter = [this]()
 	{
@@ -699,9 +719,9 @@ void SceneMaptool::SettingTileSprite(const std::string& path)
 		SpriteGo* spriteTexture = (SpriteGo*)AddGo(new SpriteGo(textureId));
 		spriteTexture->SetOrigin(Origins::MC);
 		spriteTexture->sortLayer = 101;
-		spriteTexture->SetPosition(windowSize.x * 0.025f + (size.x++ * curPos.x), windowSize.y * 0.6f + (size.y * curPos.y));
+		spriteTexture->SetPosition(windowSize.x * 0.025f + (size.x++ * curPos.x), windowSize.y * 0.4f + (size.y * curPos.y));
 		spriteTexture->sprite.setTextureRect({ rows[0],rows[1] ,rows[2] ,rows[3] });
-		if (size.x == 5)
+		if (size.x == 10)
 		{
 			size.x = 0;
 			size.y++;
@@ -760,6 +780,8 @@ void SceneMaptool::MakeGrid()
 	objectSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
 	objectSprite->NoneFileLoad(wallWidthCount, wallHeightCount, false);
 
+	thirdSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+	thirdSprite->NoneFileLoad(wallWidthCount, wallHeightCount, false);
 }
 
 
@@ -776,6 +798,12 @@ void SceneMaptool::ResetGrid()
 		RemoveGo(objectSprite);
 		delete objectSprite;
 		objectSprite = nullptr;
+	}
+	if (thirdSprite != nullptr)
+	{
+		RemoveGo(thirdSprite);
+		delete thirdSprite;
+		thirdSprite = nullptr;
 	}
 }
 
@@ -877,7 +905,7 @@ void SceneMaptool::SaveRoom(std::string& fileName, std::string route, std::strin
 		{
 			std::string tileInfo = std::to_string(gridTile->tiles[count].texIndex);
 			tileInfo += "," + std::to_string(objectSprite->tiles[count].texIndex);
-
+			// thirdSprite +한번더 
 			doc.SetCell<std::string>(j, i, tileInfo);
 			count++;
 		}
@@ -944,6 +972,9 @@ void SceneMaptool::LoadGridAndObjectSpriteFile(std::string& fileName, std::strin
 
 	objectSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
 	objectSprite->LoadObject(fileName, false);
+
+	//thirdSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+	//thirdSprite->LoadObject(fileName, false);
 
 	wallWidthCount = gridTile->GetWallSize().x;
 	wallHeightCount = gridTile->GetWallSize().y;

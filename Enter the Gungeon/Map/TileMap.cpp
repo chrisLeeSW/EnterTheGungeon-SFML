@@ -36,6 +36,7 @@ bool TileMap::Load(const std::string& filePath, bool textureIdIn)
 				int newTexIndex = std::stoi(numberPart);
 				tile.objectTypes = newTexIndex;
 			}
+
 			tiles.push_back(tile);
 		}
 	}
@@ -289,7 +290,7 @@ void TileMap::ChangeTile(int x, int y, int tileIndex, sf::IntRect IntRect, TileT
 		tiles[texIndex].objectTypes = tileIndex;
 		break;
 	case TileType::Monster:
-		tiles[texIndex].monster = tileIndex;
+		tiles[texIndex].monsterAndObject = tileIndex;
 		break;
 	}
 

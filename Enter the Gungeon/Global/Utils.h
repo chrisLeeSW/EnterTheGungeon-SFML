@@ -39,6 +39,7 @@ public:
 	static sf::Vector2f RotateVector(const sf::Vector2f& vector, float angle);
 
 	static sf::Vector2f DirectionFromAngle(float angle);
+
 	static std::wstring ConverToUTF(const std::string& text);
 };
 

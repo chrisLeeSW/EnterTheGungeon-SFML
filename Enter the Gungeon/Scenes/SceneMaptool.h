@@ -18,6 +18,7 @@ class SceneMaptool : public Scene
 protected:
 	TileMap* gridTile =nullptr;
 	TileMap* objectSprite = nullptr;
+	TileMap* thirdSprite = nullptr;
 	float view;
 
 	UiButton* wallWidthSprite;

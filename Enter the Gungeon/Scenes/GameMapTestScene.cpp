@@ -27,7 +27,7 @@ void GameMapTestScene::Init()
 	{
 		switch (static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes))
 		{
-		case MapObjectType::WallDown:
+		case MapObjectType::LightWallTop:
 		{
 			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
 			spr->sprite.setTextureRect({ 0,250,50,50 });
@@ -59,17 +59,7 @@ void GameMapTestScene::Init()
 			spr->sortLayer = 0;
 			interaction.push_back({ static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes) ,spr });
 		}
-		break;
-		case MapObjectType::Book1:
-		{
-			InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
-			spr->sprite.setTextureRect({ 0,850,50,50 });
-			spr->SetScale(0.5f, 0.5f);
-			spr->SetOrigin(Origins::MC);
-			spr->SetPosition( tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
-			spr->sortLayer = 0;
-			interaction.push_back({ static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes) ,spr });
-		}
+
 		break;
 		}
 	}

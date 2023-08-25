@@ -56,7 +56,7 @@ void SceneTitle::Init()
 	std::string name;
 
 
-	sf::Font* font = RESOURCE_MGR.GetFont("fonts/AurulentSansMono-Regular.otf");
+	sf::Font* font = RESOURCE_MGR.GetFont("fonts/PF.ttf");
 
 	if (font != nullptr)
 	{

@@ -24,16 +24,16 @@ void ItemButton::Init()
 
 	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable »ç¿ë
 
-	std::string name;
+	std::wstring name;
 
 
-	name = table->Get(manual);
+	name = table->GetW(manual);
 	manualtext.setCharacterSize(textsize * 3.f);
 	manualtext.setString(name);
 	manualtext.setPosition(manualpos);
 	manualtext.setFillColor(sf::Color::White);
 
-	name = table->Get(itemname);
+	name = table->GetW(itemname);
 	nametext.setCharacterSize(namesize * 3.f);
 	nametext.setString(name);
 	nametext.setPosition(namepos);

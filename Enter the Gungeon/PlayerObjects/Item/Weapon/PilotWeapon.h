@@ -12,9 +12,10 @@ protected:
 	
 
 public:
+
 	Item::Types itemtype = Item::Types::PilotWeapon;
 	Item::WAP wap = Item::WAP::Weapon;
-	sf::Sprite shooteffect;
+
 
 	PilotWeapon(const std::string& textureId = "", const std::string& n = "");
 	virtual ~PilotWeapon() override { Release(); }
@@ -26,24 +27,11 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	virtual void SetGunFlipx(bool flipX) override;
-
 	virtual void SetType(Types t) override;
-	virtual Types GetWeaponType() override { return weaponType; }
-	virtual Bullet::Types GetBulletType() override { return bulletType; }
-
-	virtual void RequestReload() override { currentbulletcount = bulletcount; }
-	virtual void GetAmmunition() override { currentbulletmax = bulletmax; }
-
-	virtual int GetCurrentBulleCount() override { return currentbulletcount; }
-	virtual int GetRemainingAmmo() override { return bulletmax; }
-
-	virtual AnimationController* GetWeaponAnimation() override { return &gun; }
-
-	virtual float GetReloadTime()override { return reload; }
-	virtual float GetCurrentReloadTime()override { return reloadtick; }
 
 	virtual Item::Types GetItemType() { return itemtype; }
 	virtual Item::WAP GetItemWAP() { return wap; }
+
+
 };
 

@@ -258,3 +258,11 @@
 3,Animations/Objects/Shell1.csv
 3,Animations/Objects/Shell2.csv
 3,playercsv/Pilot/PilotInGungeon.csv
+3,Animations/Title.csv
+0,graphics/Title.png
+0,graphics/PlayerShotGun.png
+3,weapon/PlayerShotGunIdle.csv
+3,weapon/PlayerShotGunShoot.csv
+3,weapon/PlayerShotGunReload.csv
+0,graphics/PlayerShotGunButton.png
+0,graphics/PlayerShotGunSprite.png

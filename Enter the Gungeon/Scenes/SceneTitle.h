@@ -1,10 +1,26 @@
 #pragma once
 #include "Scene.h"
+#include "AnimationController.h"
 
 class SceneTitle :public Scene
 {
 protected:
 	
+	AnimationController animation;
+
+	sf::Sprite sprite;
+
+	sf::Text play;
+	sf::Text language;
+	sf::Text close;
+
+	//std::vector<int> selectedTextIndex;
+
+	int selectedTextIndex = 0;
+
+
+	sf::Color transparentColor;
+	sf::Color originalColor;
 
 public:
 	SceneTitle();

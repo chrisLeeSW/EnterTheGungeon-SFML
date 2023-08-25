@@ -152,7 +152,7 @@ void Pad::Update(float dt)
 			{
 				state = State::Reload;
 
-				gun.Play("Relode");
+				gun.Play("Reload");
 				reloadtick = 0.f;
 				isreload = true;
 			}
@@ -185,17 +185,7 @@ void Pad::Draw(sf::RenderWindow& window)
 	window.draw(gunend);
 }
 
-void Pad::SetGunFlipx(bool flipX)
-{
-	sf::Vector2f scale = sprite.getScale();
-	this->flipX = flipX;
-	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
-	sprite.setScale(scale);
 
-	//scale = shooteffect.getScale();
-	//scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
-	//shooteffect.setScale(scale);
-}
 
 void Pad::SetType(Types t)
 {

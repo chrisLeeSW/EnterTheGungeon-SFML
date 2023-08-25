@@ -8,7 +8,7 @@
 #include "Muzzle.h"
 
 //HaeJun
-#include "ShotGun.h"
+#include "EnemyShotGun.h"
 #include "ItemMgr.h"
 #include "Weapon.h"
 #include "Magnum.h"
@@ -126,15 +126,6 @@ void Enemy::Init()
 void Enemy::Reset()
 {
 	SpriteGo::Reset();
-	if (isHanded)
-	{
-		sf::Texture* tex = RESOURCE_MGR.GetTexture("graphics/BulletKin.png");
-		if (tex != nullptr)
-		{
-			hand.setTexture(*tex);
-			hand.setTextureRect({ 121, 16, 4, 4 });
-		}
-	}
 	{
 		sf::Texture* tex = RESOURCE_MGR.GetTexture("graphics/Shadow.png");
 		if (tex != nullptr)
@@ -149,7 +140,6 @@ void Enemy::Reset()
 	animation.Play("IdleDown");
 	SetFlipX(false);
 	SetOrigin(origin);
-	hand.setOrigin(sprite.getLocalBounds().width * 0.8f, sprite.getLocalBounds().height * 0.25f);
 
 	hp = maxHp;
 	attackTimer = attackInterval;
@@ -160,19 +150,19 @@ void Enemy::Reset()
 	switch (type)
 	{
 	case EnemyName::BulletKin:
-		magnum = (Magnum*)scene->AddGo(new Magnum());
-		magnum->SetEnemy(this);
+		weapon = (Magnum*)scene->AddGo(new Magnum());
+		weapon->SetEnemy(this);
 		break;
 	case EnemyName::KeyBulletKin:
 		state = Enemy::State::Runaway;
 		break;
 	case EnemyName::ShotgunKinRed:
-		shotgun = (ShotGun*)scene->AddGo(new ShotGun());
-		shotgun->SetEnemy(this);
+		weapon = (EnemyShotGun*)scene->AddGo(new EnemyShotGun());
+		weapon->SetEnemy(this);
 		break;
 	case EnemyName::ShotgunKinBlue:
-		winchester = (Winchester*)scene->AddGo(new Winchester());
-		winchester->SetEnemy(this);
+		weapon = (Winchester*)scene->AddGo(new Winchester());
+		weapon->SetEnemy(this);
 		break;
 	default:
 		break;
@@ -262,11 +252,12 @@ void Enemy::Update(float dt)
 			return;
 		}
 
-		if (attackTimer >= attackInterval)
+		if (attackTimer >= attackInterval && isShoot) //±èÇýÁØ Ãß°¡
 		{
 			attackTimer = 0.f;
 			if (IfShoot != nullptr)
 			{
+				
 				IfShoot(direction, speed); //ÃÑ¾Ë ¼Óµµ ÁöÁ¤ ÇÊ¿ä
 
 				// Animation
@@ -347,30 +338,24 @@ void Enemy::Update(float dt)
 			OnBump();
 		}
 	}
-	
-
-	
 }
 
 void Enemy::Draw(sf::RenderWindow& window)
 {
 	window.draw(shadow);
 	SpriteGo::Draw(window);
-	window.draw(hand);
 }
 
 void Enemy::SetPosition(const sf::Vector2f& p)
 {
 	shadow.setPosition(p);
 	SpriteGo::SetPosition(p);
-	hand.setPosition(p);
 }
 
 void Enemy::SetPosition(float x, float y)
 {
 	shadow.setPosition(x, y);
 	SpriteGo::SetPosition(x, y);
-	hand.setPosition(x, y);
 }
 
 void Enemy::SetFlipX(bool flip)
@@ -380,13 +365,6 @@ void Enemy::SetFlipX(bool flip)
 	sf::Vector2f scale = sprite.getScale();
 	scale.x = !flipX ? abs(scale.x) : -abs(scale.x);
 	sprite.setScale(scale);
-
-	if (isHanded)
-	{
-		sf::Vector2f scale = hand.getScale();
-		scale.x = !flipX ? abs(scale.x) : -abs(scale.x);
-		hand.setScale(scale);
-	}
 }
 
 const float& Enemy::GetHp()
@@ -500,8 +478,6 @@ void Enemy::OnDamage(float damage, sf::Vector2f dir, float knockback)
 		}
 
 		state = Enemy::State::Die;
-		isHanded = false;
-		hand.setColor(sf::Color::Transparent);
 		shadow.setColor(sf::Color::Transparent);
 		return;
 	}
@@ -611,7 +587,7 @@ void Enemy::OneShot(sf::Vector2f dir, float speed, bool isBlink) // pool¹ÝÈ¯ ÇÊ¿
 	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
 	EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
 	bullet->Shoot(dir, speed);
-	bullet->SetPosition(position);
+	bullet->SetPosition(weapon->GetGunPoint()); // ±èÇýÁØ Ãß°¡
 	bullet->SetBullet(isBlink);
 	bullet->SetPlayer(player);
 	bullet->Init();
@@ -625,7 +601,8 @@ void Enemy::AngleShot(sf::Vector2f dir, float speed, float angle, bool isBlink)
 	EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
 	dir = Utils::RotateVector(dir, angle);
 	bullet->Shoot(dir, speed);
-	bullet->SetPosition(position);
+	if(weapon != nullptr) // ±èÇýÁØ Ãß°¡
+	bullet->SetPosition(weapon->GetGunPoint());  // ±èÇýÁØ Ãß°¡
 	bullet->SetBullet(isBlink);
 	bullet->SetPlayer(player);
 	bullet->Init();

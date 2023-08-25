@@ -66,7 +66,7 @@ void EnemyBullet::Update(float dt)
 	//Player-BlnakBullet 
 	if (player->IsBlankBullet())
 	{
-		if (Utils::Distance(player->GetPosition(), GetPosition()) <= 150.f)
+		if (Utils::Distance(player->GetPosition(), GetPosition()) <= 350.f)
 		{
 			Scene* scene = SCENE_MGR.GetCurrScene();
 			scene->RemoveGo(this);

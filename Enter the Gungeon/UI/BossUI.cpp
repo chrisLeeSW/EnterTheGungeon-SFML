@@ -63,7 +63,7 @@ void BossUI::Reset()
 	if (font != nullptr)
 	{
 		name.setFont(*font);
-		name.setCharacterSize(10);
+		name.setCharacterSize(30);
 	}
 
 	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable »ç¿ë
@@ -76,6 +76,7 @@ void BossUI::Reset()
 	}
 
 	name.setString(bossname);
+	name.setScale(0.3f,0.3f);
 	SetOrigin(origin);
 	SetPosition(position);
 	hp = maxHp;

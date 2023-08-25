@@ -9,7 +9,6 @@
 
 class Player;
 class Bullet;
-class GameObject;
 class Enemy;
 
 class Weapon : public Item
@@ -23,8 +22,8 @@ public:
 		PrisonerWeapon,
 		Ak47,
 		Magnum,
-		ShotGun,
 		Pad,
+		ShotGun,
 	};
 
 	enum class State
@@ -37,11 +36,12 @@ public:
 
 protected:
 
-	//ºÒ¸´ Ç®¸µ
-
 	AnimationController gun;
 	AnimationController effect;
+
 	Player* player = nullptr;
+	Enemy* enemy = nullptr;
+
 	Types weaponType;
 	Bullet::Types bulletType;
 	float attackrate;
@@ -67,7 +67,7 @@ protected:
 
 	sf::Vector2f handPos;
 	sf::Vector2f gunPoint;
-
+	sf::Vector2f gunPos;
 	
 
 	sf::Vector2f gunOffset1;
@@ -75,15 +75,15 @@ protected:
 
 	SceneGame* sceneGame;
 
+	sf::Sprite shooteffect;
 
 
 public:
 
 	Weapon(const std::string& textureId = "", const std::string& n = "");
-	//Weapon(Types type);
 	virtual ~Weapon() override { Release(); }
 
-	virtual void Init() override;
+	virtual void Init()= 0;
 	virtual void Release() override;
 	virtual void Reset() override;
 
@@ -91,11 +91,12 @@ public:
 	virtual void Draw(sf::RenderWindow& window) override;
 
 	virtual void SetPlayer(Player* player);
-	virtual void Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir);
 	virtual void SetType(Types t);
-	virtual void SetGunFlipx(bool flip) = 0;
-	virtual Types GetWeaponType() = 0;
-	virtual Bullet::Types GetBulletType() = 0;
+
+	virtual void SetGunFlipx(bool flip);
+	virtual Types GetWeaponType() { return weaponType; }
+	virtual Bullet::Types GetBulletType() { return bulletType; }
+
 	virtual void RequestReload() { currentbulletcount = bulletcount; };
 	virtual void SwapWeapon();
 	virtual void GetAmmunition() { currentbulletmax = bulletmax; }
@@ -107,11 +108,12 @@ public:
 	virtual int GetCurrentRamainingAmmo() { return currentbulletmax; }
 
 
-	virtual sf::Vector2f Look();
+	virtual sf::Vector2f GetGunPoint() { return gunPoint; }
+
+
 	virtual void SetEnemy(Enemy* enemy);
 
 	virtual AnimationController* GetWeaponAnimation() { return &gun; }
 
 	virtual State GetWeaponState() { return state; }
-
 };

@@ -41,7 +41,6 @@ void Player::Init()
 			name = "Pilot/Pilot";
 			rollname = "Pilot/Pilot";
 			animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "InGungeon.csv"));
-
 			break;
 		case Types::Prisoner :
 			name = "Prisoner/Prisoner";
@@ -152,7 +151,6 @@ void Player::Update(float dt)
 
 		if (animation.AnimationEnd())
 		{
-
 			isChangeSceneGame = true;
 			isChangeScene = false;
 		}
@@ -235,10 +233,6 @@ void Player::Update(float dt)
 		hand->SetActive(false);
 	}
 
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F2))
-	{
-		hp == 1000;
-	}
 }
 
 void Player::Draw(sf::RenderWindow& window)
@@ -444,6 +438,8 @@ void Player::PlayerAct(float dt)
 	{
 		//GetItem(Passive::Types::PilotPassive);
 		GetItem(Weapon::Types::Pad);
+		GetItem(Weapon::Types::PrisonerWeapon);
+		GetItem(Weapon::Types::ShotGun);
 	}
 
 	if (isGame && INPUT_MGR.GetKeyDown(sf::Keyboard::Num8))

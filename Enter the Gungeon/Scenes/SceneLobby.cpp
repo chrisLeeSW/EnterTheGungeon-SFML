@@ -46,11 +46,11 @@ void SceneLobby::Init()
 
 	currentplayer = pilot;
 
+	doorCollisionBox.setSize({ 100.f,100.f });
 	doorCollisionBox.setFillColor(sf::Color::Transparent);
-	doorCollisionBox.setOutlineColor(sf::Color::White);
 	doorCollisionBox.setOutlineThickness(3);
-	doorCollisionBox.setSize({ 10.f,10.f });
-	doorCollisionBox.setPosition(elevator->sprite.getGlobalBounds().left + elevator->sprite.getGlobalBounds().width * 2.f, elevator->sprite.getGlobalBounds().top + sprite.getGlobalBounds().height);
+	doorCollisionBox.setOutlineColor(sf::Color::White);
+	doorCollisionBox.setPosition(elevator->sprite.getGlobalBounds().left + elevator->sprite.getGlobalBounds().width * 0.5f, elevator->sprite.getGlobalBounds().top + sprite.getGlobalBounds().height);
 
 	for (auto go : gameObjects)
 	{
@@ -127,7 +127,7 @@ void SceneLobby::Draw(sf::RenderWindow& window)
 
 	if(playerface)
 	window.draw(sprite);
-
+	window.setView(worldView);
 	window.draw(doorCollisionBox);
 }
 

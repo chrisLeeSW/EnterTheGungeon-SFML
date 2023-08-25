@@ -177,7 +177,7 @@
     <ClCompile Include="PlayerObjects\Item\Active\aBulletTime.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerObjects\Item\Weapon\ShotGun.cpp">
+    <ClCompile Include="PlayerObjects\Item\Weapon\EnemyShotGun.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Room.cpp">
@@ -214,6 +214,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PlayerObjects\Item\DisplayItem.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects\Item\Weapon\ShotGun.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -422,6 +425,9 @@
     <ClInclude Include="PlayerObjects\Item\DisplayItem.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerObjects\Item\Weapon\ShotGun.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -431,7 +437,7 @@
     <ClInclude Include="PlayerObjects\Item\Active\aBulletTime.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerObjects\Item\Weapon\ShotGun.h">
+    <ClInclude Include="PlayerObjects\Item\Weapon\EnemyShotGun.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

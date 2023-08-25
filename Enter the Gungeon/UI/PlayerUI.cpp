@@ -143,7 +143,7 @@ void PlayerUI::Update(float dt)
 
 	case Weapon::State::Reload :
 		if(INPUT_MGR.GetKeyDown(sf::Keyboard::R))
-		currentweapon.Play("Relode");
+		currentweapon.Play("Reload");
 		reload.setPosition(windowsize.x * 0.5f, windowsize.y * 0.4);
 
 		float reloadProgressRatio = playerweapon->GetCurrentReloadTime() / playerweapon->GetReloadTime();

@@ -1,5 +1,5 @@
 ID,FPS,LOOPTYPE,,
-Relode,10,0,,
+Reload,10,0,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
 graphics/Pad.png,28,91,18,17

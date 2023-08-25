@@ -53,7 +53,6 @@ void PilotWeapon::Release()
 
 void PilotWeapon::Reset()
 {
-	player = PLAYER_MGR.GetPlayer();
 
 }
 
@@ -68,12 +67,10 @@ void PilotWeapon::Update(float dt)
 		effect.Update(dt);
 
 
-		SetPosition(player->PlayerHandPos());
+
 
 		float angle = Utils::Angle(look);
 		sf::Vector2f gunOffset = Utils::RotateVector(gunOffset1, angle);
-
-		//이거 마우스인데 플레이어랑 몬스터 포지션 뺀걸 노멀라이즈해서 넣어야될듯
 		SetGunFlipx(player->GetFilpX());
 
 		if (flipX)
@@ -120,7 +117,7 @@ void PilotWeapon::Update(float dt)
 			{
 				state = State::Reload;
 
-				gun.Play("Relode");
+				gun.Play("Reload");
 				reloadtick = 0.f;
 				isreload = true;
 			}
@@ -152,19 +149,6 @@ void PilotWeapon::Draw(sf::RenderWindow& window)
 	window.draw(gunend);
 }
 
-void PilotWeapon::SetGunFlipx(bool flipX)
-{
-
-	sf::Vector2f scale = sprite.getScale();
-	this->flipX = flipX;
-	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
-	sprite.setScale(scale);
-
-	scale = shooteffect.getScale();
-	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
-	shooteffect.setScale(scale);
-
-}
 
 
 void PilotWeapon::SetType(Types t)
@@ -179,3 +163,4 @@ void PilotWeapon::SetType(Types t)
 	reload = info->reload;
 	santan = info->santan;
 }
+

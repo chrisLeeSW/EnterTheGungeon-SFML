@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ItemButton.h"
 #include "SceneMgr.h"
+#include "StringTable.h"
+#include "DataTableMgr.h"
 
 ItemButton::ItemButton(const std::string& n)
 	:GameObject(n)
@@ -20,13 +22,20 @@ void ItemButton::Init()
 		nametext.setFont(*font);
 	}
 
-	manualtext.setCharacterSize(textsize);
-	manualtext.setString(manual);
+	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable »ç¿ë
+
+	std::string name;
+
+
+	name = table->Get(manual);
+	manualtext.setCharacterSize(textsize * 3.f);
+	manualtext.setString(name);
 	manualtext.setPosition(manualpos);
 	manualtext.setFillColor(sf::Color::White);
 
-	nametext.setCharacterSize(namesize);
-	nametext.setString(itemname);
+	name = table->Get(itemname);
+	nametext.setCharacterSize(namesize * 3.f);
+	nametext.setString(name);
 	nametext.setPosition(namepos);
 	nametext.setFillColor(sf::Color::Black);
 
@@ -35,6 +44,7 @@ void ItemButton::Init()
 	{
 		sprite.setTexture(*tex);
 	}
+
 	Utils::SetOrigin(sprite, Origins::MC);
 
 	tex = RESOURCE_MGR.GetTexture(itemspriteId);
@@ -46,9 +56,10 @@ void ItemButton::Init()
 
 	Utils::SetOrigin(nametext,Origins::MC);
 	Utils::SetOrigin(manualtext, Origins::MC);
-	Utils::SetOrigin(itemsprite, Origins::MC);
+	Utils::SetOrigin(itemsprite, Origins::MC); 
 
-
+	nametext.setScale(0.3f,0.3f);
+	manualtext.setScale(0.3f, 0.3f);
 
 	isHover = false;
 }

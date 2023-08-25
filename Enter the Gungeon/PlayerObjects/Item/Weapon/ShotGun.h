@@ -1,36 +1,17 @@
 #pragma once
 #include "Weapon.h"
-#include "AnimationController.h"
-#include "Bullet.h"
 
-class Enemy;
 
 class ShotGun : public Weapon
 {
 
 protected:
 
-	Player* player = nullptr;
-	Enemy* enemy = nullptr;
-
-	Types weaponType;
-	Bullet::Types bulletType;
-	float attackrate;
-	int bulletcount;
-	int bulletmax;
-	float reload;
-	int santan;
-
-	bool flipX = false;
-
-	AnimationController gun;
-	AnimationController shootEffect;
-
-	float WeaponXpos = 9.f;
-
-	sf::RectangleShape gunend;
 
 public:
+
+	Item::Types itemtype = Item::Types::ShotGun;
+	Item::WAP wap = Item::WAP::Weapon;
 
 	ShotGun(const std::string& textureId = "", const std::string& n = "");
 	virtual ~ShotGun() override { Release(); }
@@ -42,11 +23,9 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	virtual void SetGunFlipx(bool flipX) override;
+	virtual void SetType(Types t) override;
 
-	virtual Types GetWeaponType() override { return weaponType; }
-	virtual void SetType(Types type) override;
-	virtual Bullet::Types GetBulletType() override { return bulletType; }
+	virtual Item::Types GetItemType() { return itemtype; }
+	virtual Item::WAP GetItemWAP() { return wap; }
 
-	virtual void SetEnemy(Enemy* enemy) override { this->enemy = enemy; }
 };

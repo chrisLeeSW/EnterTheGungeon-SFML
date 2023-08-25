@@ -40,7 +40,7 @@ void Book::Init()
 	activeline = {windowsize.x * 0.45f, sprite.getPosition().y * 1.1f};
 
 
-	sf::Font* font = RESOURCE_MGR.GetFont("fonts/AurulentSansMono-Regular.otf");
+	sf::Font* font = RESOURCE_MGR.GetFont("fonts/PF.ttf");
 
 
 
@@ -83,11 +83,11 @@ void Book::Reset()
 
 	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable »ç¿ë
 
-	std::string name;
+	std::wstring name;
 
-	textweapon.setString(name = table->Get("WEAPON"));
-	textactvie.setString(name = table->Get("ACTIVE"));
-	textpassive.setString(name = table->Get("PASSIVE"));
+	textweapon.setString(name = table->GetW("WEAPON"));
+	textactvie.setString(name = table->GetW("ACTIVE"));
+	textpassive.setString(name = table->GetW("PASSIVE"));
 
 	Utils::SetOrigin(textpassive, Origins::BC);
 	Utils::SetOrigin(textweapon, Origins::BC);

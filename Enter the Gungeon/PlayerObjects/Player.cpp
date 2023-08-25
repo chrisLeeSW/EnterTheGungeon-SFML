@@ -40,6 +40,7 @@ void Player::Init()
 		case Types::Pilot :
 			name = "Pilot/Pilot";
 			rollname = "Pilot/Pilot";
+			animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "InGungeon.csv"));
 			break;
 		case Types::Prisoner :
 			name = "Prisoner/Prisoner";
@@ -134,8 +135,8 @@ void Player::Reset()
 
 void Player::Update(float dt)
 {
-	//if (PLAYER_MGR.IsPause())
-		//return;
+	if (PLAYER_MGR.IsPause())
+		return;
 
 
 	SetOrigin(Origins::BC);
@@ -143,7 +144,19 @@ void Player::Update(float dt)
 
 	effect -= dt;
 
-	if(isAlive)
+	if (isChangeScene)
+	{
+		if(animation.GetCurrentClipId() != "InGungeon")
+			animation.Play("InGungeon");
+
+		if (animation.AnimationEnd())
+		{
+			isChangeSceneGame = true;
+			isChangeScene = false;
+		}
+	}
+
+	if(isAlive && !isChangeScene)
 	{
 		BlankBullet(dt);
 
@@ -220,10 +233,6 @@ void Player::Update(float dt)
 		hand->SetActive(false);
 	}
 
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F2))
-	{
-		hp == 1000;
-	}
 }
 
 void Player::Draw(sf::RenderWindow& window)
@@ -429,6 +438,8 @@ void Player::PlayerAct(float dt)
 	{
 		//GetItem(Passive::Types::PilotPassive);
 		GetItem(Weapon::Types::Pad);
+		GetItem(Weapon::Types::PrisonerWeapon);
+		GetItem(Weapon::Types::ShotGun);
 	}
 
 	if (isGame && INPUT_MGR.GetKeyDown(sf::Keyboard::Num8))
@@ -578,15 +589,16 @@ const sf::Vector2f& Player::GetDirection() const
 	return direction;
 }
 
-void Player::Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir)
+void Player::Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir, float santan)
 {
 	bullet = poolBullets.Get();
-	bullet->SetBullet(type, pos, dir);
+	bullet->SetBullet(type, pos, dir, santan);
 
 	if (sceneGame != nullptr)
 	{
 		bullet->SetEnemy(WEAPON_MGR.GetEnemyList());
 		sceneGame->AddGo(bullet);
+		playerUI->ShootWeapon();
 	}
 }
 
@@ -608,6 +620,7 @@ void Player::SwapWeapon()
 				--temp;
 				currentIndex = temp;
 				playerUI->CurrentWeapon(weaponList[currentIndex]);
+				playerUI->SwapWeaponText();
 			}
 		}
 	}

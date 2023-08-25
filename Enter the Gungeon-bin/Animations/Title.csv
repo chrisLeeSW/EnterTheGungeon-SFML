@@ -1,0 +1,8 @@
+ID,FPS,LOOPTYPE,,
+Title,5,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Title.png,0,0,1200,799
+graphics/Title.png,1200,0,1200,799
+graphics/Title.png,2400,0,1200,799
+graphics/Title.png,3600,0,1200,799

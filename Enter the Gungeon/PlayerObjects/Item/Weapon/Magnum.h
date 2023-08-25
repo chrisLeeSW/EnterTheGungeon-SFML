@@ -13,27 +13,7 @@ class Magnum : public Weapon
 
 protected:
 
-	Player* player = nullptr;
-	Enemy* enemy = nullptr;
 
-	Types weaponType;
-	Bullet::Types bulletType;
-	float attackrate;
-	int bulletcount;
-	int bulletmax;
-	float reload;
-	int santan;
-
-
-
-	bool flipX = false;
-
-	AnimationController gun;
-	AnimationController shootEffect;
-
-	float WeaponXpos = 9.f;
-
-	sf::RectangleShape gunend;
 
 public:
 
@@ -49,11 +29,7 @@ public:
 
 	virtual void SetGunFlipx(bool flipX) override;
 
-	virtual Types GetWeaponType() override { return weaponType; }
-	virtual void SetType(Types type) override;
-	virtual Bullet::Types GetBulletType() override { return bulletType; }
 
-	virtual void SetEnemy(Enemy* enemy) override;
 
 };
 

@@ -43,6 +43,8 @@ protected:
 
 	sf::Sprite sprite;
 
+	sf::RectangleShape doorCollisionBox;
+
 public:
 	SceneLobby();
 	virtual ~SceneLobby() override = default;

@@ -10,7 +10,6 @@
 
 Magnum::Magnum(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
 {
-	SetType(Types::Magnum);
 
 
 	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/MagnumIdle.csv"));
@@ -22,15 +21,15 @@ Magnum::Magnum(const std::string& textureId, const std::string& n) : Weapon(text
 
 	gun.Play("Idle");
 
-
-	//SetScale(0.5f,0.5f);
-
 	gunend.setFillColor(sf::Color::Transparent);
 	gunend.setOutlineColor(sf::Color::Red);
 	gunend.setOutlineThickness(1.f);
 	gunend.setSize(sf::Vector2f{ 5,5 });
 
+	sortLayer = -1;
 
+	gunOffset1 = { sprite.getGlobalBounds().width, -sprite.getGlobalBounds().height + 4 };
+	gunOffset2 = { sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - 4 };
 
 }
 
@@ -51,14 +50,13 @@ void Magnum::Reset()
 void Magnum::Update(float dt)
 {
 	gun.Update(dt);
-	SetPosition(enemy->GetPosition());
 	SetOrigin(Origins::BL);
+	SetPosition(enemy->GetPosition() + gunPos);
 
-	float angle = Utils::Angle(look);
+	float angle = Utils::Angle(monsterlook);
 	sf::Vector2f gunOffset = Utils::RotateVector(gunOffset1, angle);
 
-	look = Utils::Normalize(player->GetPosition() - enemy->GetPosition());
-
+	monsterlook = Utils::Normalize(player->GetPosition() - enemy->GetPosition());
 
 	SetGunFlipx(!enemy->GetFlipX());
 
@@ -69,12 +67,31 @@ void Magnum::Update(float dt)
 	}
 	sprite.setRotation(angle);
 
-	//SetGunFlipx(player->GetFilpX());
-
 
 	gunend.setPosition(gunPoint);
-	gunPoint = enemy->GetPosition();
+	gunPoint = enemy->GetPosition() + gunPos;
 	gunPoint += gunOffset;
+
+
+	if (enemy->GetEnemyState() == Enemy::State::Attack)
+	{
+		if (gun.GetCurrentClipId() != "Shoot")
+		{
+			gun.Play("Shoot");
+		}
+
+		if (gun.GetCurFrame() == 5)
+		{
+			state = Weapon::State::Shoot;
+			enemy->SetIsShoot(true);
+		}
+	}
+	else
+	{
+		gun.Play("Idle");
+		state = Weapon::State::Idle;
+		enemy->SetIsShoot(false);
+	}
 
 }
 
@@ -90,23 +107,6 @@ void Magnum::SetGunFlipx(bool flipX)
 	this->flipX = flipX;
 	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
 	sprite.setScale(scale);
-}
 
-void Magnum::SetType(Weapon::Types t)
-{
-	const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
-
-	weaponType = (Types)info->weaponType;
-	bulletType = (Bullet::Types)info->bulletType;
-	attackrate = info->attackrate;
-	bulletcount = info->bulletcount;
-	bulletmax = info->bulletmax;
-	reload = info->reload;
-	santan = info->santan;
-}
-
-void Magnum::SetEnemy(Enemy* enemy)
-{
-	this->enemy = enemy;
-	sprite.setOrigin(this->enemy->GetHandOrigin().x, this->enemy->GetHandOrigin().y);
+	gunPos.x = !this->flipX ? abs(gunPos.x) : -abs(gunPos.x);
 }

@@ -5,18 +5,17 @@
 
 class Enemy;
 
-class Winchester : public Weapon
+class EnemyShotGun : public Weapon
 {
 
 protected:
 
 
 
-
 public:
 
-	Winchester(const std::string& textureId = "", const std::string& n = "");
-	virtual ~Winchester() override { Release(); }
+	EnemyShotGun(const std::string& textureId = "", const std::string& n = "");
+	virtual ~EnemyShotGun() override { Release(); }
 
 	virtual void Init() override;
 	virtual void Release() override;
@@ -27,6 +26,8 @@ public:
 
 	virtual void SetGunFlipx(bool flipX) override;
 
-	virtual void SetType(Types type) override;
+	virtual Types GetWeaponType() override { return weaponType; }
+	virtual Bullet::Types GetBulletType() override { return bulletType; }
 
+	virtual void SetEnemy(Enemy* enemy) override { this->enemy = enemy; }
 };

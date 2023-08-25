@@ -14,6 +14,7 @@
 #include "WeaponMgr.h"
 #include "aBulletTime.h"
 #include "ShotGun.h"
+//#include "EnemyShotGun.h"
 
 void ItemMgr::Init()
 {
@@ -23,12 +24,10 @@ void ItemMgr::Init()
 	PrisonerPassive* prisonerPassive = new PrisonerPassive();
 	PilotWeapon* pilotWeapon = new PilotWeapon();
 	PrisonerWeapon* prisonerWeapon = new PrisonerWeapon();
-	Magnum* magnum = new Magnum();
 	aBulletTime* abulletTime = new aBulletTime();
 	ShotGun* shotgun = new ShotGun();
 	Pad* pad = new Pad();
 
-	mapWeapon.insert({ Weapon::Types::Magnum,magnum });
 	mapWeapon.insert({ Weapon::Types::PilotWeapon,pilotWeapon });
 	mapWeapon.insert({ Weapon::Types::PrisonerWeapon,prisonerWeapon });
 	mapWeapon.insert({ Weapon::Types::ShotGun, shotgun });

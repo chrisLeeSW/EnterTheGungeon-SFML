@@ -156,6 +156,7 @@
     <ClCompile Include="PlayerObjects\Item\Chest.cpp" />
     <ClCompile Include="GameObjects\Npc.cpp" />
     <ClCompile Include="PlayerObjects\Item\DisplayItem.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Weapon\ShotGun.cpp" />
     <ClCompile Include="UI\BossUI.cpp" />
     <ClCompile Include="DataTables\ButtonTable.cpp" />
     <ClCompile Include="PlayerObjects\ItemButton.cpp" />
@@ -223,7 +224,7 @@
     <ClCompile Include="Framework\UiButton.cpp" />
     <ClCompile Include="PlayerObjects\Item\Item.cpp" />
     <ClCompile Include="Scenes\TestRom.cpp" />
-    <ClCompile Include="PlayerObjects\Item\Weapon\ShotGun.cpp" />
+    <ClCompile Include="PlayerObjects\Item\Weapon\EnemyShotGun.cpp" />
     <ClCompile Include="UI\PlayerUI.cpp" />
     <ClCompile Include="UI\TextBox.cpp" />
     <ClCompile Include="Map\TileMap.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="PlayerObjects\Item\Chest.h" />
     <ClInclude Include="GameObjects\Npc.h" />
     <ClInclude Include="PlayerObjects\Item\DisplayItem.h" />
+    <ClInclude Include="PlayerObjects\Item\Weapon\ShotGun.h" />
     <ClInclude Include="UI\BossUI.h" />
     <ClInclude Include="DataTables\ButtonTable.h" />
     <ClInclude Include="PlayerObjects\ItemButton.h" />
@@ -293,7 +295,7 @@
     <ClInclude Include="GameObjects\SpriteGo.h" />
     <ClInclude Include="Scenes\SceneTitle.h" />
     <ClInclude Include="PlayerObjects\Item\Item.h" />
-    <ClInclude Include="PlayerObjects\Item\Weapon\ShotGun.h" />
+    <ClInclude Include="PlayerObjects\Item\Weapon\EnemyShotGun.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Global\Variables.h" />
     <ClInclude Include="GameObjects\TextGo.h" />

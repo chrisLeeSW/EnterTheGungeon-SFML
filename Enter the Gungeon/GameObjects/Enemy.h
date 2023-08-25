@@ -8,6 +8,8 @@ class Player;
 class ShotGun;
 class Magnum;
 class Winchester;
+class Weapon;
+
 
 class Enemy : public SpriteGo
 {
@@ -52,7 +54,6 @@ protected:
 	float speed = 0.f;
 	float maxHp = 0.f;
 	float hp = 0.f;
-	bool isHanded = false;
 	bool flipX = false;
 	float attackRange = 0.f;
 	float attackInterval = 0.f;
@@ -62,12 +63,10 @@ protected:
 	int patternCount = 0;
 
 	//Enemy Weapon - ±Ë«˝¡ÿ √ﬂ∞°
-	ShotGun* shotgun;
-	Magnum* magnum;
-	Winchester* winchester;
+	Weapon* weapon;
+	bool isShoot = true;
 
 	Player* player;
-	sf::Sprite hand;
 	sf::Sprite shadow;
 	EnemyName type;
 	Enemy::State state;
@@ -88,7 +87,8 @@ public:
 
 	//±Ë«˝¡ÿ √ﬂ∞°
 	bool GetFlipX() { return flipX; }
-	sf::Vector2f GetHandOrigin() { return sf::Vector2f(sprite.getLocalBounds().width * 0.8f, sprite.getLocalBounds().height * 0.25f); }
+	Enemy::State GetEnemyState() { return state; }
+	void SetIsShoot(bool shoot) { isShoot = shoot; }
 
 	const float& GetHp();
 

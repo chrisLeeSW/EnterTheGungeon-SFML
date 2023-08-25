@@ -11,7 +11,7 @@
 #include "PlayerMgr.h"
 #include "DataTableMgr.h"
 #include "ButtonTable.h"
-
+#include "StringTable.h"
 
 Book::Book(const std::string& textureId, const std::string& n) : SpriteGo(textureId, n)
 {
@@ -42,30 +42,33 @@ void Book::Init()
 
 	sf::Font* font = RESOURCE_MGR.GetFont("fonts/AurulentSansMono-Regular.otf");
 
+
+
+
 	textweapon.setFont(*font);
 	textactvie.setFont(*font);
 	textpassive.setFont(*font);
 	textweapon.setFillColor(sf::Color::White);
 	textactvie.setFillColor(sf::Color::White);
 	textpassive.setFillColor(sf::Color::White);
-	textweapon.setCharacterSize(10);
-	textactvie.setCharacterSize(10);
-	textpassive.setCharacterSize(10);
+	textweapon.setCharacterSize(30);
+	textactvie.setCharacterSize(30);
+	textpassive.setCharacterSize(30);
 	textweapon.setPosition(200, 87.5f);
 	textactvie.setPosition(200, 145);
 	textpassive.setPosition(200, 200);
-	textweapon.setString("Weapon");
-	textactvie.setString("Active");
-	textpassive.setString("Passive");
 
-	Utils::SetOrigin(textpassive, Origins::BC);
-	Utils::SetOrigin(textweapon, Origins::BC);
-	Utils::SetOrigin(textactvie, Origins::BC);
+
+
 
 
 	black.setFillColor(sf::Color::Black);
 	black.setSize(windowsize);
 	black.setOrigin(0,0);
+
+	textweapon.setScale(0.3f, 0.3f);
+	textactvie.setScale(0.3f, 0.3f);
+	textpassive.setScale(0.3f, 0.3f);
 
 }
 
@@ -78,6 +81,17 @@ void Book::Reset()
 	SpriteGo::Reset();
 	player = PLAYER_MGR.GetPlayer();
 
+	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable »ç¿ë
+
+	std::string name;
+
+	textweapon.setString(name = table->Get("WEAPON"));
+	textactvie.setString(name = table->Get("ACTIVE"));
+	textpassive.setString(name = table->Get("PASSIVE"));
+
+	Utils::SetOrigin(textpassive, Origins::BC);
+	Utils::SetOrigin(textweapon, Origins::BC);
+	Utils::SetOrigin(textactvie, Origins::BC);
 }
 
 void Book::Update(float dt)
@@ -132,7 +146,6 @@ void Book::Draw(sf::RenderWindow& window)
 	{
 		window.draw(black);
 		SpriteGo::Draw(window);
-
 	}
 
 	if(isBookOpen)
@@ -156,7 +169,6 @@ void Book::Draw(sf::RenderWindow& window)
 		window.draw(textweapon);
 	}
 }
-
 void Book::GetItem(Item::Types t, Item::WAP w)
 {
 

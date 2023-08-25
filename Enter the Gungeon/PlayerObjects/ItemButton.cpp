@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ItemButton.h"
 #include "SceneMgr.h"
+#include "StringTable.h"
+#include "DataTableMgr.h"
 
 ItemButton::ItemButton(const std::string& n)
 	:GameObject(n)
@@ -20,13 +22,20 @@ void ItemButton::Init()
 		nametext.setFont(*font);
 	}
 
-	manualtext.setCharacterSize(textsize);
-	manualtext.setString(manual);
+	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable 사용
+
+	std::string name;
+
+
+	name = table->Get(manual);
+	manualtext.setCharacterSize(textsize * 3.f);
+	manualtext.setString(name);
 	manualtext.setPosition(manualpos);
 	manualtext.setFillColor(sf::Color::White);
 
-	nametext.setCharacterSize(namesize);
-	nametext.setString(itemname);
+	name = table->Get(itemname);
+	nametext.setCharacterSize(namesize * 3.f);
+	nametext.setString(name);
 	nametext.setPosition(namepos);
 	nametext.setFillColor(sf::Color::Black);
 
@@ -35,6 +44,7 @@ void ItemButton::Init()
 	{
 		sprite.setTexture(*tex);
 	}
+
 	Utils::SetOrigin(sprite, Origins::MC);
 
 	tex = RESOURCE_MGR.GetTexture(itemspriteId);
@@ -46,16 +56,12 @@ void ItemButton::Init()
 
 	Utils::SetOrigin(nametext,Origins::MC);
 	Utils::SetOrigin(manualtext, Origins::MC);
-	Utils::SetOrigin(itemsprite, Origins::MC);
+	Utils::SetOrigin(itemsprite, Origins::MC); 
 
-
+	nametext.setScale(0.3f,0.3f);
+	manualtext.setScale(0.3f, 0.3f);
 
 	isHover = false;
-
-	std::cout << "아이템 버튼 리셋" << std::endl;
-	std::cout << "폰트 아이디 : " << fontId << std::endl;
-	std::cout << "텍스쳐 아이디 : " << textureId << std::endl;
-	std::cout << "아이템 스프라이트 아이디 : " << itemspriteId << std::endl;
 }
 
 void ItemButton::Release()
@@ -80,22 +86,10 @@ void ItemButton::Update(float dt)
 	bool prevHover = isHover;
 	isHover = sprite.getGlobalBounds().contains(uiMousePos);
 
-	if (!prevHover && isHover)
-	{
-		if (OnEnter != nullptr)
-			OnEnter();
-	}
-	if (prevHover && !isHover)
-	{
-		if (OnExit != nullptr)
-			OnExit();
-	}
 	if (isHover && INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
 	{
 		book->SetCurrentClickButton(this);
 		isClickButton = true;
-		if (OnClick != nullptr)
-			OnClick();
 	}
 }
 

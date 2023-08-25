@@ -31,6 +31,8 @@ void Weapon::Update(float dt)
 	if (PLAYER_MGR.IsPause())
 		return;
 
+	SetPosition(player->PlayerHandPos());
+
 	mousePos = INPUT_MGR.GetMousePos();
 	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrScene()->ScreenToWorldPos(mousePos);
 	sf::Vector2f playerScreenPos = SCENE_MGR.GetCurrScene()->WorldPosToScreen(position);
@@ -41,16 +43,13 @@ void Weapon::Update(float dt)
 
 void Weapon::Draw(sf::RenderWindow& window)
 {
-
+	if (!player->isRolling())
+		SpriteGo::Draw(window);
+	window.draw(gunend);
 }
 
 
 void Weapon::SetPlayer(Player* player)
-{
-
-}
-
-void Weapon::Shoot(Bullet::Types type, sf::Vector2f pos, sf::Vector2f dir)
 {
 
 }
@@ -60,17 +59,28 @@ void Weapon::SetType(Types t)
 
 }
 
+void Weapon::SetGunFlipx(bool flip)
+{
+	sf::Vector2f scale = sprite.getScale();
+	this->flipX = flip;
+	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
+	sprite.setScale(scale);
+
+	scale = shooteffect.getScale();
+	scale.x = !this->flipX ? abs(scale.x) : -abs(scale.x);
+	shooteffect.setScale(scale);
+}
+
 void Weapon::SwapWeapon()
 {
 	
 }
 
-sf::Vector2f Weapon::Look()
-{
-	return look;
-}
 
 void Weapon::SetEnemy(Enemy* enemy)
 {
+	this->enemy = enemy;
+
+	gunPos = { enemy->sprite.getLocalBounds().width * 0.5f, -enemy->sprite.getLocalBounds().height * 0.3f };
 }
 

@@ -1,5 +1,5 @@
 ID,FPS,LOOPTYPE,,
-Reload,1,1,,
+Idle,1,0,,
 ,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
-graphics/PilotWeapon.png,25,46,13,11
+graphics/PlayerShotGun.png,4,33,16,5

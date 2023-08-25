@@ -77,25 +77,29 @@ PlayerUI::PlayerUI(Player* player, const std::string& textureId, const std::stri
 	currentkey.setFillColor(sf::Color::White);
 	currentkey.setCharacterSize(15);
 	currentkey.setPosition(20, 45);
-	currentkey.setString(std::to_string(player->GetMoney()));
+	currentkey.setString(std::to_string(player->GetKey()));
 
 	currentMagazine.setFont(*font);
-	remainingAmmo.setFont(*font);
 	currentMagazine.setFillColor(sf::Color::White);
-	remainingAmmo.setFillColor(sf::Color::White);
-	currentMagazine.setCharacterSize(15);
-	remainingAmmo.setCharacterSize(15);
-	currentMagazine.setPosition(weaponBox.getPosition());
-	remainingAmmo.setPosition(weaponBox.getPosition());
+	currentMagazine.setCharacterSize(10);
+	currentMagazine.setPosition(weaponBox.getGlobalBounds().left + weaponBox.getGlobalBounds().width, weaponBox.getGlobalBounds().top + weaponBox.getGlobalBounds().height / 2);
 	currentMagazine.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentBulleCount()));
+
+	remainingAmmo.setFont(*font);
+	remainingAmmo.setFillColor(sf::Color::White);
+	remainingAmmo.setCharacterSize(9);
+	remainingAmmo.setPosition(weaponBox.getPosition().x, weaponBox.getGlobalBounds().top);
 	remainingAmmo.setString(std::to_string(player->GetCurrenWeapon()->GetRemainingAmmo()));
 	
 	remainingAmmoMax.setFont(*font);
 	remainingAmmoMax.setFillColor(sf::Color::White);
-	remainingAmmoMax.setCharacterSize(15);
-	remainingAmmoMax.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentRamainingAmmo()));
+	remainingAmmoMax.setCharacterSize(9);
+	remainingAmmoMax.setPosition(remainingAmmo.getGlobalBounds().left + remainingAmmo.getGlobalBounds().width, weaponBox.getGlobalBounds().top + 2);
+	remainingAmmoMax.setString("/" + std::to_string(player->GetCurrenWeapon()->GetCurrentRamainingAmmo()));
 
-
+	Utils::SetOrigin(remainingAmmo, Origins::BL);
+	Utils::SetOrigin(remainingAmmoMax, Origins::BL);
+	Utils::SetOrigin(currentMagazine, Origins::ML);
 }
 
 void PlayerUI::Init()
@@ -139,7 +143,7 @@ void PlayerUI::Update(float dt)
 
 	case Weapon::State::Reload :
 		if(INPUT_MGR.GetKeyDown(sf::Keyboard::R))
-		currentweapon.Play("Relode");
+		currentweapon.Play("Reload");
 		reload.setPosition(windowsize.x * 0.5f, windowsize.y * 0.4);
 
 		float reloadProgressRatio = playerweapon->GetCurrentReloadTime() / playerweapon->GetReloadTime();
@@ -174,7 +178,7 @@ void PlayerUI::Draw(sf::RenderWindow& window)
 	window.draw(currentkey);
 	window.draw(currentMagazine);
 	window.draw(remainingAmmo);
-
+	window.draw(remainingAmmoMax);
 
 
 
@@ -277,14 +281,15 @@ void PlayerUI::RenewKey()
 	currentkey.setString(std::to_string(player->GetKey()));
 }
 
-void PlayerUI::GetCurrentMagazine()
+void PlayerUI::ShootWeapon()
 {
 	currentMagazine.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentBulleCount()));
-	remainingAmmo.setString(std::to_string(player->GetCurrenWeapon()->GetRemainingAmmo()));
+	remainingAmmo.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentRamainingAmmo()));
 }
 
-void PlayerUI::GetCurrentRemainingAmmo()
+void PlayerUI::SwapWeaponText()
 {
 	currentMagazine.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentBulleCount()));
-	remainingAmmo.setString(std::to_string(player->GetCurrenWeapon()->GetRemainingAmmo()));
+	remainingAmmo.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentRamainingAmmo()));
+	remainingAmmoMax.setString("/" + std::to_string(player->GetCurrenWeapon()->GetRemainingAmmo()));
 }

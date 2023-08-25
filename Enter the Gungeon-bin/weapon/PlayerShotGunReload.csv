@@ -1,0 +1,10 @@
+ID,FPS,LOOPTYPE,,
+Reload,8,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/PlayerShotGun.png,2,3,13,12
+graphics/PlayerShotGun.png,21,1,5,15
+graphics/PlayerShotGun.png,32,2,5,15
+graphics/PlayerShotGun.png,43,2,5,16
+graphics/PlayerShotGun.png,52,2,5,15
+graphics/PlayerShotGun.png,64,4,13,12

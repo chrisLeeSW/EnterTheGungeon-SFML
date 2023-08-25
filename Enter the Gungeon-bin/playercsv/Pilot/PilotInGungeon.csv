@@ -1,0 +1,14 @@
+ID,FPS,LOOPTYPE,,
+InGungeon,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Pilot.png,185,552,15,21
+graphics/Pilot.png,202,552,13,21
+graphics/Pilot.png,217,552,13,21
+graphics/Pilot.png,232,552,11,21
+graphics/Pilot.png,245,552,11,21
+graphics/Pilot.png,258,552,11,21
+graphics/Pilot.png,271,552,8,21
+graphics/Pilot.png,282,552,6,21
+graphics/Pilot.png,290,552,5,21
+graphics/Pilot.png,297,552,3,21

@@ -28,6 +28,7 @@ public:
         PrisonerActive,
         Pad,
         BulletTime,
+        ShotGun,
     };
 
 

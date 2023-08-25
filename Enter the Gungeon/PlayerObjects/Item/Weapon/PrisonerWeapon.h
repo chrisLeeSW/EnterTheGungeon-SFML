@@ -9,29 +9,6 @@ class PrisonerWeapon : public Weapon
 {
 protected:
 
-	Player* player = nullptr;
-
-	Types weaponType;
-	Bullet::Types bulletType;
-	float attackrate;
-	int bulletcount;
-	int bulletmax;
-	int currentbulletcount;
-	float reload;
-	int santan;
-	float tick;
-
-	float reloadtick;
-
-	bool isreload = false;
-	bool flipX = false;
-
-	AnimationController gun;
-	AnimationController shootEffect;
-
-	float WeaponXpos = 9.f;
-
-	sf::RectangleShape gunend;
 
 public:
 
@@ -48,16 +25,7 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	virtual void SetGunFlipx(bool flip) override;
-
-	virtual void SetType(Types t);
-
-	virtual Types GetWeaponType() override { return weaponType; }
-	virtual Bullet::Types GetBulletType() override { return bulletType; }
-
-	virtual void RequestReload() override { currentbulletcount = bulletcount; }
-
-	virtual AnimationController* GetWeaponAnimation() override { return &gun; }
+	virtual void SetType(Types t) override;
 
 	virtual Item::Types GetItemType() { return itemtype; }
 	virtual Item::WAP GetItemWAP() { return wap; }

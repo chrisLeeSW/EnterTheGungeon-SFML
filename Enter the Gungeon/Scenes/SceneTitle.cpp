@@ -53,10 +53,10 @@ void SceneTitle::Init()
 	
 	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable 사용
 
-	std::string name;
+	std::wstring name;
 
 
-	sf::Font* font = RESOURCE_MGR.GetFont("fonts/AurulentSansMono-Regular.otf");
+	sf::Font* font = RESOURCE_MGR.GetFont("fonts/PF.ttf");
 
 	if (font != nullptr)
 	{
@@ -68,11 +68,11 @@ void SceneTitle::Init()
 		close.setCharacterSize(20);
 	}
 
-	name = table->Get("PLAY");
+	name = table->GetW("PLAY");
 	play.setString(name);
-	name = table->Get("LANGUAGE");
+	name = table->GetW("LANGUAGE");
 	language.setString(name);
-	name = table->Get("CLOSE");
+	name = table->GetW("CLOSE");
 	close.setString(name);
 
 	transparentColor = sf::Color(255, 255, 255, 158);
@@ -173,11 +173,11 @@ void SceneTitle::Update(float dt)
 		}
 
 		StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable 사용
-		std::string name = table->Get("PLAY");
+		std::wstring name = table->GetW("PLAY");
 		play.setString(name);
-		name = table->Get("LANGUAGE");
+		name = table->GetW("LANGUAGE");
 		language.setString(name);
-		name = table->Get("CLOSE");
+		name = table->GetW("CLOSE");
 		close.setString(name);
 		
 	}

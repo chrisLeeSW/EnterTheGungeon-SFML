@@ -64,42 +64,51 @@ PlayerUI::PlayerUI(Player* player, const std::string& textureId, const std::stri
 	Utils::SetOrigin(weaponBox, Origins::TL);
 	Utils::SetOrigin(activeBox, Origins::TL);
 
-	sf::Font* font = RESOURCE_MGR.GetFont("fonts/AurulentSansMono-Regular.otf");
+	currentMagazine.setScale(0.3f, 0.3f);
+	remainingAmmo.setScale(0.3f, 0.3f);
+	remainingAmmoMax.setScale(0.3f, 0.3f);
+	currentmoney.setScale(0.3f, 0.3f);
+	currentkey.setScale(0.3f, 0.3f);
+
+	sf::Font* font = RESOURCE_MGR.GetFont("fonts/PF.ttf");
 
 	currentmoney.setFont(*font);
 	currentmoney.setFillColor(sf::Color::White);
-	currentmoney.setCharacterSize(15);
+	currentmoney.setCharacterSize(45);
 	currentmoney.setPosition(45,45);
 	currentmoney.setString(std::to_string(player->GetMoney()));
 
 
 	currentkey.setFont(*font);
 	currentkey.setFillColor(sf::Color::White);
-	currentkey.setCharacterSize(15);
+	currentkey.setCharacterSize(45);
 	currentkey.setPosition(20, 45);
 	currentkey.setString(std::to_string(player->GetKey()));
 
 	currentMagazine.setFont(*font);
 	currentMagazine.setFillColor(sf::Color::White);
-	currentMagazine.setCharacterSize(10);
+	currentMagazine.setCharacterSize(30);
 	currentMagazine.setPosition(weaponBox.getGlobalBounds().left + weaponBox.getGlobalBounds().width, weaponBox.getGlobalBounds().top + weaponBox.getGlobalBounds().height / 2);
 	currentMagazine.setString(std::to_string(player->GetCurrenWeapon()->GetCurrentBulleCount()));
 
 	remainingAmmo.setFont(*font);
 	remainingAmmo.setFillColor(sf::Color::White);
-	remainingAmmo.setCharacterSize(9);
+	remainingAmmo.setCharacterSize(27);
 	remainingAmmo.setPosition(weaponBox.getPosition().x, weaponBox.getGlobalBounds().top);
 	remainingAmmo.setString(std::to_string(player->GetCurrenWeapon()->GetRemainingAmmo()));
 	
 	remainingAmmoMax.setFont(*font);
 	remainingAmmoMax.setFillColor(sf::Color::White);
-	remainingAmmoMax.setCharacterSize(9);
-	remainingAmmoMax.setPosition(remainingAmmo.getGlobalBounds().left + remainingAmmo.getGlobalBounds().width, weaponBox.getGlobalBounds().top + 2);
+	remainingAmmoMax.setCharacterSize(27);
+	remainingAmmoMax.setPosition(remainingAmmo.getGlobalBounds().left + remainingAmmo.getGlobalBounds().width, weaponBox.getGlobalBounds().top + 1);
 	remainingAmmoMax.setString("/" + std::to_string(player->GetCurrenWeapon()->GetCurrentRamainingAmmo()));
 
 	Utils::SetOrigin(remainingAmmo, Origins::BL);
 	Utils::SetOrigin(remainingAmmoMax, Origins::BL);
 	Utils::SetOrigin(currentMagazine, Origins::ML);
+
+
+
 }
 
 void PlayerUI::Init()

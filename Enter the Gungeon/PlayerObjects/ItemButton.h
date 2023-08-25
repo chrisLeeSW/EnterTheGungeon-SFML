@@ -9,7 +9,7 @@ class ItemButton : public GameObject
 public:
 
 	std::string itemname;
-	std::string manual;
+	std::vector<std::string> manual;
 	std::string itemspriteId;
 	std::string textureId;
 	std::string fontId;

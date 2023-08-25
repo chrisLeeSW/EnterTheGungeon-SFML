@@ -200,11 +200,12 @@ void Book::GetItem(Item::Types t, Item::WAP w)
 	{
 		ItemButton* it = DATATABLE_MGR.Get<ButtonTable>(DataTable::Ids::Button)->Get(t);
 		it->Init();
+
 		it->SetBook(this);
 		passivebuttons.push_back(it);
 		if (passivebuttons.size() == 1)
 		{
-			it->SetSpritePosition(200, 230);
+			it->SetSpritePosition(200, 225);
 		}
 		else
 		{
@@ -236,7 +237,7 @@ void Book::GetItem(Item::Types t, Item::WAP w)
 			std::cout << weaponbuttons[weaponbuttons.size() - 1]->GetSpritePosition().x;
 			for(int i = 0; i <= weaponbuttons.size() - 1; i++)
 			{
-				weaponbuttons[i]->SetSpritePosition(20.f);
+				weaponbuttons[i]->SetSpritePosition(10.f);
 			}
 		}
 		break;

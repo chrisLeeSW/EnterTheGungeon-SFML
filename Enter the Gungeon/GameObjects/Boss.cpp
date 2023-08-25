@@ -38,7 +38,7 @@ void Boss::Init()
 			if (patternCount < 30)
 			{
 				patternDuration = 0.1f;
-				AngleShot(dir, 200, Utils::RandomRange(-30.f, 30.f));
+				AngleShot(dir, position + GatlingGullMuzzlePos(), 200.f, Utils::RandomRange(-30.f, 30.f));
 				patternCount++;
 			}
 			else
@@ -58,7 +58,7 @@ void Boss::Init()
 				{
 					value = 10 - value;
 				}
-				AngleShot(dir, 200, -20.f + 10.f * value);
+				AngleShot(dir, position + GatlingGullMuzzlePos(), 200, -20.f + 10.f * value);
 				patternCount++;
 			}
 			else
@@ -78,7 +78,7 @@ void Boss::Init()
 
 			if (patternCount < 2)
 			{
-				ShotgunShot(dir, 200, 10, 10.f);
+				ShotgunShot(dir, position + GatlingGullMuzzlePos(), 200, 10, 10.f);
 				patternCount++;
 			}
 			else
@@ -90,6 +90,8 @@ void Boss::Init()
 		};
 		Pattern5 = [this](sf::Vector2f dir, float speed)
 		{
+			EndPattern(); return; //test
+
 			state = Enemy::State::Bind;
 
 			if (animation.AnimationEnd())
@@ -100,6 +102,8 @@ void Boss::Init()
 		};
 		Pattern6 = [this](sf::Vector2f dir, float speed)
 		{
+			EndPattern(); return; //test
+
 			state = Enemy::State::Bind;
 			if (animation.GetCurrentClipId() != "Pattern6-1")
 			{
@@ -116,6 +120,8 @@ void Boss::Init()
 		};
 		Pattern7 = [this](sf::Vector2f dir, float speed)
 		{
+			EndPattern(); return; //test
+
 			state = Enemy::State::Bind;
 
 			if (animation.AnimationEnd())
@@ -299,5 +305,39 @@ void Boss::EndPattern(bool idle)
 const Enemy::EnemyName& Boss::GetType() const
 {
 	return type;
+}
+
+sf::Vector2f Boss::GatlingGullMuzzlePos()
+{
+	sf::Vector2f pos = WhereWay(direction);
+	
+	if (pos == way[0])
+	{
+		pos.x = -12.f;
+		pos.y = -60.f;
+	}
+	else if (pos == way[1])
+	{
+		pos.x = -22.f;
+		pos.y = -48.f;
+	}
+	else if (pos == way[2])
+	{
+		pos.x = -30.f;
+		pos.y = -25.f;
+	}
+	else if (pos == way[3])
+	{
+		pos.x = -24.f;
+		pos.y = 0.f;
+	}
+	else if (pos == way[4])
+	{
+		pos.x = -10.f;
+		pos.y = 0.f;
+	}
+	if (flipX) pos.x = -pos.x;
+
+	return pos;
 }
 

@@ -50,4 +50,5 @@ public:
 
 	const Enemy::EnemyName& GetType() const;
 
+	sf::Vector2f GatlingGullMuzzlePos();
 };

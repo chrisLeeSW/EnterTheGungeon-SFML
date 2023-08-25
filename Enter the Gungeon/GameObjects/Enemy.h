@@ -83,7 +83,7 @@ public:
 	virtual void SetPosition(const sf::Vector2f& p) override;
 	virtual void SetPosition(float x, float y) override;
 
-	void SetFlipX(bool flip);
+	virtual void SetFlipX(bool flip);
 
 	//김혜준 추가
 	bool GetFlipX() { return flipX; }
@@ -113,10 +113,16 @@ public:
 
 	// 단발사격
 	void OneShot(sf::Vector2f dir, float speed, bool isBlink = false);
+	// 단발사격
+	void OneShot(sf::Vector2f dir, sf::Vector2f pos, float speed, bool isBlink = false);
 	// 각도를 조절한 단발사격
 	void AngleShot(sf::Vector2f dir, float speed, float angle = 0.f, bool isBlink = false);
+	// 각도를 조절한 단발사격
+	void AngleShot(sf::Vector2f dir, sf::Vector2f pos, float speed, float angle = 0.f, bool isBlink = false);
 	// 부채꼴로 n개의 총알을 산개하여 발사
 	void ShotgunShot(sf::Vector2f dir, float speed, int quantity, float angle);
+	// 부채꼴로 n개의 총알을 산개하여 발사
+	void ShotgunShot(sf::Vector2f dir, sf::Vector2f pos, float speed, int quantity, float angle);
 	// 위치 벡터에 총알을 유지
 	void Boom(sf::Vector2f pos, float range);
 	// 근접공격

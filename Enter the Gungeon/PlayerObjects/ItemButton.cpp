@@ -79,10 +79,6 @@ void ItemButton::Update(float dt)
 	sf::Vector2f mousePos = INPUT_MGR.GetMousePos();
 	sf::Vector2f uiMousePos = SCENE_MGR.GetCurrScene()->ScreenToUiPos(mousePos);
 	
-	
-	std::cout << "마우스 X 포지션 :" << uiMousePos.x << "\n"<<"마우스 Y 포지션 : " << uiMousePos.y << std::endl;
-
-
 	bool prevHover = isHover;
 	isHover = sprite.getGlobalBounds().contains(uiMousePos);
 

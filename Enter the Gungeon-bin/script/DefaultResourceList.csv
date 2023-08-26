@@ -227,6 +227,7 @@
 3,Animations/Enemy/KeyBulletKin/KeyBulletKinDieLeft.csv
 3,Animations/Enemy/KeyBulletKin/KeyBulletKinDieLeftDown.csv
 3,Animations/Enemy/KeyBulletKin/KeyBulletKinDieDown.csv
+<<<<<<< HEAD,
 3,Animations/Boss/BossHp.csv
 0,graphics/ui_blank.png
 3,weapon/PadIdle.csv
@@ -275,3 +276,19 @@
 0,graphics/PlayerShotGunSprite.png
 1,fonts/PF.ttf
 3,Animations/Effect/Aiming.csv
+3,Animations/Objects/Door/Down/DoorClose.csv
+3,Animations/Objects/Door/Down/Doordle.csv
+3,Animations/Objects/Door/Down/DoorOpen.csv
+3,Animations/Objects/Door/Left/DoorClose.csv
+3,Animations/Objects/Door/Left/Doordle.csv
+3,Animations/Objects/Door/Left/DoorOpen.csv
+3,Animations/Objects/Door/Right/DoorClose.csv
+3,Animations/Objects/Door/Right/Doordle.csv
+3,Animations/Objects/Door/Right/DoorOpen.csv
+3,Animations/Objects/Door/Up/DoorClose.csv
+3,Animations/Objects/Door/Up/Doordle.csv
+3,Animations/Objects/Door/Up/DoorOpen.csv
+3,Animations/Objects/Armor.csv
+3,Animations/Objects/ArmorBreak.csv
+3,Animations/Objects/Chair.csv
+3,Animations/Objects/ChairBreak.csv

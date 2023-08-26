@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TileMap.h"
 
-TileMap::TileMap(const std::string& textureId, const std::string& n) :VertexArrayGo(textureId, n)
+TileMap::TileMap(const std::string& textureId, const std::string& n) :VertexArrayGo(textureId, n), bsp(nullptr)
 {
 	startPos = { 0, 0 };
 }
@@ -29,13 +29,28 @@ bool TileMap::Load(const std::string& filePath, bool textureIdIn)
 			std::string fileInfo = map.GetCell<std::string>(j, i + 4);
 			int texIndex = std::stoi(fileInfo);
 			tile.texIndex = texIndex;
-			size_t commaPos = fileInfo.find(',');
+
+			size_t firstCommaPos = fileInfo.find(',');
+			if (firstCommaPos != std::string::npos)
+			{
+				size_t secondCommaPos = fileInfo.find(',', firstCommaPos + 1);
+				if (secondCommaPos != std::string::npos)
+				{
+					std::string firstNumberPart = fileInfo.substr(firstCommaPos + 1, secondCommaPos - firstCommaPos - 1);
+					std::string secondNumberPart = fileInfo.substr(secondCommaPos + 1);
+
+					tile.objectTypes = std::stoi(firstNumberPart);
+					tile.monsterAndObject = std::stoi(secondNumberPart);
+				}
+			}
+			/*size_t commaPos = fileInfo.find(',');
 			if (commaPos != std::string::npos)
 			{
 				std::string numberPart = fileInfo.substr(commaPos + 1);
 				int newTexIndex = std::stoi(numberPart);
 				tile.objectTypes = newTexIndex;
-			}
+			}*/
+
 			tiles.push_back(tile);
 		}
 	}
@@ -98,7 +113,7 @@ bool TileMap::Load(const std::string& filePath, bool textureIdIn)
 	return true;
 }
 
-void TileMap::LoadObject(const std::string& filePath,bool textureIdIn)
+void TileMap::LoadObject(const std::string& filePath, bool textureIdIn, int Laye)
 {
 	if (!textureIdIn) texture = RESOURCE_MGR.GetTexture(textureId);
 
@@ -113,13 +128,29 @@ void TileMap::LoadObject(const std::string& filePath,bool textureIdIn)
 			tile.x = j;
 			tile.y = i;
 			std::string fileInfo = map.GetCell<std::string>(j, i + 4);
-			size_t commaPos = fileInfo.find(',');
+
+			size_t firstCommaPos = fileInfo.find(',');
+			if (firstCommaPos != std::string::npos)
+			{
+				size_t secondCommaPos = fileInfo.find(',', firstCommaPos + 1);
+				if (secondCommaPos != std::string::npos)
+				{
+					std::string firstNumberPart = fileInfo.substr(firstCommaPos + 1, secondCommaPos - firstCommaPos - 1);
+					std::string secondNumberPart = fileInfo.substr(secondCommaPos + 1);
+
+					if (Laye == 0)
+						tile.texIndex = std::stoi(firstNumberPart);
+					else if (Laye == 1)
+						tile.texIndex = std::stoi(secondNumberPart);
+				}
+			}
+			/*size_t commaPos = fileInfo.find(',');
 			if (commaPos != std::string::npos)
 			{
 				std::string numberPart = fileInfo.substr(commaPos + 1);
 				int newTexIndex = std::stoi(numberPart);
 				tile.texIndex  = newTexIndex;
-			}
+			}*/
 			tiles.push_back(tile);
 		}
 	}
@@ -183,10 +214,10 @@ void TileMap::LoadObject(const std::string& filePath,bool textureIdIn)
 	}
 }
 
-void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI)
+void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI, bool testDraw)
 {
 
-	if(!textureIdI) texture = RESOURCE_MGR.GetTexture(textureId);
+	if (!textureIdI) texture = RESOURCE_MGR.GetTexture(textureId);
 
 
 	size = { xSize, ySize };
@@ -198,12 +229,13 @@ void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI)
 			Tile tile;
 			tile.x = j;
 			tile.y = i;
-			tile.texIndex = static_cast<int>(MapObjectType::None);
+			if (testDraw) tile.texIndex = static_cast<int>(MapObjectType::Pot);
+			else tile.texIndex = static_cast<int>(MapObjectType::None);
 			tiles.push_back(tile);
 		}
 	}
 
-	sf::Vector2f tileSize =  { 25.f, 25.f };
+	sf::Vector2f tileSize = { 25.f, 25.f };
 	sf::Vector2f texSize = { 50.f, 50.f };
 	sf::Vector2f texOffsets[4] =
 	{
@@ -245,7 +277,7 @@ void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI)
 				if (tiles[tileIndex].texIndex == -1)
 				{
 					vertexArray[vertexIndex].texCoords = texNonOffset[k];
-					vertexArray[vertexIndex].texCoords.y += texSize.y  * texIndex;
+					vertexArray[vertexIndex].texCoords.y += texSize.y * texIndex;
 				}
 				else
 				{
@@ -268,13 +300,30 @@ void TileMap::ClearTile()
 	}
 }
 
-void TileMap::ChangeTile(int x, int y, int tileIndex, sf::IntRect IntRect)
+void TileMap::Reset()
+{
+	VertexArrayGo::Reset();
+}
+
+void TileMap::ChangeTile(int x, int y, int tileIndex, sf::IntRect IntRect, TileType type)
 {
 	if (x < 0 || y < 0) return;
 	else if (x >= size.x || y >= size.y) return;
 
 	int texIndex = y * size.x + x;
-	tiles[texIndex].texIndex = tileIndex;
+	switch (type)
+	{
+	case TileType::TexIndex:
+		tiles[texIndex].texIndex = tileIndex;
+		break;
+	case TileType::ObjectTypes:
+		tiles[texIndex].objectTypes = tileIndex;
+		break;
+	case TileType::Monster:
+		tiles[texIndex].monsterAndObject = tileIndex;
+		break;
+	}
+
 
 	sf::FloatRect rect = (sf::FloatRect)IntRect;
 	sf::Vector2f texOffsets[4] =
@@ -321,7 +370,6 @@ void TileMap::MakeWall(const std::string& path)
 		}
 		shape.setFillColor(sf::Color::Transparent);
 		colliedShape.push_back({ type,shape });
-
 		newHeight++;
 	}
 }
@@ -338,3 +386,62 @@ sf::Vector2f TileMap::TileMapSize(const std::string& path)
 	return sf::Vector2f{ width,height };
 }
 
+int TileMap::GetTexIndex(int x, int y)
+{
+	int tileIndex = size.x * y + x;
+	return tiles[tileIndex].texIndex;
+
+}
+
+void TileMap::Divide()
+{
+	if (bsp == nullptr)
+	{
+		bsp = new BspRoom(sf::IntRect{ 0, 0, size.x, size.y });
+		ListFilesInDirectory("Room/TileMapFile/");
+	}
+	bsp->Divide(this, 5, 3, fileList);
+}
+
+void TileMap::MakeRoom()
+{
+	ListFilesInDirectory("Room/TileMapFile/");
+	bsp->MakeRoom(this, fileList);
+}
+
+void TileMap::ConnectRoom()
+{
+
+	if (bsp != nullptr)
+	{
+		bsp->ConnectRoom(this);
+	}
+
+}
+
+
+void TileMap::ListFilesInDirectory(const std::string& folderPath)
+{
+	WIN32_FIND_DATAA findFileData;
+	HANDLE hFind = FindFirstFileA((folderPath + "\\*").c_str(), &findFileData);
+
+	if (hFind == INVALID_HANDLE_VALUE) {
+		std::cerr << "Error finding files in directory." << std::endl;
+		return;
+	}
+
+	int fileCount = 0;
+
+	do {
+		if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+		}
+		else {
+			//std::cout << "파일 이름: " << findFileData.cFileName << std::endl;
+			std::string filePath = folderPath + findFileData.cFileName;
+			fileList.push_back(filePath);
+			++fileCount;
+		}
+	} while (FindNextFileA(hFind, &findFileData) != 0);
+
+	FindClose(hFind);
+}

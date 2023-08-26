@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 
+
 class TileMap;
 class SpriteGo;
 class InteractionObject;
@@ -14,15 +15,12 @@ struct RoomObjectsInfoTest
 class GameMapTestScene :public Scene
 {
 protected:
+	sf::Vector2f startTileRoom;
+	sf::Vector2i tileWallSize;
 	TileMap* tileRoom1;
-	TileMap* tileRoom2;
 	std::vector<SpriteGo*> objects;
 	std::vector<RoomObjectsInfoTest> interaction;
-
-	sf::RectangleShape shape;
-	sf::RectangleShape shape2;
-
-	std::vector<WallTypeInfo>colliedShape;
+	
 public:
 	GameMapTestScene();
 	virtual ~GameMapTestScene() override = default;
@@ -33,5 +31,7 @@ public:
 	virtual void Exit() override;
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
+
+	
 };
 

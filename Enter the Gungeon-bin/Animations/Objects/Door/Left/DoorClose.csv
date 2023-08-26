@@ -1,0 +1,7 @@
+ID,FPS,LOOPTYPE,,
+Close,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/DoorSprite.png,50,183,15,25
+graphics/DoorSprite.png,21,182,16,26
+graphics/DoorSprite.png,8,183,5,25

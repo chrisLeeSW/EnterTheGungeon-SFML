@@ -5,6 +5,7 @@
 class InteractionObject : public SpriteGo
 {
 protected:
+	bool breakPlayAnimation = false;
 	AnimationController animation;
 	MapObjectType type;
 	

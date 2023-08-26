@@ -184,8 +184,8 @@ void SceneGame::MakeTestRoom(int size)
 		{
 			pos = sf::Vector2f{ -300.f,-300.f };
 			tileRoom1->SetStartPos(pos);
-			tileRoom1->Load("Room/TileMapFile/direction1.csv");
-			tileMapSize =tileRoom1->TileMapSize("Room/TileMapFile/direction1.csv");
+			tileRoom1->Load("Room/TileMapFile/r1.csv");
+			tileMapSize =tileRoom1->TileMapSize("Room/TileMapFile/r1.csv");
 			objpos = pos;
 			objpos += tileRoom1->GetTileSize() * 0.5f;
 		}
@@ -193,8 +193,8 @@ void SceneGame::MakeTestRoom(int size)
 		{
 			pos = sf::Vector2f{ 200.f,200.f };
 			tileRoom1->SetStartPos(pos);
-			tileRoom1->Load("Room/TileMapFile/Room02.csv");
-			tileMapSize = tileRoom1->TileMapSize("Room/TileMapFile/Room02.csv");
+			tileRoom1->Load("Room/TileMapFile/r1.csv");
+			tileMapSize = tileRoom1->TileMapSize("Room/TileMapFile/r1.csv");
 			objpos = pos;
 			objpos += tileRoom1->GetTileSize() * 0.5f;
 		}
@@ -202,8 +202,8 @@ void SceneGame::MakeTestRoom(int size)
 		{
 			pos = sf::Vector2f{	-300.f,150.f };
 			tileRoom1->SetStartPos(pos);
-			tileRoom1->Load("Room/TileMapFile/Room03.csv");
-			tileMapSize = tileRoom1->TileMapSize("Room/TileMapFile/Room03.csv");
+			tileRoom1->Load("Room/TileMapFile/r1.csv");
+			tileMapSize = tileRoom1->TileMapSize("Room/TileMapFile/r1.csv");
 			objpos = pos;
 			objpos += tileRoom1->GetTileSize() * 0.5f;
 		}
@@ -219,7 +219,7 @@ void SceneGame::MakeTestRoom(int size)
 			//	objects
 			switch (static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes))
 			{
-			case MapObjectType::WallDown:
+			case MapObjectType::LightWallTop:
 			{
 				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
 				spr->sprite.setTextureRect({ 0,250,50,50 });
@@ -252,20 +252,11 @@ void SceneGame::MakeTestRoom(int size)
 				interaction.push_back({ static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), spr });
 			}
 			break;
-			case MapObjectType::Book1:
-			{
-				InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
-				spr->sprite.setTextureRect({ 0,850,50,50 });
-				spr->SetScale(0.5f, 0.5f);
-				spr->SetOrigin(Origins::MC);
-				spr->SetPosition(objpos.x + tileRoom1->tiles[i].x * tileRoom1->GetTileSize().x, objpos.y + tileRoom1->tiles[i].y * tileRoom1->GetTileSize().y);
-				spr->sortLayer = 0;
-				interaction.push_back({ static_cast<MapObjectType>(tileRoom1->tiles[i].objectTypes), spr });
-			}
-			break;
+			
+
 			}
 		}
-		tileRoom1->MakeWall("Room/TileMapFile/Room01.csv");
+		tileRoom1->MakeWall("Room/TileMapFile/r1.csv");
 		for (int i = 0; i < tileRoom1->colliedShape.size(); ++i)
 		{
 			tileRoom1->colliedShape[i].shape.setPosition(tileRoom1->colliedShape[i].shape.getPosition() + pos);

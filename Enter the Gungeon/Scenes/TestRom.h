@@ -6,7 +6,9 @@ class Room;
 class TileMap;
 class InteractionObject;
 class SpriteGo;
-
+class Door;
+class Player;
+class Enemy;
 enum class DoorDirection
 {
 	None =-1,
@@ -25,7 +27,8 @@ struct RandomMapInfo
 	TileMap* map;
 	std::vector<SpriteGo*> spr;
 	std::vector<RoomObjectsInfoTest1> roomobj;
-
+	std::vector<WallTypeInfo> roomtype;
+	std::vector< Enemy*> monster;
 	// 몬스터 리스트 추가 
 };
 struct Passage {
@@ -42,6 +45,8 @@ protected:
 	Room* rooms;
 	sf::RectangleShape shape;
 	std::vector<std::string> fileList;
+	std::vector<std::string> sponRoomFileList;
+	std::vector<std::string> bossRoomFileList;
 	std::vector<RandomMapInfo> tileRoom;
 	std::vector<Passage> passages;
 	std::vector<bool> connected;
@@ -52,7 +57,24 @@ protected:
 	std::vector<sf::CircleShape> circle;
 	int length = 0;
 
+	std::vector<Door*> doors;
+	Player* player = nullptr;
 	bool test = false;
+	std::vector<SpriteGo*> tunnelSprite;
+	std::list<SpriteGo*> tunnelWall;
+
+	int currentRoom = 0;
+	int currentTunnel = 0;
+	bool colliedDoor = false;
+	std::vector<sf::RectangleShape> roomShape;
+	std::vector<sf::RectangleShape> doorShape2;
+
+	sf::Vector2f prevPlayerPos;
+	int lastRoom = 0;
+
+	float accumulatedTime = 0.0f;
+	int frameCount = 0;
+
 public :
 	TestRom();
 	virtual ~TestRom() override = default;
@@ -64,14 +86,16 @@ public :
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 	void MoveWorldView();
-	void ListFilesInDirectory(const std::string& folderPath);
+	void ListFilesInDirectory(const std::string& folderPath, std::vector<std::string>& fileList);
 	sf::Vector2f Center( TileMap* room);
 	void ConnectRooms(TileMap* r1 , TileMap* r2);
 	void CreateTunnel(sf::Vector2f start, sf::Vector2f end);
 	bool isIntersecting(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
 	sf::Vector2f intersectionPoint(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
 	bool isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, sf::Vector2f& intersection);
-	std::vector<sf::Vector2f> isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, std::vector<sf::Vector2f>& room);
+	std::vector<DoorInfo> isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, std::vector<DoorInfo>& room);
+
+	void CoiledPlayerByMap();
 };
 
 

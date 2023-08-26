@@ -76,8 +76,6 @@ protected:
 
 	int playertype;
 	Book* book;
-	std::list<Enemy*> enemylist; // ??
-
 //
 	Room* rooms;
 	std::vector<std::string> fileList;

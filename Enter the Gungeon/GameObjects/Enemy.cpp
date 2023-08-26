@@ -23,6 +23,8 @@ Enemy::Enemy(EnemyName type, const std::string& textureId, const std::string& n)
 	way.push_back({ 1.f, 0.f }); // Left
 	way.push_back(Utils::Normalize({ 1.f, 1.f })); // LeftDown
 	way.push_back({ 0.f, 1.f }); // Down
+
+	SetOrigin(Origins::BC);
 }
 
 Enemy::~Enemy()
@@ -148,7 +150,6 @@ void Enemy::Init()
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "DieDown.csv"));
 
 	animation.SetTarget(&sprite);
-
 }
 
 void Enemy::Reset()
@@ -193,20 +194,17 @@ void Enemy::Reset()
 		weapon->SetEnemy(this);
 		break;
 	default:
+		return;
 		break;
 	}
 }
 
 void Enemy::Update(float dt)
 {
-
-
 	animation.Update(dt);
 
 	if (player == nullptr || state == Enemy::State::Die) return;
-
-	if (PLAYER_MGR.IsPause())
-		return;
+	if (PLAYER_MGR.IsPause()) return;
 
 	direction = Utils::Normalize(player->GetPosition() - position);
 	SetFlipX(direction.x > 0.f);
@@ -287,7 +285,6 @@ void Enemy::Update(float dt)
 			attackTimer = 0.f;
 			if (IfShoot != nullptr)
 			{
-				
 				IfShoot(direction, speed); //총알 속도 지정 필요
 
 				// Animation

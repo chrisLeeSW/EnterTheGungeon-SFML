@@ -117,7 +117,6 @@ void SceneGame::Enter()
 	player = (Player*)AddGo(new Player((Player::Types)playertype));
 	player->sortLayer = 0;
 	player->Init();
-	player->SetEnemyList(enemylist);
 
 
 	player->SetPosition(0.f,0.f);
@@ -1114,8 +1113,11 @@ void SceneGame::CoiledPlayerByMap()
 
 void SceneGame::SetMonsterByPlayer()
 {
+	std::list<Enemy*> enemyList;
 	for (int i = 0; i < tileRoom[currentRoom].monster.size(); ++i)
 	{
 		tileRoom[currentRoom].monster[i]->SetPlayer(player);
+		enemyList.push_back(tileRoom[currentRoom].monster[i]);
 	}
+	player->SetEnemyList(enemyList);
 }

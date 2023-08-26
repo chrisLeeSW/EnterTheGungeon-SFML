@@ -4,8 +4,8 @@
 Room::Room()
 {
     srand(static_cast<unsigned int>(time(nullptr)));
-    Rect initial = { 0, 0,10000, 10000 };
-    Divide(initial,5);
+    Rect initial = { 0, 0,5000, 5000 };
+    Divide(initial,4);
 
     sf::Vector2i  startPos = { (int)initial.x ,(int)initial.y };
     int widht = initial.width /25;
@@ -17,7 +17,7 @@ Room::Room()
    //else 
    //    rooms.resize(Utils::RandomRange(7, size));
 
-    rooms.resize(20);
+    rooms.resize(10);
 
 
    connected.resize(rooms.size(), false);

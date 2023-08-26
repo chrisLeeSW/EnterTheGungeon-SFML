@@ -9,6 +9,7 @@ class SpriteGo;
 class Door;
 class Player;
 class Enemy;
+class Npc;
 enum class DoorDirection
 {
 	None =-1,
@@ -27,9 +28,7 @@ struct RandomMapInfo
 	TileMap* map;
 	std::vector<SpriteGo*> spr;
 	std::vector<RoomObjectsInfoTest1> roomobj;
-	std::vector<WallTypeInfo> roomtype;
 	std::vector< Enemy*> monster;
-	// 몬스터 리스트 추가 
 };
 struct Passage {
 	sf::Vector2f from, to;

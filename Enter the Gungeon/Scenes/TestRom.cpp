@@ -6,6 +6,8 @@
 #include "InteractionObject.h"
 #include "Door.h"
 #include "Player.h"
+#include "Enemy.h"
+#include "Npc.h"
 TestRom::TestRom() :Scene(SceneId::TestRoom)
 {
 	resourceListPath = "script/GameMapTestScene.csv";
@@ -39,7 +41,7 @@ void TestRom::Init()
 	while (true)
 	{
 		eventRoom = Utils::RandomRange(1, rooms->GetRoom().size());
-		if (eventRoom != roomRandBoss && eventRoom!= RandStore) break;
+		if (eventRoom != rooms->GetLastRoom() && eventRoom != RandStore) break;
 	}
 	while (count != rooms->GetRoom().size())
 	{
@@ -54,7 +56,7 @@ void TestRom::Init()
 		{
 			tileMapSize = map->TileMapSize(sponRoomFileList[sponRoom]);
 		}
-		else if (count == roomRandBoss)
+		else if (count == rooms->GetLastRoom())
 		{
 			tileMapSize = map->TileMapSize(bossRoomFileList[bossRoom]);
 		}
@@ -87,7 +89,7 @@ void TestRom::Init()
 		{
 			map->Load(sponRoomFileList[sponRoom]);
 		}
-		else if (count == roomRandBoss)
+		else if (count == rooms->GetLastRoom())
 		{
 			map->Load(bossRoomFileList[bossRoom]);
 		}
@@ -108,6 +110,7 @@ void TestRom::Init()
 		map->sortLayer = -1;
 		std::vector<SpriteGo*> objects;
 		std::vector<RoomObjectsInfoTest1> interaction;
+		std::vector<Enemy*> monsters;
 		for (int i = 0; i < map->tiles.size(); ++i)
 		{
 			switch (static_cast<MapObjectType>(map->tiles[i].objectTypes))
@@ -198,26 +201,36 @@ void TestRom::Init()
 			break;
 			case MapObjectType::MonsterKin:
 			{
-
+				Enemy* monster = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::BulletKin));
+				monster->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				monsters.push_back(monster);
 			}
 			break;
 			case MapObjectType::MonsterKinKey:
 			{
-
+				Enemy* monster = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::KeyBulletKin));
+				monster->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				monsters.push_back(monster);
 			}
 			break;
 			case MapObjectType::MonsterBlue:
 			{
-
+				Enemy* monster = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::ShotgunKinBlue));
+				monster->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				monsters.push_back(monster);
 			}
 			break;
 			case MapObjectType::MonsterRed:
 			{
-				// 에너미 클래스 작업 해야함 ..
+				Enemy* monster = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::ShotgunKinRed));
+				monster->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				monsters.push_back(monster);
 			}
 			case MapObjectType::Boss:
 			{
-				// 이하 동문
+				Enemy* monster = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::GatlingGull));
+				monster->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				monsters.push_back(monster);
 			}
 			break;
 			case MapObjectType::StoreOner :
@@ -226,7 +239,6 @@ void TestRom::Init()
 			}
 			break;
 			}
-
 			// new switch
 			switch (static_cast<MapObjectType>(map->tiles[i].monsterAndObject))
 			{
@@ -314,7 +326,7 @@ void TestRom::Init()
 			break;
 			}
 		}
-		tileRoom.push_back({ map, objects, interaction });
+		tileRoom.push_back({ map, objects, interaction,monsters });
 		sf::RectangleShape shape;
 		shape.setSize({ map->vertexArray.getBounds().width - map->GetTileSize().x * 1.75f, map->vertexArray.getBounds().height - map->GetTileSize().y * 1.75f });
 		shape.setPosition({ map->vertexArray.getBounds().left + map->GetTileSize().x  ,map->vertexArray.getBounds().top + map->GetTileSize().y });
@@ -487,7 +499,7 @@ void TestRom::Update(float dt)
 	}
 
 	MoveWorldView();
-	//CoiledPlayerByMap();
+	CoiledPlayerByMap();
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F6))
 	{
 		rooms->PrintSize();
@@ -498,11 +510,21 @@ void TestRom::Update(float dt)
 		test = true;
 	}
 
-	for (auto& door : doors)
+	/*for (auto& door : doors)
 	{
 		if (door->sprite.getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
 		{
 			door->Open();
+			colliedDoor = true;
+		}
+	}*/
+
+
+	for (int i = 0; i < doorShape2.size(); ++i)
+	{
+		if (doorShape2[i].getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
+		{
+			doors[i]->Open();
 			colliedDoor = true;
 		}
 	}
@@ -531,7 +553,7 @@ void TestRom::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
 	window.setView(worldView);
-	rooms->Draw(window);
+	//rooms->Draw(window);
 	window.draw(shape);
 	for (int i = 0; i < length; ++i)
 	{
@@ -544,14 +566,6 @@ void TestRom::Draw(sf::RenderWindow& window)
 	}
 
 
-	/*for (const auto& passage : passages) {
-		sf::VertexArray line(sf::Lines, 2);
-		line[0].position = passage.from;
-		line[1].position = passage.to;
-		line[0].color = sf::Color::White;
-		line[1].color = sf::Color::White;
-		window.draw(line);
-	}*/
 	for (auto& r : roomShape)
 	{
 		window.draw(r);
@@ -1038,16 +1052,12 @@ void TestRom::CoiledPlayerByMap()
 	{
 
 	}*/
-	if (tileRoom[currentRoom].map->vertexArray.getBounds().contains(player->GetPosition()))
+	if (tileRoom[currentRoom].map->vertexArray.getBounds().contains(player->GetPosition()) && !colliedDoor)
 	{
-		if (!roomShape[currentRoom].getGlobalBounds().contains(player->GetPosition()) && !colliedDoor)
+		if (!roomShape[currentRoom].getGlobalBounds().contains(player->GetPosition()) )
 			player->SetPosition(prevPlayerPos);
 	}
 
-	if (colliedDoor)
-	{
-
-	}
 	for (int i = 0; i < tileRoom.size(); ++i)
 	{
 		if (tileRoom[i].map->vertexArray.getBounds().contains(player->GetPosition()) && colliedDoor)

@@ -6,37 +6,49 @@
 SpriteEffect::SpriteEffect(const std::string& textureId, const std::string& n)
 	: SpriteGo(textureId, n)
 {
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Effect/Aiming.csv"));
 
+	animation.SetTarget(&sprite);
+}
+
+void SpriteEffect::SetEffect(SpriteEffect::Effect effect)
+{
+	this->effect = effect;
+
+	switch (effect)
+	{
+	case SpriteEffect::Effect::Aiming:
+		animation.Play("Aiming");
+		break;
+	default:
+		return;
+		break;
+	}
 }
 
 void SpriteEffect::Init()
 {
-	SpriteGo::Init();
-	SetOrigin(Origins::MC);
+	
 }
 
 void SpriteEffect::Reset()
 {
-	SpriteGo::Reset();
-	timer = 0.f;
-	sprite.setColor({ 255, 255, 255, 255 });
+	SetOrigin(Origins::MC);
 }
 
 void SpriteEffect::Update(float dt)
 {
-	timer += dt;
-	
+	animation.Update(dt);
+	SetOrigin(origin);
 
-	if (timer > duration)
+	if (animation.AnimationEnd())
 	{
-		if (pool != nullptr)
+		if (action != nullptr)
 		{
-			SCENE_MGR.GetCurrScene()->RemoveGo(this);
-			pool->Return(this);
+			action();
 		}
-		else
-		{
-			SetActive(false);
-		}
+
+		SCENE_MGR.GetCurrScene()->RemoveGo(this);
+		pool->Return(this);
 	}
 }

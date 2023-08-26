@@ -90,8 +90,6 @@ void Boss::Init()
 		};
 		Pattern5 = [this](sf::Vector2f dir, float speed)
 		{
-			EndPattern(); return; //test
-
 			state = Enemy::State::Bind;
 
 			if (animation.AnimationEnd())
@@ -102,8 +100,6 @@ void Boss::Init()
 		};
 		Pattern6 = [this](sf::Vector2f dir, float speed)
 		{
-			EndPattern(); return; //test
-
 			state = Enemy::State::Bind;
 			if (animation.GetCurrentClipId() != "Pattern6-1")
 			{
@@ -114,14 +110,12 @@ void Boss::Init()
 			{
 				state = Enemy::State::Skill;
 				animation.Play("Pattern6-2");
-				SetPosition(player->GetPosition());
+				SetPosition(player->GetPosition() + Utils::RandomOnCircle(60.f));
 				EndPattern(false);
 			}
 		};
 		Pattern7 = [this](sf::Vector2f dir, float speed)
 		{
-			EndPattern(); return; //test
-
 			state = Enemy::State::Bind;
 
 			if (animation.AnimationEnd())

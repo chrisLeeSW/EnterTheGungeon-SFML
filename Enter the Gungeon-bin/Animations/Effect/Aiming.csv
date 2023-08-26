@@ -1,0 +1,14 @@
+ID,FPS,LOOPTYPE,,
+Aiming,5,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/effects.png,0,0,4,4
+graphics/effects.png,5,0,8,8
+graphics/effects.png,14,0,12,12
+graphics/effects.png,27,0,22,22
+graphics/effects.png,50,0,28,28
+graphics/effects.png,79,0,32,32
+graphics/effects.png,112,0,38,38
+graphics/effects.png,151,0,42,42
+graphics/effects.png,194,0,46,46
+graphics/effects.png,241,0,48,48

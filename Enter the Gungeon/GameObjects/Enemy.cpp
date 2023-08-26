@@ -6,6 +6,7 @@
 #include "DataTableMgr.h"
 #include "SceneGame.h"
 #include "Muzzle.h"
+#include "SpriteEffect.h"
 
 //HaeJun
 #include "EnemyShotGun.h"
@@ -693,15 +694,28 @@ void Enemy::ShotgunShot(sf::Vector2f dir, sf::Vector2f pos, float speed, int qua
 void Enemy::Boom(sf::Vector2f pos, float range)
 {
 	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
-	EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
-	bullet->Shoot({ 0.f, 0.f }, 500.f);
-	bullet->SetPosition(pos);
-	bullet->SetBullet(true);
-	bullet->SetPlayer(player);
-	bullet->Init();
-	bullet->Reset();
-	bullet->SetScale(range, range);
-	scene->AddGo(bullet);
+	
+	SpriteEffect* aiming = scene->GetPoolSpriteEffect().Get();
+	aiming->SetEffect(SpriteEffect::Effect::Aiming);
+	aiming->SetPosition(pos);
+	aiming->Init();
+	aiming->Reset();
+	SpriteEffect* ptr = aiming;
+	aiming->action = [this, scene, pos, range, ptr]()
+	{
+		EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
+		bullet->Shoot({ 0.f, 0.f }, 500.f);
+		bullet->SetPosition(pos);
+		bullet->SetBullet(true);
+		bullet->SetPlayer(player);
+		bullet->Init();
+		bullet->Reset();
+		bullet->SetScale(range, range);
+		scene->AddGo(bullet);
+
+		ptr->action = nullptr;
+	};
+	scene->AddGo(aiming);
 }
 
 void Enemy::CloseAttack(float range)

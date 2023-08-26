@@ -199,12 +199,14 @@ void Enemy::Reset()
 
 void Enemy::Update(float dt)
 {
-	if (PLAYER_MGR.IsPause())
-		return;
+
 
 	animation.Update(dt);
 
 	if (player == nullptr || state == Enemy::State::Die) return;
+
+	if (PLAYER_MGR.IsPause())
+		return;
 
 	direction = Utils::Normalize(player->GetPosition() - position);
 	SetFlipX(direction.x > 0.f);

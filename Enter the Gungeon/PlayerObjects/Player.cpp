@@ -370,6 +370,7 @@ void Player::SetFlipX(bool filp)
 
 void Player::PlayerAct(float dt)
 {
+	prevPlayerPos = position;
 		if (!isrolling)
 		{
 			direction.x = INPUT_MGR.GetAxisRaw(Axis::Horizontal);
@@ -399,7 +400,7 @@ void Player::PlayerAct(float dt)
 				isrolling = false;
 			}
 		}
-	
+
 	if (clipId == currentClipInfo.walk && INPUT_MGR.GetMouseButtonDown(sf::Mouse::Right))
 	{
 		auto min = std::min_element(clipInfos.begin(), clipInfos.end(),

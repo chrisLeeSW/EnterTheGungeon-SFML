@@ -48,7 +48,7 @@ public:
 
 
 protected:
-
+	sf::Vector2f prevPlayerPos;
 	sf::Vector2f windowsize;
 
 	Book* book;
@@ -237,5 +237,5 @@ public:
 
 	//skill
 	Weapon* GetCurrenWeapon() { return weaponList[currentIndex]; }
-	
+	sf::Vector2f GetPrevPos(){ return prevPlayerPos; }
 };

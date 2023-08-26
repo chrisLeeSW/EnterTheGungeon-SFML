@@ -8,6 +8,8 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Npc.h"
+#include "Chest.h"
+#include "Boss.h"
 TestRom::TestRom() :Scene(SceneId::TestRoom)
 {
 	resourceListPath = "script/GameMapTestScene.csv";
@@ -111,6 +113,8 @@ void TestRom::Init()
 		std::vector<SpriteGo*> objects;
 		std::vector<RoomObjectsInfoTest1> interaction;
 		std::vector<Enemy*> monsters;
+
+
 		for (int i = 0; i < map->tiles.size(); ++i)
 		{
 			switch (static_cast<MapObjectType>(map->tiles[i].objectTypes))
@@ -143,8 +147,8 @@ void TestRom::Init()
 			break;
 			case MapObjectType::TreasureAlter:
 			{
-				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
-				spr->sprite.setTextureRect({ 0,(map->tiles[i].objectTypes * 50),50,50 });
+				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+				spr->sprite.setTextureRect({ 3,87,50,50});
 				spr->SetOrigin(Origins::MC);
 				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
 				spr->sortLayer = 2;
@@ -165,8 +169,6 @@ void TestRom::Init()
 				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
 				spr->sortLayer = 2;
 				objects.push_back(spr);
-
-				// 아이템 요기에 생성하게 해야함상점 진열 굿!
 			}
 			break;
 			case MapObjectType::Armor:
@@ -226,16 +228,19 @@ void TestRom::Init()
 				monster->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
 				monsters.push_back(monster);
 			}
+			break;
 			case MapObjectType::Boss:
 			{
-				Enemy* monster = (Enemy*)AddGo(new Enemy(Enemy::EnemyName::GatlingGull));
-				monster->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
-				monsters.push_back(monster);
+				boss = (Boss*)AddGo(new Boss(Enemy::EnemyName::GatlingGull));
+				boss->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
 			}
 			break;
 			case MapObjectType::StoreOner :
 			{
 				// 이하 동문
+				npc = (Npc*)AddGo(new Npc(Npc::NpcType::ShopOwner));
+				npc->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y + map->GetTileSize().y*0.5f);
+				npc->sortLayer = 3;
 			}
 			break;
 			}
@@ -320,7 +325,9 @@ void TestRom::Init()
 			break;
 			case MapObjectType::TreasureObject:
 			{
-
+				chest = (Chest*)AddGo(new Chest());
+				chest->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x- map->GetTileSize().x*0.5f, objpos.y + map->tiles[i].y * map->GetTileSize().y- map->GetTileSize().y*0.5f);
+				chest->sortLayer = 3;
 				// 보물상자 클래스 생성 구역 
 			}
 			break;
@@ -425,7 +432,7 @@ void TestRom::Init()
 
 
 	player = (Player*)AddGo(new Player((Player::Types)1));
-	player->sortLayer = 10;
+	player->sortLayer = 1;
 
 
 	for (auto go : gameObjects)
@@ -448,7 +455,14 @@ void TestRom::Init()
 	}
 	Exit();
 
-	std::cout << "TestRoom의 끝방 :" << lastRoom << "\t" << "Room의 끝방 :" << rooms->GetLastRoom() << " 중간 지점 :" << rooms->GetMidRoom() << std::endl;
+	for (int i = 0; i < tileRoom.size(); ++i)
+	{
+		if (tileRoom[i].map->vertexArray.getBounds().contains(boss->GetPosition()))
+		{
+			bossRoom = i;
+		}
+	}
+	std::cout << "TestRoom의 끝방 :" << lastRoom << "\t" << "Room의 끝방 :" << rooms->GetLastRoom() << " 중간 지점 :" << rooms->GetMidRoom() << "boss Room: "<< bossRoom << std::endl;
 }
 
 void TestRom::Release()
@@ -509,6 +523,18 @@ void TestRom::Update(float dt)
 		length++;
 		test = true;
 	}
+
+	for (int i = 0; i < tileRoom[currentRoom].monster.size(); ++i)
+	{
+		tileRoom[currentRoom].monster[i]->SetPlayer(player);
+	}
+	//for (auto& door : doors)
+	//{
+	//	if (tileRoom[currentRoom].map->vertexArray.getBounds().intersects(door->sprite.getGlobalBounds()))
+	//	{
+	//		door->Close();
+	//	}
+	//}
 
 	/*for (auto& door : doors)
 	{
@@ -1008,7 +1034,7 @@ bool TestRom::isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, 
 	return false;
 }
 
-std::vector<DoorInfo> TestRom::isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, std::vector<DoorInfo>& room)
+std::vector<TestRom::DoorInfo> TestRom::isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, std::vector<DoorInfo>& room)
 {
 	sf::Vector2f b1(rect.left, rect.top);
 	sf::Vector2f b2(rect.left + rect.width, rect.top);

@@ -196,7 +196,7 @@ void SceneMaptool::Update(float dt)
 			count == (int)MapObjectType:: Grass|| count == count == (int)MapObjectType::StoreTable1 || count == (int)MapObjectType::StoreTable2 || count == (int)MapObjectType::StoreTable3 ||
 			count == (int)MapObjectType::StoreTable4 || count == (int)MapObjectType::StoreTable5 || count == (int)MapObjectType::StoreTable6 || count == (int)MapObjectType::StoreTableDisplay1 ||
 			count == (int)MapObjectType::StoreTableDisplay2 || count == (int)MapObjectType::Armor|| count == (int)MapObjectType::Chiar||
-			count == (int)MapObjectType::Pot|| count == (int)MapObjectType::MonsterKin||
+			count == (int)MapObjectType::Pot|| count == (int)MapObjectType::MonsterKin|| count == (int)MapObjectType::TreasureAlter ||
 			count == (int)MapObjectType::MonsterKinKey|| count == (int)MapObjectType::MonsterBlue|| count == (int)MapObjectType::MonsterRed || count == (int)MapObjectType::Boss || 
 			count == (int)MapObjectType::StoreOner)
 		{

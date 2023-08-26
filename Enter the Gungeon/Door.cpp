@@ -60,7 +60,13 @@ void Door::Open()
 
 void Door::Close()
 {
-	animation.Play("Close");
+
+	if (open)
+	{
+		animation.Play("Close");
+		open = false;
+	}
+	
 }
 
 void Door::EnterRoom()

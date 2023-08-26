@@ -10,36 +10,41 @@ class Door;
 class Player;
 class Enemy;
 class Npc;
-enum class DoorDirection
-{
-	None =-1,
-	Up,
-	Down,
-	Left,
-	Right
-};
-struct RoomObjectsInfoTest1
-{
-	MapObjectType type;
-	InteractionObject* interactionObj;
-};
-struct RandomMapInfo
-{
-	TileMap* map;
-	std::vector<SpriteGo*> spr;
-	std::vector<RoomObjectsInfoTest1> roomobj;
-	std::vector< Enemy*> monster;
-};
-struct Passage {
-	sf::Vector2f from, to;
-};
-struct DoorInfo
-{
-	sf::Vector2f pos;
-	DoorDirection dir;
-};
+class Chest;
+class Boss;
+
 class TestRom : public Scene
 {
+public: 
+	enum class DoorDirection
+	{
+		None = -1,
+		Up,
+		Down,
+		Left,
+		Right
+	};
+	struct RoomObjectsInfoTest1
+	{
+		MapObjectType type;
+		InteractionObject* interactionObj;
+	};
+	struct RandomMapInfo
+	{
+		TileMap* map;
+		std::vector<SpriteGo*> spr;
+		std::vector<RoomObjectsInfoTest1> roomobj;
+		std::vector< Enemy*> monster;
+
+	};
+	struct Passage {
+		sf::Vector2f from, to;
+	};
+	struct DoorInfo
+	{
+		sf::Vector2f pos;
+		DoorDirection dir;
+	};
 protected:
 	Room* rooms;
 	sf::RectangleShape shape;
@@ -56,6 +61,9 @@ protected:
 	std::vector<sf::CircleShape> circle;
 	int length = 0;
 
+	Npc* npc ;
+	Chest* chest ;
+	Boss* boss;
 	std::vector<Door*> doors;
 	Player* player = nullptr;
 	bool test = false;
@@ -73,7 +81,7 @@ protected:
 
 	float accumulatedTime = 0.0f;
 	int frameCount = 0;
-
+	int bossRoom;
 public :
 	TestRom();
 	virtual ~TestRom() override = default;
@@ -86,9 +94,11 @@ public :
 	virtual void Draw(sf::RenderWindow& window) override;
 	void MoveWorldView();
 	void ListFilesInDirectory(const std::string& folderPath, std::vector<std::string>& fileList);
+
 	sf::Vector2f Center( TileMap* room);
 	void ConnectRooms(TileMap* r1 , TileMap* r2);
 	void CreateTunnel(sf::Vector2f start, sf::Vector2f end);
+
 	bool isIntersecting(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
 	sf::Vector2f intersectionPoint(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
 	bool isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, sf::Vector2f& intersection);

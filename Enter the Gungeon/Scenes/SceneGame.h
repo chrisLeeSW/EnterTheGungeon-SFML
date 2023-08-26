@@ -5,10 +5,9 @@
 class Player;
 class Weapon;
 class SpriteGo;
-class TileMap;
+
 class Book;
 class Enemy;
-class InteractionObject;
 class DropItem;
 class Npc;
 class Chest;
@@ -20,14 +19,46 @@ class Boss;
 class BossUI;
 class EnemyBullet;
 
-struct RoomObjectsInfo
-{
-	MapObjectType type;
-	InteractionObject* interactionObj;
-};
-
+/// 
+class Room;
+class TileMap;
+class InteractionObject;
+class Door;
+//
 class SceneGame : public Scene
 {
+public :
+	//
+	enum class DoorDirection
+	{
+		None = -1,
+		Up,
+		Down,
+		Left,
+		Right
+	};
+	struct RoomObjectsInfoTest1
+	{
+		MapObjectType type;
+		InteractionObject* interactionObj;
+	};
+	struct RandomMapInfo
+	{
+		TileMap* map;
+		std::vector<SpriteGo*> spr;
+		std::vector<RoomObjectsInfoTest1> roomobj;
+		std::vector< Enemy*> monster;
+
+	};
+	struct Passage {
+		sf::Vector2f from, to;
+	};
+	struct DoorInfo
+	{
+		sf::Vector2f pos;
+		DoorDirection dir;
+	};
+	//
 protected:
 
 	Player* player = nullptr;
@@ -39,23 +70,42 @@ protected:
 	ObjectPool<DropItem> dropitemPool;
 	ObjectPool<SpriteEffect> effectPool;
 
-	Boss* test2;
 	BossUI* bossui;
 	Npc* shopowner;
-	Chest* chest; // test
-
-	std::vector<TileMap*> tileRoom;
-	std::vector<SpriteGo*> objects;
-	std::vector<RoomObjectsInfo> interaction;
-
-	std::vector<WallTypeInfo> colliedShape;
+	Chest* chestTest;
 
 	int playertype;
-
 	Book* book;
+	std::list<Enemy*> enemylist; // ??
 
-	std::list<Enemy*> enemylist;
+//
+	Room* rooms;
+	std::vector<std::string> fileList;
+	std::vector<std::string> sponRoomFileList;
+	std::vector<std::string> bossRoomFileList;
+	std::vector<RandomMapInfo> tileRoom;
+	std::vector<sf::RectangleShape> roomShape;
+	std::vector<Passage> passages;
+	std::vector<bool> connected;
+	std::vector<DoorInfo> doorInfo;
+	std::vector<sf::RectangleShape> doorShape;
 
+	std::vector<sf::RectangleShape> tunnel;
+	Npc* npc;
+	Chest* chest;
+	Boss* boss;
+	std::vector<Door*> doors;
+	std::vector<SpriteGo*> tunnelSprite;
+	std::list<SpriteGo*> tunnelWall;
+
+
+	int bossRoom;
+	int currentTunnel=0;
+	int currentRoom=0;
+	bool colliedDoor=false;
+
+	bool colliedDraw = false;
+//
 public:
 	SceneGame();
 	virtual ~SceneGame() override = default;
@@ -71,8 +121,8 @@ public:
 
 	virtual void SetPlayer(int a);
 
-	void MakeTestRoom(int size);
-	void ColliedTest();
+	void MakeRoom();
+
 	void RenewBossUI();
 
 	ObjectPool<EnemyBullet>& GetPoolEnemyBullet();
@@ -81,6 +131,25 @@ public:
 
 	template <typename T>
 	void ClearPool(ObjectPool<T>& pool);
+
+
+
+	///
+	void ListFilesInDirectory(const std::string& folderPath, std::vector<std::string>& fileList);
+	void NearRoomConnectRoom();
+	void ConnectRooms(TileMap* r1, TileMap* r2);
+	bool isIntersecting(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
+	sf::Vector2f intersectionPoint(const sf::Vector2f& a1, const sf::Vector2f& a2, const sf::Vector2f& b1, const sf::Vector2f& b2);
+	bool isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, sf::Vector2f& intersection);
+	std::vector<DoorInfo> isIntersecting(const sf::FloatRect& rect, const sf::Vector2f& a1, const sf::Vector2f& a2, std::vector<DoorInfo>& room);
+	void SettingDoorPosition();
+	void MakeDoor();
+	void CreateTunnel(sf::Vector2f start, sf::Vector2f end);
+	void RemoveWall();
+	void FindBossRoom();
+	void CoiledPlayerByMap();
+	void SetMonsterByPlayer();
+	//
 };
 
 template<typename T>

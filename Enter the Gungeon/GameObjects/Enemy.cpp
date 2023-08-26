@@ -406,6 +406,11 @@ const float& Enemy::GetHp()
 	return hp;
 }
 
+const bool Enemy::IsAlive() const
+{
+	return (state == Enemy::State::Die);
+}
+
 sf::Vector2f Enemy::WhereWay(sf::Vector2f dir)
 {
 	sf::Vector2f result;

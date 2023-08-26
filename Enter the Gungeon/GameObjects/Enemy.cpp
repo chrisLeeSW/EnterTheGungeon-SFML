@@ -6,6 +6,7 @@
 #include "DataTableMgr.h"
 #include "SceneGame.h"
 #include "Muzzle.h"
+#include "SpriteEffect.h"
 
 //HaeJun
 #include "EnemyShotGun.h"
@@ -621,7 +622,21 @@ void Enemy::OneShot(sf::Vector2f dir, float speed, bool isBlink) // pool¹ÝÈ¯ ÇÊ¿
 	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
 	EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
 	bullet->Shoot(dir, speed);
-	bullet->SetPosition(weapon->GetGunPoint()); // ±èÇýÁØ Ãß°¡
+	if (weapon != nullptr)	bullet->SetPosition(weapon->GetGunPoint()); // ±èÇýÁØ Ãß°¡
+	else bullet->SetPosition(position);
+	bullet->SetBullet(isBlink);
+	bullet->SetPlayer(player);
+	bullet->Init();
+	bullet->Reset();
+	scene->AddGo(bullet);
+}
+
+void Enemy::OneShot(sf::Vector2f dir, sf::Vector2f pos, float speed, bool isBlink)
+{
+	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+	EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
+	bullet->Shoot(dir, speed);
+	bullet->SetPosition(pos);
 	bullet->SetBullet(isBlink);
 	bullet->SetPlayer(player);
 	bullet->Init();
@@ -635,8 +650,22 @@ void Enemy::AngleShot(sf::Vector2f dir, float speed, float angle, bool isBlink)
 	EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
 	dir = Utils::RotateVector(dir, angle);
 	bullet->Shoot(dir, speed);
-	if(weapon != nullptr) // ±èÇýÁØ Ãß°¡
-	bullet->SetPosition(weapon->GetGunPoint());  // ±èÇýÁØ Ãß°¡
+	if(weapon != nullptr) bullet->SetPosition(weapon->GetGunPoint());  // ±èÇýÁØ Ãß°¡
+	else bullet->SetPosition(position);
+	bullet->SetBullet(isBlink);
+	bullet->SetPlayer(player);
+	bullet->Init();
+	bullet->Reset();
+	scene->AddGo(bullet);
+}
+
+void Enemy::AngleShot(sf::Vector2f dir, sf::Vector2f pos, float speed, float angle, bool isBlink)
+{
+	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+	EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
+	dir = Utils::RotateVector(dir, angle);
+	bullet->Shoot(dir, speed);
+	bullet->SetPosition(pos);
 	bullet->SetBullet(isBlink);
 	bullet->SetPlayer(player);
 	bullet->Init();
@@ -653,18 +682,40 @@ void Enemy::ShotgunShot(sf::Vector2f dir, float speed, int quantity, float angle
 	}
 }
 
+void Enemy::ShotgunShot(sf::Vector2f dir, sf::Vector2f pos, float speed, int quantity, float angle)
+{
+	float sp = (float)quantity * 0.5f * -angle;
+	for (int i = 0; i < quantity; i++)
+	{
+		AngleShot(dir, pos, speed, sp + angle * i);
+	}
+}
+
 void Enemy::Boom(sf::Vector2f pos, float range)
 {
 	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
-	EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
-	bullet->Shoot({ 0.f, 0.f }, 500.f);
-	bullet->SetPosition(pos);
-	bullet->SetBullet(true);
-	bullet->SetPlayer(player);
-	bullet->Init();
-	bullet->Reset();
-	bullet->SetScale(range, range);
-	scene->AddGo(bullet);
+	
+	SpriteEffect* aiming = scene->GetPoolSpriteEffect().Get();
+	aiming->SetEffect(SpriteEffect::Effect::Aiming);
+	aiming->SetPosition(pos);
+	aiming->Init();
+	aiming->Reset();
+	SpriteEffect* ptr = aiming;
+	aiming->action = [this, scene, pos, range, ptr]()
+	{
+		EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
+		bullet->Shoot({ 0.f, 0.f }, 500.f);
+		bullet->SetPosition(pos);
+		bullet->SetBullet(true);
+		bullet->SetPlayer(player);
+		bullet->Init();
+		bullet->Reset();
+		bullet->SetScale(range, range);
+		scene->AddGo(bullet);
+
+		ptr->action = nullptr;
+	};
+	scene->AddGo(aiming);
 }
 
 void Enemy::CloseAttack(float range)

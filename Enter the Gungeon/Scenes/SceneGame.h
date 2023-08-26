@@ -12,6 +12,7 @@ class InteractionObject;
 class DropItem;
 class Npc;
 class Chest;
+class SpriteEffect;
 
 class PlayerUI;
 
@@ -34,9 +35,9 @@ protected:
 	SpriteGo* shadow;
 	PlayerUI* playerui;
 
-
 	ObjectPool<EnemyBullet> enemyBullets;
 	ObjectPool<DropItem> dropitemPool;
+	ObjectPool<SpriteEffect> effectPool;
 
 	Boss* test2;
 	BossUI* bossui;
@@ -47,7 +48,7 @@ protected:
 	std::vector<SpriteGo*> objects;
 	std::vector<RoomObjectsInfo> interaction;
 
-	std::vector<WallTypeInfo>colliedShape;
+	std::vector<WallTypeInfo> colliedShape;
 
 	int playertype;
 
@@ -76,6 +77,7 @@ public:
 
 	ObjectPool<EnemyBullet>& GetPoolEnemyBullet();
 	ObjectPool<DropItem>& GetPoolDropItem();
+	ObjectPool<SpriteEffect>& GetPoolSpriteEffect();
 
 	template <typename T>
 	void ClearPool(ObjectPool<T>& pool);

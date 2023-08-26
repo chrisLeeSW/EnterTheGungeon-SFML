@@ -15,6 +15,7 @@
 #include "DisplayItem.h"
 #include "Npc.h"
 #include "Chest.h"
+#include "SpriteEffect.h"
 
 #include "Boss.h"
 #include "EnemyBullet.h"
@@ -45,8 +46,6 @@ void SceneGame::Init()
 
 	//player = (Player*)AddGo(new Player());
 	//weapon = (Weapon*)AddGo(new Weapon());
-
-	
 
 	book = (Book*)AddGo(new Book());
 
@@ -80,6 +79,12 @@ void SceneGame::Init()
 	};
 	dropitemPool.Init();
 
+	effectPool.OnCreate = [this](SpriteEffect* effect)
+	{
+		effect->pool = &effectPool;
+	};
+	effectPool.Init();
+
 	MakeTestRoom(3);
 	for (auto go : gameObjects)
 	{
@@ -91,6 +96,7 @@ void SceneGame::Release()
 {
 	enemyBullets.Release();
 	dropitemPool.Release();
+	effectPool.Release();
 
 	for (auto go : gameObjects)
 	{
@@ -128,6 +134,7 @@ void SceneGame::Exit()
 
 	ClearPool(enemyBullets);
 	ClearPool(dropitemPool);
+	ClearPool(effectPool);
 }
 
 void SceneGame::Update(float dt)
@@ -310,4 +317,9 @@ ObjectPool<EnemyBullet>& SceneGame::GetPoolEnemyBullet()
 ObjectPool<DropItem>& SceneGame::GetPoolDropItem()
 {
 	return dropitemPool;
+}
+
+ObjectPool<SpriteEffect>& SceneGame::GetPoolSpriteEffect()
+{
+	return effectPool;
 }

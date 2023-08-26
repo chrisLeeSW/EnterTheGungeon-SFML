@@ -13,7 +13,8 @@ struct Tile
 
 class TileMap : public VertexArrayGo
 {
-public : 
+public:
+
 protected:
 
 	sf::Vector2i size;
@@ -28,7 +29,7 @@ public:
 	virtual ~TileMap() override;
 
 	bool Load(const std::string& filePath,bool textureIdIn = true);
-	void LoadObject(const std::string& filePath,bool textureIdIn=true);
+	void LoadObject(const std::string& filePath,bool textureIdIn=true,int Layer=0);
 	void NoneFileLoad(int xSize, int ySize, bool textureIdI = true, bool testDraw = false);
 	void ClearTile();
 	virtual void Reset();

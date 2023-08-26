@@ -1,7 +1,7 @@
 #pragma once
 
-const int min_width = 400; // 최소 너비
-const int min_height = 400; // 최소 높이
+const int min_width = 500; // 최소 너비
+const int min_height = 500; // 최소 높이
 class Room 
 {
 protected:

@@ -17,81 +17,307 @@ void TestRom::Init()
 
 	rooms = new Room();
 	shape.setSize({ 25, 25 });
-	ListFilesInDirectory("Room/TileMapFile/");
+	ListFilesInDirectory("Room/TileMapFile/", fileList);
+	ListFilesInDirectory("Room/TileMapFile/SponRoom/", sponRoomFileList); 
+	ListFilesInDirectory("Room/TileMapFile/BossRoom/", bossRoomFileList);
 	int count = 0;
 	int rnadFileNumber = 0;
+	int sponRoom = Utils::RandomRange(0, sponRoomFileList.size());
+	int bossRoom = Utils::RandomRange(0, bossRoomFileList.size());
+	// player에게  sort Layer 1을 주자
+	bool boosRoomMake = false;
+	bool storeRoomMake = false;
 
+	int roomRandBoss = Utils::RandomRange(1, rooms->GetRoom().size());
+	int RandStore;
+	int eventRoom;
+	while (true)
+	{
+		RandStore = Utils::RandomRange(1, rooms->GetRoom().size());
+		if ( RandStore!= roomRandBoss) break;
+	}
+	while (true)
+	{
+		eventRoom = Utils::RandomRange(1, rooms->GetRoom().size());
+		if (eventRoom != roomRandBoss && eventRoom!= RandStore) break;
+	}
 	while (count != rooms->GetRoom().size())
 	{
 		bool collied = false;
 		rnadFileNumber = Utils::RandomRange(0, fileList.size());
 		TileMap* map = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
 		// sf::Vector2f pos = { rooms->Center(rooms->GetRoomIndex(count)) };
-		sf::Vector2f pos = { rooms->GetRoomIndex(count).x,rooms->GetRoomIndex(count).y};
+		sf::Vector2f pos = { rooms->GetRoomIndex(count).x,rooms->GetRoomIndex(count).y };
+		sf::Vector2f tileMapSize;
 		map->SetStartPos(pos);
+		if (count == 0)
+		{
+			tileMapSize = map->TileMapSize(sponRoomFileList[sponRoom]);
+		}
+		else if (count == roomRandBoss)
+		{
+			tileMapSize = map->TileMapSize(bossRoomFileList[bossRoom]);
+		}
+		else if (count == RandStore)
+		{
+			tileMapSize = map->TileMapSize("Room/TileMapFile/StoreRoom/StoreRoom1.csv");
+		}
+		else if (count == eventRoom)
+		{
+			tileMapSize = map->TileMapSize("Room/TileMapFile/EventRoom/EventRoom1.csv");
+		}
+		else
+		{
+			tileMapSize = map->TileMapSize(fileList[rnadFileNumber]);
+		}
 		
-		sf::Vector2f tileMapSize = map->TileMapSize(fileList[rnadFileNumber]);
 		sf::Vector2f objpos = pos;
 		objpos -= tileMapSize * 0.5f;
 		objpos += map->GetTileSize() * 0.5f;
-
-
 
 		if (rooms->GetRoomIndex(count).width < tileMapSize.x ||
 			rooms->GetRoomIndex(count).height < tileMapSize.y)
 		{
 			continue;
 		}
-		map->Load(fileList[rnadFileNumber]);
+
+
+		
+		if (count == 0)
+		{
+			map->Load(sponRoomFileList[sponRoom]);
+		}
+		else if (count == roomRandBoss)
+		{
+			map->Load(bossRoomFileList[bossRoom]);
+		}
+		else if (count == RandStore)
+		{
+			map->Load("Room/TileMapFile/StoreRoom/StoreRoom1.csv");
+		}
+		else if (count == eventRoom)
+		{
+			map->Load("Room/TileMapFile/EventRoom/EventRoom1.csv");
+		}
+		else
+		{
+			map->Load(fileList[rnadFileNumber]);
+		}
+	
 		map->SetOrigin(Origins::MC);
 		map->sortLayer = -1;
 		std::vector<SpriteGo*> objects;
 		std::vector<RoomObjectsInfoTest1> interaction;
 		for (int i = 0; i < map->tiles.size(); ++i)
 		{
-			//	objects
 			switch (static_cast<MapObjectType>(map->tiles[i].objectTypes))
 			{
+
 			case MapObjectType::NormalWallTop:
-			{
-				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
-				spr->sprite.setTextureRect({ 0,250,50,50 });
-				spr->SetScale(0.5f, 0.5f);
-				spr->SetOrigin(Origins::MC);
-				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
-				spr->sortLayer = 2;
-				objects.push_back(spr); // wall클래스 생성
-			}
-			break;
+			case MapObjectType::NorMalWallRight:
+			case MapObjectType::LightWallTop:
+			case MapObjectType::LightWallLeft:
+			case MapObjectType::LightWallRight:
+			case MapObjectType::LibraryTop:
+			case MapObjectType::LibraryLeft:
+			case MapObjectType::LibraryRight:
 			case MapObjectType::LibraryDown:
+			case MapObjectType::StoreTop:
+			case MapObjectType::StoreRight:
+			case MapObjectType::StoreLeft:
+			case MapObjectType::StoreTableDisplay1:
+			case MapObjectType::StoreTableDisplay2:
+			case MapObjectType::NormalWallLeft:
 			{
 				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
-				spr->sprite.setTextureRect({ 0,650,50,50 });
+				spr->sprite.setTextureRect({ 0,(map->tiles[i].objectTypes * 50),50,50 });
 				spr->SetScale(0.5f, 0.5f);
 				spr->SetOrigin(Origins::MC);
 				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
 				spr->sortLayer = 2;
-				objects.push_back(spr); // wall클래스 생성
+				objects.push_back(spr);
 			}
 			break;
-			case MapObjectType::Pot:
+			case MapObjectType::TreasureAlter:
+			{
+				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
+				spr->sprite.setTextureRect({ 0,(map->tiles[i].objectTypes * 50),50,50 });
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				spr->sortLayer = 2;
+				objects.push_back(spr);
+			}
+			break;
+			case MapObjectType::StoreTable1:
+			case MapObjectType::StoreTable2:
+			case MapObjectType::StoreTable3:
+			case MapObjectType::StoreTable4:
+			case MapObjectType::StoreTable5:
+			case MapObjectType::StoreTable6:
+			{
+				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
+				spr->sprite.setTextureRect({ 0,(map->tiles[i].objectTypes * 50),50,50 });
+				spr->SetScale(0.5f, 0.5f);
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				spr->sortLayer = 2;
+				objects.push_back(spr);
+
+				// 아이템 요기에 생성하게 해야함상점 진열 굿!
+			}
+			break;
+			case MapObjectType::Armor:
 			{
 				InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(map->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
-				spr->sprite.setTextureRect({ 0,800,50,50 });
-				spr->SetScale(0.5f, 0.5f);
+				spr->sprite.setTextureRect({ 2,39,12,20 });
 				spr->SetOrigin(Origins::MC);
 				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
 				spr->sortLayer = 0;
 				interaction.push_back({ static_cast<MapObjectType>(map->tiles[i].objectTypes), spr });
 			}
-			
+			break;
+			case MapObjectType::Chiar:
+			{
+				InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(map->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
+				spr->sprite.setTextureRect({ 2,63,14,21 });
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				spr->sortLayer = 0;
+				interaction.push_back({ static_cast<MapObjectType>(map->tiles[i].objectTypes), spr });
+			}
+			break;
+			case MapObjectType::Pot:
+			{
+				InteractionObject* spr = (InteractionObject*)AddGo(new InteractionObject(static_cast<MapObjectType>(map->tiles[i].objectTypes), "graphics/InteractionGameObjects.png"));
+				spr->sprite.setTextureRect({ 7,148,13,16 });
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				spr->sortLayer = 0;
+				interaction.push_back({ static_cast<MapObjectType>(map->tiles[i].objectTypes), spr });
+			}
+			break;
+			case MapObjectType::MonsterKin:
+			{
+
+			}
+			break;
+			case MapObjectType::MonsterKinKey:
+			{
+
+			}
+			break;
+			case MapObjectType::MonsterBlue:
+			{
+
+			}
+			break;
+			case MapObjectType::MonsterRed:
+			{
+				// 에너미 클래스 작업 해야함 ..
+			}
+			case MapObjectType::Boss:
+			{
+				// 이하 동문
+			}
+			break;
+			case MapObjectType::StoreOner :
+			{
+				// 이하 동문
+			}
+			break;
+			}
+
+			// new switch
+			switch (static_cast<MapObjectType>(map->tiles[i].monsterAndObject))
+			{
+			case MapObjectType::QueenPicture:
+			{
+				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+				spr->sprite.setTextureRect({ 0,4,31,32 });
+				spr->SetScale(0.5f, 0.5f);
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				spr->sortLayer = 3;
+				objects.push_back(spr);
+			}
+			break;
+			case MapObjectType::Flag1:
+			{
+				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+				spr->sprite.setTextureRect({ 85,5,13,29 });
+				spr->SetScale(0.5f, 0.5f);
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				spr->sortLayer = 3;
+				objects.push_back(spr);
+			}
+			break;
+			case MapObjectType::Flag2:
+			{
+				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+				spr->sprite.setTextureRect({ 108,6,13,29 });
+				spr->SetScale(0.5f, 0.5f);
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				spr->sortLayer = 3;
+				objects.push_back(spr);
+			}
+			break;
+			case MapObjectType::Flag3:
+			{
+				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+				spr->sprite.setTextureRect({ 108,6,13,29 });
+				spr->SetScale(0.5f, 0.5f);
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				spr->sortLayer = 3;
+				objects.push_back(spr);
+			}
+			break;
+			case MapObjectType::HeadObject:
+			{
+				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+				spr->sprite.setTextureRect({ 39,14,13,14 });
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				spr->sortLayer = 3;
+				objects.push_back(spr);
+			}
+			break;
+			case MapObjectType::Stair:
+			{
+				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+				spr->sprite.setTextureRect({ 58,10,18,18 });
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				spr->sortLayer = 3;
+				objects.push_back(spr);
+			}
+			break;
+			case MapObjectType::TreasureRoomFlag:
+			{
+
+				SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+				spr->sprite.setTextureRect({ 125,0,31,38 });
+				spr->SetScale(0.5f, 0.75f);
+				spr->SetOrigin(Origins::MC);
+				spr->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				spr->sortLayer = 3;
+				objects.push_back(spr);
+			}
+			break;
+			case MapObjectType::TreasureObject:
+			{
+
+				// 보물상자 클래스 생성 구역 
+			}
 			break;
 			}
 		}
 		tileRoom.push_back({ map, objects, interaction });
 		sf::RectangleShape shape;
-		shape.setSize({ map->vertexArray.getBounds().width- map->GetTileSize().x * 1.75f, map->vertexArray.getBounds().height - map->GetTileSize().y * 1.75f});
-		shape.setPosition({ map->vertexArray.getBounds().left+ map->GetTileSize().x  ,map->vertexArray.getBounds().top+ map->GetTileSize().y });
+		shape.setSize({ map->vertexArray.getBounds().width - map->GetTileSize().x * 1.75f, map->vertexArray.getBounds().height - map->GetTileSize().y * 1.75f });
+		shape.setPosition({ map->vertexArray.getBounds().left + map->GetTileSize().x  ,map->vertexArray.getBounds().top + map->GetTileSize().y });
 		shape.setFillColor(sf::Color::Transparent);
 		shape.setOutlineThickness(1);
 		shape.setOutlineColor(sf::Color::Green);
@@ -139,7 +365,7 @@ void TestRom::Init()
 		{
 			door.clear();
 			isIntersecting(tileRoom[i].map->vertexArray.getBounds(), passages[k].from, passages[k].to, door);
-			for (int i = 0;i < door.size();++i)
+			for (int i = 0; i < door.size(); ++i)
 			{
 				bool isNotPos = false;
 				for (auto& pushPos : doorInfo)
@@ -180,14 +406,14 @@ void TestRom::Init()
 		doorShape2.push_back(shape);
 	}
 
-	for (int i = 0;i < passages.size();++i)
+	for (int i = 0; i < passages.size(); ++i)
 	{
 		CreateTunnel(passages[i].from, passages[i].to);
 	}
 
 
 	player = (Player*)AddGo(new Player((Player::Types)1));
-	player->sortLayer = 0;
+	player->sortLayer = 10;
 
 
 	for (auto go : gameObjects)
@@ -195,11 +421,11 @@ void TestRom::Init()
 		go->Init();
 	}
 
-	for (int i = 0;i < tileRoom.size();++i)
+	for (int i = 0; i < tileRoom.size(); ++i)
 	{
-		for (int ii = 0;ii < tileRoom[i].spr.size();++ii)
+		for (int ii = 0; ii < tileRoom[i].spr.size(); ++ii)
 		{
-			for (int k = 0;k < doorShape2.size();++k)
+			for (int k = 0; k < doorShape2.size(); ++k)
 			{
 				if (tileRoom[i].spr[ii]->sprite.getGlobalBounds().intersects(doorShape2[k].getGlobalBounds()))
 				{
@@ -210,7 +436,7 @@ void TestRom::Init()
 	}
 	Exit();
 
-	std::cout << "TestRoom의 끝방 :" << lastRoom << "\t" << "Room의 끝방 :" << rooms->GetLastRoom() << " 중간 지점 :"<<rooms->GetMidRoom() << std::endl;
+	std::cout << "TestRoom의 끝방 :" << lastRoom << "\t" << "Room의 끝방 :" << rooms->GetLastRoom() << " 중간 지점 :" << rooms->GetMidRoom() << std::endl;
 }
 
 void TestRom::Release()
@@ -248,8 +474,20 @@ void TestRom::Exit()
 void TestRom::Update(float dt)
 {
 	Scene::Update(dt);
+	accumulatedTime += dt;
+	frameCount++;
+	if (accumulatedTime >= 1.0f)
+	{
+		float fps = static_cast<float>(frameCount) / accumulatedTime;
+		std::cout << "FPS: " << fps << std::endl;
+
+		// 값 초기화
+		frameCount = 0;
+		accumulatedTime = 0.0f;
+	}
+
 	MoveWorldView();
-	CoiledPlayerByMap();
+	//CoiledPlayerByMap();
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F6))
 	{
 		rooms->PrintSize();
@@ -269,9 +507,9 @@ void TestRom::Update(float dt)
 		}
 	}
 
-	for (int i = 0;i < tileRoom.size();++i)
+	for (int i = 0; i < tileRoom.size(); ++i)
 	{
-		for (int ii = 0;ii < tileRoom[i].roomobj.size();++ii)
+		for (int ii = 0; ii < tileRoom[i].roomobj.size(); ++ii)
 		{
 			if (tileRoom[i].roomobj[ii].interactionObj->sprite.getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
 			{
@@ -361,23 +599,23 @@ void TestRom::MoveWorldView()
 
 	if (INPUT_MGR.GetKey(sf::Keyboard::Right))
 	{
-		player->sprite.move(1.0f, 0.f);
-		player->SetPosition(player->GetPosition() + sf::Vector2f{1.f, 0.f});
+		player->sprite.move(5.5f, 0.f);
+		player->SetPosition(player->GetPosition() + sf::Vector2f{ 5.5f, 0.f });
 	}
 	if (INPUT_MGR.GetKey(sf::Keyboard::Left))
 	{
-		player->sprite.move(-1.0f, 0.0f);
-		player->SetPosition(player->GetPosition() + sf::Vector2f{ -1.0f, 0.f });
+		player->sprite.move(-5.5f, 0.0f);
+		player->SetPosition(player->GetPosition() + sf::Vector2f{ -5.5f, 0.f });
 	}
 	if (INPUT_MGR.GetKey(sf::Keyboard::Up))
 	{
-		player->sprite.move(0.0f, -1.0);
-		player->SetPosition(player->GetPosition() + sf::Vector2f{ 0.0f, -1.0 });
+		player->sprite.move(0.0f, -5.5f);
+		player->SetPosition(player->GetPosition() + sf::Vector2f{ 0.0f, -5.5f });
 	}
 	if (INPUT_MGR.GetKey(sf::Keyboard::Down))
 	{
-		player->sprite.move(0.0f, 1.0f);
-		player->SetPosition(player->GetPosition() + sf::Vector2f{ 0.0f, 1.0f });
+		player->sprite.move(0.0f, 5.5f);
+		player->SetPosition(player->GetPosition() + sf::Vector2f{ 0.0f, 5.5f });
 	}
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::PageUp))
 	{
@@ -392,7 +630,7 @@ void TestRom::MoveWorldView()
 
 }
 
-void TestRom::ListFilesInDirectory(const std::string& folderPath)
+void TestRom::ListFilesInDirectory(const std::string& folderPath, std::vector<std::string>& fileList)
 {
 	WIN32_FIND_DATAA findFileData;
 	HANDLE hFind = FindFirstFileA((folderPath + "\\*").c_str(), &findFileData);
@@ -439,11 +677,6 @@ void TestRom::ConnectRooms(TileMap* r1, TileMap* r2)
 			c1 = points[0].pos;
 			//doorInfo.push_back(c1);
 		}
-		else
-		{
-			std::cout << "ERR" << std::endl;
-		}
-
 		points.clear();
 		isIntersecting(r2->vertexArray.getBounds(), c1, c2, points);
 		if (points.size() == 1)
@@ -452,11 +685,6 @@ void TestRom::ConnectRooms(TileMap* r1, TileMap* r2)
 			//doorInfo.push_back(c2);
 
 		}
-		else
-		{
-			std::cout << "ERR" << std::endl;
-		}
-
 		passages.push_back({ c1, c2 });
 	}
 	else
@@ -469,10 +697,6 @@ void TestRom::ConnectRooms(TileMap* r1, TileMap* r2)
 			//doorInfo.push_back(c1);
 
 		}
-		else
-		{
-			std::cout << "ERR" << std::endl;
-		}
 		points.clear();
 		isIntersecting(r2->vertexArray.getBounds(), { c2.x, c1.y }, c2, points);
 		if (points.size() == 1)
@@ -480,10 +704,6 @@ void TestRom::ConnectRooms(TileMap* r1, TileMap* r2)
 			c2 = points[0].pos;
 			//doorInfo.push_back(c2);
 
-		}
-		else
-		{
-			std::cout << "ERR" << std::endl;
 		}
 		passages.push_back({ c1, {c2.x, c1.y} });
 		passages.push_back({ {c2.x, c1.y}, c2 });
@@ -639,7 +859,7 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 	}
 	if (start.y < end.y)
 	{
-		for (int i = 0;i < 3;++i)
+		for (int i = 0; i < 3; ++i)
 		{
 			float xpos = end.x - tunnelSize.x;
 			SpriteGo* spr3 = (SpriteGo*)AddGo(new SpriteGo("graphics/tunnel.png"));
@@ -653,11 +873,11 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 	}
 	if (start.y > end.y)
 	{
-		for (int i = 0;i < 3;i++)
+		for (int i = 0; i < 3; i++)
 		{
 			float xpos = end.x - tunnelSize.x;
 			SpriteGo* spr3 = (SpriteGo*)AddGo(new SpriteGo("graphics/tunnel.png"));
-			spr3->SetPosition(xpos +(tunnelSize.x*i), start.y + tunnelSize.y);
+			spr3->SetPosition(xpos + (tunnelSize.x * i), start.y + tunnelSize.y);
 			spr3->sortLayer = -2;
 			spr3->sprite.setTextureRect({ 13,43,25,25 });
 			spr3->SetOrigin(Origins::MC);
@@ -666,9 +886,9 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 		}
 	}
 	sf::RectangleShape startShape;
-	
+
 	sf::Vector2f shapeSize = { 37.5f,37.5f };
-	sf::Vector2f startPos = {start.x, start.y};
+	sf::Vector2f startPos = { start.x, start.y };
 	if (start.x > end.x)
 	{
 		shapeSize.x = end.x - start.x;
@@ -681,7 +901,7 @@ void TestRom::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 		shapeSize.x = end.x - start.x;
 		shapeSize.y -= 19.75f;
 		startPos.y -= 12.5f;
-		
+
 	}
 	else if (start.y > end.y)
 	{
@@ -820,24 +1040,24 @@ void TestRom::CoiledPlayerByMap()
 	}*/
 	if (tileRoom[currentRoom].map->vertexArray.getBounds().contains(player->GetPosition()))
 	{
-		if(!roomShape[currentRoom].getGlobalBounds().contains(player->GetPosition()) && !colliedDoor)
+		if (!roomShape[currentRoom].getGlobalBounds().contains(player->GetPosition()) && !colliedDoor)
 			player->SetPosition(prevPlayerPos);
 	}
 
 	if (colliedDoor)
 	{
-		
+
 	}
-	for (int i = 0;i < tileRoom.size();++i)
+	for (int i = 0; i < tileRoom.size(); ++i)
 	{
-		if (tileRoom[i].map->vertexArray.getBounds().contains(player->GetPosition())&& colliedDoor)
+		if (tileRoom[i].map->vertexArray.getBounds().contains(player->GetPosition()) && colliedDoor)
 		{
 			currentRoom = i;
 			colliedDoor = false;
 			break;
 		}
 	}
-	for (int i = 0;i < tunnel.size();++i)
+	for (int i = 0; i < tunnel.size(); ++i)
 	{
 		if (tunnel[i].getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
 		{
@@ -849,7 +1069,7 @@ void TestRom::CoiledPlayerByMap()
 	bool test1 = false;
 	if (!tunnel[currentTunnel].getGlobalBounds().contains(player->GetPosition()) && colliedDoor)
 	{
-		for (int i = 0;i < tunnel.size();++i)
+		for (int i = 0; i < tunnel.size(); ++i)
 		{
 			if (tunnel[i].getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
 			{
@@ -877,7 +1097,7 @@ void TestRom::CoiledPlayerByMap()
 	//}
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F11))
 	{
-		std::cout << "현재방 : " << currentRoom<<"터널 :"<<currentTunnel << std::endl;
+		std::cout << "현재방 : " << currentRoom << "터널 :" << currentTunnel << std::endl;
 	}
 	/*for (auto& tu : tunnel)
 	{

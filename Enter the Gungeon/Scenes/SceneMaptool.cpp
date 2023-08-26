@@ -193,17 +193,21 @@ void SceneMaptool::Update(float dt)
 		if (count == (int)MapObjectType::NormalWallTop || count == (int)MapObjectType::NorMalWallRight || count == (int)MapObjectType::NormalWallLeft||count == (int)MapObjectType::LightWallTop || 	count==(int)MapObjectType::LibraryTop ||
 			count == (int)MapObjectType::LightWallLeft || count == (int)MapObjectType::LightWallRight || count == (int)MapObjectType::LibraryLeft || count == (int)MapObjectType::LibraryRight ||
 			count == (int)MapObjectType::LibraryDown|| count == (int)MapObjectType::StoreTop || count == (int)MapObjectType::StoreRight || count == (int)MapObjectType::StoreLeft ||
-			count == (int)MapObjectType:: Grass|| count == (int)MapObjectType::QueenPicture||
-			count == (int)MapObjectType::HeadObject || count == (int)MapObjectType::Stair || count == (int)MapObjectType::Flag1 || count == (int)MapObjectType::Flag2 || 
-			count == (int)MapObjectType::Flag3|| count == (int)MapObjectType::StoreTable1 || count == (int)MapObjectType::StoreTable2 || count == (int)MapObjectType::StoreTable3 ||
+			count == (int)MapObjectType:: Grass|| count == count == (int)MapObjectType::StoreTable1 || count == (int)MapObjectType::StoreTable2 || count == (int)MapObjectType::StoreTable3 ||
 			count == (int)MapObjectType::StoreTable4 || count == (int)MapObjectType::StoreTable5 || count == (int)MapObjectType::StoreTable6 || count == (int)MapObjectType::StoreTableDisplay1 ||
-			count == (int)MapObjectType::StoreTableDisplay2 || count == (int)MapObjectType::TreasureRoomFlag || count == (int)MapObjectType::Armor|| count == (int)MapObjectType::Chiar||
-			 count == (int)MapObjectType::TreasureObject ||count == (int)MapObjectType::Pot|| count == (int)MapObjectType::MonsterKin||
+			count == (int)MapObjectType::StoreTableDisplay2 || count == (int)MapObjectType::Armor|| count == (int)MapObjectType::Chiar||
+			count == (int)MapObjectType::Pot|| count == (int)MapObjectType::MonsterKin||
 			count == (int)MapObjectType::MonsterKinKey|| count == (int)MapObjectType::MonsterBlue|| count == (int)MapObjectType::MonsterRed || count == (int)MapObjectType::Boss || 
 			count == (int)MapObjectType::StoreOner)
 		{
 			objectSprite->ChangeTile(gridIndex.x, gridIndex.y, count, currentTileSprite->sprite.getTextureRect());
 			//thirdSprite
+		}
+		else if(count == (int)MapObjectType::QueenPicture ||
+			count == (int)MapObjectType::HeadObject || count == (int)MapObjectType::Stair || count == (int)MapObjectType::Flag1 || count == (int)MapObjectType::Flag2 || count == (int)MapObjectType::TreasureRoomFlag ||
+			count == (int)MapObjectType::Flag3 || count == (int)MapObjectType::TreasureObject)
+		{
+			thirdSprite->ChangeTile(gridIndex.x, gridIndex.y, count, currentTileSprite->sprite.getTextureRect());
 		}
 		else
 		{
@@ -222,7 +226,12 @@ void SceneMaptool::Update(float dt)
 		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 25;
 		if (gridIndex.x < 0 || gridIndex.y < 0) return;
 		objectSprite->ChangeTile(gridIndex.x, gridIndex.y, static_cast<int>(MapObjectType::None), sf::IntRect{ 50,0,50,50 });
-		// thirdSprite
+	}
+	if (INPUT_MGR.GetMouseButton(sf::Mouse::Right) && INPUT_MGR.GetKey(sf::Keyboard::LAlt))
+	{
+		sf::Vector2i gridIndex = (sf::Vector2i)ScreenToWorldPos(INPUT_MGR.GetMousePos()) / 25;
+		if (gridIndex.x < 0 || gridIndex.y < 0) return;
+		thirdSprite->ChangeTile(gridIndex.x, gridIndex.y, static_cast<int>(MapObjectType::None), sf::IntRect{ 50,0,50,50 });
 	}
 	WallMakeCollied();
 
@@ -668,7 +677,7 @@ void SceneMaptool::SettingUiText()
 	restUiText->sortLayer = 100;
 	restUiText->SetPosition(restUi->GetPosition() - sf::Vector2f{ 0.f, restUi->text.getCharacterSize() * 0.125f });
 
-	fileNameTexBox = (TextBox*)AddGo(new TextBox("fonts/OpenSans-Semibold.ttf", "direction"));
+	fileNameTexBox = (TextBox*)AddGo(new TextBox("fonts/OpenSans-Semibold.ttf", "Map"));
 	fileNameTexBox->box.setSize({ 200, 50 });
 	fileNameTexBox->text.setCharacterSize(10);
 	fileNameTexBox->SetOrigin(Origins::MC);
@@ -905,6 +914,7 @@ void SceneMaptool::SaveRoom(std::string& fileName, std::string route, std::strin
 		{
 			std::string tileInfo = std::to_string(gridTile->tiles[count].texIndex);
 			tileInfo += "," + std::to_string(objectSprite->tiles[count].texIndex);
+			tileInfo += "," + std::to_string(thirdSprite->tiles[count].texIndex);
 			// thirdSprite +ÇÑ¹ø´õ 
 			doc.SetCell<std::string>(j, i, tileInfo);
 			count++;
@@ -971,10 +981,10 @@ void SceneMaptool::LoadGridAndObjectSpriteFile(std::string& fileName, std::strin
 	gridTile->Load(fileName, false);
 
 	objectSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-	objectSprite->LoadObject(fileName, false);
+	objectSprite->LoadObject(fileName, false,0);
 
-	//thirdSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
-	//thirdSprite->LoadObject(fileName, false);
+	thirdSprite = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+	thirdSprite->LoadObject(fileName, false,1);
 
 	wallWidthCount = gridTile->GetWallSize().x;
 	wallHeightCount = gridTile->GetWallSize().y;

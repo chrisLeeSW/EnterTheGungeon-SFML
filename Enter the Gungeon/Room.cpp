@@ -4,19 +4,20 @@
 Room::Room()
 {
     srand(static_cast<unsigned int>(time(nullptr)));
-    Rect initial = { 0, 0,4000, 4000 };
+    Rect initial = { 0, 0,10000, 10000 };
     Divide(initial,5);
 
     sf::Vector2i  startPos = { (int)initial.x ,(int)initial.y };
     int widht = initial.width /25;
     int height = initial.height /25;
-
-   int size = rooms.size() / 2-1;
+   int size = rooms.size() / 2;
    std::shuffle(rooms.begin(), rooms.end(), std::default_random_engine(static_cast<unsigned int>(time(nullptr))));
-   if (size == 0) rooms.resize(Utils::RandomRange(1, 5));
-   else rooms.resize(Utils::RandomRange(7, size));
+   //if (size <=7)
+   //    rooms.resize(7);
+   //else 
+   //    rooms.resize(Utils::RandomRange(7, size));
 
-   /* rooms.resize(15);*/
+    rooms.resize(20);
 
 
    connected.resize(rooms.size(), false);
@@ -64,7 +65,7 @@ const int tile_size = 25; // 타일의 크기
 
 void Room::Divide(Rect rect, int depth)
 {
-    if (depth <= 0 || rect.width < 2 * tile_size || rect.height < 2 * tile_size)
+    if (depth <= 0 || rect.width < 1.5 * min_width || rect.height < 1.5 * min_height)
     {
         // 중심에 기반한 작은 방 생성
         Rect room;

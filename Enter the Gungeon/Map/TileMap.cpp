@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TileMap.h"
 
-TileMap::TileMap(const std::string& textureId, const std::string& n) :VertexArrayGo(textureId, n),bsp(nullptr)
+TileMap::TileMap(const std::string& textureId, const std::string& n) :VertexArrayGo(textureId, n), bsp(nullptr)
 {
 	startPos = { 0, 0 };
 }
@@ -29,13 +29,27 @@ bool TileMap::Load(const std::string& filePath, bool textureIdIn)
 			std::string fileInfo = map.GetCell<std::string>(j, i + 4);
 			int texIndex = std::stoi(fileInfo);
 			tile.texIndex = texIndex;
-			size_t commaPos = fileInfo.find(',');
+
+			size_t firstCommaPos = fileInfo.find(',');
+			if (firstCommaPos != std::string::npos)
+			{
+				size_t secondCommaPos = fileInfo.find(',', firstCommaPos + 1);
+				if (secondCommaPos != std::string::npos)
+				{
+					std::string firstNumberPart = fileInfo.substr(firstCommaPos + 1, secondCommaPos - firstCommaPos - 1);
+					std::string secondNumberPart = fileInfo.substr(secondCommaPos + 1);
+
+					tile.objectTypes = std::stoi(firstNumberPart);
+					tile.monsterAndObject = std::stoi(secondNumberPart);
+				}
+			}
+			/*size_t commaPos = fileInfo.find(',');
 			if (commaPos != std::string::npos)
 			{
 				std::string numberPart = fileInfo.substr(commaPos + 1);
 				int newTexIndex = std::stoi(numberPart);
 				tile.objectTypes = newTexIndex;
-			}
+			}*/
 
 			tiles.push_back(tile);
 		}
@@ -99,7 +113,7 @@ bool TileMap::Load(const std::string& filePath, bool textureIdIn)
 	return true;
 }
 
-void TileMap::LoadObject(const std::string& filePath,bool textureIdIn)
+void TileMap::LoadObject(const std::string& filePath, bool textureIdIn, int Laye)
 {
 	if (!textureIdIn) texture = RESOURCE_MGR.GetTexture(textureId);
 
@@ -114,13 +128,29 @@ void TileMap::LoadObject(const std::string& filePath,bool textureIdIn)
 			tile.x = j;
 			tile.y = i;
 			std::string fileInfo = map.GetCell<std::string>(j, i + 4);
-			size_t commaPos = fileInfo.find(',');
+
+			size_t firstCommaPos = fileInfo.find(',');
+			if (firstCommaPos != std::string::npos)
+			{
+				size_t secondCommaPos = fileInfo.find(',', firstCommaPos + 1);
+				if (secondCommaPos != std::string::npos)
+				{
+					std::string firstNumberPart = fileInfo.substr(firstCommaPos + 1, secondCommaPos - firstCommaPos - 1);
+					std::string secondNumberPart = fileInfo.substr(secondCommaPos + 1);
+
+					if (Laye == 0)
+						tile.texIndex = std::stoi(firstNumberPart);
+					else if (Laye == 1)
+						tile.texIndex = std::stoi(secondNumberPart);
+				}
+			}
+			/*size_t commaPos = fileInfo.find(',');
 			if (commaPos != std::string::npos)
 			{
 				std::string numberPart = fileInfo.substr(commaPos + 1);
 				int newTexIndex = std::stoi(numberPart);
 				tile.texIndex  = newTexIndex;
-			}
+			}*/
 			tiles.push_back(tile);
 		}
 	}
@@ -187,7 +217,7 @@ void TileMap::LoadObject(const std::string& filePath,bool textureIdIn)
 void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI, bool testDraw)
 {
 
-	if(!textureIdI) texture = RESOURCE_MGR.GetTexture(textureId);
+	if (!textureIdI) texture = RESOURCE_MGR.GetTexture(textureId);
 
 
 	size = { xSize, ySize };
@@ -205,7 +235,7 @@ void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI, bool testDraw)
 		}
 	}
 
-	sf::Vector2f tileSize =  { 25.f, 25.f };
+	sf::Vector2f tileSize = { 25.f, 25.f };
 	sf::Vector2f texSize = { 50.f, 50.f };
 	sf::Vector2f texOffsets[4] =
 	{
@@ -247,7 +277,7 @@ void TileMap::NoneFileLoad(int xSize, int ySize, bool textureIdI, bool testDraw)
 				if (tiles[tileIndex].texIndex == -1)
 				{
 					vertexArray[vertexIndex].texCoords = texNonOffset[k];
-					vertexArray[vertexIndex].texCoords.y += texSize.y  * texIndex;
+					vertexArray[vertexIndex].texCoords.y += texSize.y * texIndex;
 				}
 				else
 				{
@@ -367,16 +397,16 @@ void TileMap::Divide()
 {
 	if (bsp == nullptr)
 	{
-		bsp = new BspRoom(sf::IntRect{ 0, 0, size.x, size.y});
+		bsp = new BspRoom(sf::IntRect{ 0, 0, size.x, size.y });
 		ListFilesInDirectory("Room/TileMapFile/");
 	}
-	bsp->Divide(this,5,3, fileList);
+	bsp->Divide(this, 5, 3, fileList);
 }
 
 void TileMap::MakeRoom()
 {
 	ListFilesInDirectory("Room/TileMapFile/");
-	bsp->MakeRoom(this,fileList);
+	bsp->MakeRoom(this, fileList);
 }
 
 void TileMap::ConnectRoom()
@@ -386,7 +416,7 @@ void TileMap::ConnectRoom()
 	{
 		bsp->ConnectRoom(this);
 	}
-	
+
 }
 
 

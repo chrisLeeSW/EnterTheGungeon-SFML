@@ -91,6 +91,7 @@ public:
 	void SetIsShoot(bool shoot) { isShoot = shoot; }
 
 	const float& GetHp();
+	const bool IsAlive() const;
 
 	sf::Vector2f WhereWay(sf::Vector2f dir);
 

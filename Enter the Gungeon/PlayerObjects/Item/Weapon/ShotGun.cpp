@@ -19,6 +19,7 @@ ShotGun::ShotGun(const std::string& textureId, const std::string& n)
 	//effect.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PilotShootEffect.csv"));
 
 	//effect.SetTarget(&shooteffect);
+
 	gun.SetTarget(&sprite);
 
 	SpriteGo::Reset();
@@ -26,7 +27,7 @@ ShotGun::ShotGun(const std::string& textureId, const std::string& n)
 	gun.Play("Idle");
 
 	gunend.setFillColor(sf::Color::Transparent);
-	gunend.setOutlineColor(sf::Color::Red);
+	gunend.setOutlineColor(sf::Color::Transparent);
 	gunend.setOutlineThickness(2.f);
 	gunend.setSize(sf::Vector2f{ 5,5 });
 
@@ -127,8 +128,7 @@ void ShotGun::Update(float dt)
 					player->Shoot(bulletType, gunPoint, look, santan * Utils::RandomValue());
 				}
 
-				std::cout << "현재 탄창 : " << currentbulletcount << std::endl;
-				std::cout << "총 탄창 : " << currentbulletmax << std::endl;
+
 				tick = attackrate;
 			}
 			if (gun.GetCurrentClipId() == "Shoot" && gun.AnimationEnd())
@@ -148,13 +148,21 @@ void ShotGun::Update(float dt)
 				state = State::Idle;
 				gun.Play("Idle");
 				isreload = false; // 재장전 플래그 해제
-				std::cout << "장전완료" << std::endl;
-
 			}
 		}
 	}
-	else
-		state = State::Roll;
+	else if (player->isRolling() && state == State::Reload)
+	{
+		reloadtick += dt; // 재장전 시간 감소
+		if (reloadtick >= reload)
+		{
+			currentbulletcount = bulletcount; // 재장전 완료되면 탄창을 최대치로 채움
+			player->playerUI->ShootWeapon();
+			state = State::Idle;
+			gun.Play("Idle");
+			isreload = false; // 재장전 플래그 해제
+		}
+	}
 }
 
 void ShotGun::Draw(sf::RenderWindow& window)

@@ -110,14 +110,10 @@ void SceneGame::Enter()
 	player = (Player*)AddGo(new Player((Player::Types)playertype));
 	playerui = (PlayerUI*)AddGo(new PlayerUI(player));
 
-	player->sortLayer = 0;
 	player->Init();
 
 
-	player->SetPosition(0.f,0.f);
-	playerui = (PlayerUI*)AddGo(new PlayerUI(player));
 	playerui->Init();
-	playerui->Reset();
 
 	player->SetPosition(tileRoom[0].map->GetStartPos());
 
@@ -139,6 +135,7 @@ void SceneGame::Exit()
 	{
 		RemoveGo(player);
 		RemoveGo(playerui);
+
 	}
 	Scene::Exit();
 
@@ -172,6 +169,9 @@ void SceneGame::Update(float dt)
 	{
 		SCENE_MGR.ChangeScene(SceneId::Lobby);
 	}
+
+	if(!player->IsAlive())
+		SCENE_MGR.ChangeScene(SceneId::Lobby);
 
 	worldView.setCenter(player->GetPosition());
 }
@@ -573,7 +573,6 @@ void SceneGame::ListFilesInDirectory(const std::string& folderPath, std::vector<
 		if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
 		}
 		else {
-			//std::cout << "파일 이름: " << findFileData.cFileName << std::endl;
 			std::string filePath = folderPath + findFileData.cFileName;
 			fileList.push_back(filePath);
 			++fileCount;
@@ -1022,8 +1021,7 @@ void SceneGame::CreateTunnel(sf::Vector2f start, sf::Vector2f end)
 	startShape.setOutlineColor(sf::Color::Yellow);
 
 	tunnel.push_back(startShape);
-	Exit();
-	
+
 }
 
 void SceneGame::RemoveWall()
@@ -1041,9 +1039,6 @@ void SceneGame::RemoveWall()
 			}
 		}
 	}
-	Exit();
-
-
 }
 
 void SceneGame::FindBossRoom()

@@ -325,6 +325,7 @@ void Enemy::Update(float dt)
 		}
 		break;
 	case Enemy::State::Die:
+
 		return;
 		break;
 	case Enemy::State::Runaway:
@@ -524,10 +525,14 @@ void Enemy::OnDamage(float damage, sf::Vector2f dir, float knockback)
 		if (IfDie != nullptr)
 		{
 			IfDie(dir);
+			SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+			scene->RemoveGo(weapon);
 		}
 		else
 		{
 			OnDie(dir);
+			SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+			scene->RemoveGo(weapon);
 		}
 
 		state = Enemy::State::Die;

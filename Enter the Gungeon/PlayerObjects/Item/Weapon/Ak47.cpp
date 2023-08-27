@@ -28,7 +28,6 @@ void Ak47::Init()
 	SetOrigin(sprite.getLocalBounds().left, sprite.getLocalBounds().height);
 
 
-	std::cout << sprite.getOrigin().x << std::endl;
 }
 
 void Ak47::Release()
@@ -38,7 +37,6 @@ void Ak47::Release()
 void Ak47::Reset()
 {
 	SpriteGo::Reset();
-	std::cout << "¸®¼Â" << std::endl;
 }
 
 void Ak47::Update(float dt)

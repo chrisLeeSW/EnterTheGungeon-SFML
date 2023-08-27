@@ -95,11 +95,6 @@ void SceneLobby::Enter()
 
 	Scene::Enter();
 
-
-
-	bool playerchoise = false;
-	bool playerface = true;
-
 	sprite.setPosition(windowSize.x * 0.5f, windowSize.y * 0.4f);
 
 	textHegemonyCredit.setString(std::to_string(Scene::hegemonyCredit));
@@ -108,14 +103,10 @@ void SceneLobby::Enter()
 
 void SceneLobby::Exit()
 {
-	pilot->SetPosition(pilotSetPosition);
-	prisoner->SetPosition(prisonerSetPosition);
+	//pilot->SetPosition(pilotSetPosition);
+	//prisoner->SetPosition(prisonerSetPosition);
 
-	prisoner->ChangePlayer(prisonerSetPosition, false);
-	prisoner->ChangePlayer(prisonerSetPosition, false);
 
-	currentplayer->isChangeScene = false;
-	currentplayer->isChangeSceneGame == false;
 	Scene::Exit();	
 }
 
@@ -147,15 +138,17 @@ void SceneLobby::Update(float dt)
 
 	if (currentplayer->isChangeScene == true && currentplayer->isChangeSceneGame == true)
 	{
+
+		Scene* scene = SCENE_MGR.GetGameScene();
+		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
+		sceneGame->SetPlayer((int)playertype);
+		SCENE_MGR.ChangeScene(SceneId::Game);
 		currentplayer->isChangeScene = false;
 		currentplayer->isChangeSceneGame == false;
 		playerchoise = false;
 		playerface = true;
 		currentplayer->ChangePlayer(pilotSetPosition, false);
-		Scene* scene = SCENE_MGR.GetGameScene();
-		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
-		sceneGame->SetPlayer((int)playertype);
-		SCENE_MGR.ChangeScene(SceneId::Game);
+
 	}
 }
 

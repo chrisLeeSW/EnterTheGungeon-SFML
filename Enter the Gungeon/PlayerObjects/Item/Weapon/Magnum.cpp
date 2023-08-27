@@ -22,7 +22,7 @@ Magnum::Magnum(const std::string& textureId, const std::string& n) : Weapon(text
 	gun.Play("Idle");
 
 	gunend.setFillColor(sf::Color::Transparent);
-	gunend.setOutlineColor(sf::Color::Red);
+	gunend.setOutlineColor(sf::Color::Transparent);
 	gunend.setOutlineThickness(1.f);
 	gunend.setSize(sf::Vector2f{ 5,5 });
 

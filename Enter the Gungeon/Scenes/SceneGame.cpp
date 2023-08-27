@@ -158,7 +158,8 @@ void SceneGame::Update(float dt)
 
 	// 대각선 충돌이 문제가 있음 테스트 코드로 사용
 	CoiledPlayerByMap();
-	SetMonsterByPlayer(); // 이게 Update에 있는 것이 말이 안된다~ 수정 필수
+	if(setPlayer)
+		SetMonsterByPlayer();
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F11))
 	{
 		colliedDraw = true;
@@ -1080,6 +1081,7 @@ void SceneGame::CoiledPlayerByMap()
 		{
 			currentRoom = i;
 			colliedDoor = false;
+			setPlayer = true;
 			break;
 		}
 	}
@@ -1130,6 +1132,7 @@ void SceneGame::SetMonsterByPlayer()
 		enemyList.push_back(tileRoom[currentRoom].monster[i]);
 	}
 	player->SetEnemyList(enemyList);
+	setPlayer = false;
 }
 void SceneGame::OverwriteCSV(const std::string& filepath)
 {

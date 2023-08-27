@@ -103,6 +103,7 @@ protected:
 	bool colliedDoor=false;
 
 	bool colliedDraw = false;
+	bool setPlayer = false;
 //
 public:
 	SceneGame();

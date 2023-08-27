@@ -212,6 +212,11 @@ void Enemy::Update(float dt)
 	sf::Vector2f look = WhereWay(direction);
 	if (attackTimer < attackInterval) attackTimer += dt;
 
+	if (!wall.contains(position))
+	{
+		SetPosition(Utils::Clamp(position, { wallLeft, wallTop }, { wallRight, wallBottom }));
+	}
+
 	switch (state)
 	{
 	case Enemy::State::Idle:
@@ -488,6 +493,16 @@ void Enemy::LoadMuzzle(const std::string& path)
 		muzzle->Reset();
 		muzzle->Play();
 	}
+}
+
+void Enemy::SetWall(const sf::FloatRect& wall)
+{
+	this->wall = wall;
+
+	wallTop = wall.top;
+	wallBottom = wall.top + wall.height;
+	wallLeft = wall.left;
+	wallRight = wall.left + wall.width;
 }
 
 void Enemy::OnDamage(float damage, sf::Vector2f dir, float knockback)

@@ -1117,6 +1117,7 @@ void SceneGame::SetMonsterByPlayer()
 	for (int i = 0; i < tileRoom[currentRoom].monster.size(); ++i)
 	{
 		tileRoom[currentRoom].monster[i]->SetPlayer(player);
+		tileRoom[currentRoom].monster[i]->SetWall(tileRoom[currentRoom].map->vertexArray.getBounds()); // wall
 		enemyList.push_back(tileRoom[currentRoom].monster[i]);
 	}
 	player->SetEnemyList(enemyList);

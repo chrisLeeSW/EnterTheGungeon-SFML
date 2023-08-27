@@ -7,6 +7,7 @@ SpriteEffect::SpriteEffect(const std::string& textureId, const std::string& n)
 	: SpriteGo(textureId, n)
 {
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Effect/Aiming.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Effect/Dust.csv"));
 
 	animation.SetTarget(&sprite);
 }
@@ -19,6 +20,9 @@ void SpriteEffect::SetEffect(SpriteEffect::Effect effect)
 	{
 	case SpriteEffect::Effect::Aiming:
 		animation.Play("Aiming");
+		break;
+	case SpriteEffect::Effect::Dust:
+		animation.Play("Dust");
 		break;
 	default:
 		return;

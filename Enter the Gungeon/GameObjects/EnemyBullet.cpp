@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "EnemyBullet.h"
+#include "SpriteEffect.h"
 
 EnemyBullet::EnemyBullet(std::string textureId, std::string name)
 	:SpriteGo(textureId, name)
@@ -63,7 +64,13 @@ void EnemyBullet::Update(float dt)
 	}
 	if (!wall.contains(position))
 	{
-		Scene* scene = SCENE_MGR.GetCurrScene();
+		SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+		SpriteEffect* effect = scene->GetPoolSpriteEffect().Get();
+		effect->SetEffect(SpriteEffect::Effect::Dust);
+		effect->SetPosition(position);
+		effect->Init();
+		effect->Reset();
+		scene->AddGo(effect);
 		scene->RemoveGo(this);
 		pool->Return(this);
 		return;

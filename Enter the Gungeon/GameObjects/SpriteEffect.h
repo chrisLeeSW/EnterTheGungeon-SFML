@@ -10,6 +10,7 @@ public:
 		None = -1,
 
 		Aiming,
+		Dust,
 
 		Count,
 	};

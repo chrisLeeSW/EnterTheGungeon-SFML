@@ -731,6 +731,7 @@ void Enemy::Boom(sf::Vector2f pos, float range)
 		bullet->SetPosition(pos);
 		bullet->SetBullet(true);
 		bullet->SetPlayer(player);
+		bullet->SetWall(wall);
 		bullet->Init();
 		bullet->Reset();
 		bullet->SetScale(range, range);

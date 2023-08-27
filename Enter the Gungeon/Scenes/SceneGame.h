@@ -121,6 +121,7 @@ public:
 
 	void MakeRoom();
 
+	void SetBossUI(Boss* boss);
 	void RenewBossUI();
 
 	ObjectPool<EnemyBullet>& GetPoolEnemyBullet();

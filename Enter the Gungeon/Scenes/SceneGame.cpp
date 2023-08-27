@@ -81,10 +81,10 @@ void SceneGame::Init()
 
 
 	bossui = (BossUI*)AddGo(new BossUI()); //test
-	bossui->SetBoss(boss);
 	bossui->SetOrigin(Origins::MC);
 	bossui->SetPosition(windowSize.x * 0.5f, windowSize.y - 50.f);
 	bossui->sortLayer = 100;
+	bossui->SetActive(false);
 
 	for (auto go : gameObjects)
 	{
@@ -420,6 +420,7 @@ void SceneGame::MakeRoom()
 			{
 				boss = (Boss*)AddGo(new Boss(Enemy::EnemyName::GatlingGull));
 				boss->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y);
+				monsters.push_back(boss);
 			}
 			break;
 			case MapObjectType::StoreOner:
@@ -533,6 +534,12 @@ void SceneGame::MakeRoom()
 }
 
 
+
+void SceneGame::SetBossUI(Boss* boss)
+{
+	bossui->SetBoss(boss);
+	bossui->SetActive(true);
+}
 
 void SceneGame::RenewBossUI()
 {

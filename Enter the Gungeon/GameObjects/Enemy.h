@@ -101,7 +101,7 @@ public:
 
 	sf::Vector2f WhereWay(sf::Vector2f dir);
 
-	void SetPlayer(Player* player);
+	virtual void SetPlayer(Player* player);
 	void SetEnemy();
 	void LoadMuzzle(const std::string& path);
 	void SetWall(const sf::FloatRect& wall);

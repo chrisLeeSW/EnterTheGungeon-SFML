@@ -53,10 +53,7 @@ void SceneLobby::Init()
 
 	doorCollisionBox.setSize({ 25,25 });
 	doorCollisionBox.setFillColor(sf::Color::Transparent);
-	doorCollisionBox.setOutlineThickness(3);
-	doorCollisionBox.setOutlineColor(sf::Color::White);
-	doorCollisionBox.setPosition(elevator->sprite.getGlobalBounds().left + elevator->sprite.getGlobalBounds().width * 0.5f, elevator->sprite.getGlobalBounds().top + sprite.getGlobalBounds().height+ elevator->sprite.getGlobalBounds().height);
-	doorCollisionBox.setPosition(elevator->sprite.getGlobalBounds().left + elevator->sprite.getGlobalBounds().width * 0.5f, elevator->sprite.getGlobalBounds().top + sprite.getGlobalBounds().height);
+	doorCollisionBox.setPosition(-10, elevator->GetPosition().y);
 
 	sf::Texture* tex;
 	tex = RESOURCE_MGR.GetTexture("graphics/ui_HegemonyCredit.png");

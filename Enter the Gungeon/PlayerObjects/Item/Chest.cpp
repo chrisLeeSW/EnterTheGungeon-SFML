@@ -60,7 +60,7 @@ void Chest::Update(float dt)
 
 			for (auto it : player->GetPlayerWeaponList())
 			{
-				Weapon::Types t = (Weapon::Types)Utils::RandomRange(1, (int)Weapon::Types::Count);
+				Weapon::Types t = (Weapon::Types)Utils::RandomRange((int)Weapon::Types::Pad, (int)Weapon::Types::Count);
 				if (it != t)
 				{
 					dropequipitem->SetType(t);

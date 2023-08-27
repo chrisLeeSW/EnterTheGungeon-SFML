@@ -9,6 +9,7 @@ class SpriteGo;
 class Book;
 class Enemy;
 class DropItem;
+class DisplayItem;
 class Npc;
 class Chest;
 class SpriteEffect;
@@ -104,6 +105,9 @@ protected:
 
 	bool colliedDraw = false;
 	bool setPlayer = false;
+
+	DisplayItem* storeitem1;
+	DisplayItem* storeitem2;
 //
 public:
 	SceneGame();

@@ -17,7 +17,7 @@ void DisplayItem::Init()
 void DisplayItem::Reset()
 {
 	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable »ç¿ë
-	std::string itemname;
+	std::wstring itemname;
 
 	switch (item)
 	{
@@ -36,7 +36,7 @@ void DisplayItem::Reset()
 		price = 20;
 		sprite.setTexture(*RESOURCE_MGR.GetTexture("graphics/Items.png"));
 		sprite.setTextureRect({ 1, 13, 13, 13 });
-		itemname = table->Get("HEART") + ": " + std::to_string(price);
+		itemname = table->GetW("HEART") + L": " + std::to_wstring(price);
 		text.setString(itemname);
 
 		action = [this]()
@@ -51,7 +51,7 @@ void DisplayItem::Reset()
 		price = 30;
 		sprite.setTexture(*RESOURCE_MGR.GetTexture("graphics/Items.png"));
 		sprite.setTextureRect({ 1, 28, 15, 13 });
-		itemname = table->Get("HEARTS") + ": " + std::to_string(price);
+		itemname = table->GetW("HEARTS") + L": " + std::to_wstring(price);
 		text.setString(itemname);
 
 		action = [this]()
@@ -66,7 +66,7 @@ void DisplayItem::Reset()
 		price = 25;
 		sprite.setTexture(*RESOURCE_MGR.GetTexture("graphics/Items.png"));
 		sprite.setTextureRect({ 1, 43, 16, 14 });
-		itemname = table->Get("KEY") + ": " + std::to_string(price);
+		itemname = table->GetW("KEY") + L": " + std::to_wstring(price);
 		text.setString(itemname);
 
 		action = [this]()
@@ -81,7 +81,7 @@ void DisplayItem::Reset()
 		price = 20;
 		sprite.setTexture(*RESOURCE_MGR.GetTexture("graphics/Items.png"));
 		sprite.setTextureRect({ 1, 61, 12, 12 });
-		itemname = table->Get("BLANK") + ": " + std::to_string(price);
+		itemname = table->GetW("BLANK") + L": " + std::to_wstring(price);
 		text.setString(itemname);
 
 		action = [this]()
@@ -96,7 +96,7 @@ void DisplayItem::Reset()
 		price = 30;
 		sprite.setTexture(*RESOURCE_MGR.GetTexture("graphics/Items.png"));
 		sprite.setTextureRect({ 1, 77, 11, 14 });
-		itemname = table->Get("AMMO") + ": " + std::to_string(price);
+		itemname = table->GetW("AMMO") + L": " + std::to_wstring(price);
 		text.setString(itemname);
 
 		action = [this]()
@@ -123,9 +123,11 @@ void DisplayItem::Reset()
 	box.setOutlineThickness(1);
 	box.setFillColor(sf::Color::Black);
 
-	text.setCharacterSize(10);
+	text.setCharacterSize(30);
 	text.setFillColor(sf::Color::White);
-	text.setFont(*RESOURCE_MGR.GetFont("fonts/AurulentSansMono-Regular.otf"));
+	text.setFont(*RESOURCE_MGR.GetFont("fonts/PF.ttf"));
+	text.setScale(0.3f, 0.3f);
+	Utils::SetOrigin(text, Origins::MC);
 
 	SetOrigin(origin);
 

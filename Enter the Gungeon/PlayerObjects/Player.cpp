@@ -456,6 +456,10 @@ void Player::PlayerAct(float dt)
 
 		AddBlankBullet();
 	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::G))
+	{
+		speed += 100;
+	}
 }
 
 

@@ -48,7 +48,11 @@ void SceneGame::Init()
 
 	book = (Book*)AddGo(new Book());
 
-	
+	storeitem1 = (DisplayItem*)AddGo(new DisplayItem((DisplayItem::Names)Utils::RandomRange(0, (int)DisplayItem::Names::Count)));
+	storeitem1->sortLayer = 4;
+
+	storeitem2 = (DisplayItem*)AddGo(new DisplayItem((DisplayItem::Names)Utils::RandomRange(0, (int)DisplayItem::Names::Count)));
+	storeitem2->sortLayer = 4;
 
 	MakeRoom();
 	NearRoomConnectRoom();
@@ -428,6 +432,8 @@ void SceneGame::MakeRoom()
 				npc = (Npc*)AddGo(new Npc(Npc::NpcType::ShopOwner));
 				npc->SetPosition(objpos.x + map->tiles[i].x * map->GetTileSize().x, objpos.y + map->tiles[i].y * map->GetTileSize().y + map->GetTileSize().y * 0.5f);
 				npc->sortLayer = 3;
+				storeitem1->SetPosition(npc->GetPosition().x + 10.f, npc->GetPosition().y + 8.f);
+				storeitem2->SetPosition(npc->GetPosition().x - 40.f, npc->GetPosition().y + 8.f);
 			}
 			break;
 			}

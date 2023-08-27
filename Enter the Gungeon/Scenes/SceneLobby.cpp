@@ -5,6 +5,8 @@
 #include "SpriteGo.h"
 #include "TextGo.h"
 #include "SceneGame.h"
+#include "TileMap.h"
+#include "InteractionObject.h"
 
 SceneLobby::SceneLobby() : Scene(SceneId::Lobby)
 {
@@ -16,14 +18,14 @@ SceneLobby::SceneLobby() : Scene(SceneId::Lobby)
 void SceneLobby::Init()
 {
 	Release();
-
+	
 	worldView.setSize(windowSize * 0.5f);
 	worldView.setCenter(0.f, 0.f);
 
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
 
-
+	MakeLobby();
 	pilot = (Player*)AddGo(new Player(Player::Types::Pilot));
 	prisoner = (Player*)AddGo(new Player(Player::Types::Prisoner));
 
@@ -39,19 +41,18 @@ void SceneLobby::Init()
 
 
 	elevator = (SpriteGo*)AddGo(new SpriteGo("graphics/elevator.png", ""));
-	elevator->SetPosition(200,-200);
+	elevator->SetPosition(0.f,-250);
 	elevator->SetOrigin(Origins::MC);
 	elevator->sortLayer = -1;
 	elevator->SetScale(0.3f,0.3f);
 
 	currentplayer = pilot;
 
-	doorCollisionBox.setSize({ 100.f,100.f });
+	doorCollisionBox.setSize({ 25,25 });
 	doorCollisionBox.setFillColor(sf::Color::Transparent);
 	doorCollisionBox.setOutlineThickness(3);
 	doorCollisionBox.setOutlineColor(sf::Color::White);
-	doorCollisionBox.setPosition(elevator->sprite.getGlobalBounds().left + elevator->sprite.getGlobalBounds().width * 0.5f, elevator->sprite.getGlobalBounds().top + sprite.getGlobalBounds().height);
-
+	doorCollisionBox.setPosition(elevator->sprite.getGlobalBounds().left + elevator->sprite.getGlobalBounds().width * 0.5f, elevator->sprite.getGlobalBounds().top + sprite.getGlobalBounds().height+ elevator->sprite.getGlobalBounds().height);
 	for (auto go : gameObjects)
 	{
 		go->Init();
@@ -90,7 +91,7 @@ void SceneLobby::Update(float dt)
 
 	Scene::Update(dt);
 	PlayerChoise();
-
+	PlayerCollied();
 	animation.Update(dt);
 
 	if (currentplayer->sprite.getGlobalBounds().intersects(doorCollisionBox.getGlobalBounds()))
@@ -129,6 +130,8 @@ void SceneLobby::Draw(sf::RenderWindow& window)
 	window.draw(sprite);
 	window.setView(worldView);
 	window.draw(doorCollisionBox);
+
+	
 }
 
 void SceneLobby::PlayerChoise()
@@ -239,6 +242,174 @@ void SceneLobby::PlayerChoise()
 			else
 				playerface = false;
 				break;
+		}
+	}
+}
+
+void SceneLobby::MakeLobby()
+{
+	lobby = (TileMap*)AddGo(new TileMap("graphics/WallSprtie.png"));
+	lobby->Load("Room/TileMapFile/LobyRoom/LobyRoom.csv");
+	lobby->SetStartPos(0.f,0.f);
+	lobby->SetOrigin(Origins::MC);
+	lobby->sortLayer = -1;
+	sf::Vector2f objpos = lobby->GetStartPos();
+	sf::Vector2f tileMapSize= lobby->TileMapSize("Room/TileMapFile/LobyRoom/LobyRoom.csv");
+	objpos -= tileMapSize * 0.5f;
+	objpos += lobby->GetTileSize() * 0.5f;
+	for (int i = 0; i < lobby->tiles.size(); ++i)
+	{
+		switch (static_cast<MapObjectType>(lobby->tiles[i].objectTypes))
+		{
+
+		case MapObjectType::NormalWallTop:
+		case MapObjectType::NorMalWallRight:
+		case MapObjectType::LightWallTop:
+		case MapObjectType::LightWallLeft:
+		case MapObjectType::LightWallRight:
+		case MapObjectType::LibraryTop:
+		case MapObjectType::LibraryLeft:
+		case MapObjectType::LibraryRight:
+		case MapObjectType::LibraryDown:
+		case MapObjectType::StoreTop:
+		case MapObjectType::StoreRight:
+		case MapObjectType::StoreLeft:
+		case MapObjectType::StoreTableDisplay1:
+		case MapObjectType::StoreTableDisplay2:
+		case MapObjectType::NormalWallLeft:
+		{
+			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
+			spr->sprite.setTextureRect({ 0,(lobby->tiles[i].objectTypes * 50),50,50 });
+			spr->SetScale(0.5f, 0.5f);
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition(objpos.x + lobby->tiles[i].x * lobby->GetTileSize().x, objpos.y + lobby->tiles[i].y * lobby->GetTileSize().y);
+			spr->sortLayer = 2;
+			objects.push_back(spr);
+		}
+		break;
+		case MapObjectType::TreasureAlter:
+		{
+			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+			spr->sprite.setTextureRect({ 3,87,50,50 });
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition(objpos.x + lobby->tiles[i].x * lobby->GetTileSize().x, objpos.y + lobby->tiles[i].y * lobby->GetTileSize().y);
+			spr->sortLayer = 2;
+			objects.push_back(spr);
+		}
+		break;
+		case MapObjectType::StoreTable1:
+		case MapObjectType::StoreTable2:
+		case MapObjectType::StoreTable3:
+		case MapObjectType::StoreTable4:
+		case MapObjectType::StoreTable5:
+		case MapObjectType::StoreTable6:
+		{
+			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/WallSprtie.png"));
+			spr->sprite.setTextureRect({ 0,(lobby->tiles[i].objectTypes * 50),50,50 });
+			spr->SetScale(0.5f, 0.5f);
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition(objpos.x + lobby->tiles[i].x * lobby->GetTileSize().x, objpos.y + lobby->tiles[i].y * lobby->GetTileSize().y);
+			spr->sortLayer = 2;
+			objects.push_back(spr);
+		}
+		break;
+		break;
+		}
+		// new switch
+		switch (static_cast<MapObjectType>(lobby->tiles[i].monsterAndObject))
+		{
+		case MapObjectType::QueenPicture:
+		{
+			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+			spr->sprite.setTextureRect({ 0,4,31,32 });
+			spr->SetScale(0.5f, 0.5f);
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition(objpos.x + lobby->tiles[i].x * lobby->GetTileSize().x, objpos.y + lobby->tiles[i].y * lobby->GetTileSize().y);
+			spr->sortLayer = 3;
+			objects.push_back(spr);
+		}
+		break;
+		case MapObjectType::Flag1:
+		{
+			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+			spr->sprite.setTextureRect({ 85,5,13,29 });
+			spr->SetScale(0.5f, 0.5f);
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition(objpos.x + lobby->tiles[i].x * lobby->GetTileSize().x, objpos.y + lobby->tiles[i].y * lobby->GetTileSize().y);
+			spr->sortLayer = 3;
+			objects.push_back(spr);
+		}
+		break;
+		case MapObjectType::Flag2:
+		{
+			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+			spr->sprite.setTextureRect({ 108,6,13,29 });
+			spr->SetScale(0.5f, 0.5f);
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition(objpos.x + lobby->tiles[i].x * lobby->GetTileSize().x, objpos.y + lobby->tiles[i].y * lobby->GetTileSize().y);
+			spr->sortLayer = 3;
+			objects.push_back(spr);
+		}
+		break;
+		case MapObjectType::Flag3:
+		{
+			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+			spr->sprite.setTextureRect({ 108,6,13,29 });
+			spr->SetScale(0.5f, 0.5f);
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition(objpos.x + lobby->tiles[i].x * lobby->GetTileSize().x, objpos.y + lobby->tiles[i].y * lobby->GetTileSize().y);
+			spr->sortLayer = 3;
+			objects.push_back(spr);
+		}
+		break;
+		case MapObjectType::HeadObject:
+		{
+			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+			spr->sprite.setTextureRect({ 39,14,13,14 });
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition(objpos.x + lobby->tiles[i].x * lobby->GetTileSize().x, objpos.y + lobby->tiles[i].y * lobby->GetTileSize().y);
+			spr->sortLayer = 3;
+			objects.push_back(spr);
+		}
+		break;
+		case MapObjectType::Stair:
+		{
+			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+			spr->sprite.setTextureRect({ 58,10,18,18 });
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition(objpos.x + lobby->tiles[i].x * lobby->GetTileSize().x, objpos.y + lobby->tiles[i].y * lobby->GetTileSize().y);
+			spr->sortLayer = 3;
+			objects.push_back(spr);
+		}
+		break;
+		case MapObjectType::TreasureRoomFlag:
+		{
+			SpriteGo* spr = (SpriteGo*)AddGo(new SpriteGo("graphics/InteractionGameObjects.png"));
+			spr->sprite.setTextureRect({ 125,0,31,38 });
+			spr->SetScale(0.5f, 0.75f);
+			spr->SetOrigin(Origins::MC);
+			spr->SetPosition(objpos.x + lobby->tiles[i].x * lobby->GetTileSize().x, objpos.y + lobby->tiles[i].y * lobby->GetTileSize().y);
+			spr->sortLayer = 3;
+			objects.push_back(spr);
+		}
+		break;
+		}
+
+	}
+
+}
+
+void SceneLobby::PlayerCollied()
+{
+	if (!lobby->vertexArray.getBounds().contains(currentplayer->GetPosition()))
+	{
+		currentplayer->SetPosition(currentplayer->GetPrevPos());
+	}
+	for (auto& collied : objects)
+	{
+		if (collied->sprite.getGlobalBounds().intersects(currentplayer->sprite.getGlobalBounds()))
+		{
+			currentplayer->SetPosition(currentplayer->GetPrevPos());
 		}
 	}
 }

@@ -22,6 +22,8 @@ void SceneLobby::Init()
 	worldView.setSize(windowSize * 0.5f);
 	worldView.setCenter(0.f, 0.f);
 
+	windowSize *= 0.3f;
+
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
 
@@ -39,6 +41,7 @@ void SceneLobby::Init()
 
 	animation.SetTarget(&sprite);
 
+	sprite.setScale(0.5f,0.5f);
 
 	elevator = (SpriteGo*)AddGo(new SpriteGo("graphics/elevator.png", ""));
 	elevator->SetPosition(0.f,-250);
@@ -53,6 +56,23 @@ void SceneLobby::Init()
 	doorCollisionBox.setOutlineThickness(3);
 	doorCollisionBox.setOutlineColor(sf::Color::White);
 	doorCollisionBox.setPosition(elevator->sprite.getGlobalBounds().left + elevator->sprite.getGlobalBounds().width * 0.5f, elevator->sprite.getGlobalBounds().top + sprite.getGlobalBounds().height+ elevator->sprite.getGlobalBounds().height);
+	doorCollisionBox.setPosition(elevator->sprite.getGlobalBounds().left + elevator->sprite.getGlobalBounds().width * 0.5f, elevator->sprite.getGlobalBounds().top + sprite.getGlobalBounds().height);
+
+	sf::Texture* tex;
+	tex = RESOURCE_MGR.GetTexture("graphics/ui_HegemonyCredit.png");
+	sf::Font* font = RESOURCE_MGR.GetFont("fonts/PF.ttf");
+
+	spritehegemonyCredit.setTexture(*tex);
+	spritehegemonyCredit.setPosition(windowSize.x *0.95f, 10.f);
+
+	textHegemonyCredit.setFont(*font);
+	textHegemonyCredit.setFillColor(sf::Color::White);
+	textHegemonyCredit.setCharacterSize(45);
+	textHegemonyCredit.setPosition(spritehegemonyCredit.getGlobalBounds().left + spritehegemonyCredit.getGlobalBounds().width, spritehegemonyCredit.getGlobalBounds().top);
+
+	textHegemonyCredit.setScale(0.3f,0.3f);
+
+
 	for (auto go : gameObjects)
 	{
 		go->Init();
@@ -61,29 +81,42 @@ void SceneLobby::Init()
 
 void SceneLobby::Release()
 {
-
 	for (auto go : gameObjects)
 	{
 		delete go;
 	}
-
 }
 
 void SceneLobby::Enter()
 {
-	Scene::Enter();
-
 	pilot->SetPosition(pilotSetPosition);
 	prisoner->SetPosition(prisonerSetPosition);
-	
+	currentplayer = pilot;
+
+	Scene::Enter();
+
+
+
+	bool playerchoise = false;
+	bool playerface = true;
+
 	sprite.setPosition(windowSize.x * 0.5f, windowSize.y * 0.4f);
 
+	textHegemonyCredit.setString(std::to_string(Scene::hegemonyCredit));
 
 }
 
 void SceneLobby::Exit()
 {
-	Scene::Exit();
+	pilot->SetPosition(pilotSetPosition);
+	prisoner->SetPosition(prisonerSetPosition);
+
+	prisoner->ChangePlayer(prisonerSetPosition, false);
+	prisoner->ChangePlayer(prisonerSetPosition, false);
+
+	currentplayer->isChangeScene = false;
+	currentplayer->isChangeSceneGame == false;
+	Scene::Exit();	
 }
 
 void SceneLobby::Update(float dt)
@@ -112,8 +145,13 @@ void SceneLobby::Update(float dt)
 		}
 	}
 
-	if (currentplayer->isChangeSceneGame == true)
+	if (currentplayer->isChangeScene == true && currentplayer->isChangeSceneGame == true)
 	{
+		currentplayer->isChangeScene = false;
+		currentplayer->isChangeSceneGame == false;
+		playerchoise = false;
+		playerface = true;
+		currentplayer->ChangePlayer(pilotSetPosition, false);
 		Scene* scene = SCENE_MGR.GetGameScene();
 		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
 		sceneGame->SetPlayer((int)playertype);
@@ -126,8 +164,12 @@ void SceneLobby::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
 
+	window.draw(spritehegemonyCredit);
+	window.draw(textHegemonyCredit);
+
 	if(playerface)
 	window.draw(sprite);
+
 	window.setView(worldView);
 	window.draw(doorCollisionBox);
 

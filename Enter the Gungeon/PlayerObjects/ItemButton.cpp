@@ -25,16 +25,24 @@ void ItemButton::Init()
 	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable »ç¿ë
 
 	std::wstring name;
+	std::vector<std::wstring> names;
+
+	for (int i = 0; i < manual.size(); ++i)
+	{
+		names.push_back(table->GetW(manual[i]));
+	}
 
 
-	name = table->GetW(manual);
-	manualtext.setCharacterSize(textsize * 3.f);
-	manualtext.setString(name);
+	manualtext.setString(names[0] + (std::wstring)L"\n" + names[1] + (std::wstring)L"\n" + names[2] + (std::wstring)L"\n" + names[3] + (std::wstring)L"\n" + names[4] + (std::wstring)L"\n" + names[5] + (std::wstring)L"\n" + names[6] + (std::wstring)L"\n" + names[7]);
+
+
+
+	manualtext.setCharacterSize(textsize);
 	manualtext.setPosition(manualpos);
 	manualtext.setFillColor(sf::Color::White);
 
 	name = table->GetW(itemname);
-	nametext.setCharacterSize(namesize * 3.f);
+	nametext.setCharacterSize(namesize);
 	nametext.setString(name);
 	nametext.setPosition(namepos);
 	nametext.setFillColor(sf::Color::Black);
@@ -52,6 +60,7 @@ void ItemButton::Init()
 	{
 		itemsprite.setTexture(*tex);
 	}
+
 	itemsprite.setPosition(375,120);
 
 	Utils::SetOrigin(nametext,Origins::MC);

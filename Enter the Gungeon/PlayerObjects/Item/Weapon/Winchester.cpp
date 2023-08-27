@@ -10,7 +10,6 @@
 
 Winchester::Winchester(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
 {
-	SetType(Types::ShotGun);
 
 
 	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/WinchesterIdle.csv"));
@@ -117,19 +116,4 @@ void Winchester::SetGunFlipx(bool flipX)
 	sprite.setScale(scale);
 
 	gunPos.x = !this->flipX ? abs(gunPos.x) : -abs(gunPos.x);
-}
-
-void Winchester::SetType(Types t)
-{
-
-	const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
-
-	weaponType = (Types)info->weaponType;
-	bulletType = (Bullet::Types)info->bulletType;
-	attackrate = info->attackrate;
-	bulletcount = info->bulletcount;
-	bulletmax = info->bulletmax;
-	reload = info->reload;
-	santan = info->santan;
-
 }

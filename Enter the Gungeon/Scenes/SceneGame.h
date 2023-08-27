@@ -127,6 +127,10 @@ public:
 	ObjectPool<DropItem>& GetPoolDropItem();
 	ObjectPool<SpriteEffect>& GetPoolSpriteEffect();
 
+	void OverwriteCSV(const std::string& filepath);
+
+	bool ValidFilePath(const std::string& filepath);
+
 	template <typename T>
 	void ClearPool(ObjectPool<T>& pool);
 

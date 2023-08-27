@@ -43,6 +43,16 @@ void Bullet::Update(float dt)
 	position += direction * speed * dt;
 	SetPosition(position);
 
+	range -= speed * dt;
+
+	if (range <= 0.f)
+	{
+		Scene* scene = SCENE_MGR.GetCurrScene();
+		scene->RemoveGo(this);
+		pool->Return(this);
+		return;
+	}
+
 	if(animation.GetCurrentClipId()!= bulletid)
 	animation.Play(bulletid);
 
@@ -96,6 +106,7 @@ void Bullet::SetBullet(Types types, sf::Vector2f pos, sf::Vector2f dir, float sa
 	knockback = info->knockback;
 
 	position = pos;
+
 	//sprite.setRotation(DEGREES_90 + Utils::Angle(dir));
 	sprite.setRotation(Utils::Angle(dir));
 	float spreadAngle = Utils::RandomRange(-santan, santan);

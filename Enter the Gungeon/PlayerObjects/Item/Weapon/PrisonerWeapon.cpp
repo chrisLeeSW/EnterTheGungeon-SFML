@@ -4,6 +4,7 @@
 #include "WeaponTable.h"
 #include "Player.h"
 #include "WeaponMgr.h"
+#include "PlayerUI.h"
 
 
 PrisonerWeapon::PrisonerWeapon(const std::string& textureId, const std::string& n)
@@ -13,7 +14,6 @@ PrisonerWeapon::PrisonerWeapon(const std::string& textureId, const std::string& 
 
 	gun.SetTarget(&sprite);
 
-	SetType(Types::PrisonerWeapon);
 
 	SpriteGo::Reset();
 
@@ -24,19 +24,20 @@ PrisonerWeapon::PrisonerWeapon(const std::string& textureId, const std::string& 
 	gunend.setOutlineThickness(2.f);
 	gunend.setSize(sf::Vector2f{ 5,5 });
 
-	tick = attackrate;
-	reloadtick = reload;
 
 	gunOffset1 = { sprite.getGlobalBounds().width, -sprite.getGlobalBounds().height + 4 };
 	gunOffset2 = { sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - 4 };
 
-	currentbulletcount = bulletcount;
-	currentbulletmax = bulletmax;
 }
 
 void PrisonerWeapon::Init()
 {
 	player = PLAYER_MGR.GetPlayer();
+	SetType(Types::PrisonerWeapon);
+	tick = attackrate;
+	reloadtick = reload;
+	currentbulletcount = bulletcount;
+	currentbulletmax = bulletmax;
 }
 
 void PrisonerWeapon::Release()
@@ -122,12 +123,11 @@ void PrisonerWeapon::Update(float dt)
 			if (reloadtick >= reload)
 			{
 				currentbulletcount = bulletcount; // 재장전 완료되면 탄창을 최대치로 채움
+				player->playerUI->ShootWeapon();
+				state = State::Idle;
+				gun.Play("Idle");
 				isreload = false; // 재장전 플래그 해제
 				std::cout << "장전완료" << std::endl;
-
-				state = State::Idle;
-
-				gun.Play("Idle");
 			}
 		}
 	}
@@ -142,17 +142,4 @@ void PrisonerWeapon::Draw(sf::RenderWindow& window)
 	window.draw(gunend);
 }
 
-
-void PrisonerWeapon::SetType(Types t)
-{
-	const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
-
-	weaponType = (Types)info->weaponType;
-	bulletType = (Bullet::Types)info->bulletType;
-	attackrate = info->attackrate;
-	bulletcount = info->bulletcount;
-	bulletmax = info->bulletmax;
-	reload = info->reload;
-	santan = info->santan;
-}
 

@@ -23,7 +23,8 @@ protected:
 
 public:
 
-	//static Player* currentPlayer;
+	static int hegemonyCredit;
+
 
 	Scene(SceneId id = SceneId::None);
 	virtual ~Scene();

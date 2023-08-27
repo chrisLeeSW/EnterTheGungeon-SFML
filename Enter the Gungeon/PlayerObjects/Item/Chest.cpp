@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Chest.h"
 #include "SceneGame.h"
+#include "DropEquipItem.h"
+#include "ItemMgr.h"
 
 Chest::Chest()
 {
@@ -54,6 +56,24 @@ void Chest::Update(float dt)
 			scene->AddGo(dropitem);
 
 			// Equip Drop
+			DropEquipItem* dropequipitem = ITEM_MGR.GetDropItem();
+
+			for (auto it : player->GetPlayerWeaponList())
+			{
+				Weapon::Types t = (Weapon::Types)Utils::RandomRange(1, (int)Weapon::Types::Count);
+				if (it != t)
+				{
+					dropequipitem->SetType(t);
+					break;
+				}
+			}
+
+			dropequipitem->SetPosition(position + sf::Vector2f{-50.f,0.f});
+			dropequipitem->Init();
+			dropequipitem->Reset();
+
+			scene->AddGo(dropequipitem);
+
 		}
 	}
 	else

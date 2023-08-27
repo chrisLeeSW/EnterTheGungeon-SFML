@@ -10,6 +10,7 @@
 class Player;
 class Bullet;
 class Enemy;
+class PlayerUI;
 
 class Weapon : public Item
 {
@@ -20,10 +21,11 @@ public:
 		None,
 		PilotWeapon,
 		PrisonerWeapon,
-		Ak47,
-		Magnum,
 		Pad,
 		ShotGun,
+		Count,
+		Ak47,
+		Magnum,
 	};
 
 	enum class State
@@ -41,6 +43,7 @@ protected:
 
 	Player* player = nullptr;
 	Enemy* enemy = nullptr;
+	PlayerUI* playerui = nullptr;
 
 	Types weaponType;
 	Bullet::Types bulletType;

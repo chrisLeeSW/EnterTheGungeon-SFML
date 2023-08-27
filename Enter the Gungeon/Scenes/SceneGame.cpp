@@ -16,10 +16,8 @@
 #include "Npc.h"
 #include "Chest.h"
 #include "SpriteEffect.h"
-
 #include "Boss.h"
 #include "EnemyBullet.h"
-
 #include "BossUI.h"
 //
 #include "Room.h"
@@ -109,12 +107,9 @@ void SceneGame::Release()
 
 void SceneGame::Enter()
 {
-	if (player != nullptr)
-	{
-		delete player;
-	}
-
 	player = (Player*)AddGo(new Player((Player::Types)playertype));
+	playerui = (PlayerUI*)AddGo(new PlayerUI(player));
+
 	player->sortLayer = 0;
 	player->Init();
 
@@ -133,18 +128,32 @@ void SceneGame::Enter()
 	{
 		CreateTunnel(passages[i].from, passages[i].to);
 	}
+
 	Scene::Enter();
 
 }
 
 void SceneGame::Exit()
 {
+	if (player != nullptr)
+	{
+		RemoveGo(player);
+		RemoveGo(playerui);
+	}
 	Scene::Exit();
-	player->Reset();
 
 	ClearPool(enemyBullets);
 	ClearPool(dropitemPool);
 	ClearPool(effectPool);
+
+	if (ValidFilePath("SaveFile.csv"))
+	{
+		OverwriteCSV("SaveFile.csv");
+	}
+	else
+	{
+		std::cerr << "ERROR: Not Exist File! - SaveFile LOAD ValidFilePath()" << std::endl;
+	}
 }
 
 void SceneGame::Update(float dt)
@@ -161,7 +170,7 @@ void SceneGame::Update(float dt)
 	}
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Escape))
 	{
-		SCENE_MGR.ChangeScene(SceneId::Title);
+		SCENE_MGR.ChangeScene(SceneId::Lobby);
 	}
 
 	worldView.setCenter(player->GetPosition());
@@ -548,7 +557,6 @@ ObjectPool<SpriteEffect>& SceneGame::GetPoolSpriteEffect()
 
 
 
-//
 void SceneGame::ListFilesInDirectory(const std::string& folderPath, std::vector<std::string>& fileList)
 {
 	WIN32_FIND_DATAA findFileData;
@@ -1121,4 +1129,25 @@ void SceneGame::SetMonsterByPlayer()
 		enemyList.push_back(tileRoom[currentRoom].monster[i]);
 	}
 	player->SetEnemyList(enemyList);
+}
+void SceneGame::OverwriteCSV(const std::string& filepath)
+{
+	rapidcsv::Document doc("SaveFile.csv", rapidcsv::LabelParams(-1, -1));
+	doc.Clear();
+	doc.SetCell<std::string>(0, 0, "HegemonyCredit");
+	doc.SetCell<std::string>(1, 0, "Language");
+
+
+
+	doc.SetCell<int>(0, 1, hegemonyCredit); // Type ÁöÁ¤
+	doc.SetCell<int>(1, 1, (int)Variables::CurrentLang);
+
+
+	doc.Save();
+}
+
+bool SceneGame::ValidFilePath(const std::string& filepath)
+{
+	std::ifstream fileStream(filepath);
+	return fileStream.is_open();
 }

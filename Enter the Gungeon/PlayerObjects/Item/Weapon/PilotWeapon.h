@@ -27,7 +27,6 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	virtual void SetType(Types t) override;
 
 	virtual Item::Types GetItemType() { return itemtype; }
 	virtual Item::WAP GetItemWAP() { return wap; }

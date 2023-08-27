@@ -7,12 +7,13 @@
 #include "Scene.h"
 #include "SceneGame.h"
 #include "Bullet.h"
+#include "PlayerUI.h"
 
 
 
 Pad::Pad(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
 {
-	SetType(Types::Pad);
+
 	player = PLAYER_MGR.GetPlayer();
 
 	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PadIdle.csv"));
@@ -33,19 +34,20 @@ Pad::Pad(const std::string& textureId, const std::string& n) : Weapon(textureId,
 	gunend.setOutlineThickness(2.f);
 	gunend.setSize(sf::Vector2f{ 5,5 });
 
-	tick = attackrate;
-	reloadtick = reload;
 
 	gunOffset1 = { sprite.getGlobalBounds().width, -sprite.getGlobalBounds().height + 4 };
 	gunOffset2 = { sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - 4 };
 
-	currentbulletcount = bulletcount;
-	currentbulletmax = bulletmax;
 }
 
 void Pad::Init()
 {
 	player = PLAYER_MGR.GetPlayer();
+	SetType(Types::Pad);
+	tick = attackrate;
+	reloadtick = reload;
+	currentbulletcount = bulletcount;
+	currentbulletmax = bulletmax;
 }
 
 void Pad::Release()
@@ -110,6 +112,23 @@ void Pad::Update(float dt)
 				mouseClicked = true;
 			}
 
+			if (INPUT_MGR.GetKeyDown(sf::Keyboard::R) && currentbulletcount != bulletcount && currentbulletmax >= 0)
+			{
+				state = State::Reload;
+
+				gun.Play("Reload");
+				reloadtick = 0.f;
+				isreload = true;
+			}
+			else if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left) && currentbulletcount == 0 && currentbulletmax >= 0)
+			{
+				state = State::Reload;
+
+				gun.Play("Reload");
+				reloadtick = 0.f;
+				isreload = true;
+			}
+
 			if (sKeyPressed && dKeyPressed && mouseClicked && tick <= 0.f && currentbulletcount > 0 && bulletmax >= 0 ) 
 			{
 				// 여기서 발사 로직 수행
@@ -148,14 +167,6 @@ void Pad::Update(float dt)
 			{
 				state = State::Idle;
 			}
-			if (INPUT_MGR.GetKeyDown(sf::Keyboard::R) && currentbulletcount != bulletcount && currentbulletmax >= 0)
-			{
-				state = State::Reload;
-
-				gun.Play("Reload");
-				reloadtick = 0.f;
-				isreload = true;
-			}
 		}
 		else if (isreload)
 		{
@@ -163,12 +174,11 @@ void Pad::Update(float dt)
 			if (reloadtick >= reload)
 			{
 				currentbulletcount = bulletcount; // 재장전 완료되면 탄창을 최대치로 채움
+				player->playerUI->ShootWeapon();
+				state = State::Idle;
+				gun.Play("Idle");
 				isreload = false; // 재장전 플래그 해제
 				std::cout << "장전완료" << std::endl;
-
-				state = State::Idle;
-
-				gun.Play("Idle");
 			}
 		}
 	}
@@ -183,20 +193,5 @@ void Pad::Draw(sf::RenderWindow& window)
 
 	//window.draw(shooteffect);
 	window.draw(gunend);
-}
-
-
-
-void Pad::SetType(Types t)
-{
-	const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
-
-	weaponType = info->weaponType;
-	bulletType = (Bullet::Types)info->bulletType;
-	attackrate = info->attackrate;
-	bulletcount = info->bulletcount;
-	bulletmax = info->bulletmax;
-	reload = info->reload;
-	santan = info->santan;
 }
 

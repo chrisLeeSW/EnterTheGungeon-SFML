@@ -6,11 +6,13 @@
 #include "WeaponMgr.h"
 #include "Scene.h"
 #include "SceneGame.h"
+#include "PlayerUI.h"
 
 
 PilotWeapon::PilotWeapon(const std::string& textureId, const std::string& n) : Weapon(textureId, n)
 {
-	SetType(Types::PilotWeapon);
+
+
 	player = PLAYER_MGR.GetPlayer();
 
 	gun.AddClip(*RESOURCE_MGR.GetAnimationClip("weapon/PilotWeaponIdle.csv"));
@@ -31,20 +33,21 @@ PilotWeapon::PilotWeapon(const std::string& textureId, const std::string& n) : W
 	gunend.setOutlineThickness(2.f);
 	gunend.setSize(sf::Vector2f{ 5,5 });
 
-	tick = attackrate;
-	reloadtick = reload;
+
 
 	gunOffset1 = { sprite.getGlobalBounds().width, -sprite.getGlobalBounds().height + 4};
 	gunOffset2 = { sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - 4};
 
-	currentbulletcount = bulletcount;
-	currentbulletmax = bulletmax;
-	//Weapon::Init();
 }
 
 void PilotWeapon::Init()
 {
 	player = PLAYER_MGR.GetPlayer();
+	SetType(Types::PilotWeapon);
+	tick = attackrate;
+	reloadtick = reload;
+	currentbulletcount = bulletcount;
+	currentbulletmax = bulletmax;
 }
 
 void PilotWeapon::Release()
@@ -53,21 +56,19 @@ void PilotWeapon::Release()
 
 void PilotWeapon::Reset()
 {
-
+	SetType(Types::PilotWeapon);
 }
 
 void PilotWeapon::Update(float dt)
 {
 
 	Weapon::Update(dt);
+	effect.Update(dt);
+
 	if (!player->isRolling())
 	{
 		SetOrigin(Origins::BL);
 		gun.Update(dt);
-		effect.Update(dt);
-
-
-
 
 		float angle = Utils::Angle(look);
 		sf::Vector2f gunOffset = Utils::RotateVector(gunOffset1, angle);
@@ -94,6 +95,24 @@ void PilotWeapon::Update(float dt)
 		if (!isreload)
 		{
 			tick -= dt;
+
+			if (INPUT_MGR.GetKeyDown(sf::Keyboard::R) && currentbulletcount != bulletcount && currentbulletmax >= 0)
+			{
+				state = State::Reload;
+
+				gun.Play("Reload");
+				reloadtick = 0.f;
+				isreload = true;
+			}
+			else if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left) && currentbulletcount == 0 && currentbulletmax >= 0)
+			{
+				state = State::Reload;
+
+				gun.Play("Reload");
+				reloadtick = 0.f;
+				isreload = true;
+			}
+
 			if (INPUT_MGR.GetMouseButton(sf::Mouse::Left) && tick <= 0.f && currentbulletcount > 0 && currentbulletmax >= 0)
 			{
 				--currentbulletcount;
@@ -113,14 +132,7 @@ void PilotWeapon::Update(float dt)
 			{
 				state = State::Idle;
 			}
-			if (INPUT_MGR.GetKeyDown(sf::Keyboard::R) && currentbulletcount != bulletcount && currentbulletmax >= 0)
-			{
-				state = State::Reload;
-
-				gun.Play("Reload");
-				reloadtick = 0.f;
-				isreload = true;
-			}
+			
 		}
 		else if (isreload)
 		{
@@ -128,39 +140,36 @@ void PilotWeapon::Update(float dt)
 			if (reloadtick >= reload)
 			{
 				currentbulletcount = bulletcount; // 재장전 완료되면 탄창을 최대치로 채움
+				player->playerUI->ShootWeapon();
+				state = State::Idle;
+				gun.Play("Idle");
 				isreload = false; // 재장전 플래그 해제
 				std::cout << "장전완료" << std::endl;
-
-				state = State::Idle;
-				
-				gun.Play("Idle");
 			}
 		}
 	}
-	else
-		state = State::Roll;
+	else if (player->isRolling() && state == State::Reload)
+	{
+		reloadtick += dt; // 재장전 시간 감소
+		if (reloadtick >= reload)
+		{
+			currentbulletcount = bulletcount; // 재장전 완료되면 탄창을 최대치로 채움
+			player->playerUI->ShootWeapon();
+			state = State::Idle;
+			gun.Play("Idle");
+			isreload = false; // 재장전 플래그 해제
+			std::cout << "장전완료" << std::endl;
+		}
+	}
 }
 
 void PilotWeapon::Draw(sf::RenderWindow& window)
 {
 	if (!player->isRolling())
+	{
 		SpriteGo::Draw(window);
-	window.draw(shooteffect);
-	window.draw(gunend);
-}
-
-
-
-void PilotWeapon::SetType(Types t)
-{
-	const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
-
-	weaponType = (Types)info->weaponType;
-	bulletType = (Bullet::Types)info->bulletType;
-	attackrate = info->attackrate;
-	bulletcount = info->bulletcount;
-	bulletmax = info->bulletmax;
-	reload = info->reload;
-	santan = info->santan;
+		window.draw(shooteffect);
+		window.draw(gunend);
+	}
 }
 

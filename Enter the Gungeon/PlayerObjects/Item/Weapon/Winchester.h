@@ -27,6 +27,5 @@ public:
 
 	virtual void SetGunFlipx(bool flipX) override;
 
-	virtual void SetType(Types type) override;
 
 };

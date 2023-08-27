@@ -2,9 +2,12 @@
 #include "Scene.h"
 #include "GameObject.h"
 
+int Scene::hegemonyCredit = 0;
+
 Scene::Scene(SceneId id) : sceneId(id), window(FRAMEWORK.GetWindow())
 {
 	windowSize = FRAMEWORK.GetWindowSize();
+
 }
 
 Scene::~Scene()

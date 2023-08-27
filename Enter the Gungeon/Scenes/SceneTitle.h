@@ -16,6 +16,8 @@ protected:
 	sf::Text language;
 	sf::Text close;
 
+	sf::Text saveFile;
+
 	//std::vector<int> selectedTextIndex;
 
 	int selectedTextIndex = 0;
@@ -36,6 +38,14 @@ public:
 
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
+
+	bool ValidFilePath(const std::string& filepath);
+
+	void LoadCSV(const std::string& filepath);
+
+	void SaveCSV(const std::string& filepath);
+
+	void OverwriteCSV(const std::string& filepath);
 
 
 };

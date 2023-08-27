@@ -29,26 +29,19 @@ void SceneTitle::Init()
 	logo->SetOrigin(Origins::MC);
 	logo->SetPosition(0, -200.f);
 	logo->sortLayer = 0;
-
-	//animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Title.csv"));
-	//animation.SetTarget(&sprite);
-	//sprite.setPosition(windowSize * 0.5f);
-
-	//Utils::SetOrigin(sprite, Origins::MC);
-
 	sf::Texture texture;
 	texture.loadFromFile("graphics/background.png");
 
-	//animation.Play("Title");
 	sf::Vector2f originalTextureSize(texture.getSize().x, texture.getSize().y);
 
 
-	//sf::Vector2f originalTextureSize(bg->sprite.getTexture().getSize().x, bg->sprite.getTexture().getSize().y);
-
-	// 원하는 크기로 스케일 조절
 
 	sf::Vector2f desiredSize(windowSize); // 원하는 크기
 	bg->SetScale(desiredSize.x / originalTextureSize.x, desiredSize.y / originalTextureSize.y);
+
+	
+
+
 
 	sf::Font* font = RESOURCE_MGR.GetFont("fonts/PF.ttf");
 	if (font != nullptr)
@@ -111,6 +104,16 @@ void SceneTitle::Release()
 void SceneTitle::Enter()
 {
 	Scene::Enter();
+
+	if (ValidFilePath("SaveFile.csv"))
+	{
+		LoadCSV("SaveFile.csv");
+	}
+	else
+	{
+		SaveCSV("SaveFile.csv");
+	}
+
 }
 
 void SceneTitle::Exit()
@@ -185,7 +188,9 @@ void SceneTitle::Update(float dt)
 		close.setFillColor(originalColor);
 		break;
 	}
+	
 
+	//스위치로 변환하기
 	if (selectedTextIndex == 0 && INPUT_MGR.GetKeyDown(sf::Keyboard::E))
 	{
 		SCENE_MGR.ChangeScene(SceneId::Lobby);
@@ -242,7 +247,6 @@ void SceneTitle::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
 
-	//window.draw(sprite);
 	window.draw(play);
 	window.draw(maptool);
 	window.draw(bulletEditor);
@@ -250,3 +254,51 @@ void SceneTitle::Draw(sf::RenderWindow& window)
 	window.draw(close);
 }
 
+bool SceneTitle::ValidFilePath(const std::string& filepath)
+{
+	std::ifstream fileStream(filepath);
+	return fileStream.is_open();
+}
+
+void SceneTitle::LoadCSV(const std::string& filepath)
+{
+	rapidcsv::Document doc(filepath, rapidcsv::LabelParams(-1, -1));
+
+	hegemonyCredit = doc.GetCell<int>(0, 1); // Type 지정
+
+	Variables::CurrentLang = (Languages)doc.GetCell<int>(1, 1);
+
+	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable 사용
+	std::wstring name = table->GetW("PLAY");
+	play.setString(name);
+	name = table->GetW("LANGUAGE");
+	language.setString(name);
+	name = table->GetW("CLOSE");
+	close.setString(name);
+
+}
+
+void SceneTitle::SaveCSV(const std::string& filepath)
+{
+	std::ofstream outputFile(filepath);
+
+	hegemonyCredit = 0;
+
+	OverwriteCSV(filepath);
+}
+
+void SceneTitle::OverwriteCSV(const std::string& filepath)
+{
+	rapidcsv::Document doc("SaveFile.csv", rapidcsv::LabelParams(-1, -1));
+	doc.Clear();
+	doc.SetCell<std::string>(0, 0, "HegemonyCredit");
+	doc.SetCell<std::string>(1, 0, "Language");
+
+
+
+	doc.SetCell<int>(0, 1, hegemonyCredit); // Type 지정
+	doc.SetCell<int> (1, 1, (int)Variables::CurrentLang);
+
+
+	doc.Save();
+}

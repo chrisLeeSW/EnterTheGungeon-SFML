@@ -21,18 +21,17 @@ Player::Player(Types type, const std::string& textureId, const std::string& n) :
 
 void Player::Init()
 {
+
 	if (PLAYER_MGR.player != nullptr)
 		PLAYER_MGR.player = nullptr;
 		PLAYER_MGR.SetPlayer(this);
 
+	
 
-	SetType(type);
 
 	std::string name;
 	std::string rollname;
 	windowsize = FRAMEWORK.GetWindowSize();
-
-
 
 
 		switch (type)
@@ -45,11 +44,11 @@ void Player::Init()
 		case Types::Prisoner :
 			name = "Prisoner/Prisoner";
 			rollname = "Prisoner/Prisoner";
+			animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "InGungeon.csv"));
 			break;
 		case Types::WeaponPilot :
 			name = "Pilot/PilotWeapon";
 			rollname = "Pilot/Pilot";
-			//isSceneGame = true;
 			animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + rollname + "Die.csv"));
 			blankBullet.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/BlankBullet.csv"));
 			blankBullet.SetTarget(&blanksprite);
@@ -63,7 +62,15 @@ void Player::Init()
 		case Types::WeaponPrisoner : 
 			name = "Prisoner/PrisonerWeapon";
 			rollname = "Prisoner/Prisoner";
-			//isSceneGame = true;
+			animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + rollname + "Die.csv"));
+			blankBullet.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/BlankBullet.csv"));
+			blankBullet.SetTarget(&blanksprite);
+
+			blankEffect.setFillColor(sf::Color::Transparent);
+			blankEffect.setOutlineColor(sf::Color::White);
+			blankEffect.setOutlineThickness(1);
+			blankEffect.setOutlineColor(sf::Color(255, 255, 255, 88));
+			blankEffect.setRadius(30.f);
 			break;
 		}
 
@@ -103,8 +110,6 @@ void Player::Init()
 	clipInfos.push_back({ "IdleDown", "WalkDown","RollDown",true,{0.f, 1.f} });
 	clipInfos.push_back({ "IdleRight", "WalkRight","RollRight",false, Utils::Normalize({1.f, 1.f}) });
 
-
-
 	originalColor = sprite.getColor();
 }
 
@@ -122,22 +127,25 @@ void Player::Reset()
 	hp = maxHp;
 	isAlive = true;
 
+
 	currentClipInfo = clipInfos[6];
 
+	SetType(type);
 
 	if(isGame)
 	{
+		GetItem(Active::Types::PrisonerActive);
+		GetItem(passivetype);
+		GetItem(weapontype);
 		playerUI->CurrentWeapon(weaponList[currentIndex]);
 		playerUI->CurrentActive(active);
 	}
-
 }
 
 void Player::Update(float dt)
 {
 	if (PLAYER_MGR.IsPause())
 		return;
-
 
 	SetOrigin(Origins::BC);
 	animation.Update(dt);
@@ -191,7 +199,7 @@ void Player::Update(float dt)
 			walk.setScale(0, 0);
 		}
 
-		if (playerchoise)
+		if (playerchoise || isGame)
 		{
 			PlayerAct(dt);
 			SwapWeapon();
@@ -223,14 +231,12 @@ void Player::Update(float dt)
 			OnPlayerHit();
 			std::cout << hp << std::endl;
 		}
-
-		
 	}
 	else if(!isAlive && animation.GetCurrentClipId() != "Die")
 	{
 		animation.Play("Die");
-		walk.setScale(0,0);
-		hand->SetActive(false);
+		walk.setScale(0.f,0.f);
+		hand.setScale(0.f, 0.f);
 	}
 
 }
@@ -250,6 +256,8 @@ void Player::Draw(sf::RenderWindow& window)
 	}
 
 	SpriteGo::Draw(window);
+	if(!isrolling)
+	window.draw(hand);
 }
 
 void Player::PlayerRotation()
@@ -262,7 +270,6 @@ void Player::PlayerRotation()
 	angle = Utils::Angle2(look);
 
 
-	//스위치로 묶을 것 (인트로 변환해서)
 	if (angle <= 45.f)
 	{
 		currentClipInfo = clipInfos[3];
@@ -360,7 +367,7 @@ void Player::SetFlipX(bool filp)
 	sf::Vector2f scale1 = sprite.getScale();
 	scale1.x = !flipX ? abs(scale1.x) : -abs(scale1.x);
 	sprite.setScale(scale1);
-	if (hand != nullptr)
+	if (isGame)
 	{
 		playerhand = handPos;
 		playerhand.x = !flipX ? abs(handPos.x) : -abs(handPos.x);
@@ -384,16 +391,11 @@ void Player::PlayerAct(float dt)
 			SetPosition(position);
 			PlayerRotation();
 			clipId = magnitude == 0.f ? currentClipInfo.idle : currentClipInfo.walk;
-			if (hand != nullptr && !hand->GetActive())
-				hand->SetActive(true);
 		}
 		else
 		{
 			position += direction * rollspeed * dt;
 			SetPosition(position);
-
-			if (hand != nullptr)
-				hand->SetActive(false);
 
 			if ((animation.AnimationEnd()))
 			{
@@ -463,12 +465,16 @@ void Player::ChangePlayer(sf::Vector2f pos,bool choise)
 
 void Player::SetSceneGame()
 {
-	//isGame = true;
+	sf::Texture* tex = RESOURCE_MGR.GetTexture("graphics/Hand.png");
+
+
+
 	Scene* scene = SCENE_MGR.GetCurrScene();
 	SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
 
-	hand = (SpriteGo*)sceneGame->AddGo(new SpriteGo("graphics/Hand.png"));
-	hand->SetOrigin(Origins::MC);
+	hand.setTexture(*tex);
+
+	Utils::SetOrigin(hand, Origins::MC);
 	
 	ouch = (SpriteGo*)sceneGame->AddGo(new SpriteGo("graphics/ouch.png"));
 
@@ -553,6 +559,7 @@ void Player::GetItem(Weapon::Types type)
 		book->GetItem(it->GetItemType(), it->GetItemWAP());
 
 		weaponList.push_back(it);
+		inventoryweaponList.push_back(type);
 	}
 	else
 	{
@@ -583,6 +590,13 @@ void Player::AddKey(int key)
 {
 	this->key += key;
 	playerUI->RenewKey();
+}
+
+
+void Player::AddHegemonyCredit(int hegemonyCredit)
+{
+	Scene::hegemonyCredit += hegemonyCredit;
+	book->RenewHegemonyCredit();
 }
 
 const sf::Vector2f& Player::GetDirection() const
@@ -631,21 +645,18 @@ void Player::SwapWeapon()
 void Player::SetPosition(const sf::Vector2f& p)
 {
 	SpriteGo::SetPosition(p);
-	if (hand != nullptr)
+	if (isGame)
 	{
-		hand->SetPosition(GetPosition() + playerhand);
-		hand->SetOrigin(Origins::MC);
+		hand.setPosition(GetPosition() + playerhand);
 	}
 }
 
 void Player::SetPosition(float x, float y)
 {
 	SpriteGo::SetPosition(x, y);
-	if (hand != nullptr)
+	if (isGame)
 	{
-
-		hand->SetPosition(GetPosition() + playerhand);
-		hand->SetOrigin(Origins::MC);
+		hand.setPosition(GetPosition() + playerhand);
 	}
 }
 
@@ -690,20 +701,16 @@ void Player::SetType(Types t)
 
 	if(isGame)
 	{
-		playerchoise = true;
 		SetSceneGame();
 		Scene* scene = SCENE_MGR.GetGameScene();
 		sceneGame = dynamic_cast<SceneGame*>(scene);
-
 		ObjectPool<Bullet>* ptr = &poolBullets;
 		poolBullets.OnCreate = [ptr](Bullet* bullet) {
 			bullet->pool = ptr;
 		};
 		poolBullets.Init();
 		book = PLAYER_MGR.GetBook();
-		GetItem(Active::Types::PrisonerActive);
-		GetItem(passivetype);
-		GetItem(weapontype);
+
 	}
 }
 

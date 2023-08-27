@@ -271,6 +271,10 @@ void SceneTitle::LoadCSV(const std::string& filepath)
 	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable »ç¿ë
 	std::wstring name = table->GetW("PLAY");
 	play.setString(name);
+	name = table->GetW("MAPTOOL");
+	maptool.setString(name);
+	name = table->GetW("BULLET_EDITOR");
+	bulletEditor.setString(name);
 	name = table->GetW("LANGUAGE");
 	language.setString(name);
 	name = table->GetW("CLOSE");

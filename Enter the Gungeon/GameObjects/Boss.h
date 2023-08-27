@@ -36,6 +36,8 @@ public:
 	virtual void Reset() override;
 	virtual void Update(float dt) override;
 
+	virtual void SetPlayer(Player* player) override;
+
 	void SetBoss(float patternDuration = 0.f);
 	void PlayPattern(const PatternNum& p);
 	void EndPattern(bool idle = true);

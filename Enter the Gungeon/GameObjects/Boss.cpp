@@ -204,6 +204,14 @@ void Boss::Update(float dt)
 	}
 }
 
+void Boss::SetPlayer(Player* player)
+{
+	Enemy::SetPlayer(player);
+
+	SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+	scene->SetBossUI(this);
+}
+
 void Boss::SetBoss(float patternDuration)
 {
 	this->patternDuration = patternDuration;

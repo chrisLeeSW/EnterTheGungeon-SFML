@@ -79,7 +79,6 @@ void Bullet::HitEnemy()
 		{
 			if (sprite.getGlobalBounds().intersects(enemy->sprite.getGlobalBounds()))
 			{
-				std::cout << "¸ÂÀ½";
 				enemy->OnDamage(damage, direction, knockback);
 				SCENE_MGR.GetCurrScene()->RemoveGo(this);
 				pool->Return(this);

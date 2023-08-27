@@ -164,7 +164,7 @@ void Player::Update(float dt)
 		}
 	}
 
-	if(isAlive && !isChangeScene)
+	if(hp > 0 && !isChangeScene)
 	{
 		BlankBullet(dt);
 
@@ -229,16 +229,18 @@ void Player::Update(float dt)
 		if (INPUT_MGR.GetKeyDown(sf::Keyboard::F1))
 		{
 			OnPlayerHit();
-			std::cout << hp << std::endl;
 		}
 	}
-	else if(!isAlive && animation.GetCurrentClipId() != "Die")
+	else if(hp <= 0 && animation.GetCurrentClipId() != "Die")
 	{
 		animation.Play("Die");
 		walk.setScale(0.f,0.f);
 		hand.setScale(0.f, 0.f);
 	}
-
+	if (animation.GetCurrentClipId() == "Die" && animation.AnimationEnd())
+	{
+		isAlive = false;
+	}
 }
 
 void Player::Draw(sf::RenderWindow& window)
@@ -676,7 +678,6 @@ void Player::OnPlayerHit()
 	if (hp <= 0)
 	{
 		sprite.setColor(originalColor);
-		isAlive = false;
 	}
 }
 

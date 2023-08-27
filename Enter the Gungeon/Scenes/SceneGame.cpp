@@ -170,6 +170,9 @@ void SceneGame::Update(float dt)
 		SCENE_MGR.ChangeScene(SceneId::Lobby);
 	}
 
+	if(!player->IsAlive())
+		SCENE_MGR.ChangeScene(SceneId::Lobby);
+
 	worldView.setCenter(player->GetPosition());
 }
 
@@ -570,7 +573,6 @@ void SceneGame::ListFilesInDirectory(const std::string& folderPath, std::vector<
 		if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
 		}
 		else {
-			//std::cout << "파일 이름: " << findFileData.cFileName << std::endl;
 			std::string filePath = folderPath + findFileData.cFileName;
 			fileList.push_back(filePath);
 			++fileCount;

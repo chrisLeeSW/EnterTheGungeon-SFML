@@ -208,7 +208,6 @@ void Book::GetItem(Item::Types t, Item::WAP w)
 		else
 		{
 			it->SetSpritePosition(activebuttons[activebuttons.size() - 2]->GetSpritePosition().x + 20.f, activebuttons[activebuttons.size() - 2]->GetSpritePosition().y);
-			std::cout << activebuttons[activebuttons.size() - 1]->GetSpritePosition().x;
 			for (int i = 0; i <= activebuttons.size() - 1; i++)
 			{
 				activebuttons[i]->SetSpritePosition(20.f);
@@ -231,7 +230,6 @@ void Book::GetItem(Item::Types t, Item::WAP w)
 		else
 		{
 			it->SetSpritePosition(passivebuttons[passivebuttons.size() - 2]->GetSpritePosition().x + 20.f, passivebuttons[passivebuttons.size() - 2]->GetSpritePosition().y);
-			std::cout << passivebuttons[passivebuttons.size() - 1]->GetSpritePosition().x;
 			for (int i = 0; i <= passivebuttons.size() - 1; i++)
 			{
 				passivebuttons[i]->SetSpritePosition(20.f);
@@ -255,7 +253,6 @@ void Book::GetItem(Item::Types t, Item::WAP w)
 		else
 		{
 			it->SetSpritePosition(weaponbuttons[weaponbuttons.size() - 2]->GetSpritePosition().x + 20.f, weaponbuttons[weaponbuttons.size() - 2]->GetSpritePosition().y);
-			std::cout << weaponbuttons[weaponbuttons.size() - 1]->GetSpritePosition().x;
 			for(int i = 0; i <= weaponbuttons.size() - 1; i++)
 			{
 				weaponbuttons[i]->SetSpritePosition(10.f);

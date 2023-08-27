@@ -531,6 +531,8 @@ void Enemy::OnDamage(float damage, sf::Vector2f dir, float knockback)
 		else
 		{
 			OnDie(dir);
+			SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+			scene->RemoveGo(weapon);
 		}
 
 		state = Enemy::State::Die;

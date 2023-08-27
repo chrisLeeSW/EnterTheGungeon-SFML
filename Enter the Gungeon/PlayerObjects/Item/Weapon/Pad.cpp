@@ -159,8 +159,7 @@ void Pad::Update(float dt)
 					player->Shoot(bulletType, gunPoint, Utils::RotateVector(look, pattenAngle*i), santan);
 				}
 
-				std::cout << "현재 탄창 : " << currentbulletcount << std::endl;
-				std::cout << "총 탄창 : " << currentbulletmax << std::endl;
+
 				tick = attackrate;
 			}
 			if (gun.GetCurrentClipId() == "Shoot" && gun.AnimationEnd())
@@ -178,12 +177,21 @@ void Pad::Update(float dt)
 				state = State::Idle;
 				gun.Play("Idle");
 				isreload = false; // 재장전 플래그 해제
-				std::cout << "장전완료" << std::endl;
 			}
 		}
 	}
-	else
-		state = State::Roll;
+	else if (player->isRolling() && state == State::Reload)
+	{
+		reloadtick += dt; // 재장전 시간 감소
+		if (reloadtick >= reload)
+		{
+			currentbulletcount = bulletcount; // 재장전 완료되면 탄창을 최대치로 채움
+			player->playerUI->ShootWeapon();
+			state = State::Idle;
+			gun.Play("Idle");
+			isreload = false; // 재장전 플래그 해제
+		}
+	}
 }
 
 void Pad::Draw(sf::RenderWindow& window)

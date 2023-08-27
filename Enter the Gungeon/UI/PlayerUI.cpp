@@ -146,22 +146,22 @@ void PlayerUI::Update(float dt)
 
 
 
-	switch(playerweapon->GetWeaponState())
+	switch (playerweapon->GetWeaponState())
 	{
-	case Weapon::State::Idle :
+	case Weapon::State::Idle:
 		currentweapon.Play("Idle");
 		break;
 
-	case Weapon::State::Shoot :
-		if(INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
-		currentweapon.Play("Shoot");
+	case Weapon::State::Shoot:
+		if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
+			currentweapon.Play("Shoot");
 		break;
 
-	case Weapon::State::Reload :
-		if(INPUT_MGR.GetKeyDown(sf::Keyboard::R))
-		currentweapon.Play("Reload");
-		else if(INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
-		currentweapon.Play("Reload");
+	case Weapon::State::Reload:
+		if (INPUT_MGR.GetKeyDown(sf::Keyboard::R))
+			currentweapon.Play("Reload");
+		else if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
+			currentweapon.Play("Reload");
 
 		reload.setPosition(windowsize.x * 0.5f, windowsize.y * 0.4);
 
@@ -252,7 +252,13 @@ void PlayerUI::CurrentActive(Active* active)
 		this->active.setPosition(activeBox.getGlobalBounds().left + activeBox.getGlobalBounds().width * 0.5f, activeBox.getGlobalBounds().top + activeBox.getGlobalBounds().height * 0.5f);
 		break;
 	}
-
+	case Item::Types::BulletTime:
+	{
+		sf::Texture* tex = RESOURCE_MGR.GetTexture("graphics/BulletTimeButton.png");
+		this->active.setTexture(*tex);
+		this->active.setPosition(activeBox.getGlobalBounds().left + activeBox.getGlobalBounds().width * 0.5f, activeBox.getGlobalBounds().top + activeBox.getGlobalBounds().height * 0.5f);
+		break;
+	}
 	default:
 		break;
 	}

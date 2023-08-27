@@ -1,0 +1,5 @@
+ID,FPS,LOOPTYPE,,
+BulletTime,5,1,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/BulletTimeButton.png,0,0,16,23

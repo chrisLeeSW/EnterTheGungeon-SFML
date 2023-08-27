@@ -297,3 +297,6 @@
 3,playercsv/Prisoner/PrisonerDie.csv
 0,graphics/PrisonerPassivebutton.png
 0,graphics/PrisonerPassivesprite.png
+0,graphics/BulletTimeSprite.png
+0,graphics/BulletTimeButton.png
+3,weapon/BulletTime.csv

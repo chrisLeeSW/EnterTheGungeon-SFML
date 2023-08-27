@@ -112,6 +112,7 @@ void SceneGame::Enter()
 
 	player->SetPosition(tileRoom[0].map->GetStartPos());
 
+	player->sortLayer = 5;
 
 	RemoveWall();
 	FindBossRoom();

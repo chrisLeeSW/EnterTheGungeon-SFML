@@ -1,5 +1,6 @@
 #pragma once
 #include "Active.h"
+#include "AnimationController.h"
 
 class TextGo;
 
@@ -7,6 +8,8 @@ class aBulletTime : public Active
 {
 
 protected:
+
+    AnimationController animation;
 
     float duration = 1.f;
     bool isbullettime = true;
@@ -30,5 +33,8 @@ public:
     virtual void Draw(sf::RenderWindow& window) override;
 
     void SetPlayer(Player* player) { this->player = player; }
+
+    virtual Item::Types GetItemType() { return itemtype; }
+    virtual Item::WAP GetItemWAP() { return wap; }
 };
 

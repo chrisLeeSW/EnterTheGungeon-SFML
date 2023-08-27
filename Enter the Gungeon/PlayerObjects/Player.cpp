@@ -17,6 +17,7 @@
 
 Player::Player(Types type, const std::string& textureId, const std::string& n) : SpriteGo(textureId, n), type(type)
 {
+	sortLayer = 5;
 }
 
 void Player::Init()
@@ -24,77 +25,77 @@ void Player::Init()
 
 	if (PLAYER_MGR.player != nullptr)
 		PLAYER_MGR.player = nullptr;
-		PLAYER_MGR.SetPlayer(this);
+	PLAYER_MGR.SetPlayer(this);
 
-	
+
 
 
 	std::string name;
 	std::string rollname;
 	windowsize = FRAMEWORK.GetWindowSize();
+	windowsize *= 0.3f;
+
+	switch (type)
+	{
+	case Types::Pilot:
+		name = "Pilot/Pilot";
+		rollname = "Pilot/Pilot";
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "InGungeon.csv"));
+		break;
+	case Types::Prisoner:
+		name = "Prisoner/Prisoner";
+		rollname = "Prisoner/Prisoner";
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "InGungeon.csv"));
+		break;
+	case Types::WeaponPilot:
+		name = "Pilot/PilotWeapon";
+		rollname = "Pilot/Pilot";
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + rollname + "Die.csv"));
+		blankBullet.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/BlankBullet.csv"));
+		blankBullet.SetTarget(&blanksprite);
+
+		blankEffect.setFillColor(sf::Color::Transparent);
+		blankEffect.setOutlineColor(sf::Color::White);
+		blankEffect.setOutlineThickness(1);
+		blankEffect.setOutlineColor(sf::Color(255, 255, 255, 88));
+		blankEffect.setRadius(30.f);
+		break;
+	case Types::WeaponPrisoner:
+		name = "Prisoner/PrisonerWeapon";
+		rollname = "Prisoner/Prisoner";
+		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + rollname + "Die.csv"));
+		blankBullet.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/BlankBullet.csv"));
+		blankBullet.SetTarget(&blanksprite);
+
+		blankEffect.setFillColor(sf::Color::Transparent);
+		blankEffect.setOutlineColor(sf::Color::White);
+		blankEffect.setOutlineThickness(1);
+		blankEffect.setOutlineColor(sf::Color(255, 255, 255, 88));
+		blankEffect.setRadius(30.f);
+		break;
+	}
+
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "IdleUp.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "IdleDown.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "IdleRight.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "IdleUpRight.csv"));
+
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "WalkUp.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "WalkUpRight.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "WalkRight.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "WalkDown.csv"));
+
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + rollname + "RollUp.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + rollname + "RollDown.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + rollname + "RollRight.csv"));
+	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + rollname + "RollUpRight.csv"));
 
 
-		switch (type)
-		{
-		case Types::Pilot :
-			name = "Pilot/Pilot";
-			rollname = "Pilot/Pilot";
-			animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "InGungeon.csv"));
-			break;
-		case Types::Prisoner :
-			name = "Prisoner/Prisoner";
-			rollname = "Prisoner/Prisoner";
-			animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + name + "InGungeon.csv"));
-			break;
-		case Types::WeaponPilot :
-			name = "Pilot/PilotWeapon";
-			rollname = "Pilot/Pilot";
-			animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + rollname + "Die.csv"));
-			blankBullet.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/BlankBullet.csv"));
-			blankBullet.SetTarget(&blanksprite);
-
-			blankEffect.setFillColor(sf::Color::Transparent);
-			blankEffect.setOutlineColor(sf::Color::White);
-			blankEffect.setOutlineThickness(1);
-			blankEffect.setOutlineColor(sf::Color(255, 255, 255, 88));
-			blankEffect.setRadius(30.f);
-			break;
-		case Types::WeaponPrisoner : 
-			name = "Prisoner/PrisonerWeapon";
-			rollname = "Prisoner/Prisoner";
-			animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/" + rollname + "Die.csv"));
-			blankBullet.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/BlankBullet.csv"));
-			blankBullet.SetTarget(&blanksprite);
-
-			blankEffect.setFillColor(sf::Color::Transparent);
-			blankEffect.setOutlineColor(sf::Color::White);
-			blankEffect.setOutlineThickness(1);
-			blankEffect.setOutlineColor(sf::Color(255, 255, 255, 88));
-			blankEffect.setRadius(30.f);
-			break;
-		}
-
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+name+"IdleUp.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+name+"IdleDown.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+name+"IdleRight.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+name+"IdleUpRight.csv"));
-																   			
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+name+"WalkUp.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+name+"WalkUpRight.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+name+"WalkRight.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+name+"WalkDown.csv"));
-																   			
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+rollname+"RollUp.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+rollname+"RollDown.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+rollname+"RollRight.csv"));
-		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/"+rollname+"RollUpRight.csv"));
-				
-		
 	actEffect.AddClip(*RESOURCE_MGR.GetAnimationClip("playercsv/WalkEffect.csv"));
 
 	actEffect.SetTarget(&walk);
 
-	walk.setScale(0.5,0.5);
+	walk.setScale(0.5, 0.5);
 	animation.SetTarget(&sprite);
 	SetOrigin(Origins::BC);
 
@@ -123,7 +124,7 @@ void Player::Reset()
 
 	animation.Play("IdleRight");
 	SetFlipX(false);
-	
+
 	hp = maxHp;
 	isAlive = true;
 
@@ -132,9 +133,9 @@ void Player::Reset()
 
 	SetType(type);
 
-	if(isGame)
+	if (isGame)
 	{
-		GetItem(Active::Types::PrisonerActive);
+		GetItem(activetype);
 		GetItem(passivetype);
 		GetItem(weapontype);
 		playerUI->CurrentWeapon(weaponList[currentIndex]);
@@ -154,7 +155,7 @@ void Player::Update(float dt)
 
 	if (isChangeScene)
 	{
-		if(animation.GetCurrentClipId() != "InGungeon")
+		if (animation.GetCurrentClipId() != "InGungeon")
 			animation.Play("InGungeon");
 
 		if (animation.AnimationEnd())
@@ -164,19 +165,19 @@ void Player::Update(float dt)
 		}
 	}
 
-	if(hp > 0 && !isChangeScene)
+	if (hp > 0 && !isChangeScene)
 	{
 		BlankBullet(dt);
 
 		currenthitDelay -= dt;
-		if(currenthitDelay <= 0)
-		sprite.setColor(originalColor);
+		if (currenthitDelay <= 0)
+			sprite.setColor(originalColor);
 
 		actEffect.Update(dt);
 
-		if(isHit)
+		if (isHit)
 		{
-			ouchoriginalColor.a -= 1.f;
+			ouchoriginalColor.a -= 3.f;
 			ouch->sprite.setColor(ouchoriginalColor);
 			if (ouchoriginalColor.a == 0)
 			{
@@ -231,10 +232,10 @@ void Player::Update(float dt)
 			OnPlayerHit();
 		}
 	}
-	else if(hp <= 0 && animation.GetCurrentClipId() != "Die")
+	else if (hp <= 0 && animation.GetCurrentClipId() != "Die")
 	{
 		animation.Play("Die");
-		walk.setScale(0.f,0.f);
+		walk.setScale(0.f, 0.f);
 		hand.setScale(0.f, 0.f);
 	}
 	if (animation.GetCurrentClipId() == "Die" && animation.AnimationEnd())
@@ -247,19 +248,19 @@ void Player::Draw(sf::RenderWindow& window)
 {
 
 	if (!weaponList.empty() && isAlive)
-	weaponList[currentIndex]->Draw(window);
+		weaponList[currentIndex]->Draw(window);
 
 	window.draw(walk);
 
-	if(isBlankAnimation)
+	if (isBlankAnimation)
 	{
 		window.draw(blanksprite);
 		window.draw(blankEffect);
 	}
 
 	SpriteGo::Draw(window);
-	if(!isrolling)
-	window.draw(hand);
+	if (!isrolling)
+		window.draw(hand);
 }
 
 void Player::PlayerRotation()
@@ -311,7 +312,7 @@ void Player::PlayerRotation()
 	{
 		SetFlipX(true);
 	}
-	else if(angle <= 70.f || angle >=290.f )
+	else if (angle <= 70.f || angle >= 290.f)
 	{
 		SetFlipX(false);
 	}
@@ -380,36 +381,36 @@ void Player::SetFlipX(bool filp)
 void Player::PlayerAct(float dt)
 {
 	prevPlayerPos = position;
-		if (!isrolling)
+	if (!isrolling)
+	{
+		direction.x = INPUT_MGR.GetAxisRaw(Axis::Horizontal);
+		direction.y = INPUT_MGR.GetAxisRaw(Axis::Vertical);
+		magnitude = Utils::Magnitude(direction);
+		if (magnitude > 1.f)
 		{
-			direction.x = INPUT_MGR.GetAxisRaw(Axis::Horizontal);
-			direction.y = INPUT_MGR.GetAxisRaw(Axis::Vertical);
-			magnitude = Utils::Magnitude(direction);
-			if (magnitude > 1.f)
-			{
-				direction /= magnitude;
-			}
-			position += direction * speed * dt;
-			SetPosition(position);
-			PlayerRotation();
-			clipId = magnitude == 0.f ? currentClipInfo.idle : currentClipInfo.walk;
+			direction /= magnitude;
 		}
-		else
-		{
-			position += direction * rollspeed * dt;
-			SetPosition(position);
+		position += direction * speed * dt;
+		SetPosition(position);
+		PlayerRotation();
+		clipId = magnitude == 0.f ? currentClipInfo.idle : currentClipInfo.walk;
+	}
+	else
+	{
+		position += direction * rollspeed * dt;
+		SetPosition(position);
 
-			if ((animation.AnimationEnd()))
-			{
-				isrolling = false;
-			}
+		if ((animation.AnimationEnd()))
+		{
+			isrolling = false;
 		}
+	}
 
 	if (clipId == currentClipInfo.walk && INPUT_MGR.GetMouseButtonDown(sf::Mouse::Right))
 	{
 		auto min = std::min_element(clipInfos.begin(), clipInfos.end(),
 			[this](const ClipInfo& lhs, const ClipInfo& rhs) {
-				return Utils::Distance(lhs.point, direction) < Utils::Distance(rhs.point, direction); });
+			return Utils::Distance(lhs.point, direction) < Utils::Distance(rhs.point, direction); });
 
 		isrolling = true;
 		currentClipInfo = *min;
@@ -455,15 +456,24 @@ void Player::PlayerAct(float dt)
 		HealHp(10);
 
 		AddBlankBullet();
+		speed += 500;
 	}
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::G))
 	{
-		speed += 100;
+		speed -= 500;
+	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::H))
+	{
+		money++;
+	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::J))
+	{
+		speed -= 500;
 	}
 }
 
 
-void Player::ChangePlayer(sf::Vector2f pos,bool choise)
+void Player::ChangePlayer(sf::Vector2f pos, bool choise)
 {
 	SetPosition(pos);
 	playerchoise = choise;
@@ -481,7 +491,7 @@ void Player::SetSceneGame()
 	hand.setTexture(*tex);
 
 	Utils::SetOrigin(hand, Origins::MC);
-	
+
 	ouch = (SpriteGo*)sceneGame->AddGo(new SpriteGo("graphics/ouch.png"));
 
 	sf::Texture texture;
@@ -536,16 +546,16 @@ void Player::GetItem(Active::Types type)
 		if (active != nullptr)
 			active = nullptr; // 이게 맞나?
 
-		if(playerUI!=nullptr)
-		playerUI->CurrentActive(it);
+		if (playerUI != nullptr)
+			playerUI->CurrentActive(it);
 
-			active = it;
-			book->GetItem(it->GetItemType(), it->GetItemWAP());
+		active = it;
+		book->GetItem(it->GetItemType(), it->GetItemWAP());
 
-			Scene* scene = SCENE_MGR.GetCurrScene();
-			SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
-			sceneGame->AddGo(active);
-			active->Init();
+		Scene* scene = SCENE_MGR.GetCurrScene();
+		SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
+		sceneGame->AddGo(active);
+		active->Init();
 	}
 	else
 	{
@@ -559,7 +569,7 @@ void Player::GetItem(Weapon::Types type)
 		return;
 
 	auto it = ITEM_MGR.GetItem(type);
-	if (it!=nullptr)
+	if (it != nullptr)
 	{
 		it->Init();
 		book->GetItem(it->GetItemType(), it->GetItemWAP());
@@ -635,7 +645,7 @@ void Player::SwapWeapon()
 	{
 		if (INPUT_MGR.GetKeyDown(pair.first))
 		{
-			if(pair.second <= weaponList.size())
+			if (pair.second <= weaponList.size())
 			{
 				int temp = pair.second;
 				--temp;
@@ -668,7 +678,7 @@ void Player::SetPosition(float x, float y)
 
 void Player::OnPlayerHit()
 {
-	
+
 	if (currenthitDelay <= 0)
 	{
 		--hp;
@@ -704,7 +714,7 @@ void Player::SetType(Types t)
 	blankBulletCount = info->blankBulletCount;
 
 
-	if(isGame)
+	if (isGame)
 	{
 		SetSceneGame();
 		Scene* scene = SCENE_MGR.GetGameScene();

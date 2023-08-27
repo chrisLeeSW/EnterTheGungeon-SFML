@@ -13,31 +13,64 @@ SECRETBOX,PilotPassive
 PRISONERWEAPON,Prisonerweapon
 FIREBOTTLE,PrisonerActive
 PAD,Pad
-PADMANUAL1,Is Pad
-PADMANUAL2,d
-PADMANUAL3,s
-PADMANUAL4,Ammo
-PILOTWEAPONMANUAL1,p
-PILOTWEAPONMANUAL2,i
-PILOTWEAPONMANUAL3,LANGUAGE
-PILOTWEAPONMANUAL4,to
-PILOTPASSIVEMANUAL1,Is PilotPassive
-PILOTPASSIVEMANUAL2,e
-PILOTPASSIVEMANUAL3,s
-PILOTPASSIVEMANUAL4,a
-PRISONERWEAPONMANUAL1,Is PrisonerWeapon
-PRISONERWEAPONMANUAL2,Is PrisonerWeapon
-PRISONERWEAPONMANUAL3,Is PrisonerWeapon
-PRISONERWEAPONMANUAL4,Is PrisonerWeapon
+PADMANUAL1,"When the bullet runs out, it's destroyed"
+PADMANUAL2,It's a gun that creates a box.
+PADMANUAL3,This pad was once used by a group of ancient wizards
+PADMANUAL4,used as a subpoena for.
+PADMANUAL5,"Thanks to the long use, the traces of time stand out,"
+PADMANUAL6,"Especially back, back, and low fist buttons."
+PADMANUAL7,
+PADMANUAL8, 
+PILOTWEAPONMANUAL1,The default gun is the default gun.
+PILOTWEAPONMANUAL2,FileLE received to partner
+PILOTWEAPONMANUAL3,Log Special is never disappointed him.
+PILOTWEAPONMANUAL4,"It's a bit loose, when safety device is open around half"
+PILOTWEAPONMANUAL5,"They say that it's launched.also,"
+PILOTWEAPONMANUAL6,Sometimes you can't handle problems.
+PILOTWEAPONMANUAL7, 
+PILOTWEAPONMANUAL8, 
+PILOTPASSIVEMANUAL1,Increases the maximum number of bullets.
+PILOTPASSIVEMANUAL2,Because of some suspicious legal products
+PILOTPASSIVEMANUAL3,"After being captured by hegemony, the pilot"
+PILOTPASSIVEMANUAL4,I changed it to a more stealthy way of storing.
+PILOTPASSIVEMANUAL5, 
+PILOTPASSIVEMANUAL6, 
+PILOTPASSIVEMANUAL7, 
+PILOTPASSIVEMANUAL8, 
+PRISONERWEAPONMANUAL1,It's the basic gun.
+PRISONERWEAPONMANUAL2,This low-cost Lover is notorious
+PRISONERWEAPONMANUAL3,It's going to have a total face.
+PRISONERWEAPONMANUAL4,According to the head of the District
+PRISONERWEAPONMANUAL5,"If you go to a total face of a crime, "
+PRISONERWEAPONMANUAL6,I'm going to be trapped in a total face.
+PRISONERWEAPONMANUAL7,"As a country, his liver was accepted,"
+PRISONERWEAPONMANUAL8,He became so good at that gun.
 PRISONERACTIVEMANUAL1,Is PrisonerActive
 PRISONERACTIVEMANUAL2,Is PrisonerActive
 PRISONERACTIVEMANUAL3,Is PrisonerActive
 PRISONERACTIVEMANUAL4,Is PrisonerActive
-SHOTGUN,SHOTGUN
-SHOTGUNMANUAL1,It's a shotgun adapted for easy hiding. 
-SHOTGUNMANUAL2,"The short heat of the gun spreads widely,"
-SHOTGUNMANUAL3,"but at close range, it is as deadly as an unopened shotgun."
-SHOTGUNMANUAL4,GUN
+PRISONERACTIVEMANUAL5, 
+PRISONERACTIVEMANUAL6, 
+PRISONERACTIVEMANUAL7, 
+PRISONERACTIVEMANUAL8, 
+SHOTGUN,Modified Shotgun
+SHOTGUNMANUAL1,It's a shotgun adapted for easy hiding.
+SHOTGUNMANUAL2,"The short heat of the bullet spreads widely,"
+SHOTGUNMANUAL3,"At close range, it's like an unopened shotgun"
+SHOTGUNMANUAL4,It exerts deadly power.
+SHOTGUNMANUAL5, 
+SHOTGUNMANUAL6, 
+SHOTGUNMANUAL7, 
+SHOTGUNMANUAL8, 
 WEAPON,GUN
 ACTIVE,ACTIVE
 PASSIVE,PASSIVE
+PRISONERPASSIVEMANUAL1,It's a picture of a prisoner coming into a bay.
+PRISONERPASSIVEMANUAL2,"While moving to the gap, the pilot told her"
+PRISONERPASSIVEMANUAL3,Why do you always stare at this picture
+PRISONERPASSIVEMANUAL4,I've asked.
+PRISONERPASSIVEMANUAL5,Later she was released from the shackles.
+PRISONERPASSIVEMANUAL6,
+PRISONERPASSIVEMANUAL7,
+PRISONERPASSIVEMANUAL8,
+PRISONERPASSIVE,Picture of Anger

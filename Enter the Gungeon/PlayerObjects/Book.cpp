@@ -44,7 +44,6 @@ void Book::Init()
 
 
 
-
 	textweapon.setFont(*font);
 	textactvie.setFont(*font);
 	textpassive.setFont(*font);
@@ -58,8 +57,15 @@ void Book::Init()
 	textactvie.setPosition(200, 145);
 	textpassive.setPosition(200, 200);
 
+	sf::Texture* tex = RESOURCE_MGR.GetTexture("graphics/ui_HegemonyCredit.png");
 
+	hegemonyCredit.setTexture(*tex);
+	hegemonyCredit.setPosition(windowsize.x * 0.95f, 10.f);
 
+	textHegemonyCredit.setFont(*font);
+	textHegemonyCredit.setFillColor(sf::Color::White);
+	textHegemonyCredit.setCharacterSize(45);
+	textHegemonyCredit.setPosition(hegemonyCredit.getGlobalBounds().left + hegemonyCredit.getGlobalBounds().width, hegemonyCredit.getGlobalBounds().top);
 
 
 	black.setFillColor(sf::Color::Black);
@@ -69,7 +75,10 @@ void Book::Init()
 	textweapon.setScale(0.3f, 0.3f);
 	textactvie.setScale(0.3f, 0.3f);
 	textpassive.setScale(0.3f, 0.3f);
+	textHegemonyCredit.setScale(0.3f,0.3f);
 
+	//Utils::SetOrigin(currentHegemonyCredit,Origins::TL);
+	//Utils::SetOrigin(hegemonyCredit, Origins::TL);
 }
 
 void Book::Release()
@@ -78,8 +87,15 @@ void Book::Release()
 
 void Book::Reset()
 {
-	SpriteGo::Reset();
 	player = PLAYER_MGR.GetPlayer();
+	PLAYER_MGR.SetBook(this);
+	SpriteGo::Reset();
+
+
+	weaponbuttons.clear();
+	activebuttons.clear();
+	passivebuttons.clear();
+
 
 	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable »ç¿ë
 
@@ -88,6 +104,9 @@ void Book::Reset()
 	textweapon.setString(name = table->GetW("WEAPON"));
 	textactvie.setString(name = table->GetW("ACTIVE"));
 	textpassive.setString(name = table->GetW("PASSIVE"));
+
+	textHegemonyCredit.setString(std::to_string(Scene::hegemonyCredit));
+
 
 	Utils::SetOrigin(textpassive, Origins::BC);
 	Utils::SetOrigin(textweapon, Origins::BC);
@@ -167,6 +186,8 @@ void Book::Draw(sf::RenderWindow& window)
 		window.draw(textactvie);
 		window.draw(textpassive);
 		window.draw(textweapon);
+		window.draw(hegemonyCredit);
+		window.draw(textHegemonyCredit);
 	}
 }
 void Book::GetItem(Item::Types t, Item::WAP w)
@@ -243,6 +264,9 @@ void Book::GetItem(Item::Types t, Item::WAP w)
 		break;
 	}
 	}
-
 }
 
+void Book::RenewHegemonyCredit()
+{
+	textHegemonyCredit.setString(std::to_string(Scene::hegemonyCredit));
+}

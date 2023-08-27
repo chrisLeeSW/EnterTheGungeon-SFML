@@ -14,7 +14,7 @@
 #include "WeaponMgr.h"
 #include "aBulletTime.h"
 #include "ShotGun.h"
-//#include "EnemyShotGun.h"
+#include "DropEquipItem.h"
 
 void ItemMgr::Init()
 {
@@ -40,6 +40,8 @@ void ItemMgr::Init()
 	mapActive.insert({ Active::Types::PrisonerActive,prisonerActive });
 	mapActive.insert({ Active::Types::BulletTime, abulletTime });
 
+	//DropEquipItem* dropEquipItem = new DropEquipItem();
+
 }
 
 
@@ -59,6 +61,12 @@ Weapon* ItemMgr::GetItem(Weapon::Types id)
 {
 	auto find = mapWeapon.find(id);
 	return find->second;
+}
+
+DropEquipItem* ItemMgr::GetDropItem()
+{
+	DropEquipItem* dropEquipItem = new DropEquipItem();
+	return dropEquipItem;
 }
 
 float ItemMgr::BulletTime()

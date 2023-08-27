@@ -220,9 +220,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PlayerObjects\Item\Chest.cpp">
-    <Filter>소스 파일</Filter>
-      </ClCompile>
+      <Filter>소스 파일</Filter>
+    </ClCompile>
     <ClCompile Include="PlayerObjects\Item\Weapon\ShotGun.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DropEquipItem.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -438,6 +441,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="PlayerObjects\Item\Weapon\ShotGun.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DropEquipItem.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

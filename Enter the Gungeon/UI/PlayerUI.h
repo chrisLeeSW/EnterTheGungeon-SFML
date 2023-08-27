@@ -38,12 +38,14 @@ protected:
 	sf::Sprite reload;
 	sf::Sprite reloadBar;
 
+
 	sf::Text currentmoney;
 	sf::Text currentkey;
 
 	sf::Text currentMagazine;
 	sf::Text remainingAmmo;
 	sf::Text remainingAmmoMax;
+
 
 	int bulletcount;
 	int bulletmax;

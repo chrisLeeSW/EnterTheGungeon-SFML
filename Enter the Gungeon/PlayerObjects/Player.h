@@ -89,7 +89,7 @@ protected:
 	std::vector<Passive*> passiveList;
 	std::vector<Weapon*> weaponList;
 	Active* active = nullptr;
-
+	std::vector<Weapon::Types> inventoryweaponList;
 
 
 	//플레이어 셋팅
@@ -107,6 +107,7 @@ protected:
 
 	int money = 0;
 	int key = 1;
+
 
 	int hp = 0;
 	float effect = 0.f;
@@ -135,10 +136,10 @@ protected:
 	sf::Color ouchoriginalColor;
 	sf::Color originalColor;
 	sf::Sprite shadow;
-	PlayerUI* playerUI;
+
 
 	sf::Vector2f handPos{ 7.f,-6.f };
-	SpriteGo* hand;
+	sf::Sprite hand;
 	bool handflipX = false;
 
 
@@ -163,6 +164,8 @@ protected:
 
 
 public:
+
+	PlayerUI* playerUI = nullptr;
 
 	sf::Sprite walk;
 	sf::Sprite blanksprite;
@@ -217,15 +220,17 @@ public:
 
 	void SetBook(Book* book);
 
-	sf::Vector2f PlayerHandPos() { return hand->GetPosition(); }
+	sf::Vector2f PlayerHandPos() { return hand.getPosition(); }
 	int GetHp() { return hp; }
 
 	void HealHp(int heal);
 	void AddBlankBullet();
 	void AddMoney(int money);
 	void AddKey(int key);
+	void AddHegemonyCredit(int hegemonyCredit);
 	int GetMoney() { return money; }
 	int GetKey() { return key; }
+	Types GetType() { return type; }
 
 	void InSceneGame() {};
 
@@ -234,6 +239,7 @@ public:
 	int GetBlankBulletCount() { return blankBulletCount; }
 
 	void SetEnemyList(std::list<Enemy*> enemylist);
+	std::vector<Weapon::Types> GetPlayerWeaponList() { return inventoryweaponList; }
 
 	//skill
 	Weapon* GetCurrenWeapon() { return weaponList[currentIndex]; }

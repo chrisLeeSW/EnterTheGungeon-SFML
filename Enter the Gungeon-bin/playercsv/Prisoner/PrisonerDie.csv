@@ -1,0 +1,23 @@
+ID,FPS,LOOPTYPE,,
+Die,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Prisoner.png,235,663,18,20
+graphics/Prisoner.png,255,663,18,20
+graphics/Prisoner.png,275,663,18,20
+graphics/Prisoner.png,295,663,15,20
+graphics/Prisoner.png,312,663,15,20
+graphics/Prisoner.png,329,663,15,20
+graphics/Prisoner.png,345,663,16,20
+graphics/Prisoner.png,363,663,15,20
+graphics/Prisoner.png,236,689,18,28
+graphics/Prisoner.png,256,689,17,28
+graphics/Prisoner.png,275,689,17,28
+graphics/Prisoner.png,294,689,16,28
+graphics/Prisoner.png,312,689,17,28
+graphics/Prisoner.png,331,689,20,28
+graphics/Prisoner.png,353,689,18,28
+graphics/Prisoner.png,373,689,22,28
+graphics/Prisoner.png,397,689,22,28
+graphics/Prisoner.png,421,689,22,28
+graphics/Prisoner.png,445,689,14,28

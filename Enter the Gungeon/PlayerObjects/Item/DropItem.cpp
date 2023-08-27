@@ -73,7 +73,7 @@ void DropItem::Reset()
 		animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Objects/HegemonyCredit.csv"));
 		OnBump = [this]()
 		{
-			// Á¶±Ý °í¹Î
+			Scene::hegemonyCredit++;
 		};
 		break;
 	default:

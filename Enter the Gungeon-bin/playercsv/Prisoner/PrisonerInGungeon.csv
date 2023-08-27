@@ -1,0 +1,14 @@
+ID,FPS,LOOPTYPE,,
+InGungeon,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/Prisoner.png,235,509,15,20
+graphics/Prisoner.png,252,509,15,20
+graphics/Prisoner.png,269,509,15,20
+graphics/Prisoner.png,286,509,13,20
+graphics/Prisoner.png,301,509,13,20
+graphics/Prisoner.png,316,509,12,20
+graphics/Prisoner.png,330,509,9,20
+graphics/Prisoner.png,341,509,7,20
+graphics/Prisoner.png,350,509,5,20
+graphics/Prisoner.png,357,509,3,20

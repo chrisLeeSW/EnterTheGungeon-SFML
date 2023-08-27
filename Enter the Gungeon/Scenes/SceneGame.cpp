@@ -15,10 +15,8 @@
 #include "DisplayItem.h"
 #include "Npc.h"
 #include "Chest.h"
-
 #include "Boss.h"
 #include "EnemyBullet.h"
-
 #include "BossUI.h"
 
 SceneGame::SceneGame() : Scene(SceneId::Game)
@@ -100,12 +98,9 @@ void SceneGame::Release()
 
 void SceneGame::Enter()
 {
-	if (player != nullptr)
-	{
-		delete player;
-	}
-
 	player = (Player*)AddGo(new Player((Player::Types)playertype));
+	playerui = (PlayerUI*)AddGo(new PlayerUI(player));
+
 	player->sortLayer = 0;
 	player->Init();
 	player->SetEnemyList(enemylist);
@@ -114,20 +109,32 @@ void SceneGame::Enter()
 
 	player->SetPosition(0.f,0.f);
 
-	playerui = (PlayerUI*)AddGo(new PlayerUI(player));
 	playerui->Init();
-	playerui->Reset();
+	//playerui->Reset();
 	Scene::Enter();
 
 }
 
 void SceneGame::Exit()
 {
+	if (player != nullptr)
+	{
+		RemoveGo(player);
+		RemoveGo(playerui);
+	}
 	Scene::Exit();
-	player->Reset();
 
 	ClearPool(enemyBullets);
 	ClearPool(dropitemPool);
+
+	if (ValidFilePath("SaveFile.csv"))
+	{
+		OverwriteCSV("SaveFile.csv");
+	}
+	else
+	{
+		std::cerr << "ERROR: Not Exist File! - SaveFile LOAD ValidFilePath()" << std::endl;
+	}
 }
 
 void SceneGame::Update(float dt)
@@ -139,7 +146,7 @@ void SceneGame::Update(float dt)
 
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Escape))
 	{
-		SCENE_MGR.ChangeScene(SceneId::Title);
+		SCENE_MGR.ChangeScene(SceneId::Lobby);
 	}
 
 	worldView.setCenter(player->GetPosition());
@@ -310,4 +317,26 @@ ObjectPool<EnemyBullet>& SceneGame::GetPoolEnemyBullet()
 ObjectPool<DropItem>& SceneGame::GetPoolDropItem()
 {
 	return dropitemPool;
+}
+
+void SceneGame::OverwriteCSV(const std::string& filepath)
+{
+	rapidcsv::Document doc("SaveFile.csv", rapidcsv::LabelParams(-1, -1));
+	doc.Clear();
+	doc.SetCell<std::string>(0, 0, "HegemonyCredit");
+	doc.SetCell<std::string>(1, 0, "Language");
+
+
+
+	doc.SetCell<int>(0, 1, hegemonyCredit); // Type ÁöÁ¤
+	doc.SetCell<int>(1, 1, (int)Variables::CurrentLang);
+
+
+	doc.Save();
+}
+
+bool SceneGame::ValidFilePath(const std::string& filepath)
+{
+	std::ifstream fileStream(filepath);
+	return fileStream.is_open();
 }

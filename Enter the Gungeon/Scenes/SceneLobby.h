@@ -42,7 +42,8 @@ protected:
 	AnimationController animation;
 
 	sf::Sprite sprite;
-
+	sf::Sprite spritehegemonyCredit;
+	sf::Text textHegemonyCredit;
 	sf::RectangleShape doorCollisionBox;
 
 public:

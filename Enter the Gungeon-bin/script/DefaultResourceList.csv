@@ -274,3 +274,8 @@
 0,graphics/PlayerShotGunButton.png
 0,graphics/PlayerShotGunSprite.png
 1,fonts/PF.ttf
+0,graphics/ui_HegemonyCredit.png
+3,playercsv/Prisoner/PrisonerInGungeon.csv
+3,playercsv/Prisoner/PrisonerDie.csv
+0,graphics/PrisonerPassivebutton.png
+0,graphics/PrisonerPassivesprite.png

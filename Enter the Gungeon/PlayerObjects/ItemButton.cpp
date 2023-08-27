@@ -27,13 +27,13 @@ void ItemButton::Init()
 	std::wstring name;
 	std::vector<std::wstring> names;
 
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < manual.size(); ++i)
 	{
 		names.push_back(table->GetW(manual[i]));
 	}
 
 
-	manualtext.setString(names[0] + (std::wstring)L"\n" + names[1] + (std::wstring)L"\n" + names[2] + (std::wstring)L"\n" + names[3]);
+	manualtext.setString(names[0] + (std::wstring)L"\n" + names[1] + (std::wstring)L"\n" + names[2] + (std::wstring)L"\n" + names[3] + (std::wstring)L"\n" + names[4] + (std::wstring)L"\n" + names[5] + (std::wstring)L"\n" + names[6] + (std::wstring)L"\n" + names[7]);
 
 
 
@@ -60,6 +60,7 @@ void ItemButton::Init()
 	{
 		itemsprite.setTexture(*tex);
 	}
+
 	itemsprite.setPosition(375,120);
 
 	Utils::SetOrigin(nametext,Origins::MC);

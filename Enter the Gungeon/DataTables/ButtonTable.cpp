@@ -27,14 +27,18 @@ bool ButtonTable::Load()
 	std::vector<std::string> manuals2 = doc.GetColumn<std::string>(4);
 	std::vector<std::string> manuals3 = doc.GetColumn<std::string>(5);
 	std::vector<std::string> manuals4 = doc.GetColumn<std::string>(6);
-	std::vector<std::string> itemsprites = doc.GetColumn<std::string>(7);
-	std::vector<float> nameposx = doc.GetColumn<float>(8);
-	std::vector<float> nameposy = doc.GetColumn<float>(9);
-	std::vector<float> manualposx = doc.GetColumn<float>(10);
-	std::vector<float> manualposy = doc.GetColumn<float>(11);
-	std::vector<std::string> buttonfont = doc.GetColumn<std::string>(12);
-	std::vector<int> textsize = doc.GetColumn<int>(13);
-	std::vector<int> namesize = doc.GetColumn<int>(14);
+	std::vector<std::string> manuals5 = doc.GetColumn<std::string>(7);
+	std::vector<std::string> manuals6 = doc.GetColumn<std::string>(8);
+	std::vector<std::string> manuals7 = doc.GetColumn<std::string>(9);
+	std::vector<std::string> manuals8 = doc.GetColumn<std::string>(10);
+	std::vector<std::string> itemsprites = doc.GetColumn<std::string>(11);
+	std::vector<float> nameposx = doc.GetColumn<float>(12);
+	std::vector<float> nameposy = doc.GetColumn<float>(13);
+	std::vector<float> manualposx = doc.GetColumn<float>(14);
+	std::vector<float> manualposy = doc.GetColumn<float>(15);
+	std::vector<std::string> buttonfont = doc.GetColumn<std::string>(16);
+	std::vector<int> textsize = doc.GetColumn<int>(17);
+	std::vector<int> namesize = doc.GetColumn<int>(18);
 
 	for (int i = 0; i < buttonTextures.size(); ++i)
 	{
@@ -45,6 +49,10 @@ bool ButtonTable::Load()
 		itembutton->manual.push_back(manuals2[i]);
 		itembutton->manual.push_back(manuals3[i]);
 		itembutton->manual.push_back(manuals4[i]);
+		itembutton->manual.push_back(manuals5[i]);
+		itembutton->manual.push_back(manuals6[i]);
+		itembutton->manual.push_back(manuals7[i]);
+		itembutton->manual.push_back(manuals8[i]);
 		itembutton->itemspriteId = itemsprites[i];
 		itembutton->namepos.x = nameposx[i];
 		itembutton->namepos.y = nameposy[i];

@@ -4,7 +4,7 @@
 #include "Item.h"
 #include "Passive.h"
 #include "Active.h"
-
+#include "DropEquipItem.h"
 
 class ItemMgr : public Singleton<ItemMgr>
 {
@@ -30,6 +30,8 @@ public:
 	Passive* GetItem(Passive::Types type);
 	Active* GetItem(Active::Types type);
 	Weapon* GetItem(Weapon::Types type);
+
+	DropEquipItem* GetDropItem();
 
 	float BulletTime();
 	void BulletTimeOn(bool bullettime);

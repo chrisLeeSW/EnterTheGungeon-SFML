@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DropEquipItem.cpp" />
     <ClCompile Include="PlayerObjects\Item\Chest.cpp" />
     <ClCompile Include="GameObjects\Npc.cpp" />
     <ClCompile Include="PlayerObjects\Item\DisplayItem.cpp" />
@@ -232,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\rapidcsv.h" />
+    <ClInclude Include="DropEquipItem.h" />
     <ClInclude Include="PlayerObjects\Item\Chest.h" />
     <ClInclude Include="GameObjects\Npc.h" />
     <ClInclude Include="PlayerObjects\Item\DisplayItem.h" />

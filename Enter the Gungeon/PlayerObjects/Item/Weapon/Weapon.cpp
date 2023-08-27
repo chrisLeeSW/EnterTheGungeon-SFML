@@ -23,7 +23,8 @@ void Weapon::Release()
 
 void Weapon::Reset()
 {
-	player = PLAYER_MGR.GetPlayer();
+	//player = PLAYER_MGR.GetPlayer();
+
 }
 
 void Weapon::Update(float dt)
@@ -56,7 +57,20 @@ void Weapon::SetPlayer(Player* player)
 
 void Weapon::SetType(Types t)
 {
+	const WeaponInfo* info = DATATABLE_MGR.Get<WeaponTable>(DataTable::Ids::Weapon)->Get(t);
 
+	weaponType = (Types)info->weaponType;
+	bulletType = (Bullet::Types)info->bulletType;
+	attackrate = info->attackrate;
+	bulletcount = info->bulletcount;
+	bulletmax = info->bulletmax;
+	reload = info->reload;
+	santan = info->santan;
+
+	if (player->GetType() == Player::Types::WeaponPilot)
+	{
+		bulletmax *= 1.1;
+	}
 }
 
 void Weapon::SetGunFlipx(bool flip)
@@ -75,7 +89,6 @@ void Weapon::SwapWeapon()
 {
 	
 }
-
 
 void Weapon::SetEnemy(Enemy* enemy)
 {

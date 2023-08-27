@@ -4,7 +4,8 @@
 
 class Player;
 class SpriteGo;
-
+class TileMap;
+class InteractionObject;
 class SceneLobby : public Scene
 {
 	
@@ -21,7 +22,9 @@ public:
 
 
 protected:
-
+	TileMap* lobby;
+	std::vector<SpriteGo*> objects;
+	
 	Player* pilot;
 	Player* prisoner;
 	Player* currentplayer;
@@ -59,6 +62,7 @@ public:
 	virtual void Draw(sf::RenderWindow& window) override;
 
 	void PlayerChoise();
-
+	void MakeLobby();
+	void PlayerCollied();
 };
 

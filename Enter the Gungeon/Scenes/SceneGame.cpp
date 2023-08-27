@@ -77,15 +77,6 @@ void SceneGame::Init()
 	};
 	effectPool.Init();
 
-
-
-
-	bossui = (BossUI*)AddGo(new BossUI()); //test
-	bossui->SetOrigin(Origins::MC);
-	bossui->SetPosition(windowSize.x * 0.5f, windowSize.y - 50.f);
-	bossui->sortLayer = 100;
-	bossui->SetActive(false);
-
 	for (auto go : gameObjects)
 	{
 		go->Init();
@@ -127,6 +118,13 @@ void SceneGame::Enter()
 
 	Scene::Enter();
 
+	bossui = (BossUI*)AddGo(new BossUI()); //test
+	bossui->SetOrigin(Origins::MC);
+	bossui->SetPosition(windowSize.x * 0.5f, windowSize.y - 50.f);
+	bossui->SetBoss(boss);
+	bossui->sortLayer = 100;
+	bossui->Init();
+	bossui->SetActive(false);
 }
 
 void SceneGame::Exit()
@@ -160,7 +158,7 @@ void SceneGame::Update(float dt)
 
 	// 대각선 충돌이 문제가 있음 테스트 코드로 사용
 	CoiledPlayerByMap();
-	SetMonsterByPlayer();
+	SetMonsterByPlayer(); // 이게 Update에 있는 것이 말이 안된다~ 수정 필수
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::F11))
 	{
 		colliedDraw = true;
@@ -539,6 +537,7 @@ void SceneGame::SetBossUI(Boss* boss)
 {
 	bossui->SetBoss(boss);
 	bossui->SetActive(true);
+	bossui->Reset();
 }
 
 void SceneGame::RenewBossUI()

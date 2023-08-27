@@ -56,15 +56,6 @@ void Bullet::Update(float dt)
 	if(animation.GetCurrentClipId()!= bulletid)
 	animation.Play(bulletid);
 
-	if (INPUT_MGR.GetKey(sf::Keyboard::Num6))
-	{
-		direction.x *= 1.01f;
-	}
-	if (INPUT_MGR.GetKey(sf::Keyboard::Num7))
-	{
-		direction.y *= 1.01f;
-	}
-
 	HitEnemy();
 
 }
@@ -79,6 +70,8 @@ void Bullet::HitEnemy()
 		{
 			if (sprite.getGlobalBounds().intersects(enemy->sprite.getGlobalBounds()))
 			{
+				if (enemy->GetEnemyState() == Enemy::State::Die) return;
+
 				enemy->OnDamage(damage, direction, knockback);
 				SCENE_MGR.GetCurrScene()->RemoveGo(this);
 				pool->Return(this);

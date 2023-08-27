@@ -786,7 +786,12 @@ void Enemy::DropsDropItem(DropItem::Types itemtype, int quantity, int chance)
 		DropItem* dropitem = scene->GetPoolDropItem().Get();
 		dropitem->SetType(itemtype);
 		dropitem->SetPlayer(player);
-		dropitem->SetPosition(position + Utils::RandomInCircle(100.f));
+		sf::Vector2f pos = position + Utils::RandomInCircle(100.f);
+		if (!wall.contains(pos))
+		{
+			pos = Utils::Clamp(pos, { wallLeft, wallTop }, { wallRight, wallBottom });
+		}
+		dropitem->SetPosition(pos);
 		dropitem->Init();
 		dropitem->Reset();
 		scene->AddGo(dropitem);

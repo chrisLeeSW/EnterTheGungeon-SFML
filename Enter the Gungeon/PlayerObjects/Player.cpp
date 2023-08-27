@@ -160,7 +160,7 @@ void Player::Update(float dt)
 		if (animation.AnimationEnd())
 		{
 			isChangeSceneGame = true;
-			isChangeScene = false;
+			//isChangeScene = false;
 		}
 	}
 

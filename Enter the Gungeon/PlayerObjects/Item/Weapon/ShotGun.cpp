@@ -26,7 +26,7 @@ ShotGun::ShotGun(const std::string& textureId, const std::string& n)
 	gun.Play("Idle");
 
 	gunend.setFillColor(sf::Color::Transparent);
-	gunend.setOutlineColor(sf::Color::Red);
+	gunend.setOutlineColor(sf::Color::Transparent);
 	gunend.setOutlineThickness(2.f);
 	gunend.setSize(sf::Vector2f{ 5,5 });
 

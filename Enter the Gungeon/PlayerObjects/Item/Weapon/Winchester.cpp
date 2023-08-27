@@ -25,7 +25,7 @@ Winchester::Winchester(const std::string& textureId, const std::string& n) : Wea
 
 
 	gunend.setFillColor(sf::Color::Transparent);
-	gunend.setOutlineColor(sf::Color::Red);
+	gunend.setOutlineColor(sf::Color::Transparent);
 	gunend.setOutlineThickness(1.f);
 	gunend.setSize(sf::Vector2f{ 5,5 });
 

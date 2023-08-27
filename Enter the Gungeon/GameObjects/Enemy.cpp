@@ -645,6 +645,7 @@ void Enemy::OneShot(sf::Vector2f dir, float speed, bool isBlink) // pool¹ÝÈ¯ ÇÊ¿
 	else bullet->SetPosition(position);
 	bullet->SetBullet(isBlink);
 	bullet->SetPlayer(player);
+	bullet->SetWall(wall);
 	bullet->Init();
 	bullet->Reset();
 	scene->AddGo(bullet);
@@ -658,6 +659,7 @@ void Enemy::OneShot(sf::Vector2f dir, sf::Vector2f pos, float speed, bool isBlin
 	bullet->SetPosition(pos);
 	bullet->SetBullet(isBlink);
 	bullet->SetPlayer(player);
+	bullet->SetWall(wall);
 	bullet->Init();
 	bullet->Reset();
 	scene->AddGo(bullet);
@@ -673,6 +675,7 @@ void Enemy::AngleShot(sf::Vector2f dir, float speed, float angle, bool isBlink)
 	else bullet->SetPosition(position);
 	bullet->SetBullet(isBlink);
 	bullet->SetPlayer(player);
+	bullet->SetWall(wall);
 	bullet->Init();
 	bullet->Reset();
 	scene->AddGo(bullet);
@@ -687,6 +690,7 @@ void Enemy::AngleShot(sf::Vector2f dir, sf::Vector2f pos, float speed, float ang
 	bullet->SetPosition(pos);
 	bullet->SetBullet(isBlink);
 	bullet->SetPlayer(player);
+	bullet->SetWall(wall);
 	bullet->Init();
 	bullet->Reset();
 	scene->AddGo(bullet);
@@ -723,7 +727,7 @@ void Enemy::Boom(sf::Vector2f pos, float range)
 	aiming->action = [this, scene, pos, range, ptr]()
 	{
 		EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
-		bullet->Shoot({ 0.f, 0.f }, 500.f);
+		bullet->Shoot({ 0.f, 0.f }, 750.f);
 		bullet->SetPosition(pos);
 		bullet->SetBullet(true);
 		bullet->SetPlayer(player);

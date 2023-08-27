@@ -61,6 +61,13 @@ void EnemyBullet::Update(float dt)
 		pool->Return(this);
 		return;
 	}
+	if (!wall.contains(position))
+	{
+		Scene* scene = SCENE_MGR.GetCurrScene();
+		scene->RemoveGo(this);
+		pool->Return(this);
+		return;
+	}
 
 
 	//Player-BlnakBullet 
@@ -72,6 +79,16 @@ void EnemyBullet::Update(float dt)
 			scene->RemoveGo(this);
 		}
 	}
+}
+
+void EnemyBullet::SetWall(const sf::FloatRect& wall)
+{
+	this->wall = wall;
+
+	wallTop = wall.top;
+	wallBottom = wall.top + wall.height;
+	wallLeft = wall.left;
+	wallRight = wall.left + wall.width;
 }
 
 void EnemyBullet::SetPlayer(Player* player)

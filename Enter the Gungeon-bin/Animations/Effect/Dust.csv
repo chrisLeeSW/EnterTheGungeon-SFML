@@ -1,0 +1,9 @@
+ID,FPS,LOOPTYPE,,
+Dust,10,0,,
+,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT
+graphics/effects.png,0,48,10,10
+graphics/effects.png,15,48,14,11
+graphics/effects.png,34,48,15,14
+graphics/effects.png,53,48,18,17
+graphics/effects.png,76,48,18,17

@@ -275,6 +275,7 @@
 0,graphics/PlayerShotGunSprite.png
 1,fonts/PF.ttf
 3,Animations/Effect/Aiming.csv
+3,Animations/Effect/Dust.csv
 3,Animations/Objects/Door/Down/DoorClose.csv
 3,Animations/Objects/Door/Down/Doordle.csv
 3,Animations/Objects/Door/Down/DoorOpen.csv

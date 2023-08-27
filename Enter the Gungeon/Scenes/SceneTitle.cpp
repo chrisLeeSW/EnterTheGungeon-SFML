@@ -50,26 +50,29 @@ void SceneTitle::Init()
 	sf::Vector2f desiredSize(windowSize); // 원하는 크기
 	bg->SetScale(desiredSize.x / originalTextureSize.x, desiredSize.y / originalTextureSize.y);
 
-	
-	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable 사용
-
-	std::wstring name;
-
-
 	sf::Font* font = RESOURCE_MGR.GetFont("fonts/PF.ttf");
-
 	if (font != nullptr)
 	{
 		play.setFont(*font);
 		play.setCharacterSize(20);
+		maptool.setFont(*font);
+		maptool.setCharacterSize(20);
+		bulletEditor.setFont(*font);
+		bulletEditor.setCharacterSize(20);
 		language.setFont(*font);
 		language.setCharacterSize(20);
 		close.setFont(*font);
 		close.setCharacterSize(20);
 	}
 
+	StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable 사용
+	std::wstring name;
 	name = table->GetW("PLAY");
 	play.setString(name);
+	name = table->GetW("MAPTOOL");
+	maptool.setString(name);
+	name = table->GetW("BULLET_EDITOR");
+	bulletEditor.setString(name);
 	name = table->GetW("LANGUAGE");
 	language.setString(name);
 	name = table->GetW("CLOSE");
@@ -77,11 +80,15 @@ void SceneTitle::Init()
 
 	transparentColor = sf::Color(255, 255, 255, 158);
 	originalColor = sf::Color(255, 255, 255, 255);
-	play.setPosition(50, windowSize.y * 0.75f);
+	play.setPosition(50, windowSize.y * 0.65f);
+	maptool.setPosition(50, windowSize.y * 0.7f);
+	bulletEditor.setPosition(50, windowSize.y * 0.75f);
 	language.setPosition(50, windowSize.y * 0.8f);
 	close.setPosition(50, windowSize.y * 0.85f);
 
 	play.setFillColor(originalColor);
+	maptool.setFillColor(transparentColor);
+	bulletEditor.setFillColor(transparentColor);
 	language.setFillColor(transparentColor);
 	close.setFillColor(transparentColor);
 
@@ -122,7 +129,7 @@ void SceneTitle::Update(float dt)
 		
 		if (selectedTextIndex < 0)
 		{
-			selectedTextIndex = 2;
+			selectedTextIndex = 4;
 		}
 	}
 
@@ -130,7 +137,7 @@ void SceneTitle::Update(float dt)
 	{
 		selectedTextIndex++;
 
-		if (selectedTextIndex >= 3)
+		if (selectedTextIndex >= 5)
 		{
 			selectedTextIndex = 0;
 		}
@@ -140,18 +147,40 @@ void SceneTitle::Update(float dt)
 	{
 	case 0:
 		play.setFillColor(originalColor);
+		maptool.setFillColor(transparentColor);
+		bulletEditor.setFillColor(transparentColor);
 		language.setFillColor(transparentColor);
 		close.setFillColor(transparentColor);
 		break;
 
 	case 1:
 		play.setFillColor(transparentColor);
-		language.setFillColor(originalColor);
+		maptool.setFillColor(originalColor);
+		bulletEditor.setFillColor(transparentColor);
+		language.setFillColor(transparentColor);
 		close.setFillColor(transparentColor);
 		break;
 
 	case 2:
 		play.setFillColor(transparentColor);
+		maptool.setFillColor(transparentColor);
+		bulletEditor.setFillColor(originalColor);
+		language.setFillColor(transparentColor);
+		close.setFillColor(transparentColor);
+		break;
+
+	case 3:
+		play.setFillColor(transparentColor);
+		maptool.setFillColor(transparentColor);
+		bulletEditor.setFillColor(transparentColor);
+		language.setFillColor(originalColor);
+		close.setFillColor(transparentColor);
+		break;
+
+	case 4:
+		play.setFillColor(transparentColor);
+		maptool.setFillColor(transparentColor);
+		bulletEditor.setFillColor(transparentColor);
 		language.setFillColor(transparentColor);
 		close.setFillColor(originalColor);
 		break;
@@ -162,6 +191,14 @@ void SceneTitle::Update(float dt)
 		SCENE_MGR.ChangeScene(SceneId::Lobby);
 	}
 	if (selectedTextIndex == 1 && INPUT_MGR.GetKeyDown(sf::Keyboard::E))
+	{
+		SCENE_MGR.ChangeScene(SceneId::MapTool);
+	}
+	if (selectedTextIndex == 2 && INPUT_MGR.GetKeyDown(sf::Keyboard::E))
+	{
+		SCENE_MGR.ChangeScene(SceneId::BulletEditor);
+	}
+	if (selectedTextIndex == 3 && INPUT_MGR.GetKeyDown(sf::Keyboard::E))
 	{
 		if (Variables::CurrentLang == Languages::ENG)
 		{
@@ -175,34 +212,22 @@ void SceneTitle::Update(float dt)
 		StringTable* table = DATATABLE_MGR.Get<StringTable>(DataTable::Ids::String); // StringTable 사용
 		std::wstring name = table->GetW("PLAY");
 		play.setString(name);
+		name = table->GetW("MAPTOOL");
+		maptool.setString(name);
+		name = table->GetW("BULLET_EDITOR");
+		bulletEditor.setString(name);
 		name = table->GetW("LANGUAGE");
 		language.setString(name);
 		name = table->GetW("CLOSE");
 		close.setString(name);
 		
 	}
-	if (selectedTextIndex == 2 && INPUT_MGR.GetKeyDown(sf::Keyboard::E))
+	if (selectedTextIndex == 4 && INPUT_MGR.GetKeyDown(sf::Keyboard::E))
 	{
 		//나가기
 		window.close();
 	}
 
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num1))
-	{
-		SCENE_MGR.ChangeScene(SceneId::Lobby);
-	}
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num2))
-	{
-		SCENE_MGR.ChangeScene(SceneId::BulletEditor);
-	}
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num3))
-	{
-		SCENE_MGR.ChangeScene(SceneId::MapTool);
-	}
-	/*if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num4))
-	{
-		SCENE_MGR.ChangeScene(SceneId::Game);
-	}*/
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num5))
 	{
 		SCENE_MGR.ChangeScene(SceneId::GameMapTestScene);
@@ -219,6 +244,8 @@ void SceneTitle::Draw(sf::RenderWindow& window)
 
 	//window.draw(sprite);
 	window.draw(play);
+	window.draw(maptool);
+	window.draw(bulletEditor);
 	window.draw(language);
 	window.draw(close);
 }

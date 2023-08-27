@@ -17,6 +17,12 @@ protected:
 	
 	bool isBlink = false;
 
+	sf::FloatRect wall;
+	float wallTop = 0.0f;
+	float wallBottom = 0.0f;
+	float wallLeft = 0.0f;
+	float wallRight = 0.0f;
+
 public:
 	ObjectPool<EnemyBullet>* pool;
 
@@ -26,6 +32,8 @@ public:
 	virtual void Init() override;
 	virtual void Reset() override;
 	virtual void Update(float dt) override;
+
+	void SetWall(const sf::FloatRect& wall);
 
 	void SetPlayer(Player* player);
 	void SetBullet(bool isBlink = false);

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "EnemyBullet.h"
+#include "SpriteEffect.h"
 
 EnemyBullet::EnemyBullet(std::string textureId, std::string name)
 	:SpriteGo(textureId, name)
@@ -61,6 +62,19 @@ void EnemyBullet::Update(float dt)
 		pool->Return(this);
 		return;
 	}
+	if (!wall.contains(position))
+	{
+		SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrScene();
+		SpriteEffect* effect = scene->GetPoolSpriteEffect().Get();
+		effect->SetEffect(SpriteEffect::Effect::Dust);
+		effect->SetPosition(position);
+		effect->Init();
+		effect->Reset();
+		scene->AddGo(effect);
+		scene->RemoveGo(this);
+		pool->Return(this);
+		return;
+	}
 
 
 	//Player-BlnakBullet 
@@ -72,6 +86,16 @@ void EnemyBullet::Update(float dt)
 			scene->RemoveGo(this);
 		}
 	}
+}
+
+void EnemyBullet::SetWall(const sf::FloatRect& wall)
+{
+	this->wall = wall;
+
+	wallTop = wall.top;
+	wallBottom = wall.top + wall.height;
+	wallLeft = wall.left;
+	wallRight = wall.left + wall.width;
 }
 
 void EnemyBullet::SetPlayer(Player* player)

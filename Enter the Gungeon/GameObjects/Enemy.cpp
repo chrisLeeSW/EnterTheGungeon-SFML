@@ -23,6 +23,8 @@ Enemy::Enemy(EnemyName type, const std::string& textureId, const std::string& n)
 	way.push_back({ 1.f, 0.f }); // Left
 	way.push_back(Utils::Normalize({ 1.f, 1.f })); // LeftDown
 	way.push_back({ 0.f, 1.f }); // Down
+
+	SetOrigin(Origins::BC);
 }
 
 Enemy::~Enemy()
@@ -148,7 +150,6 @@ void Enemy::Init()
 	animation.AddClip(*RESOURCE_MGR.GetAnimationClip("Animations/Enemy/" + name + "DieDown.csv"));
 
 	animation.SetTarget(&sprite);
-
 }
 
 void Enemy::Reset()
@@ -193,26 +194,28 @@ void Enemy::Reset()
 		weapon->SetEnemy(this);
 		break;
 	default:
+		return;
 		break;
 	}
 }
 
 void Enemy::Update(float dt)
 {
-
-
 	animation.Update(dt);
 
 	if (player == nullptr || state == Enemy::State::Die) return;
-
-	if (PLAYER_MGR.IsPause())
-		return;
+	if (PLAYER_MGR.IsPause()) return;
 
 	direction = Utils::Normalize(player->GetPosition() - position);
 	SetFlipX(direction.x > 0.f);
 	float distance = Utils::Distance(player->GetPosition(), position);
 	sf::Vector2f look = WhereWay(direction);
 	if (attackTimer < attackInterval) attackTimer += dt;
+
+	if (!wall.contains(position))
+	{
+		SetPosition(Utils::Clamp(position, { wallLeft, wallTop }, { wallRight, wallBottom }));
+	}
 
 	switch (state)
 	{
@@ -287,7 +290,6 @@ void Enemy::Update(float dt)
 			attackTimer = 0.f;
 			if (IfShoot != nullptr)
 			{
-				
 				IfShoot(direction, speed); //총알 속도 지정 필요
 
 				// Animation
@@ -493,6 +495,16 @@ void Enemy::LoadMuzzle(const std::string& path)
 	}
 }
 
+void Enemy::SetWall(const sf::FloatRect& wall)
+{
+	this->wall = wall;
+
+	wallTop = wall.top;
+	wallBottom = wall.top + wall.height;
+	wallLeft = wall.left;
+	wallRight = wall.left + wall.width;
+}
+
 void Enemy::OnDamage(float damage, sf::Vector2f dir, float knockback)
 {
 	if (state == Enemy::State::Die) return;
@@ -633,6 +645,7 @@ void Enemy::OneShot(sf::Vector2f dir, float speed, bool isBlink) // pool반환 필�
 	else bullet->SetPosition(position);
 	bullet->SetBullet(isBlink);
 	bullet->SetPlayer(player);
+	bullet->SetWall(wall);
 	bullet->Init();
 	bullet->Reset();
 	scene->AddGo(bullet);
@@ -646,6 +659,7 @@ void Enemy::OneShot(sf::Vector2f dir, sf::Vector2f pos, float speed, bool isBlin
 	bullet->SetPosition(pos);
 	bullet->SetBullet(isBlink);
 	bullet->SetPlayer(player);
+	bullet->SetWall(wall);
 	bullet->Init();
 	bullet->Reset();
 	scene->AddGo(bullet);
@@ -661,6 +675,7 @@ void Enemy::AngleShot(sf::Vector2f dir, float speed, float angle, bool isBlink)
 	else bullet->SetPosition(position);
 	bullet->SetBullet(isBlink);
 	bullet->SetPlayer(player);
+	bullet->SetWall(wall);
 	bullet->Init();
 	bullet->Reset();
 	scene->AddGo(bullet);
@@ -675,6 +690,7 @@ void Enemy::AngleShot(sf::Vector2f dir, sf::Vector2f pos, float speed, float ang
 	bullet->SetPosition(pos);
 	bullet->SetBullet(isBlink);
 	bullet->SetPlayer(player);
+	bullet->SetWall(wall);
 	bullet->Init();
 	bullet->Reset();
 	scene->AddGo(bullet);
@@ -711,10 +727,11 @@ void Enemy::Boom(sf::Vector2f pos, float range)
 	aiming->action = [this, scene, pos, range, ptr]()
 	{
 		EnemyBullet* bullet = scene->GetPoolEnemyBullet().Get();
-		bullet->Shoot({ 0.f, 0.f }, 500.f);
+		bullet->Shoot({ 0.f, 0.f }, 750.f);
 		bullet->SetPosition(pos);
 		bullet->SetBullet(true);
 		bullet->SetPlayer(player);
+		bullet->SetWall(wall);
 		bullet->Init();
 		bullet->Reset();
 		bullet->SetScale(range, range);

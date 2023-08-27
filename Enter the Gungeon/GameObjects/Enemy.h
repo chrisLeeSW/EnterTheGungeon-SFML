@@ -71,6 +71,12 @@ protected:
 	EnemyName type;
 	Enemy::State state;
 
+	sf::FloatRect wall;
+	float wallTop = 0.0f;
+	float wallBottom = 0.0f;
+	float wallLeft = 0.0f;
+	float wallRight = 0.0f;
+
 public:
 	Enemy(EnemyName type, const std::string& textureId="", const std::string& n="");
 	virtual ~Enemy() override;
@@ -98,6 +104,7 @@ public:
 	void SetPlayer(Player* player);
 	void SetEnemy();
 	void LoadMuzzle(const std::string& path);
+	void SetWall(const sf::FloatRect& wall);
 
 	// Bullet에게 맞았을 때
 	std::function<void()> IfHit;

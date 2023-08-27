@@ -11,6 +11,8 @@ protected:
 	sf::Sprite sprite;
 
 	sf::Text play;
+	sf::Text maptool;
+	sf::Text bulletEditor;
 	sf::Text language;
 	sf::Text close;
 

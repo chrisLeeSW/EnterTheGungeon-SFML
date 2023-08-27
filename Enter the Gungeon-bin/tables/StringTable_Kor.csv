@@ -6,6 +6,8 @@ KEY,열쇠
 BLANK,공포탄
 AMMO,탄약
 PLAY,플레이
+MAPTOOL,맵 제작
+BULLET_EDITOR,탄막 패턴 제작
 LANGUAGE,언어
 CLOSE,종료
 PILOTWEAPON,파일럿 기본무기

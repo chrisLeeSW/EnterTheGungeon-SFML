@@ -610,20 +610,20 @@ void Enemy::OnDie(const sf::Vector2f& look)
 	case Enemy::EnemyName::BulletKin:
 		itemtype = DropItem::Types::Shell1;
 		quantity = 1;
-		chance = 50;
+		chance = 100; // µå¶ø È®·ü
 		break;
 	case Enemy::EnemyName::KeyBulletKin:
 		return;
 		break;
 	case Enemy::EnemyName::ShotgunKinRed:
-		itemtype = DropItem::Types::Shell1;
+		itemtype = DropItem::Types::Shell2;
 		quantity = 1;
-		chance = 50;
+		chance = 100; // µå¶ø È®·ü
 		break;
 	case Enemy::EnemyName::ShotgunKinBlue:
-		itemtype = DropItem::Types::Shell1;
+		itemtype = DropItem::Types::Shell2;
 		quantity = 1;
-		chance = 50;
+		chance = 100; // µå¶ø È®·ü
 		break;
 	case Enemy::EnemyName::GatlingGull:
 		itemtype = DropItem::Types::HegemonyCredit;
@@ -768,7 +768,7 @@ void Enemy::SixWayDie(sf::Vector2f dir, float speed, int chance)
 		OneShot(Utils::DirectionFromAngle(60.f + 60.f * i), speed, true);
 	}
 
-	DropsDropItem(DropItem::Types::Shell1, 1, 50);
+	DropsDropItem(DropItem::Types::Shell1, 1, 100);
 	state = Enemy::State::Die;
 	SetActive(false);
 }
@@ -786,7 +786,12 @@ void Enemy::DropsDropItem(DropItem::Types itemtype, int quantity, int chance)
 		DropItem* dropitem = scene->GetPoolDropItem().Get();
 		dropitem->SetType(itemtype);
 		dropitem->SetPlayer(player);
-		dropitem->SetPosition(position + Utils::RandomInCircle(100.f));
+		sf::Vector2f pos = position + Utils::RandomInCircle(100.f);
+		if (!wall.contains(pos))
+		{
+			pos = Utils::Clamp(pos, { wallLeft, wallTop }, { wallRight, wallBottom });
+		}
+		dropitem->SetPosition(pos);
 		dropitem->Init();
 		dropitem->Reset();
 		scene->AddGo(dropitem);

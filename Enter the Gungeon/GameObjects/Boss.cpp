@@ -186,7 +186,7 @@ void Boss::Update(float dt)
 {
 
 	Enemy::Update(dt);
-	if (player == nullptr) return;
+	if (player == nullptr || state == Enemy::State::Die) return;
 	patternTimer += dt;
 	if (patternTimer >= patternDuration)
 	{

@@ -144,11 +144,11 @@ void SceneMaptool::Update(float dt)
 	}
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::PageUp))
 	{
-		worldView.zoom(1.5f);
+		worldView.zoom(0.5f);
 	}
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::PageDown))
 	{
-		worldView.zoom(0.5f);
+		worldView.zoom(1.5f);
 	}
 
 
